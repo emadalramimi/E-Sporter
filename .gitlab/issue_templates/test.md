@@ -1,3 +1,3 @@
-**Etant donné**
+**Etant donné l'état**
 **Quand**
 **Alors**
