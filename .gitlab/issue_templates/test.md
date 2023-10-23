@@ -1,3 +1,3 @@
-**Etant donné**
-**Quand**
+**Etant donné** <br>
+**Quand** <br>
 **Alors**
