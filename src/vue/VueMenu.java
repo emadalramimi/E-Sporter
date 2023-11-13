@@ -33,7 +33,7 @@ public class VueMenu {
 		panelMenu.setLayout(new GridLayout(1, 0, 20, 0));
 		
 		JLabel lblLogo = new JLabel("");
-		lblLogo.setIcon(new ImageIcon("C:\\Users\\Nassim\\Desktop\\IUT\\SAE\\S3\\workspace-s3-divers\\S3A01_E-Sporter\\assets\\images\\logo_menu.png"));
+		lblLogo.setIcon(new ImageIcon("assets/images/logo_menu.png"));
 		panelMenu.add(lblLogo);
 		
 		JPanel panelCentre = new JPanel();
@@ -55,7 +55,7 @@ public class VueMenu {
 		panelMenuCentre.setLayout(gbl_panelMenuCentre);
 		
 		JButtonMenu btnTournois = new JButtonMenu("", ControleurMenu.Menus.TOURNOIS);
-		btnTournois.setIcon(new ImageIcon("C:\\Users\\Nassim\\Desktop\\IUT\\SAE\\S3\\workspace-s3-divers\\S3A01_E-Sporter\\assets\\images\\menu\\tournois.png"));
+		btnTournois.setIcon(new ImageIcon("assets/images/menu/tournois.png"));
 		btnTournois.setToolTipText("Tournois");
 		btnTournois.addMouseListener(controleur);
 		if(actif == ControleurMenu.Menus.TOURNOIS) {
@@ -69,7 +69,7 @@ public class VueMenu {
 		panelMenuCentre.add(btnTournois, gbc_btnTournois);
 		
 		JButtonMenu btnEquipes = new JButtonMenu("", ControleurMenu.Menus.EQUIPES);
-		btnEquipes.setIcon(new ImageIcon("C:\\Users\\Nassim\\Desktop\\IUT\\SAE\\S3\\workspace-s3-divers\\S3A01_E-Sporter\\assets\\images\\menu\\equipes.png"));
+		btnEquipes.setIcon(new ImageIcon("assets/images/menu/equipes.png"));
 		btnEquipes.setToolTipText("Équipes");
 		btnEquipes.addMouseListener(controleur);
 		if(actif == ControleurMenu.Menus.EQUIPES) {
@@ -84,7 +84,7 @@ public class VueMenu {
 		panelMenuCentre.add(btnEquipes, gbc_btnEquipes);
 		
 		JButtonMenu btnHistorique = new JButtonMenu("", ControleurMenu.Menus.HISTORIQUE);
-		btnHistorique.setIcon(new ImageIcon("C:\\Users\\Nassim\\Desktop\\IUT\\SAE\\S3\\workspace-s3-divers\\S3A01_E-Sporter\\assets\\images\\menu\\historique.png"));
+		btnHistorique.setIcon(new ImageIcon("assets/images/menu/historique.png"));
 		btnHistorique.setToolTipText("Historique des points");
 		btnHistorique.addMouseListener(controleur);
 		if(actif == ControleurMenu.Menus.HISTORIQUE) {
@@ -98,7 +98,7 @@ public class VueMenu {
 		panelMenuCentre.add(btnHistorique, gbc_btnHistorique);
 
 		JButtonMenu btnPalmares = new JButtonMenu("", ControleurMenu.Menus.PALMARES);
-		btnPalmares.setIcon(new ImageIcon("C:\\Users\\Nassim\\Desktop\\IUT\\SAE\\S3\\workspace-s3-divers\\S3A01_E-Sporter\\assets\\images\\menu\\palmares.png"));
+		btnPalmares.setIcon(new ImageIcon("assets/images/menu/palmares.png"));
 		btnPalmares.setToolTipText("Palmarès");
 		btnPalmares.addMouseListener(controleur);
 		if(actif == ControleurMenu.Menus.PALMARES) {
@@ -170,7 +170,7 @@ public class VueMenu {
 		panelMenuDroite.setLayout(gbl_panelMenuDroite);
 		
 		JButtonMenu btnUtilisateur = new JButtonMenu("", ControleurMenu.Menus.UTILISATEUR);
-		btnUtilisateur.setIcon(new ImageIcon("C:\\Users\\Nassim\\Desktop\\IUT\\SAE\\S3\\workspace-s3-divers\\S3A01_E-Sporter\\assets\\images\\menu\\profil.png"));
+		btnUtilisateur.setIcon(new ImageIcon("assets/images/menu/profil.png"));
 		btnUtilisateur.setToolTipText("Admin");
 		btnUtilisateur.addMouseListener(controleur);
 		controleur.ajouterBoutonMenu(btnUtilisateur);
@@ -182,7 +182,7 @@ public class VueMenu {
 		panelMenuDroite.add(btnUtilisateur, gbc_btnUtilisateur);
 		
 		JButtonMenu btnDeconnexion = new JButtonMenu("", ControleurMenu.Menus.DECONNEXION);
-		btnDeconnexion.setIcon(new ImageIcon("C:\\Users\\Nassim\\Desktop\\IUT\\SAE\\S3\\workspace-s3-divers\\S3A01_E-Sporter\\assets\\images\\menu\\deconnexion.png"));
+		btnDeconnexion.setIcon(new ImageIcon("assets/images/menu/deconnexion.png"));
 		btnDeconnexion.setToolTipText("Déconnexion");
 		btnDeconnexion.addMouseListener(controleur);
 		controleur.ajouterBoutonMenu(btnDeconnexion);
