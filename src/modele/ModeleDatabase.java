@@ -380,32 +380,32 @@ public class ModeleDatabase {
 			st.executeUpdate("INSERT INTO tournoi VALUES (NEXT VALUE FOR idTournoi,"
 					+ "		'PCL 2023',"
 					+ "		'international', 1673478000,1675292400,1,"
-					+ "		'iutinfo','$iutinfo');"
+					+ "		'Pcl2023','$Pcl2023');"
 					
 					+ "INSERT INTO tournoi VALUES (NEXT VALUE FOR idTournoi,"
 					+ "		'Asia Star Challengers Invitational 2023',"
 					+ "		'international', 1673478000,1675292400,1,"
-					+ "		'iutinfo','$iutinfo');"
+					+ "		'AsiaStar','$AsiaStar');"
 					
 					+ "INSERT INTO tournoi VALUES (NEXT VALUE FOR idTournoi,"
 					+ "		'ULTRALIGA SEASON 10 - PROMOTION - PLAYOFFS',"
 					+ "		'national', 1675551600,1677193200,1,"
-					+ "		'iutinfo','$iutinfo');"
+					+ "		'Ultraliga','$Ultraliga');"
 					
 					+ "INSERT INTO tournoi VALUES (NEXT VALUE FOR idTournoi,"
 					+ "		'LVP SUPERLIGA 2023 SUMMER - PROMOTION - PLAYOFFS',"
-					+ "		'regional', 1673478000,1675292400,1,"
-					+ "		'iutinfo','$iutinfo');"
+					+ "		'régional', 1673478000,1675292400,1,"
+					+ "		'Superliga','$Superliga');"
 					
 					+ "INSERT INTO tournoi VALUES (NEXT VALUE FOR idTournoi,"
 					+ "		'LCD 2023 AUTUMN',"
 					+ "		'international', 1673478000,1675292400,1,"
-					+ "		'iutinfo','$iutinfo');"
+					+ "		'Lcd2023Autumn','$Lcd2023Autumn');"
 
 					+ "INSERT INTO tournoi VALUES (NEXT VALUE FOR idTournoi,"
 					+ "		'ELITE SERIES 2023 SUMMER - 2024 PROMOTION - PLAYOFFS',"
-					+ "		'regional', 1673478000,1675292400,1,"
-					+ "		'iutinfo','$iutinfo');");
+					+ "		'régional', 1673478000,1675292400,1,"
+					+ "		'EliteSeries','$EliteSeries');");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table tournoi");
 		    e.printStackTrace();
@@ -413,13 +413,13 @@ public class ModeleDatabase {
 		
 		try {
 			st.executeUpdate("INSERT INTO equipe VALUES (NEXT VALUE FOR idEquipe,"
-					+ "'CFO Academy', 'Taiwan', 3, 414, 'Saison 2023');"
-			+ "INSERT INTO equipe VALUES (NEXT VALUE FOR idEquipe,"
-					+ "'DCG Academy', 'Taiwan', 1, 362, 'Saison 2023');"
-			+ "INSERT INTO equipe VALUES (NEXT VALUE FOR idEquipe,"
-					+ "'Taipei Bravo', 'Taiwan', 4, 275, 'Saison 2023');"
-			+ "INSERT INTO equipe VALUES (NEXT VALUE FOR idEquipe,"
-				+ "'PSG Academy', 'Taiwan', 2, 237, 'Saison 2023');");
+							+ "'CFO Academy', 'Taiwan', 3, 414, 'Saison 2023');"
+					+ "INSERT INTO equipe VALUES (NEXT VALUE FOR idEquipe,"
+							+ "'DCG Academy', 'Taiwan', 1, 362, 'Saison 2023');"
+					+ "INSERT INTO equipe VALUES (NEXT VALUE FOR idEquipe,"
+							+ "'Taipei Bravo', 'Taiwan', 4, 275, 'Saison 2023');"
+					+ "INSERT INTO equipe VALUES (NEXT VALUE FOR idEquipe,"
+						+ "'PSG Academy', 'Taiwan', 2, 237, 'Saison 2023');");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table equipe");
 		    e.printStackTrace();
