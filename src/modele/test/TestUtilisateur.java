@@ -1,4 +1,4 @@
-package test;
+package modele.test;
 
 import static org.junit.Assert.fail;
 
