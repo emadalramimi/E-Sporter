@@ -41,7 +41,7 @@ public class VueConnexion extends JFrame {
 	
 	public VueConnexion() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 400, 517);
+		setBounds(100, 100, 592, 517);
 		contentPane = new JPanel();
 		contentPane.setBackground(CharteGraphique.FOND);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
