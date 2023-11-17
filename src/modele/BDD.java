@@ -5,7 +5,27 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class ModeleDatabase {
+public class BDD {
+	
+	private static Connection connection;
+	
+	public static Connection getConnexion() {
+		if(connection == null) {
+			try {
+				// Enregistrement du Driver
+				DriverManager.registerDriver(new org.apache.derby.jdbc.EmbeddedDriver());
+				
+				// URLString
+				String urlConnexion = "jdbc:derby:BDD;create=true";
+				
+				// Création d'une connexion
+				connection = DriverManager.getConnection(urlConnexion);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return connection;
+	}
 
 	public static void main(String[] args) {
 		// Mise en place de l'environnement
@@ -13,29 +33,19 @@ public class ModeleDatabase {
 		System.setProperty("derby.system.home", dirProjetJava + "/BDD");
 		
 		try {
-			// Enregistrement du Driver
-			DriverManager.registerDriver(new org.apache.derby.jdbc.EmbeddedDriver());
-			
-			// URLString
-			String urlConnexion = "jdbc:derby:BDD;create=true";
-			
-			// Création d'une connexion
-			Connection dbConnection = DriverManager.getConnection(urlConnexion);
-			Statement st = dbConnection.createStatement();
+			Statement st = BDD.getConnexion().createStatement();
 			
 			System.out.println("Connexion OK");
 			
-			ModeleDatabase.construireTables(st);
-			//ModeleDatabase.insererDonnees(st);
-			
-			dbConnection.close();
-			System.out.println("Connexion fermée");
+			BDD bdd = new BDD();
+			bdd.construireTables(st);
+			//bdd.insererDonnees(st);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public static void construireTables(Statement st) {
+	private void construireTables(Statement st) {
 		try {
 			st.executeUpdate("DROP TABLE jouer");
 		} catch (SQLException e) {
@@ -45,6 +55,7 @@ public class ModeleDatabase {
 		try {
 			st.executeUpdate("DROP TABLE participer");
 		} catch (SQLException e) {
+			e.printStackTrace();
 			System.out.println("participer n'existe pas");
 		}
 		
@@ -363,7 +374,7 @@ public class ModeleDatabase {
 		}
 	}
 	
-	public static void insererDonnees(Statement st) {
+	public void insererDonnees(Statement st) {
 		try {
 			st.executeUpdate("INSERT INTO tournoi VALUES ("
 						+ "NEXT VALUE FOR idTournoi,"
@@ -748,4 +759,5 @@ public class ModeleDatabase {
 		    e.printStackTrace();
 		}
 	}
+
 }
