@@ -39,7 +39,8 @@ public class BDD {
 			
 			BDD bdd = new BDD();
 			bdd.construireTables(st);
-			//bdd.insererDonnees(st);
+			bdd.insererDonnees(st);
+			System.out.println("Connexion fermée");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -171,10 +172,10 @@ public class BDD {
 		try {
 		    st.executeUpdate("CREATE TABLE tournoi("
 		            + "idTournoi INTEGER, "
-		            + "nomTournoi VARCHAR(20) NOT NULL, "
+		            + "nomTournoi VARCHAR(60) NOT NULL, "
 		            + "notoriete VARCHAR(20), "
-		            + "dateDebut DATE, "
-		            + "dateFin DATE, "
+		            + "dateDebut INT, "
+		            + "dateFin INT, "
 		            + "estCloture BOOLEAN, "
 		            + "identifiant VARCHAR(20), "
 		            + "motDePasse VARCHAR(20), "
@@ -320,8 +321,8 @@ public class BDD {
 		try {
 		    st.executeUpdate("CREATE TABLE rencontre("
 		            + "idRencontre INTEGER, "
-		            + "dateHeureDebut TIMESTAMP, "
-		            + "dateHeureFin TIMESTAMP, "
+		            + "dateHeureDebut INT, "
+		            + "dateHeureFin INT, "
 		            + "idPoule INT NOT NULL, "
 		            + "idEquipe INT, "
 		            + "PRIMARY KEY(idRencontre), "
@@ -373,253 +374,277 @@ public class BDD {
 		    e.printStackTrace();
 		}
 	}
+						
 	
 	public void insererDonnees(Statement st) {
 		try {
-			st.executeUpdate("INSERT INTO tournoi VALUES ("
-						+ "NEXT VALUE FOR idTournoi,"
-						+ "'PCL 2023',"
-						+ "'international',"
-						+ "1673478000,"
-						+ "1675292400,"
-						+ "1,"
-						+ "'Pcl2023',"
-						+ "'$Pcl2023'"
-						+ ");"
+			st.executeUpdate(
+					"INSERT INTO tournoi VALUES ("
+					+ "NEXT VALUE FOR idTournoi,"
+					+ "'PCL 2023',"
+					+ "'international',"
+					+ "1673478000,"
+					+ "1675292400,"
+					+ "TRUE,"
+					+ "'Pcl2023',"
+					+ "'$Pcl2023'"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO tournoi VALUES ("
+					+ "NEXT VALUE FOR idTournoi,"
+					+ "'Asia Star Challengers Invitational 2023',"
+					+ "'international',"
+					+ "1673478000,"
+					+ "1675292400,"
+					+ "TRUE,"
+					+ "'AsiaStar',"
+					+ "'$AsiaStar'"
+					+ ")");
+			
+			st.executeUpdate(
+					"INSERT INTO tournoi VALUES ("
+					+ "NEXT VALUE FOR idTournoi,"
+					+ "'ULTRALIGA SEASON 10 - PROMOTION - PLAYOFFS',"
+					+ "'national',"
+					+ "1675551600,"
+					+ "1677193200,"
+					+ "TRUE,"
+					+ "'Ultraliga',"
+					+ "'$Ultraliga'"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO tournoi VALUES ("
+					+ "NEXT VALUE FOR idTournoi,"
+					+ "'LVP SUPERLIGA 2023 SUMMER - PROMOTION - PLAYOFFS',"
+					+ "'régional',"
+					+ "1673478000,"
+					+ "1675292400,"
+					+ "TRUE,"
+					+ "'Superliga',"
+					+ "'$Superliga'"
+					+ ")");
 					
-					+ "INSERT INTO tournoi VALUES ("
-						+ "NEXT VALUE FOR idTournoi,"
-						+ "'Asia Star Challengers Invitational 2023',"
-						+ "	'international',"
-						+ "1673478000,"
-						+ "1675292400,"
-						+ "1,"
-						+ "'AsiaStar',"
-						+ "'$AsiaStar'"
-						+ ");"
-					
-					+ "INSERT INTO tournoi VALUES ("
-						+ "NEXT VALUE FOR idTournoi,"
-						+ "'ULTRALIGA SEASON 10 - PROMOTION - PLAYOFFS',"
-						+ "'national',"
-						+ "1675551600,"
-						+ "1677193200,"
-						+ "1,"
-						+ "'Ultraliga',"
-						+ "'$Ultraliga'"
-						+ ");"
-					
-					+ "INSERT INTO tournoi VALUES ("
-						+ "NEXT VALUE FOR idTournoi,"
-						+ "'LVP SUPERLIGA 2023 SUMMER - PROMOTION - PLAYOFFS',"
-						+ "'régional',"
-						+ "1673478000,"
-						+ "1675292400,"
-						+ "1,"
-						+ "'Superliga',"
-						+ "'$Superliga'"
-						+ ");"
-					
-					+ "INSERT INTO tournoi VALUES ("
-						+ "NEXT VALUE FOR idTournoi,"
-						+ "'LCD 2023 AUTUMN',"
-						+ "'international',"
-						+ "1673478000,"
-						+ "1675292400,"
-						+ "1,"
-						+ "'Lcd2023Autumn',"
-						+ "'$Lcd2023Autumn'"
-						+ ");"
-
-					+ "INSERT INTO tournoi VALUES ("
-						+ "NEXT VALUE FOR idTournoi,"
-						+ "'ELITE SERIES 2023 SUMMER - 2024 PROMOTION - PLAYOFFS',"
-						+ "'régional',"
-						+ "1673478000,"
-						+ "1675292400,"
-						+ "1,"
-						+ "'EliteSeries',"
-						+ "'$EliteSeries'"
-						+ ");"
-			);
+			st.executeUpdate(
+					"INSERT INTO tournoi VALUES ("
+					+ "NEXT VALUE FOR idTournoi,"
+					+ "'LCD 2023 AUTUMN',"
+					+ "'international',"
+					+ "1673478000,"
+					+ "1675292400,"
+					+ "TRUE,"
+					+ "'Lcd2023Autumn',"
+					+ "'$Lcd2023Autumn'"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO tournoi VALUES ("
+					+ "NEXT VALUE FOR idTournoi,"
+					+ "'ELITE SERIES 2023 SUMMER - 2024 PROMOTION - PLAYOFFS',"
+					+ "'régional',"
+					+ "1673478000,"
+					+ "1675292400,"
+					+ "TRUE,"
+					+ "'EliteSeries',"
+					+ "'$EliteSeries'"
+					+ ")");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table tournoi");
 		    e.printStackTrace();
 		}
 		
 		try {
-			st.executeUpdate("INSERT INTO equipe VALUES ("
-						+ "NEXT VALUE FOR idEquipe,"
-						+ "'CFO Academy',"
-						+ "'Taiwan',"
-						+ "3,"
-						+ "414,"
-						+ "'Saison 2023'"
-						+ ");"
-					+ "INSERT INTO equipe VALUES ("
-						+ "NEXT VALUE FOR idEquipe,"
-						+ "'DCG Academy',"
-						+ "'Taiwan',"
-						+ "1,"
-						+ "362,"
-						+ "'Saison 2023'"
-						+ ");"
-					+ "INSERT INTO equipe VALUES ("
-						+ "NEXT VALUE FOR idEquipe,"
-						+ "'Taipei Bravo',"
-						+ "'Taiwan',"
-						+ "4,"
-						+ "275,"
-						+ "'Saison 2023'"
-						+ ");"
-					+ "INSERT INTO equipe VALUES ("
-						+ "NEXT VALUE FOR idEquipe,"
-						+ "'PSG Academy',"
-						+ "'Taiwan',"
-						+ "2,"
-						+ "237,"
-						+ "'Saison 2023'"
-						+ ");"
-			);
+			st.executeUpdate(
+					"INSERT INTO equipe VALUES ("
+					+ "NEXT VALUE FOR idEquipe,"
+					+ "'CFO Academy',"
+					+ "'Taiwan',"
+					+ "3,"
+					+ "414,"
+					+ "'Saison 2023'"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO equipe VALUES ("
+					+ "NEXT VALUE FOR idEquipe,"
+					+ "'DCG Academy',"
+					+ "'Taiwan',"
+					+ "1,"
+					+ "362,"
+					+ "'Saison 2023'"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO equipe VALUES ("
+					+ "NEXT VALUE FOR idEquipe,"
+					+ "'Taipei Bravo',"
+					+ "'Taiwan',"
+					+ "4,"
+					+ "275,"
+					+ "'Saison 2023'"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO equipe VALUES ("
+					+ "NEXT VALUE FOR idEquipe,"
+					+ "'PSG Academy',"
+					+ "'Taiwan',"
+					+ "2,"
+					+ "237,"
+					+ "'Saison 2023'"
+					+ ")");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table equipe");
 		    e.printStackTrace();
 		}
 		
 		try {
-			st.executeUpdate("INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'KokerHan',"
-						+ "1"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'Hasu7',"
-						+ "1"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'Hitchy',"
-						+ "1"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'Billy',"
-						+ "1"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'Hermes',"
-						+ "1"
-						+ ");"
-
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'GuanGuan',"
-						+ "2"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'1SSUE',"
-						+ "2"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'HotPot',"
-						+ "2"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'Kanashim1',"
-						+ "2"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'Cheng9',"
-						+ "2"
-						+ ");"
-
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'pinwei',"
-						+ "3"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'Mob',"
-						+ "3"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'ZhifeiG',"
-						+ "3"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'Yuuto',"
-						+ "3"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'Cause',"
-						+ "3"
-						+ ");"
-
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'Wen',"
-						+ "4"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'TNS',"
-						+ "4"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'Chich1',"
-						+ "4"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'mikey',"
-						+ "4"
-						+ ");"
-					+ "INSERT INTO joueur VALUES ("
-						+ "NEXT VALUE FOR idJoueur,"
-						+ "'Adizai',"
-						+ "4"
-						+ ");"
-			);
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'KokerHan',"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Hasu7',"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Hitchy',"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Billy',"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Hermes',"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'GuanGuan',"
+					+ "2"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'1SSUE',"
+					+ "2"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'HotPot',"
+					+ "2"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Kanashim1',"
+					+ "2"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Cheng9',"
+					+ "2"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'pinwei',"
+					+ "3"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Mob',"
+					+ "3"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'ZhifeiG',"
+					+ "3"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Yuuto',"
+					+ "3"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Cause',"
+					+ "3"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Wen',"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'TNS',"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Chich1',"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'mikey',"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Adizai',"
+					+ "4"
+					+ ")");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table joueur");
 		    e.printStackTrace();
 		}
 		
 		try {
-			st.executeUpdate("INSERT INTO arbitre VALUES ("
-						+ "NEXT VALUE FOR idArbitre,"
-						+ "'Fazbear',"
-						+ "'Freddy'"
-						+ ");"
-					+ "INSERT INTO arbitre VALUES ("
-						+ "NEXT VALUE FOR idArbitre,"
-						+ "'Krugger',"
-						+ "'Freddy'"
-						+ ");"
-			);
+			st.executeUpdate(
+					"INSERT INTO arbitre VALUES ("
+					+ "NEXT VALUE FOR idArbitre,"
+					+ "'Fazbear',"
+					+ "'Freddy'"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO arbitre VALUES ("
+					+ "NEXT VALUE FOR idArbitre,"
+					+ "'Krugger',"
+					+ "'Freddy'"
+					+ ")");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table arbitre");
 		    e.printStackTrace();
 		}
 		
 		try {
-			st.executeUpdate("INSERT INTO administrateur VALUES ("
+			st.executeUpdate(
+					"INSERT INTO administrateur VALUES ("
 					+ "NEXT VALUE FOR idAdministrateur,"
 					+ "'Admin',"
 					+ "'Istrateur',"
 					+ "'admin',"
-					+ "'mdpadmin');"
+					+ "'mdpadmin')"
 			);
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table administrateur");
@@ -627,42 +652,43 @@ public class BDD {
 		}
 		
 		try {
-			st.executeUpdate("INSERT INTO historiquePoints INTO (NEXT VALUE FOR idHistoriquePoints,50 ,1,1);"
-					+ "INSERT INTO historiquePoints INTO (NEXT VALUE FOR idHistoriquePoints,120,2,1);"
-					+ "INSERT INTO historiquePoints INTO (NEXT VALUE FOR idHistoriquePoints,150,3,1);"
-					+ "INSERT INTO historiquePoints INTO (NEXT VALUE FOR idHistoriquePoints,70 ,4,1);"
+			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,50 ,1,1)");
+			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,120,2,1)");
+			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,150,3,1)");
+			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,70 ,4,1)");
 
-					+ "INSERT INTO historiquePoints INTO (NEXT VALUE FOR idHistoriquePoints,180 ,5,2);"
-					+ "INSERT INTO historiquePoints INTO (NEXT VALUE FOR idHistoriquePoints,130 ,4,2);"
-					+ "INSERT INTO historiquePoints INTO (NEXT VALUE FOR idHistoriquePoints,150 ,1,2);"
+			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,180 ,5,2)");
+			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,130 ,4,2)");
+			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,150 ,1,2)");
 
-					+ "INSERT INTO historiquePoints INTO (NEXT VALUE FOR idHistoriquePoints,70 ,3,3);"
-					+ "INSERT INTO historiquePoints INTO (NEXT VALUE FOR idHistoriquePoints,100,5,3);"
-					+ "INSERT INTO historiquePoints INTO (NEXT VALUE FOR idHistoriquePoints,70 ,1,3);"
+			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,70 ,3,3)");
+			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,100,5,3)");
+			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,70 ,1,3)");
 
-					+ "INSERT INTO historiquePoints INTO (NEXT VALUE FOR idHistoriquePoints,110,4,4);"
-					+ "INSERT INTO historiquePoints INTO (NEXT VALUE FOR idHistoriquePoints,130,3,4);"
-					+ "INSERT INTO historiquePoints INTO (NEXT VALUE FOR idHistoriquePoints,70 ,6,4);"
-					+ "INSERT INTO historiquePoints INTO (NEXT VALUE FOR idHistoriquePoints,120,1,4);"
-			);
+			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,110,4,4)");
+			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,130,3,4)");
+			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,70 ,6,4)");
+			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,120,1,4)");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table historiquePoints");
 		    e.printStackTrace();
 		}
 		
 		try {
-			st.executeUpdate("INSERT INTO poule VALUES ("
-						+ "NEXT VALUE FOR idPoule,"
-						+ "1,"
-						+ "0,"
-						+ "1"
-						+ ");"
-					+ "INSERT INTO poule VALUES ("
-						+ "NEXT VALUE FOR idPoule,"
-						+ "1,"
-						+ "1,"
-						+ "1"
-						+ ");"
+			st.executeUpdate(
+					"INSERT INTO poule VALUES ("
+					+ "NEXT VALUE FOR idPoule,"
+					+ "TRUE,"
+					+ "FALSE,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO poule VALUES ("
+					+ "NEXT VALUE FOR idPoule,"
+					+ "TRUE,"
+					+ "TRUE,"
+					+ "1"
+					+ ")"
 			);
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table poule");
@@ -670,90 +696,93 @@ public class BDD {
 		}
 		
 		try {
-			st.executeUpdate("INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
-						+ "1692764100,"
-						+ "1692768720,"
-						+ "1,"
-						+ "4"
-						+ ");"
-					+ "	INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
-						+ "1692768720,"
-						+ "1692772320,"
-						+ "1,"
-						+ "1"
-						+ ");"
-					+ "	INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
-						+ "1692772320,"
-						+ "1692775920,"
-						+ "1,"
-						+ "4"
-						+ ");"
-					+ "	INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
-						+ "1692775920,"
-						+ "1692779520,"
-						+ "1,"
-						+ "1"
-						+ ");"
-					+ "	INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
-						+ "1692779520,"
-						+ "1692786720,"
-						+ "1,"
-						+ "1"
-						+ ");"
-					+ "	INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
-						+ "1692786720,"
-						+ "1692790320,"
-						+ "1,"
-						+ "3"
-						+ ");"
-					+ "	INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
-						+ "1692790320,"
-						+ "1692797520,"
-						+ "1,"
-						+ "1"
-						+ ");"
-			);
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
+					+ "1692764100,"
+					+ "1692768720,"
+					+ "1,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
+					+ "1692768720,"
+					+ "1692772320,"
+					+ "1,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
+					+ "1692772320,"
+					+ "1692775920,"
+					+ "1,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
+					+ "1692775920,"
+					+ "1692779520,"
+					+ "1,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
+					+ "1692779520,"
+					+ "1692786720,"
+					+ "1,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
+					+ "1692786720,"
+					+ "1692790320,"
+					+ "1,"
+					+ "3"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
+					+ "1692790320,"
+					+ "1692797520,"
+					+ "1,"
+					+ "1"
+					+ ")");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table rencontre");
 		    e.printStackTrace();
 		}
 		
 		try {
-			st.executeUpdate("INSERT INTO participer VALUES (1, 1, 3);"
-					+ "INSERT INTO participer VALUES (1, 2, 1);"
-					+ "INSERT INTO participer VALUES (1, 3, 4);"
-					+ "INSERT INTO participer VALUES (1, 4, 2);"
-			);
+			st.executeUpdate("INSERT INTO participer VALUES (1, 1, 3)");
+			st.executeUpdate("INSERT INTO participer VALUES (1, 2, 1)");
+			st.executeUpdate("INSERT INTO participer VALUES (1, 3, 4)");
+			st.executeUpdate("INSERT INTO participer VALUES (1, 4, 2)");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table participer");
 		    e.printStackTrace();
 		}
 		
 		try {
-			st.executeUpdate("INSERT INTO arbitrer VALUES (1, 1);"
-					+ "INSERT INTO arbitrer VALUES (1, 2);"
-			);
+			st.executeUpdate("INSERT INTO arbitrer VALUES (1, 1)");
+			st.executeUpdate("INSERT INTO arbitrer VALUES (1, 2)");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table arbitrer");
 		    e.printStackTrace();
 		}
 		
 		try {
-			st.executeUpdate("INSERT INTO jouer VALUES (1, 1);"
-					+ "INSERT INTO jouer VALUES (4, 1);"
-					+ "INSERT INTO jouer VALUES (4, 2);"
-					+ "INSERT INTO jouer VALUES (2, 2);"
-					+ "INSERT INTO jouer VALUES (4, 3);"
-					+ "INSERT INTO jouer VALUES (3, 3);"
-					+ "INSERT INTO jouer VALUES (2, 4);"
-					+ "INSERT INTO jouer VALUES (1, 4);"
-					+ "INSERT INTO jouer VALUES (3, 5);"
-					+ "INSERT INTO jouer VALUES (2, 5);"
-					+ "INSERT INTO jouer VALUES (1, 6);"
-					+ "INSERT INTO jouer VALUES (3, 6);"
-					+ "INSERT INTO jouer VALUES (2, 7);"
-					+ "INSERT INTO jouer VALUES (4, 7);"
-			);
+			st.executeUpdate("INSERT INTO jouer VALUES (1, 1)");
+			st.executeUpdate("INSERT INTO jouer VALUES (4, 1)");
+			st.executeUpdate("INSERT INTO jouer VALUES (4, 2)");
+			st.executeUpdate("INSERT INTO jouer VALUES (2, 2)");
+			st.executeUpdate("INSERT INTO jouer VALUES (4, 3)");
+			st.executeUpdate("INSERT INTO jouer VALUES (3, 3)");
+			st.executeUpdate("INSERT INTO jouer VALUES (2, 4)");
+			st.executeUpdate("INSERT INTO jouer VALUES (1, 4)");
+			st.executeUpdate("INSERT INTO jouer VALUES (3, 5)");
+			st.executeUpdate("INSERT INTO jouer VALUES (2, 5)");
+			st.executeUpdate("INSERT INTO jouer VALUES (1, 6)");
+			st.executeUpdate("INSERT INTO jouer VALUES (3, 6)");
+			st.executeUpdate("INSERT INTO jouer VALUES (2, 7)");
+			st.executeUpdate("INSERT INTO jouer VALUES (4, 7)");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table jouer");
 		    e.printStackTrace();
