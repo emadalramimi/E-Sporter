@@ -13,108 +13,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-/**
- * Modèle administrateur
- * @author Nassim Khoujane
- */
-public class Administrateur implements DAO<Administrateur, Integer> {
+import modele.exception.IdentifiantOuMdpIncorrectsException;
+import modele.metier.Administrateur;
+import modele.metier.DAO;
 
-	private int idAdministrateur;
-	private String nom;
-	private String prenom;
-	private String identifiant;
-	private String motDePasse;
+public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 	
-	/**
-	 * Construit un administrateur
-	 * @param idAdministrateur	Clé primaire
-	 * @param nom				Nom
-	 * @param prenom			Prénom
-	 * @param identifiant		Identifiant de connexion
-	 * @param motDePasse		Mot de passe de connexion
-	 */
-	public Administrateur(int idAdministrateur, String nom, String prenom, String identifiant, String motDePasse) {
-		this.idAdministrateur = idAdministrateur;
-		this.nom = nom;
-		this.prenom = prenom;
-		this.identifiant = identifiant;
-		this.motDePasse = motDePasse;
-	}
-
-	/**
-	 * @return Clé primaire
-	 */
-	public int getIdAdministrateur() {
-		return idAdministrateur;
-	}
-	
-	/**
-	 * Modifie la clé primaire
-	 * @param idAdministrateur clé primaire
-	 */
-	public void setIdAdministrateur(int idAdministrateur) {
-		this.idAdministrateur = idAdministrateur;
-	}
-
-	/**
-	 * @return Nom
-	 */
-	public String getNom() {
-		return nom;
-	}
-	
-	/**
-	 * Modifie le nom
-	 * @param nom
-	 */
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	/**
-	 * @return Prénom
-	 */
-	public String getPrenom() {
-		return prenom;
-	}
-	
-	/**
-	 * Modifie le prénom
-	 * @param prenom
-	 */
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
-
-	/**
-	 * @return Identifiant de connexion
-	 */
-	public String getIdentifiant() {
-		return identifiant;
-	}
-	
-	/**
-	 * Modifie l'identifiant
-	 * @param identifiant
-	 */
-	public void setIdentifiant(String identifiant) {
-		this.identifiant = identifiant;
-	}
-
-	/**
-	 * @return Mot de passe de connexion
-	 */
-	public String getMotDePasse() {
-		return motDePasse;
-	}
-	
-	/**
-	 * Modifie le mot de passe
-	 * @param motDePasse
-	 */
-	public void setMotDePasse(String motDePasse) {
-		this.motDePasse = motDePasse;
-	}
+	private static Administrateur compteCourant;
 
 	/**
 	 * @return Liste de tous les administrateurs
@@ -161,7 +66,7 @@ public class Administrateur implements DAO<Administrateur, Integer> {
 	 */
 	@Override
 	public Optional<Administrateur> getParId(Integer... idAdministrateur) throws Exception {
-		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from sujets where idSujet = ?");
+		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from administrateur where idAdministrateur = ?");
 		ps.setInt(1, idAdministrateur[0]);
 		
 		ResultSet rs = ps.executeQuery();
@@ -186,14 +91,14 @@ public class Administrateur implements DAO<Administrateur, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
-	public boolean ajouter(Administrateur administrateur) throws Exception {
+	public boolean ajouter(Administrateur administrateur) {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into administrateur values (?, ?, ?, ?, ?)");
-			ps.setInt(1, administrateur.idAdministrateur);
-			ps.setString(2, administrateur.nom);
-			ps.setString(3, administrateur.prenom);
-			ps.setString(4, administrateur.identifiant);
-			ps.setString(5, administrateur.motDePasse);
+			ps.setInt(1, administrateur.getIdAdministrateur());
+			ps.setString(2, administrateur.getNom());
+			ps.setString(3, administrateur.getPrenom());
+			ps.setString(4, administrateur.getIdentifiant());
+			ps.setString(5, administrateur.getMotDePasse());
 			ps.execute();
 			return true;
 		} catch(SQLException e) {
@@ -207,14 +112,14 @@ public class Administrateur implements DAO<Administrateur, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
-	public boolean modifier(Administrateur administrateur) throws Exception {
+	public boolean modifier(Administrateur administrateur) {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("update administrateur set nom = ?, prenom = ?, identifiant = ?, motDePasse = ? where idAdministrateur = ?");
-			ps.setString(1, administrateur.nom);
-			ps.setString(2, administrateur.prenom);
-			ps.setString(3, administrateur.identifiant);
-			ps.setString(4, administrateur.motDePasse);
-			ps.setInt(5, administrateur.idAdministrateur);
+			ps.setString(1, administrateur.getNom());
+			ps.setString(2, administrateur.getPrenom());
+			ps.setString(3, administrateur.getIdentifiant());
+			ps.setString(4, administrateur.getMotDePasse());
+			ps.setInt(5, administrateur.getIdAdministrateur());
 			ps.execute();
 			return true;
 		} catch(SQLException e) {
@@ -228,10 +133,10 @@ public class Administrateur implements DAO<Administrateur, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
-	public boolean supprimer(Administrateur administrateur) throws Exception {
+	public boolean supprimer(Administrateur administrateur) {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from administrateur where idAdministrateur = ?");
-			ps.setInt(1, administrateur.idAdministrateur);
+			ps.setInt(1, administrateur.getIdAdministrateur());
 			ps.execute();
 			return true;
 		} catch(SQLException e) {
@@ -239,11 +144,53 @@ public class Administrateur implements DAO<Administrateur, Integer> {
 			return false;
 		}
 	}
-
-	@Override
-	public String toString() {
-		return "Administrateur [idAdministrateur=" + idAdministrateur + ", nom=" + nom + ", prenom=" + prenom
-				+ ", identifiant=" + identifiant + ", motDePasse=" + motDePasse + "]";
+	
+	/**
+	 * Connecte un administrateur avec son couple identifiant/mot de passe s'il existe
+	 * @param identifiant
+	 * @param motDePasse
+	 * @throws IdentifiantOuMdpIncorrectsException
+	 * @throws RuntimeException
+	 */
+	public void connecter(String identifiant, String motDePasse) throws IdentifiantOuMdpIncorrectsException, IllegalArgumentException, RuntimeException {
+		if(compteCourant != null) {
+			throw new IllegalArgumentException("Un administrateur est déjà connecté");
+		}
+		try {
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from administrateur where identifiant = ? and motDePasse = ?");
+			ps.setString(1, identifiant);
+			ps.setString(2, motDePasse);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(!rs.next()) {
+				throw new IdentifiantOuMdpIncorrectsException("Identifiant ou mot de passe incorrects");
+			}
+		
+			Administrateur administrateur = new Administrateur(
+	    		rs.getInt("idAdministrateur"),
+	    		rs.getString("nom"),
+	    		rs.getString("prenom"),
+	    		rs.getString("identifiant"),
+	    		rs.getString("motDePasse")
+	        );
+			
+			compteCourant = administrateur;
+		} catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public void deconnecter() throws IllegalArgumentException {
+		if(compteCourant == null) {
+			throw new IllegalArgumentException("Vous êtes déjà déconnecté.");
+		}
+		
+		compteCourant = null;
+	}
+	
+	public static Administrateur getCompteCourant() {
+		return compteCourant;
 	}
 	
 }

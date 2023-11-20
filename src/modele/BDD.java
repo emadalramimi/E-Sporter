@@ -9,9 +9,13 @@ public class BDD {
 	
 	private static Connection connection;
 	
-	public static Connection getConnexion() {
+	public static synchronized Connection getConnexion() {
 		if(connection == null) {
 			try {
+				// Mise en place de l'environnement
+				String dirProjetJava = System.getProperty("user.dir");
+				System.setProperty("derby.system.home", dirProjetJava + "/BDD");
+				
 				// Enregistrement du Driver
 				DriverManager.registerDriver(new org.apache.derby.jdbc.EmbeddedDriver());
 				
@@ -28,10 +32,6 @@ public class BDD {
 	}
 
 	public static void main(String[] args) {
-		// Mise en place de l'environnement
-		String dirProjetJava = System.getProperty("user.dir");
-		System.setProperty("derby.system.home", dirProjetJava + "/BDD");
-		
 		try {
 			Statement st = BDD.getConnexion().createStatement();
 			
@@ -56,7 +56,6 @@ public class BDD {
 		try {
 			st.executeUpdate("DROP TABLE participer");
 		} catch (SQLException e) {
-			e.printStackTrace();
 			System.out.println("participer n'existe pas");
 		}
 		
@@ -652,23 +651,104 @@ public class BDD {
 		}
 		
 		try {
-			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,50 ,1,1)");
-			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,120,2,1)");
-			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,150,3,1)");
-			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,70 ,4,1)");
-
-			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,180 ,5,2)");
-			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,130 ,4,2)");
-			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,150 ,1,2)");
-
-			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,70 ,3,3)");
-			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,100,5,3)");
-			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,70 ,1,3)");
-
-			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,110,4,4)");
-			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,130,3,4)");
-			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,70 ,6,4)");
-			st.executeUpdate("INSERT INTO historiquePoints VALUES (NEXT VALUE FOR idHistoriquePoints,120,1,4)");
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "50,"
+					+ "1,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "120,"
+					+ "2,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "150,"
+					+ "3,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "70,"
+					+ "4,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "180,"
+					+ "5,"
+					+ "2)"
+			);
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "130,"
+					+ "4,"
+					+ "2)"
+			);
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "150,"
+					+ "1,"
+					+ "2)"
+			);
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "70,"
+					+ "3,"
+					+ "3)"
+			);
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "100,"
+					+ "5,"
+					+ "3)"
+			);
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "70,"
+					+ "1,"
+					+ "3)"
+			);
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "110,"
+					+ "4,"
+					+ "4)"
+			);
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "130,"
+					+ "3,"
+					+ "4)"
+			);
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "70,"
+					+ "6,"
+					+ "4)"
+			);
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "120,"
+					+ "1,"
+					+ "4)"
+			);
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table historiquePoints");
 		    e.printStackTrace();
@@ -697,49 +777,56 @@ public class BDD {
 		
 		try {
 			st.executeUpdate(
-					"INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
 					+ "1692764100,"
 					+ "1692768720,"
 					+ "1,"
 					+ "4"
 					+ ")");
 			st.executeUpdate(
-					"INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
 					+ "1692768720,"
 					+ "1692772320,"
 					+ "1,"
 					+ "1"
 					+ ")");
 			st.executeUpdate(
-					"INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
 					+ "1692772320,"
 					+ "1692775920,"
 					+ "1,"
 					+ "4"
 					+ ")");
 			st.executeUpdate(
-					"INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
 					+ "1692775920,"
 					+ "1692779520,"
 					+ "1,"
 					+ "1"
 					+ ")");
 			st.executeUpdate(
-					"INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
 					+ "1692779520,"
 					+ "1692786720,"
 					+ "1,"
 					+ "1"
 					+ ")");
 			st.executeUpdate(
-					"INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
 					+ "1692786720,"
 					+ "1692790320,"
 					+ "1,"
 					+ "3"
 					+ ")");
 			st.executeUpdate(
-					"INSERT INTO rencontre VALUES (NEXT VALUE FOR idRencontre,"
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
 					+ "1692790320,"
 					+ "1692797520,"
 					+ "1,"
@@ -751,42 +838,123 @@ public class BDD {
 		}
 		
 		try {
-			st.executeUpdate("INSERT INTO participer VALUES (1, 1, 3)");
-			st.executeUpdate("INSERT INTO participer VALUES (1, 2, 1)");
-			st.executeUpdate("INSERT INTO participer VALUES (1, 3, 4)");
-			st.executeUpdate("INSERT INTO participer VALUES (1, 4, 2)");
+			st.executeUpdate("INSERT INTO participer VALUES ("
+					+ "1,1,"
+					+ "3)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "1,"
+					+ "2,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "1,"
+					+ "3,"
+					+ "4)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "1,"
+					+ "4,"
+					+ "2)"
+			);
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table participer");
 		    e.printStackTrace();
 		}
 		
 		try {
-			st.executeUpdate("INSERT INTO arbitrer VALUES (1, 1)");
-			st.executeUpdate("INSERT INTO arbitrer VALUES (1, 2)");
+			st.executeUpdate(
+					"INSERT INTO arbitrer VALUES ("
+					+ "1,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO arbitrer VALUES ("
+					+ "1,"
+					+ "2)"
+			);
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table arbitrer");
 		    e.printStackTrace();
 		}
 		
 		try {
-			st.executeUpdate("INSERT INTO jouer VALUES (1, 1)");
-			st.executeUpdate("INSERT INTO jouer VALUES (4, 1)");
-			st.executeUpdate("INSERT INTO jouer VALUES (4, 2)");
-			st.executeUpdate("INSERT INTO jouer VALUES (2, 2)");
-			st.executeUpdate("INSERT INTO jouer VALUES (4, 3)");
-			st.executeUpdate("INSERT INTO jouer VALUES (3, 3)");
-			st.executeUpdate("INSERT INTO jouer VALUES (2, 4)");
-			st.executeUpdate("INSERT INTO jouer VALUES (1, 4)");
-			st.executeUpdate("INSERT INTO jouer VALUES (3, 5)");
-			st.executeUpdate("INSERT INTO jouer VALUES (2, 5)");
-			st.executeUpdate("INSERT INTO jouer VALUES (1, 6)");
-			st.executeUpdate("INSERT INTO jouer VALUES (3, 6)");
-			st.executeUpdate("INSERT INTO jouer VALUES (2, 7)");
-			st.executeUpdate("INSERT INTO jouer VALUES (4, 7)");
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "2)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "2)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "3)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "3)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "4)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "4)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "5)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "5)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "6)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "6)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "7)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "7)"
+			);
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table jouer");
 		    e.printStackTrace();
 		}
 	}
-
 }

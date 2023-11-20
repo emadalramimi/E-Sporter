@@ -4,15 +4,19 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.BadLocationException;
 
+import controleur.ControleurConnexion;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
+import vue.theme.JOptionPaneTheme;
 import vue.theme.JPasswordFieldTheme;
 import vue.theme.JTextFieldTheme;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
@@ -22,6 +26,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Color;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+
 import javax.swing.JButton;
 
 public class VueConnexion extends JFrame {
@@ -40,6 +46,8 @@ public class VueConnexion extends JFrame {
 	private JCheckBox chckbxAfficherMotDePasse;
 	
 	public VueConnexion() {
+		ControleurConnexion controleur = new ControleurConnexion(this);
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 400, 517);
 		contentPane = new JPanel();
@@ -124,6 +132,7 @@ public class VueConnexion extends JFrame {
 		panelChamps.add(motDePasse, gbc_motDePasse);
 		
 		chckbxAfficherMotDePasse = new JCheckBox("Afficher le mot de passe");
+		chckbxAfficherMotDePasse.addActionListener(controleur);
 		chckbxAfficherMotDePasse.setForeground(Color.WHITE);
 		chckbxAfficherMotDePasse.setFont(CharteGraphique.getPolice(13, false));
 		chckbxAfficherMotDePasse.setBackground(new Color(7, 10, 20));
@@ -144,10 +153,40 @@ public class VueConnexion extends JFrame {
 		panelBoutons.setLayout(new GridLayout(0, 2, 10, 0));
 		
 		btnQuitter = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Quitter");
+		btnQuitter.addActionListener(controleur);
 		panelBoutons.add(btnQuitter);
 		
 		btnConnexion = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Connexion");
+		btnConnexion.addActionListener(controleur);
 		panelBoutons.add(btnConnexion);
+	}
+	
+	public String getIdentifiant() {
+		return this.textIdentifiant.getText();
+	}
+	
+	public String getMotDePasse() {
+		return String.valueOf(motDePasse.getPassword());
+	}
+	
+	public void affichageMotDePasse(boolean affiche) {
+	    if (affiche) {
+	        motDePasse.setEchoChar((char) 0);
+	    } else {
+	        motDePasse.setEchoChar('*');
+	    }
+	}
+	
+	public boolean isCheckboxAfficherMdp(ActionEvent e) {
+		return e.getSource() instanceof JCheckBox && ((JCheckBox) e.getSource()).getText() == "Afficher le mot de passe";
+	}
+	
+	public void afficherPopupErreur(String message) {
+		JOptionPaneTheme.showMessageDialog(this, message, "Erreur", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void fermerFenetre() {
+		dispose();
 	}
 
 }

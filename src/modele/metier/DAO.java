@@ -1,4 +1,4 @@
-package modele;
+package modele.metier;
 
 import java.util.List;
 import java.util.Optional;
