@@ -106,6 +106,7 @@ public class VueConnexion extends JFrame {
 		panelChamps.add(lblIdentifiant, gbc_lblIdentifiant);
 		
 		textIdentifiant = new JTextFieldTheme();
+		textIdentifiant.addKeyListener(controleur);
 		GridBagConstraints gbc_textIdentifiant = new GridBagConstraints();
 		gbc_textIdentifiant.fill = GridBagConstraints.BOTH;
 		gbc_textIdentifiant.insets = new Insets(0, 0, 5, 0);
@@ -124,6 +125,7 @@ public class VueConnexion extends JFrame {
 		panelChamps.add(lblMotDePasse, gbc_lblMotDePasse);
 		
 		motDePasse = new JPasswordFieldTheme();
+		motDePasse.addKeyListener(controleur);
 		GridBagConstraints gbc_motDePasse = new GridBagConstraints();
 		gbc_motDePasse.fill = GridBagConstraints.HORIZONTAL;
 		gbc_motDePasse.insets = new Insets(0, 0, 5, 0);
