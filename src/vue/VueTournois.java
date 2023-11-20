@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import controleur.ControleurMenu;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
@@ -27,19 +26,7 @@ public class VueTournois extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VueTournois() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1300, 700);
-		JPanel contentPane = new JPanel();
-		contentPane.setBackground(CharteGraphique.FOND);
-		contentPane.setBorder(null);
-
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
-		
-		// Affichage du menu
-		VueMenu.afficherMenu(contentPane, ControleurMenu.Menus.TOURNOIS);
-		
+	public void afficherVueTournois(JPanel contentPane) {
 		JPanel panel = new JPanel();
 		panel.setBackground(CharteGraphique.FOND);
 		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
@@ -89,9 +76,10 @@ public class VueTournois extends JFrame {
 		/**
 		 * Remplir avec données d'exemple
 		 */
+		// TODO : FAIRE TABLEAU REMPLIR APRES CHARGEMENT PAGE 
 		model.setRowCount(0); // vider le tableau
-		Vector<Object> rowData = new Vector<>();
 		for(int i = 0; i < 20; i++) {
+			Vector<Object> rowData = new Vector<>();
 			rowData.add("Ouvert");
 			rowData.add("KCX 2023");
 			rowData.add("International classé");

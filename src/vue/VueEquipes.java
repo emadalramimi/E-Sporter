@@ -1,14 +1,9 @@
 package vue;
 
-import java.awt.EventQueue;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import controleur.ControleurMenu;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
@@ -25,41 +20,13 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-public class VueEquipe extends JFrame {
+public class VueEquipes extends JFrame {
 	private JTable table;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VueEquipe frame = new VueEquipe();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public VueEquipe() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1300, 700);
-		JPanel contentPane = new JPanel();
-		contentPane.setBackground(CharteGraphique.FOND);
-		contentPane.setBorder(null);
-
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
-		
-		// Affichage du menu
-		VueMenu.afficherMenu(contentPane, ControleurMenu.Menus.EQUIPES);
-		
+	public void afficherVueEquipe(JPanel contentPane) {
 		JPanel panel = new JPanel();
 		panel.setBackground(CharteGraphique.FOND);
 		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
@@ -110,8 +77,8 @@ public class VueEquipe extends JFrame {
 		 * Remplir avec données d'exemple
 		 */
 		model.setRowCount(0); // vider le tableau
-		Vector<Object> rowData = new Vector<>();
 		for(int i = 0; i < 20; i++) {
+			Vector<Object> rowData = new Vector<>();
 			rowData.add("CFO Academy");
 			rowData.add("Taiwan");
 			rowData.add("3e");

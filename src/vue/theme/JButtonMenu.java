@@ -4,18 +4,18 @@ import java.awt.Cursor;
 
 import javax.swing.JButton;
 
-import controleur.ControleurMenu;
+import controleur.ControleurBase;
 
 public class JButtonMenu extends JButton {
 
-	private ControleurMenu.Menus menu;
+	private ControleurBase.Menus menu;
 	
 	/**
 	 * JButton avec stockage du menu relatif
 	 * @param label : label du menu
 	 * @param menu : menu relatif
 	 */
-	public JButtonMenu(String label, ControleurMenu.Menus menu) {
+	public JButtonMenu(String label, ControleurBase.Menus menu) {
 		super(label);
 		this.menu = menu;
 
@@ -27,7 +27,7 @@ public class JButtonMenu extends JButton {
 	/**
 	 * Retourne le menu relatif au bouton
 	 */
-	public ControleurMenu.Menus getMenu() {
+	public ControleurBase.Menus getMenu() {
 		return this.menu;
 	}
 	
