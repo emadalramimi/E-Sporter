@@ -152,7 +152,7 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 	 * @throws IdentifiantOuMdpIncorrectsException
 	 * @throws RuntimeException
 	 */
-	public void connecter(String identifiant, String motDePasse) throws IdentifiantOuMdpIncorrectsException, RuntimeException {
+	public void connecter(String identifiant, String motDePasse) throws IdentifiantOuMdpIncorrectsException, IllegalArgumentException, RuntimeException {
 		if(compteCourant != null) {
 			throw new IllegalArgumentException("Un administrateur est déjà connecté");
 		}
@@ -179,6 +179,14 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 		} catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public void deconnecter() throws IllegalArgumentException {
+		if(compteCourant == null) {
+			throw new IllegalArgumentException("Vous êtes déjà déconnecté.");
+		}
+		
+		compteCourant = null;
 	}
 	
 	public static Administrateur getCompteCourant() {
