@@ -74,7 +74,7 @@ public class VueAjoutEquipe extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		VueMenu.afficherMenu(contentPane, ControleurBase.Menus.TOURNOIS);
+		//VueMenu.afficherMenu(contentPane, ControleurBase.Menus.TOURNOIS);
 		
 		JPanel panelCentre = new JPanel();
 		panelCentre.setBackground(CharteGraphique.FOND);
