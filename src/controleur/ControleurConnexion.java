@@ -71,6 +71,7 @@ public class ControleurConnexion extends KeyAdapter implements ActionListener {
 				vue.fermerFenetre();
 				try {
 					VueBase frame = new VueBase();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception err) {
 					err.printStackTrace();
