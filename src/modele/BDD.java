@@ -643,7 +643,7 @@ public class BDD {
 					+ "'Admin',"
 					+ "'Istrateur',"
 					+ "'admin',"
-					+ "'mdpadmin')"
+					+ "'mdp')"
 			);
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table administrateur");
