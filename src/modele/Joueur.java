@@ -21,14 +21,14 @@ public class Joueur implements DAO<Joueur, Integer> {
 
 	private int idJoueur;
 	private String pseudo;
-	private String idEquipe;
+	private int idEquipe;
 	
 	/**
 	 * Construit un joueur
 	 * @param idJoueur	Clé primaire
 	 * @param pseudo	Pseudo
 	 */
-	public Joueur(int idJoueur, String pseudo, String idEquipe) {
+	public Joueur(int idJoueur, String pseudo, int idEquipe) {
 		this.idJoueur = idJoueur;
 		this.pseudo = pseudo;
 		this.idEquipe = idEquipe;
@@ -67,15 +67,15 @@ public class Joueur implements DAO<Joueur, Integer> {
 	/**
 	 * @return Clé étrangère équipe
 	 */
-	public String getEquipe() {
-		return this.getEquipe();
+	public int getIdEquipe() {
+		return idEquipe;
 	}
 	
 	/**
 	 * Modifie la clé étrangère équipe
 	 * @param idEquipe
 	 */
-	public void setIdEquipe(String idEquipe) {
+	public void setIdEquipe(int idEquipe) {
 		this.idEquipe = idEquipe;
 	}
 
@@ -99,7 +99,7 @@ public class Joueur implements DAO<Joueur, Integer> {
                         action.accept(new Joueur(
                     		rs.getInt("idJoueur"),
                     		rs.getString("pseudo"),
-                    		rs.getString("idEquipe")
+                    		rs.getInt("idEquipe")
                         ));
                         return true;
                     } catch (SQLException e) {
@@ -133,7 +133,7 @@ public class Joueur implements DAO<Joueur, Integer> {
 			joueur = new Joueur(
 	    		rs.getInt("idJoueur"),
 	    		rs.getString("pseudo"),
-        		rs.getString("idEquipe")
+        		rs.getInt("idEquipe")
             );
 		}
 		
@@ -150,7 +150,7 @@ public class Joueur implements DAO<Joueur, Integer> {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into joueur values (?, ?, ?)");
 			ps.setInt(1, joueur.idJoueur);
 			ps.setString(2, joueur.pseudo);
-			ps.setString(3, joueur.idEquipe);
+			ps.setInt(3, joueur.idEquipe);
 			ps.execute();
 			return true;
 		} catch(SQLException e) {
