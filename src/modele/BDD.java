@@ -9,9 +9,13 @@ public class BDD {
 	
 	private static Connection connection;
 	
-	public static Connection getConnexion() {
+	public static synchronized Connection getConnexion() {
 		if(connection == null) {
 			try {
+				// Mise en place de l'environnement
+				String dirProjetJava = System.getProperty("user.dir");
+				System.setProperty("derby.system.home", dirProjetJava + "/BDD");
+				
 				// Enregistrement du Driver
 				DriverManager.registerDriver(new org.apache.derby.jdbc.EmbeddedDriver());
 				
@@ -28,10 +32,6 @@ public class BDD {
 	}
 
 	public static void main(String[] args) {
-		// Mise en place de l'environnement
-		String dirProjetJava = System.getProperty("user.dir");
-		System.setProperty("derby.system.home", dirProjetJava + "/BDD");
-		
 		try {
 			Statement st = BDD.getConnexion().createStatement();
 			
@@ -56,7 +56,6 @@ public class BDD {
 		try {
 			st.executeUpdate("DROP TABLE participer");
 		} catch (SQLException e) {
-			e.printStackTrace();
 			System.out.println("participer n'existe pas");
 		}
 		
