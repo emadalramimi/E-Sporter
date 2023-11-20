@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.BadLocationException;
 
 import controleur.ControleurConnexion;
 import vue.theme.CharteGraphique;
@@ -66,7 +65,7 @@ public class VueConnexion extends JFrame {
 		contentPane.add(panelNord, BorderLayout.NORTH);
 		
 		lblLogo = new JLabel("");
-		lblLogo.setIcon(new ImageIcon("assets/images/logo.png"));
+		lblLogo.setIcon(new ImageIcon(VueConnexion.class.getResource("/images/logo.png")));
 		lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
 		panelNord.add(lblLogo);
 		

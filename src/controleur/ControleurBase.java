@@ -62,10 +62,10 @@ public class ControleurBase extends MouseAdapter {
 	 */
 	public void setBoutonActif(JButtonMenu boutonActif) {
 		for(JButtonMenu bouton : boutonsMenu) {
-	    	this.vue.setBoutonActif(false, bouton);
+	    	bouton.activerIconeBouton(false);
 		}
 		this.boutonActif = boutonActif;
-    	this.vue.setBoutonActif(true, boutonActif);
+		boutonActif.activerIconeBouton(true);
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class ControleurBase extends MouseAdapter {
     public void mouseEntered(MouseEvent e) {
 		JButtonMenu bouton = (JButtonMenu) e.getSource();
         if (bouton.getIcon() != null && bouton != this.getBoutonActif()) {
-        	this.vue.setBoutonActif(true, bouton);
+        	bouton.activerIconeBouton(true);
         }
     }
 	
@@ -100,7 +100,7 @@ public class ControleurBase extends MouseAdapter {
     public void mouseExited(MouseEvent e) {
     	JButtonMenu bouton = (JButtonMenu) e.getSource();
         if (bouton.getIcon() != null && bouton != this.getBoutonActif()) {
-        	this.vue.setBoutonActif(false, bouton);
+        	bouton.activerIconeBouton(false);
         }
     }
 	

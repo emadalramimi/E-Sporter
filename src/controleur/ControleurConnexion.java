@@ -11,7 +11,6 @@ import modele.ModeleAdministrateur;
 import modele.exception.IdentifiantOuMdpIncorrectsException;
 import vue.VueBase;
 import vue.VueConnexion;
-import vue.VueTournois;
 
 public class ControleurConnexion extends KeyAdapter implements ActionListener {
 

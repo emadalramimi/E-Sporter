@@ -61,7 +61,7 @@ public class VueBase extends JFrame {
 		panelMenu.setLayout(new GridLayout(1, 0, 20, 0));
 		
 		JLabel lblLogo = new JLabel("");
-		lblLogo.setIcon(new ImageIcon("assets/images/logo_menu.png"));
+		lblLogo.setIcon(new ImageIcon(VueBase.class.getResource("/images/logo_menu.png")));
 		panelMenu.add(lblLogo);
 		
 		JPanel panelCentre = new JPanel();
@@ -83,7 +83,6 @@ public class VueBase extends JFrame {
 		panelMenuCentre.setLayout(gbl_panelMenuCentre);
 		
 		JButtonMenu btnTournois = new JButtonMenu("", ControleurBase.Menus.TOURNOIS);
-		btnTournois.setIcon(new ImageIcon("assets/images/menu/tournois.png"));
 		btnTournois.setToolTipText("Tournois");
 		btnTournois.addMouseListener(this.controleurMenu);
 		if(actif == ControleurBase.Menus.TOURNOIS) {
@@ -97,7 +96,6 @@ public class VueBase extends JFrame {
 		panelMenuCentre.add(btnTournois, gbc_btnTournois);
 		
 		JButtonMenu btnEquipes = new JButtonMenu("", ControleurBase.Menus.EQUIPES);
-		btnEquipes.setIcon(new ImageIcon("assets/images/menu/equipes.png"));
 		btnEquipes.setToolTipText("Équipes");
 		btnEquipes.addMouseListener(this.controleurMenu);
 		if(actif == ControleurBase.Menus.EQUIPES) {
@@ -112,7 +110,6 @@ public class VueBase extends JFrame {
 		panelMenuCentre.add(btnEquipes, gbc_btnEquipes);
 		
 		JButtonMenu btnHistorique = new JButtonMenu("", ControleurBase.Menus.HISTORIQUE);
-		btnHistorique.setIcon(new ImageIcon("assets/images/menu/historique.png"));
 		btnHistorique.setToolTipText("Historique des points");
 		btnHistorique.addMouseListener(this.controleurMenu);
 		if(actif == ControleurBase.Menus.HISTORIQUE) {
@@ -126,7 +123,6 @@ public class VueBase extends JFrame {
 		panelMenuCentre.add(btnHistorique, gbc_btnHistorique);
 
 		JButtonMenu btnPalmares = new JButtonMenu("", ControleurBase.Menus.PALMARES);
-		btnPalmares.setIcon(new ImageIcon("assets/images/menu/palmares.png"));
 		btnPalmares.setToolTipText("Palmarès");
 		btnPalmares.addMouseListener(this.controleurMenu);
 		if(actif == ControleurBase.Menus.PALMARES) {
@@ -198,7 +194,6 @@ public class VueBase extends JFrame {
 		panelMenuDroite.setLayout(gbl_panelMenuDroite);
 		
 		JButtonMenu btnUtilisateur = new JButtonMenu("", ControleurBase.Menus.UTILISATEUR);
-		btnUtilisateur.setIcon(new ImageIcon("assets/images/menu/profil.png"));
 		btnUtilisateur.setToolTipText("Admin");
 		btnUtilisateur.addMouseListener(this.controleurMenu);
 		this.controleurMenu.ajouterBoutonMenu(btnUtilisateur);
@@ -210,7 +205,6 @@ public class VueBase extends JFrame {
 		panelMenuDroite.add(btnUtilisateur, gbc_btnUtilisateur);
 		
 		JButtonMenu btnDeconnexion = new JButtonMenu("", ControleurBase.Menus.DECONNEXION);
-		btnDeconnexion.setIcon(new ImageIcon("assets/images/menu/deconnexion.png"));
 		btnDeconnexion.setToolTipText("Déconnexion");
 		btnDeconnexion.addMouseListener(this.controleurMenu);
 		this.controleurMenu.ajouterBoutonMenu(btnDeconnexion);
@@ -239,22 +233,6 @@ public class VueBase extends JFrame {
 		gbc_lblDeconnexion.gridx = 1;
 		gbc_lblDeconnexion.gridy = 1;
 		panelMenuDroite.add(lblDeconnexion, gbc_lblDeconnexion);
-	}
-	
-	/**
-	 * Modifie l'aspect du bouton : actif en couleur et non actif en blanc
-	 * @param actif : état de l'activité du bouton
-	 * @param bouton : bouton à modifier l'activité
-	 */
-	public void setBoutonActif(boolean actif, JButtonMenu bouton) {
-		String cheminIcone = bouton.getIcon().toString();
-		if(actif) {
-	        cheminIcone = cheminIcone.replace(".png", "_actif.png");
-	        bouton.setIcon(new ImageIcon(cheminIcone));
-		} else {
-	        cheminIcone = cheminIcone.replace("_actif.png", ".png");
-	        bouton.setIcon(new ImageIcon(cheminIcone));
-		}
 	}
 	
 	public void changerOnglet(ControleurBase.Menus menu) {
