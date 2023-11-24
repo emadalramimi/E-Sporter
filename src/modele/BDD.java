@@ -640,8 +640,8 @@ public class BDD {
 			st.executeUpdate(
 					"INSERT INTO administrateur VALUES ("
 					+ "NEXT VALUE FOR idAdministrateur,"
-					+ "'Admin',"
 					+ "'Istrateur',"
+					+ "'Admin',"
 					+ "'admin',"
 					+ "'mdp')"
 			);
