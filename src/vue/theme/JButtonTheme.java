@@ -21,7 +21,7 @@ public class JButtonTheme extends JButton {
 		super(label);
 
 		// Modifications de base
-		this.setFont(CharteGraphique.getPolice(16, false));
+		this.setFont(CharteGraphique.getPolice(19, false));
 		this.setBorder(new EmptyBorder(7, 10, 7, 10));
 		this.setForeground(Color.WHITE);
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

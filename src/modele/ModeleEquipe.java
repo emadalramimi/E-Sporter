@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import modele.metier.DAO;
 import modele.metier.Equipe;
 
 public class ModeleEquipe implements DAO<Equipe, Integer> {

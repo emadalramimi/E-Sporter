@@ -15,7 +15,6 @@ import java.util.stream.StreamSupport;
 
 import modele.exception.IdentifiantOuMdpIncorrectsException;
 import modele.metier.Administrateur;
-import modele.metier.DAO;
 
 public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 	
