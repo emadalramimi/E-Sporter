@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import modele.metier.DAO;
+
 /**
  * Modèle équipe
  * @author Nassim Khoujane
