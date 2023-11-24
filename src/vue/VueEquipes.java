@@ -20,13 +20,19 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import controleur.ControleurEquipe;
+
 public class VueEquipes extends JFrame {
 	private JTable table;
 
+	private ControleurEquipe controleur;
+	
 	/**
 	 * Create the frame.
 	 */
 	public void afficherVueEquipe(JPanel contentPane) {
+		this.controleur = new ControleurEquipe(this);
+		
 		JPanel panel = new JPanel();
 		panel.setBackground(CharteGraphique.FOND);
 		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
@@ -53,6 +59,7 @@ public class VueEquipes extends JFrame {
 		panel_1.add(panel_2);
 		
 		JButtonTheme btnNewButton = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
+		btnNewButton.addActionListener(controleur);
 		btnNewButton.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel_2.add(btnNewButton);
 		
@@ -89,6 +96,15 @@ public class VueEquipes extends JFrame {
 		}
 		
 		scrollPane.setViewportView(table);
+	}
+	
+	public void afficherFenetreAjoutEquipe() {
+		try {
+            VueAjoutEquipe frame = new VueAjoutEquipe();
+            frame.setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 }

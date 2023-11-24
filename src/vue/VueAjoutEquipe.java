@@ -2,27 +2,17 @@ package vue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
-import controleur.ControleurBase;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
-import vue.theme.JPasswordFieldTheme;
 import vue.theme.JTextFieldTheme;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Insets;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -30,8 +20,6 @@ import java.awt.Font;
 public class VueAjoutEquipe extends JFrame {
 
 	private JPanel contentPane;
-	private JPanel panelNord;
-	private JLabel lblLogo;
 	private JPanel panelEquipe;
 	private JPanel panelJoueurs;
 	private JLabel lblEquipe;
@@ -50,23 +38,9 @@ public class VueAjoutEquipe extends JFrame {
 	private JPanel panelAjouter;
 	private JButton btnAjouter;
 	
-	public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    VueAjoutEquipe frame = new VueAjoutEquipe();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-	
 	public VueAjoutEquipe() {
 		
-		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 450);
 		contentPane = new JPanel();
 		contentPane.setBackground(CharteGraphique.FOND);
@@ -74,7 +48,6 @@ public class VueAjoutEquipe extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		//VueMenu.afficherMenu(contentPane, ControleurBase.Menus.TOURNOIS);
 		
 		JPanel panelCentre = new JPanel();
 		panelCentre.setBackground(CharteGraphique.FOND);
