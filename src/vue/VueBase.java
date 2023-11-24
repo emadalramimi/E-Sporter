@@ -3,10 +3,13 @@ package vue;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controleur.ControleurBase;
+import modele.ModeleAdministrateur;
+import modele.metier.Administrateur;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonMenu;
 
@@ -21,14 +24,15 @@ import java.awt.Insets;
 public class VueBase extends JFrame {
 	
 	private JPanel contenu;
+	private JLabel lblUtilisateur;
 	
-	private ControleurBase controleurMenu;
+	private ControleurBase controleurBase;
 	
 	/**
 	 * Create the frame.
 	 */
 	public VueBase() {
-		this.controleurMenu = new ControleurBase(this);
+		this.controleurBase = new ControleurBase(this);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1300, 700);
@@ -47,6 +51,11 @@ public class VueBase extends JFrame {
 		// Affichage du menu
 		this.afficherMenu(contentPane, ControleurBase.Menus.TOURNOIS);
 		this.changerOnglet(ControleurBase.Menus.TOURNOIS);
+		
+		// Affichage de l'utilisateur courant
+		Administrateur compteCourant = ModeleAdministrateur.getCompteCourant();
+		this.lblUtilisateur.setText(compteCourant.getPrenom());
+		this.lblUtilisateur.setToolTipText(compteCourant.getPrenom() + " " + compteCourant.getNom());
 	}
 	
 	/**
@@ -84,11 +93,11 @@ public class VueBase extends JFrame {
 		
 		JButtonMenu btnTournois = new JButtonMenu("", ControleurBase.Menus.TOURNOIS);
 		btnTournois.setToolTipText("Tournois");
-		btnTournois.addMouseListener(this.controleurMenu);
+		btnTournois.addMouseListener(this.controleurBase);
 		if(actif == ControleurBase.Menus.TOURNOIS) {
-			this.controleurMenu.setBoutonActif(btnTournois);
+			this.controleurBase.setBoutonActif(btnTournois);
 		}
-		this.controleurMenu.ajouterBoutonMenu(btnTournois);
+		this.controleurBase.ajouterBoutonMenu(btnTournois);
 		GridBagConstraints gbc_btnTournois = new GridBagConstraints();
 		gbc_btnTournois.insets = new Insets(0, 0, 5, 10);
 		gbc_btnTournois.gridx = 1;
@@ -97,11 +106,11 @@ public class VueBase extends JFrame {
 		
 		JButtonMenu btnEquipes = new JButtonMenu("", ControleurBase.Menus.EQUIPES);
 		btnEquipes.setToolTipText("Équipes");
-		btnEquipes.addMouseListener(this.controleurMenu);
+		btnEquipes.addMouseListener(this.controleurBase);
 		if(actif == ControleurBase.Menus.EQUIPES) {
-			this.controleurMenu.setBoutonActif(btnEquipes);
+			this.controleurBase.setBoutonActif(btnEquipes);
 		}
-		this.controleurMenu.ajouterBoutonMenu(btnEquipes);
+		this.controleurBase.ajouterBoutonMenu(btnEquipes);
 		GridBagConstraints gbc_btnEquipes = new GridBagConstraints();
 		gbc_btnEquipes.anchor = GridBagConstraints.NORTH;
 		gbc_btnEquipes.insets = new Insets(0, 0, 5, 10);
@@ -111,11 +120,11 @@ public class VueBase extends JFrame {
 		
 		JButtonMenu btnHistorique = new JButtonMenu("", ControleurBase.Menus.HISTORIQUE);
 		btnHistorique.setToolTipText("Historique des points");
-		btnHistorique.addMouseListener(this.controleurMenu);
+		btnHistorique.addMouseListener(this.controleurBase);
 		if(actif == ControleurBase.Menus.HISTORIQUE) {
-			this.controleurMenu.setBoutonActif(btnHistorique);
+			this.controleurBase.setBoutonActif(btnHistorique);
 		}
-		this.controleurMenu.ajouterBoutonMenu(btnHistorique);
+		this.controleurBase.ajouterBoutonMenu(btnHistorique);
 		GridBagConstraints gbc_btnHistorique = new GridBagConstraints();
 		gbc_btnHistorique.insets = new Insets(0, 0, 5, 10);
 		gbc_btnHistorique.gridx = 3;
@@ -124,11 +133,11 @@ public class VueBase extends JFrame {
 
 		JButtonMenu btnPalmares = new JButtonMenu("", ControleurBase.Menus.PALMARES);
 		btnPalmares.setToolTipText("Palmarès");
-		btnPalmares.addMouseListener(this.controleurMenu);
+		btnPalmares.addMouseListener(this.controleurBase);
 		if(actif == ControleurBase.Menus.PALMARES) {
-			this.controleurMenu.setBoutonActif(btnPalmares);
+			this.controleurBase.setBoutonActif(btnPalmares);
 		}
-		this.controleurMenu.ajouterBoutonMenu(btnPalmares);
+		this.controleurBase.ajouterBoutonMenu(btnPalmares);
 		GridBagConstraints gbc_btnPalmares = new GridBagConstraints();
 		gbc_btnPalmares.anchor = GridBagConstraints.NORTH;
 		gbc_btnPalmares.insets = new Insets(0, 0, 5, 0);
@@ -195,8 +204,8 @@ public class VueBase extends JFrame {
 		
 		JButtonMenu btnUtilisateur = new JButtonMenu("", ControleurBase.Menus.UTILISATEUR);
 		btnUtilisateur.setToolTipText("Admin");
-		btnUtilisateur.addMouseListener(this.controleurMenu);
-		this.controleurMenu.ajouterBoutonMenu(btnUtilisateur);
+		btnUtilisateur.addMouseListener(this.controleurBase);
+		this.controleurBase.ajouterBoutonMenu(btnUtilisateur);
 		GridBagConstraints gbc_btnUtilisateur = new GridBagConstraints();
 		gbc_btnUtilisateur.anchor = GridBagConstraints.NORTH;
 		gbc_btnUtilisateur.insets = new Insets(0, 0, 5, 10);
@@ -206,8 +215,8 @@ public class VueBase extends JFrame {
 		
 		JButtonMenu btnDeconnexion = new JButtonMenu("", ControleurBase.Menus.DECONNEXION);
 		btnDeconnexion.setToolTipText("Déconnexion");
-		btnDeconnexion.addMouseListener(this.controleurMenu);
-		this.controleurMenu.ajouterBoutonMenu(btnDeconnexion);
+		btnDeconnexion.addMouseListener(this.controleurBase);
+		this.controleurBase.ajouterBoutonMenu(btnDeconnexion);
 		GridBagConstraints gbc_btnDeconnexion = new GridBagConstraints();
 		gbc_btnDeconnexion.anchor = GridBagConstraints.NORTH;
 		gbc_btnDeconnexion.insets = new Insets(0, 0, 5, 0);
@@ -215,15 +224,15 @@ public class VueBase extends JFrame {
 		gbc_btnDeconnexion.gridy = 0;
 		panelMenuDroite.add(btnDeconnexion, gbc_btnDeconnexion);
 		
-		JLabel lblUtilisateur = new JLabel("Admin");
-		lblUtilisateur.setForeground(Color.WHITE);
-		lblUtilisateur.setFont(CharteGraphique.getPolice(11, false));
+		this.lblUtilisateur = new JLabel("");
+		this.lblUtilisateur.setForeground(Color.WHITE);
+		this.lblUtilisateur.setFont(CharteGraphique.getPolice(11, false));
 		GridBagConstraints gbc_lblUtilisateur = new GridBagConstraints();
 		gbc_lblUtilisateur.anchor = GridBagConstraints.NORTH;
 		gbc_lblUtilisateur.insets = new Insets(0, 0, 0, 10);
 		gbc_lblUtilisateur.gridx = 0;
 		gbc_lblUtilisateur.gridy = 1;
-		panelMenuDroite.add(lblUtilisateur, gbc_lblUtilisateur);
+		panelMenuDroite.add(this.lblUtilisateur, gbc_lblUtilisateur);
 		
 		JLabel lblDeconnexion = new JLabel("Déconnexion");
 		lblDeconnexion.setForeground(Color.WHITE);
@@ -261,5 +270,14 @@ public class VueBase extends JFrame {
 		this.contenu.revalidate();
 	    this.contenu.repaint();
 	}
+	
+	public boolean afficherConfirmationDeconnexion() {
+		Object[] options = {"Oui", "Annuler"};
+        int choix = JOptionPane.showOptionDialog(null, "Êtes-vous sûr de vouloir vous déconnecter ?", "Confirmation",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[0]);
+        
+        return choix == 0; // Renvoie true si "Oui" est sélectionné
+    }
 
 }

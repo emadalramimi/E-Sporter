@@ -20,13 +20,22 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-public class VueEquipes extends JFrame {
-	private JTable table;
+import controleur.ControleurEquipes;
+import modele.metier.Equipe;
 
+public class VueEquipes extends JFrame {
+	
+	private JTable table;
+	private DefaultTableModel model;
+	
+	private ControleurEquipes controleur;
+	
 	/**
 	 * Create the frame.
 	 */
 	public void afficherVueEquipe(JPanel contentPane) {
+		this.controleur = new ControleurEquipes(this);
+		
 		JPanel panel = new JPanel();
 		panel.setBackground(CharteGraphique.FOND);
 		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
@@ -53,6 +62,7 @@ public class VueEquipes extends JFrame {
 		panel_1.add(panel_2);
 		
 		JButtonTheme btnNewButton = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
+		btnNewButton.addActionListener(controleur);
 		btnNewButton.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel_2.add(btnNewButton);
 		
@@ -60,7 +70,7 @@ public class VueEquipes extends JFrame {
 		panel.add(scrollPane);
 		
 		// Création du modèle du tableau avec désactivation de l'édition
-		DefaultTableModel model = new DefaultTableModel(
+		this.model = new DefaultTableModel(
 			new Object[][] {}, 
 			new String[] {"Nom", "Pays", "Classement", "World Ranking", "Modifier", "Supprimer"}
 		) {
@@ -71,24 +81,31 @@ public class VueEquipes extends JFrame {
 		};
 		
 		table = new JTableTheme();
-		table.setModel(model);
 		
-		/**
-		 * Remplir avec données d'exemple
-		 */
-		model.setRowCount(0); // vider le tableau
-		for(int i = 0; i < 20; i++) {
+		this.model.setRowCount(0); // vider le tableau
+		for(Equipe equipe : this.controleur.getEquipes()) {
 			Vector<Object> rowData = new Vector<>();
-			rowData.add("CFO Academy");
-			rowData.add("Taiwan");
-			rowData.add("3e");
-			rowData.add("414");
+			rowData.add(equipe.getNom());
+			rowData.add(equipe.getPays());
+			rowData.add(equipe.getClassement());
+			rowData.add(equipe.getWorldRanking());
 			rowData.add("BoutonModif");
 			rowData.add("BoutonDelete (me rend fou)");
-			model.addRow(rowData);
+			this.model.addRow(rowData);
 		}
 		
+		this.table.setModel(model);
+		
 		scrollPane.setViewportView(table);
+	}
+	
+	public void afficherFenetreAjoutEquipe() {
+		try {
+            VueAjoutEquipe frame = new VueAjoutEquipe();
+            frame.setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 }
