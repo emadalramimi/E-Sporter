@@ -4,17 +4,23 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import modele.metier.Pays;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JTextFieldTheme;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+
 import java.awt.Font;
 
 public class VueAjoutEquipe extends JFrame {
@@ -26,7 +32,7 @@ public class VueAjoutEquipe extends JFrame {
 	private JLabel lblNom;
 	private JTextField textNom;
 	private JLabel lblPays;
-	private JTextField txtEquipe;
+	private JComboBox<String> cboxPays;
 	private JLabel lblJoueurs;
 	private JTextField txtJoueur1;
 	private JTextField txtJoueur2;
@@ -74,14 +80,9 @@ public class VueAjoutEquipe extends JFrame {
 		gbl_panelEquipe.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panelEquipe.setLayout(gbl_panelEquipe);
 		
-		lblEquipe = new JLabel("Equipe");
-		GridBagConstraints gbc_lblEquipe = new GridBagConstraints();
-		gbc_lblEquipe.insets = new Insets(0, 0, 5, 0);
-		gbc_lblEquipe.gridx = 0;
-		gbc_lblEquipe.gridy = 0;
-		panelEquipe.add(lblEquipe, gbc_lblEquipe);
-		
-		lblNom = new JLabel("Nom");
+		lblNom = new JLabel("Nom de l'équipe");
+		lblNom.setForeground(Color.WHITE);
+		lblNom.setFont(CharteGraphique.getPolice(19, true));
 		GridBagConstraints gbc_lblNom = new GridBagConstraints();
 		gbc_lblNom.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNom.gridx = 0;
@@ -97,21 +98,22 @@ public class VueAjoutEquipe extends JFrame {
 		panelEquipe.add(textNom, gbc_textNom);
 		textNom.setColumns(10);
 		
-		lblPays = new JLabel("Pays");
+		lblPays = new JLabel("Pays de l'équipe");
+		lblPays.setForeground(Color.WHITE);
+		lblPays.setFont(CharteGraphique.getPolice(19, true));
 		GridBagConstraints gbc_lblPays = new GridBagConstraints();
 		gbc_lblPays.insets = new Insets(0, 0, 5, 0);
 		gbc_lblPays.gridx = 0;
 		gbc_lblPays.gridy = 3;
 		panelEquipe.add(lblPays, gbc_lblPays);
 		
-		txtEquipe = new JTextFieldTheme();
+		cboxPays = new JComboBox<String>(Pays.getTout());
 		GridBagConstraints gbc_txtEquipe = new GridBagConstraints();
 		gbc_txtEquipe.insets = new Insets(0, 0, 5, 0);
 		gbc_txtEquipe.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtEquipe.gridx = 0;
 		gbc_txtEquipe.gridy = 4;
-		panelEquipe.add(txtEquipe, gbc_txtEquipe);
-		txtEquipe.setColumns(10);
+		panelEquipe.add(cboxPays, gbc_txtEquipe);
 		
 		panelJoueurs = new JPanel();
 		panelJoueurs.setBackground(CharteGraphique.FOND);
@@ -129,7 +131,8 @@ public class VueAjoutEquipe extends JFrame {
 		panelJoueurs.setLayout(gbl_panelJoueurs);
 		
 		lblJoueurs = new JLabel("Joueurs");
-		lblJoueurs.setFont(new Font("Dialog", Font.BOLD, 12));
+		lblJoueurs.setForeground(Color.WHITE);
+		lblJoueurs.setFont(CharteGraphique.getPolice(19, true));
 		GridBagConstraints gbc_lblJoueurs = new GridBagConstraints();
 		gbc_lblJoueurs.insets = new Insets(0, 0, 5, 0);
 		gbc_lblJoueurs.gridx = 0;
