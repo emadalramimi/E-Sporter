@@ -13,6 +13,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JLabel;
 
+import java.util.List;
 import java.util.Vector;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
@@ -20,18 +21,21 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-import controleur.ControleurEquipe;
+import controleur.ControleurEquipes;
+import modele.metier.Equipe;
 
 public class VueEquipes extends JFrame {
+	
 	private JTable table;
-
-	private ControleurEquipe controleur;
+	private DefaultTableModel model;
+	
+	private ControleurEquipes controleur;
 	
 	/**
 	 * Create the frame.
 	 */
 	public void afficherVueEquipe(JPanel contentPane) {
-		this.controleur = new ControleurEquipe(this);
+		this.controleur = new ControleurEquipes(this);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(CharteGraphique.FOND);
@@ -67,7 +71,7 @@ public class VueEquipes extends JFrame {
 		panel.add(scrollPane);
 		
 		// Création du modèle du tableau avec désactivation de l'édition
-		DefaultTableModel model = new DefaultTableModel(
+		this.model = new DefaultTableModel(
 			new Object[][] {}, 
 			new String[] {"Nom", "Pays", "Classement", "World Ranking", "Modifier", "Supprimer"}
 		) {
@@ -78,22 +82,20 @@ public class VueEquipes extends JFrame {
 		};
 		
 		table = new JTableTheme();
-		table.setModel(model);
 		
-		/**
-		 * Remplir avec données d'exemple
-		 */
-		model.setRowCount(0); // vider le tableau
-		for(int i = 0; i < 20; i++) {
+		this.model.setRowCount(0); // vider le tableau
+		for(Equipe equipe : this.controleur.getEquipes()) {
 			Vector<Object> rowData = new Vector<>();
-			rowData.add("CFO Academy");
-			rowData.add("Taiwan");
-			rowData.add("3e");
-			rowData.add("414");
+			rowData.add(equipe.getNom());
+			rowData.add(equipe.getPays());
+			rowData.add(equipe.getClassement());
+			rowData.add(equipe.getWorldRanking());
 			rowData.add("BoutonModif");
 			rowData.add("BoutonDelete (me rend fou)");
-			model.addRow(rowData);
+			this.model.addRow(rowData);
 		}
+		
+		this.table.setModel(model);
 		
 		scrollPane.setViewportView(table);
 	}
