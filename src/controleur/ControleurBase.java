@@ -5,10 +5,11 @@ import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
 
-import vue.VueMenu;
+import modele.ModeleAdministrateur;
+import vue.VueBase;
 import vue.theme.JButtonMenu;
 
-public class ControleurMenu extends MouseAdapter {
+public class ControleurBase extends MouseAdapter {
 
 	public enum Menus {
 		TOURNOIS(true), EQUIPES(true), HISTORIQUE(true), PALMARES(true), UTILISATEUR(false), DECONNEXION(false);
@@ -33,10 +34,14 @@ public class ControleurMenu extends MouseAdapter {
 	
 	private List<JButtonMenu> boutonsMenu;
 	private JButtonMenu boutonActif;
+	private VueBase vue;
+	private ModeleAdministrateur modeleAdministrateur;
 	
-	public ControleurMenu() {
+	public ControleurBase(VueBase vue) {
 		this.boutonsMenu = new LinkedList<>();
 		this.boutonActif = null;
+		this.vue = vue;
+		this.modeleAdministrateur = new ModeleAdministrateur();
 	}
 
 	/**
@@ -60,10 +65,10 @@ public class ControleurMenu extends MouseAdapter {
 	 */
 	public void setBoutonActif(JButtonMenu boutonActif) {
 		for(JButtonMenu bouton : boutonsMenu) {
-	    	VueMenu.setBoutonActif(false, bouton);
+	    	bouton.activerIconeBouton(false);
 		}
 		this.boutonActif = boutonActif;
-    	VueMenu.setBoutonActif(true, boutonActif);
+		boutonActif.activerIconeBouton(true);
 	}
 
 	/**
@@ -75,26 +80,12 @@ public class ControleurMenu extends MouseAdapter {
 		if(boutonClique != this.boutonActif) {
 			if(boutonClique.getMenu().getEstActivable()) {
 				this.setBoutonActif(boutonClique);
-			}
-			switch(boutonClique.getMenu()) {
-			case TOURNOIS:
-				System.out.println("tournois");
-				break;
-			case EQUIPES:
-				System.out.println("equipes");
-				break;
-			case HISTORIQUE:
-				System.out.println("historique");
-				break;
-			case PALMARES:
-				System.out.println("palmares");
-				break;
-			case UTILISATEUR:
-				System.out.println("utilisateur");
-				break;
-			case DECONNEXION:
-				System.out.println("deconnexion");
-			default:
+				this.vue.changerOnglet(boutonClique.getMenu());
+			} else if (boutonClique.getMenu() == Menus.DECONNEXION) {
+				if(this.vue.afficherConfirmationDeconnexion()) {
+					this.modeleAdministrateur.deconnecter();
+					this.vue.dispose();
+				}
 			}
 		}
 	}
@@ -106,7 +97,7 @@ public class ControleurMenu extends MouseAdapter {
     public void mouseEntered(MouseEvent e) {
 		JButtonMenu bouton = (JButtonMenu) e.getSource();
         if (bouton.getIcon() != null && bouton != this.getBoutonActif()) {
-        	VueMenu.setBoutonActif(true, bouton);
+        	bouton.activerIconeBouton(true);
         }
     }
 	
@@ -117,7 +108,7 @@ public class ControleurMenu extends MouseAdapter {
     public void mouseExited(MouseEvent e) {
     	JButtonMenu bouton = (JButtonMenu) e.getSource();
         if (bouton.getIcon() != null && bouton != this.getBoutonActif()) {
-        	VueMenu.setBoutonActif(false, bouton);
+        	bouton.activerIconeBouton(false);
         }
     }
 	

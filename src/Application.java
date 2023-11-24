@@ -1,4 +1,4 @@
-package vue;
+import vue.VueConnexion;
 
 public class Application {
 
@@ -8,6 +8,7 @@ public class Application {
 		try {
 			VueConnexion frame = new VueConnexion();
 			frame.setTitle("E-sporter · Connexion");
+			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -640,10 +640,10 @@ public class BDD {
 			st.executeUpdate(
 					"INSERT INTO administrateur VALUES ("
 					+ "NEXT VALUE FOR idAdministrateur,"
-					+ "'Admin',"
 					+ "'Istrateur',"
+					+ "'Admin',"
 					+ "'admin',"
-					+ "'mdpadmin')"
+					+ "'mdp')"
 			);
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table administrateur");

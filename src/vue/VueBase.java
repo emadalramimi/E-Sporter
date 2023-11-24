@@ -1,5 +1,18 @@
 package vue;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import controleur.ControleurBase;
+import modele.ModeleAdministrateur;
+import modele.metier.Administrateur;
+import vue.theme.CharteGraphique;
+import vue.theme.JButtonMenu;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -8,32 +21,56 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+public class VueBase extends JFrame {
+	
+	private JPanel contenu;
+	private JLabel lblUtilisateur;
+	
+	private ControleurBase controleurBase;
+	
+	/**
+	 * Create the frame.
+	 */
+	public VueBase() {
+		this.controleurBase = new ControleurBase(this);
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 1300, 700);
+		JPanel contentPane = new JPanel();
+		contentPane.setBackground(CharteGraphique.FOND);
+		contentPane.setBorder(null);
 
-import controleur.ControleurMenu;
-import vue.theme.CharteGraphique;
-import vue.theme.JButtonMenu;
-
-public class VueMenu {
-
+		setContentPane(contentPane);
+		contentPane.setLayout(new BorderLayout(0, 0));
+		
+		this.contenu = new JPanel();
+		this.contenu.setBackground(CharteGraphique.FOND);
+		contentPane.add(this.contenu, BorderLayout.CENTER);
+		this.contenu.setLayout(new BorderLayout(0, 20));
+		
+		// Affichage du menu
+		this.afficherMenu(contentPane, ControleurBase.Menus.TOURNOIS);
+		this.changerOnglet(ControleurBase.Menus.TOURNOIS);
+		
+		// Affichage de l'utilisateur courant
+		Administrateur compteCourant = ModeleAdministrateur.getCompteCourant();
+		this.lblUtilisateur.setText(compteCourant.getPrenom());
+		this.lblUtilisateur.setToolTipText(compteCourant.getPrenom() + " " + compteCourant.getNom());
+	}
+	
 	/**
 	 * Affiche le menu de l'application
-	 * @param contentPane de type BorderLayout
+	 * @param panel de type BorderLayout
 	 */
-	public static void afficherMenu(JPanel contentPane, ControleurMenu.Menus actif) {
-		ControleurMenu controleur = new ControleurMenu();
-		
+	public void afficherMenu(JPanel panel, ControleurBase.Menus actif) {
 		JPanel panelMenu = new JPanel();
 		panelMenu.setBorder(new EmptyBorder(10, 10, 10, 10));
 		panelMenu.setBackground(CharteGraphique.FOND_SECONDAIRE);
-		contentPane.add(panelMenu, BorderLayout.NORTH);
+		panel.add(panelMenu, BorderLayout.NORTH);
 		panelMenu.setLayout(new GridLayout(1, 0, 20, 0));
 		
 		JLabel lblLogo = new JLabel("");
-		lblLogo.setIcon(new ImageIcon("assets/images/logo_menu.png"));
+		lblLogo.setIcon(new ImageIcon(VueBase.class.getResource("/images/logo_menu.png")));
 		panelMenu.add(lblLogo);
 		
 		JPanel panelCentre = new JPanel();
@@ -54,28 +91,26 @@ public class VueMenu {
 		gbl_panelMenuCentre.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panelMenuCentre.setLayout(gbl_panelMenuCentre);
 		
-		JButtonMenu btnTournois = new JButtonMenu("", ControleurMenu.Menus.TOURNOIS);
-		btnTournois.setIcon(new ImageIcon("assets/images/menu/tournois.png"));
+		JButtonMenu btnTournois = new JButtonMenu("", ControleurBase.Menus.TOURNOIS);
 		btnTournois.setToolTipText("Tournois");
-		btnTournois.addMouseListener(controleur);
-		if(actif == ControleurMenu.Menus.TOURNOIS) {
-			controleur.setBoutonActif(btnTournois);
+		btnTournois.addMouseListener(this.controleurBase);
+		if(actif == ControleurBase.Menus.TOURNOIS) {
+			this.controleurBase.setBoutonActif(btnTournois);
 		}
-		controleur.ajouterBoutonMenu(btnTournois);
+		this.controleurBase.ajouterBoutonMenu(btnTournois);
 		GridBagConstraints gbc_btnTournois = new GridBagConstraints();
 		gbc_btnTournois.insets = new Insets(0, 0, 5, 10);
 		gbc_btnTournois.gridx = 1;
 		gbc_btnTournois.gridy = 0;
 		panelMenuCentre.add(btnTournois, gbc_btnTournois);
 		
-		JButtonMenu btnEquipes = new JButtonMenu("", ControleurMenu.Menus.EQUIPES);
-		btnEquipes.setIcon(new ImageIcon("assets/images/menu/equipes.png"));
+		JButtonMenu btnEquipes = new JButtonMenu("", ControleurBase.Menus.EQUIPES);
 		btnEquipes.setToolTipText("Équipes");
-		btnEquipes.addMouseListener(controleur);
-		if(actif == ControleurMenu.Menus.EQUIPES) {
-			controleur.setBoutonActif(btnEquipes);
+		btnEquipes.addMouseListener(this.controleurBase);
+		if(actif == ControleurBase.Menus.EQUIPES) {
+			this.controleurBase.setBoutonActif(btnEquipes);
 		}
-		controleur.ajouterBoutonMenu(btnEquipes);
+		this.controleurBase.ajouterBoutonMenu(btnEquipes);
 		GridBagConstraints gbc_btnEquipes = new GridBagConstraints();
 		gbc_btnEquipes.anchor = GridBagConstraints.NORTH;
 		gbc_btnEquipes.insets = new Insets(0, 0, 5, 10);
@@ -83,28 +118,26 @@ public class VueMenu {
 		gbc_btnEquipes.gridy = 0;
 		panelMenuCentre.add(btnEquipes, gbc_btnEquipes);
 		
-		JButtonMenu btnHistorique = new JButtonMenu("", ControleurMenu.Menus.HISTORIQUE);
-		btnHistorique.setIcon(new ImageIcon("assets/images/menu/historique.png"));
+		JButtonMenu btnHistorique = new JButtonMenu("", ControleurBase.Menus.HISTORIQUE);
 		btnHistorique.setToolTipText("Historique des points");
-		btnHistorique.addMouseListener(controleur);
-		if(actif == ControleurMenu.Menus.HISTORIQUE) {
-			controleur.setBoutonActif(btnHistorique);
+		btnHistorique.addMouseListener(this.controleurBase);
+		if(actif == ControleurBase.Menus.HISTORIQUE) {
+			this.controleurBase.setBoutonActif(btnHistorique);
 		}
-		controleur.ajouterBoutonMenu(btnHistorique);
+		this.controleurBase.ajouterBoutonMenu(btnHistorique);
 		GridBagConstraints gbc_btnHistorique = new GridBagConstraints();
 		gbc_btnHistorique.insets = new Insets(0, 0, 5, 10);
 		gbc_btnHistorique.gridx = 3;
 		gbc_btnHistorique.gridy = 0;
 		panelMenuCentre.add(btnHistorique, gbc_btnHistorique);
 
-		JButtonMenu btnPalmares = new JButtonMenu("", ControleurMenu.Menus.PALMARES);
-		btnPalmares.setIcon(new ImageIcon("assets/images/menu/palmares.png"));
+		JButtonMenu btnPalmares = new JButtonMenu("", ControleurBase.Menus.PALMARES);
 		btnPalmares.setToolTipText("Palmarès");
-		btnPalmares.addMouseListener(controleur);
-		if(actif == ControleurMenu.Menus.PALMARES) {
-			controleur.setBoutonActif(btnPalmares);
+		btnPalmares.addMouseListener(this.controleurBase);
+		if(actif == ControleurBase.Menus.PALMARES) {
+			this.controleurBase.setBoutonActif(btnPalmares);
 		}
-		controleur.ajouterBoutonMenu(btnPalmares);
+		this.controleurBase.ajouterBoutonMenu(btnPalmares);
 		GridBagConstraints gbc_btnPalmares = new GridBagConstraints();
 		gbc_btnPalmares.anchor = GridBagConstraints.NORTH;
 		gbc_btnPalmares.insets = new Insets(0, 0, 5, 0);
@@ -169,11 +202,10 @@ public class VueMenu {
 		gbl_panelMenuDroite.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panelMenuDroite.setLayout(gbl_panelMenuDroite);
 		
-		JButtonMenu btnUtilisateur = new JButtonMenu("", ControleurMenu.Menus.UTILISATEUR);
-		btnUtilisateur.setIcon(new ImageIcon("assets/images/menu/profil.png"));
+		JButtonMenu btnUtilisateur = new JButtonMenu("", ControleurBase.Menus.UTILISATEUR);
 		btnUtilisateur.setToolTipText("Admin");
-		btnUtilisateur.addMouseListener(controleur);
-		controleur.ajouterBoutonMenu(btnUtilisateur);
+		btnUtilisateur.addMouseListener(this.controleurBase);
+		this.controleurBase.ajouterBoutonMenu(btnUtilisateur);
 		GridBagConstraints gbc_btnUtilisateur = new GridBagConstraints();
 		gbc_btnUtilisateur.anchor = GridBagConstraints.NORTH;
 		gbc_btnUtilisateur.insets = new Insets(0, 0, 5, 10);
@@ -181,11 +213,10 @@ public class VueMenu {
 		gbc_btnUtilisateur.gridy = 0;
 		panelMenuDroite.add(btnUtilisateur, gbc_btnUtilisateur);
 		
-		JButtonMenu btnDeconnexion = new JButtonMenu("", ControleurMenu.Menus.DECONNEXION);
-		btnDeconnexion.setIcon(new ImageIcon("assets/images/menu/deconnexion.png"));
+		JButtonMenu btnDeconnexion = new JButtonMenu("", ControleurBase.Menus.DECONNEXION);
 		btnDeconnexion.setToolTipText("Déconnexion");
-		btnDeconnexion.addMouseListener(controleur);
-		controleur.ajouterBoutonMenu(btnDeconnexion);
+		btnDeconnexion.addMouseListener(this.controleurBase);
+		this.controleurBase.ajouterBoutonMenu(btnDeconnexion);
 		GridBagConstraints gbc_btnDeconnexion = new GridBagConstraints();
 		gbc_btnDeconnexion.anchor = GridBagConstraints.NORTH;
 		gbc_btnDeconnexion.insets = new Insets(0, 0, 5, 0);
@@ -193,15 +224,15 @@ public class VueMenu {
 		gbc_btnDeconnexion.gridy = 0;
 		panelMenuDroite.add(btnDeconnexion, gbc_btnDeconnexion);
 		
-		JLabel lblUtilisateur = new JLabel("Admin");
-		lblUtilisateur.setForeground(Color.WHITE);
-		lblUtilisateur.setFont(CharteGraphique.getPolice(11, false));
+		this.lblUtilisateur = new JLabel("");
+		this.lblUtilisateur.setForeground(Color.WHITE);
+		this.lblUtilisateur.setFont(CharteGraphique.getPolice(11, false));
 		GridBagConstraints gbc_lblUtilisateur = new GridBagConstraints();
 		gbc_lblUtilisateur.anchor = GridBagConstraints.NORTH;
 		gbc_lblUtilisateur.insets = new Insets(0, 0, 0, 10);
 		gbc_lblUtilisateur.gridx = 0;
 		gbc_lblUtilisateur.gridy = 1;
-		panelMenuDroite.add(lblUtilisateur, gbc_lblUtilisateur);
+		panelMenuDroite.add(this.lblUtilisateur, gbc_lblUtilisateur);
 		
 		JLabel lblDeconnexion = new JLabel("Déconnexion");
 		lblDeconnexion.setForeground(Color.WHITE);
@@ -213,20 +244,40 @@ public class VueMenu {
 		panelMenuDroite.add(lblDeconnexion, gbc_lblDeconnexion);
 	}
 	
-	/**
-	 * Modifie l'aspect du bouton : actif en couleur et non actif en blanc
-	 * @param actif : état de l'activité du bouton
-	 * @param bouton : bouton à modifier l'activité
-	 */
-	public static void setBoutonActif(boolean actif, JButtonMenu bouton) {
-		String cheminIcone = bouton.getIcon().toString();
-		if(actif) {
-	        cheminIcone = cheminIcone.replace(".png", "_actif.png");
-	        bouton.setIcon(new ImageIcon(cheminIcone));
-		} else {
-	        cheminIcone = cheminIcone.replace("_actif.png", ".png");
-	        bouton.setIcon(new ImageIcon(cheminIcone));
+	public void changerOnglet(ControleurBase.Menus menu) {
+		if(menu.getEstActivable()) {
+			this.contenu.removeAll();
+			this.contenu.updateUI();
 		}
+		
+		switch(menu) {
+		case TOURNOIS:
+			VueTournois vueTournois = new VueTournois();
+			vueTournois.afficherVueTournois(this.contenu);
+			break;
+		case EQUIPES:
+			VueEquipes vueEquipe = new VueEquipes();
+			vueEquipe.afficherVueEquipe(this.contenu);
+			break;
+		case HISTORIQUE:
+			break;
+		case PALMARES:
+			break;
+		default:
+			break;
+		}
+		
+		this.contenu.revalidate();
+	    this.contenu.repaint();
 	}
 	
+	public boolean afficherConfirmationDeconnexion() {
+		Object[] options = {"Oui", "Annuler"};
+        int choix = JOptionPane.showOptionDialog(null, "Êtes-vous sûr de vouloir vous déconnecter ?", "Confirmation",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[0]);
+        
+        return choix == 0; // Renvoie true si "Oui" est sélectionné
+    }
+
 }
