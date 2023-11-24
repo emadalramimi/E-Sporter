@@ -13,7 +13,6 @@ import java.awt.BorderLayout;
 
 import javax.swing.JLabel;
 
-import java.util.List;
 import java.util.Vector;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
