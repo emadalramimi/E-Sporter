@@ -13,123 +13,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-/**
- * Modèle équipe
- * @author Nassim Khoujane
- */
-public class Equipe implements DAO<Equipe, Integer> {
+import modele.metier.Equipe;
 
-	private int idEquipe;
-	private String nom;
-	private String pays;
-	private int classement;
-	private int worldRanking;
-	private String saison;
-	// TODO : Ajouter liste de joueurs
-	
-	/**
-	 * Construit une équipe
-	 * @param idEquipe	Clé primaire
-	 * @param pseudo	Pseudo
-	 */
-	public Equipe(int idEquipe, String nom, String pays, int classement, int worldRanking, String saison) {
-		this.idEquipe = idEquipe;
-		this.nom = nom;
-		this.pays = pays;
-		this.classement = classement;
-		this.worldRanking = worldRanking;
-		this.saison = saison;
-	}
-
-	/**
-	 * @return Clé primaire
-	 */
-	public int getIdEquipe() {
-		return this.idEquipe;
-	}
-	
-	/**
-	 * Modifie la clé primaire
-	 * @param idEquipe clé primaire
-	 */
-	public void setIdEquipe(int idEquipe) {
-		this.idEquipe = idEquipe;
-	}
-
-	/**
-	 * @return Nom
-	 */
-	public String getNom() {
-		return this.nom;
-	}
-	
-	/**
-	 * Modifie le nom
-	 * @param nom
-	 */
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	/**
-	 * @return Pays
-	 */
-	public String getPays() {
-		return this.pays;
-	}
-	
-	/**
-	 * Modifie le pays
-	 * @param pays
-	 */
-	public void setPays(String pays) {
-		this.pays = pays;
-	}
-
-	/**
-	 * @return Classement
-	 */
-	public int getClassement() {
-		return this.classement;
-	}
-	
-	/**
-	 * Modifie le classement
-	 * @param classement
-	 */
-	public void setClassement(int classement) {
-		this.classement = classement;
-	}
-
-	/**
-	 * @return WorldRanking
-	 */
-	public int getWorldRanking() {
-		return this.worldRanking;
-	}
-	
-	/**
-	 * Modifie le worldRanking
-	 * @param worldRanking
-	 */
-	public void setWorldRanking(int worldRanking) {
-		this.worldRanking = worldRanking;
-	}
-
-	/**
-	 * @return Saison
-	 */
-	public String getSaison() {
-		return this.saison;
-	}
-	
-	/**
-	 * Modifie la saison
-	 * @param saison
-	 */
-	public void setSaison(String saison) {
-		this.saison = saison;
-	}
+public class ModeleEquipe implements DAO<Equipe, Integer> {
 
 	/**
 	 * @return Liste de tous les équipes
@@ -154,7 +40,8 @@ public class Equipe implements DAO<Equipe, Integer> {
                     		rs.getString("pays"),
                     		rs.getInt("classement"),
                     		rs.getInt("worldRanking"),
-                    		rs.getString("saison")
+                    		rs.getString("saison"),
+                    		ModeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))
                         ));
                         return true;
                     } catch (SQLException e) {
@@ -184,14 +71,15 @@ public class Equipe implements DAO<Equipe, Integer> {
 		
 		// Création d'équipe si elle existe
 		Equipe equipe = null;
-		if(rs.first()) {
+		if(rs.next()) {
 			equipe = new Equipe(
 	    		rs.getInt("idEquipe"),
 	    		rs.getString("nom"),
 	    		rs.getString("pays"),
 	    		rs.getInt("classement"),
 	    		rs.getInt("worldRanking"),
-	    		rs.getString("saison")
+	    		rs.getString("saison"),
+	    		ModeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))
             );
 		}
 		
@@ -203,15 +91,14 @@ public class Equipe implements DAO<Equipe, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
-	public boolean ajouter(Equipe equipe) throws Exception {
+	public boolean ajouter(Equipe equipe) {
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into equipe values (?, ?, ?, ?, ?)");
-			ps.setInt(1, equipe.idEquipe);
-			ps.setString(2, equipe.nom);
-			ps.setString(3, equipe.pays);
-			ps.setInt(4, equipe.classement);
-			ps.setInt(5, equipe.worldRanking);
-			ps.setString(5, equipe.saison);
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into equipe values (NEXT VALUE FOR idEquipe, ?, ?, ?, ?)");
+			ps.setString(2, equipe.getNom());
+			ps.setString(3, equipe.getPays());
+			ps.setInt(4, equipe.getClassement());
+			ps.setInt(5, equipe.getWorldRanking());
+			ps.setString(5, equipe.getSaison());
 			ps.execute();
 			return true;
 		} catch(SQLException e) {
@@ -225,14 +112,14 @@ public class Equipe implements DAO<Equipe, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
-	public boolean modifier(Equipe equipe) throws Exception {
+	public boolean modifier(Equipe equipe) {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set nom = ?, pays = ?, classement = ?, worldRanking = ?, saison = ? where idEquipe = ?");
-			ps.setString(1, equipe.nom);
-			ps.setString(2, equipe.pays);
-			ps.setInt(3, equipe.classement);
-			ps.setInt(4, equipe.worldRanking);
-			ps.setString(5, equipe.saison);
+			ps.setString(1, equipe.getNom());
+			ps.setString(2, equipe.getPays());
+			ps.setInt(3, equipe.getClassement());
+			ps.setInt(4, equipe.getWorldRanking());
+			ps.setString(5, equipe.getSaison());
 			ps.execute();
 			return true;
 		} catch(SQLException e) {
@@ -249,7 +136,7 @@ public class Equipe implements DAO<Equipe, Integer> {
 	public boolean supprimer(Equipe equipe) throws Exception {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from equipe where idEquipe = ?");
-			ps.setInt(1, equipe.idEquipe);
+			ps.setInt(1, equipe.getIdEquipe());
 			ps.execute();
 			return true;
 		} catch(SQLException e) {
@@ -257,11 +144,22 @@ public class Equipe implements DAO<Equipe, Integer> {
 			return false;
 		}
 	}
+	
+	public int getNextValId() {
+        int nextVal = 0;
+        try {
+            PreparedStatement ps = BDD.getConnexion().prepareStatement("SELECT NEXTVAL('idEquipe')");
 
-	@Override
-	public String toString() {
-		return "Equipe [idEquipe=" + idEquipe + ", nom=" + nom + ", pays=" + pays + ", classement=" + classement
-				+ ", worldRanking=" + worldRanking + ", saison=" + saison + "]";
-	}
-
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                nextVal = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return nextVal;
+    }
+	
 }
