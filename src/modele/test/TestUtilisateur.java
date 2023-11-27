@@ -114,4 +114,11 @@ private ModeleAdministrateur modele;
     	modele.deconnecter();
     }
     
+    /*
+     * Test du getter getCompteCourant
+     */
+    @Test
+    public void testGetCompteCourant() {
+    	assertEquals(modele.getCompteCourant(), null);
+    }
 }
