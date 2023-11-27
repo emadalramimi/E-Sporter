@@ -173,17 +173,24 @@ public class VueConnexion extends JFrame {
 		panelBoutons.add(btnConnexion);
 	}
 	
-	// getIdentifiant, un getter qui renvoie l'identifiant entré sous forme de String
+	/**
+	 * @return contenu du champ identifiant
+	 */
 	public String getIdentifiant() {
 		return this.textIdentifiant.getText();
 	}
 	
-	// getMotDePasse, un getter qui renvoie le mot de passe entré sous forme de String
+	/**
+	 * @return contenu du champ mot de passe
+	 */
 	public String getMotDePasse() {
 		return String.valueOf(motDePasse.getPassword());
 	}
 	
-	// Une procédure qui permet l'affichage du mot de passe, sinon le cache
+	/**
+	 * Affiche un mot de passe si affiche true, le cache si affiche false
+	 * @param affiche
+	 */
 	public void affichageMotDePasse(boolean affiche) {
 	    if (affiche) {
 	        motDePasse.setEchoChar((char) 0);
@@ -192,15 +199,25 @@ public class VueConnexion extends JFrame {
 	    }
 	}
 	
+	/**
+	 * @param e
+	 * @return true si le clic réfère la checbox afficher mot de passe
+	 */
 	public boolean isCheckboxAfficherMdp(ActionEvent e) {
 		return e.getSource() instanceof JCheckBox && ((JCheckBox) e.getSource()).getText() == "Afficher le mot de passe";
 	}
 	
-	// Affiche un pop-up si l'identifiant ou le mot de passe n'est pas connu
+	/**
+	 * Affiche un popup erreur
+	 * @param message
+	 */
 	public void afficherPopupErreur(String message) {
 		JOptionPaneTheme.showMessageDialog(this, message, "Erreur", JOptionPane.ERROR_MESSAGE);
 	}
 	
+	/**
+	 * Ferme la fenêtre
+	 */
 	public void fermerFenetre() {
 		dispose();
 	}

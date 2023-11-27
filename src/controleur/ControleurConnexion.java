@@ -23,15 +23,24 @@ public class ControleurConnexion extends KeyAdapter implements ActionListener {
 		MDP_CACHE
 	};
 	
+	/**
+	 * Construit un controleur connexion
+	 * @param vue
+	 */
 	public ControleurConnexion(VueConnexion vue) {
 		this.vue = vue;
 		this.modele = new ModeleAdministrateur();
 		this.etat = Etat.MDP_CACHE;
 	}
 	
+	/**
+	 * Effectue un traitement au clic d'un élément de la fenêtre
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// Si l'élément cliqué est la checkbox afficher mot de passe
 		if(vue.isCheckboxAfficherMdp(e)) {
+			// Affichage/masquage du mot de passe
 			if(this.etat == Etat.MDP_CACHE) {
 				vue.affichageMotDePasse(true);
 				this.etat = Etat.MDP_AFFICHE;
@@ -40,19 +49,24 @@ public class ControleurConnexion extends KeyAdapter implements ActionListener {
 				this.etat = Etat.MDP_CACHE;
 			}
 		} else {
-			// Si c un bouton
+			// Si c'est un bouton
 			JButton b = (JButton) e.getSource();
 			switch(b.getText()) {
 			case "Connexion":
+				// Connexion de l'utilisateur
 				this.connecter();
 				break;
 			case "Quitter":
+				// Fermeture de la fenêtre
 				vue.fermerFenetre();
 				break;
 			}
 		}
 	}
 	
+	/**
+	 * Connecte un utilisateur en appuyant sur entrée sur un champ
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -60,14 +74,19 @@ public class ControleurConnexion extends KeyAdapter implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Connecte l'utilisateur
+	 */
 	private void connecter() {
+		// Si tous les champs ne sont pas remplis
 		if(vue.getIdentifiant().length() == 0 || vue.getMotDePasse().length() == 0) {
 			vue.afficherPopupErreur("Veuillez remplir tous les champs.");
 		} else {
-			// on connecte l'administrateur
+			// Sinon, on connecte l'administrateur
 			try {
 				modele.connecter(vue.getIdentifiant(), vue.getMotDePasse());
 				
+				// Fermeture de la page de connexion et ouverture de l'espace administrateur/arbitre
 				vue.fermerFenetre();
 				try {
 					VueBase frame = new VueBase();
@@ -77,8 +96,10 @@ public class ControleurConnexion extends KeyAdapter implements ActionListener {
 					err.printStackTrace();
 				}
 			} catch (IdentifiantOuMdpIncorrectsException err) {
+				// Si le couple identifiant/mot de passe est incorrect
 				vue.afficherPopupErreur("Identifiant et/ou mot de passe incorrects.");
 			} catch (RuntimeException err) {
+				// Si une autre erreur SQL est survenue (deux instances ouvertes par exemple)
 				vue.afficherPopupErreur("Une erreur inattendue est survenue.");
 			}
 		}
