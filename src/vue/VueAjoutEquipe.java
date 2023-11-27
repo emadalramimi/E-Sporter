@@ -244,7 +244,7 @@ public class VueAjoutEquipe extends JFrame {
 		try {	
 			return Integer.parseInt(this.txtWorldRanking.getText());
 		} catch (NumberFormatException e) {
-	        System.err.println("Invalid integer format");
+	        afficherPopupErreur("Le World Ranking doit être un entier");
 	    }
 		return null;
 	}
