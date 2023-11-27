@@ -35,6 +35,24 @@ public class Equipe {
 		this.saison = saison;
 		this.joueurs = joueurs;
 	}
+	
+	/**
+	 * Construit une équipe sans la liste des joueurs (pour l'insertion en BDD)
+	 * @param idEquipe
+	 * @param nom
+	 * @param pays
+	 * @param classement
+	 * @param worldRanking
+	 * @param saison
+	 */
+	public Equipe(int idEquipe, String nom, String pays, int classement, int worldRanking, String saison) {
+		this.idEquipe = idEquipe;
+		this.nom = nom;
+		this.pays = pays;
+		this.classement = classement;
+		this.worldRanking = worldRanking;
+		this.saison = saison;
+	}
 
 	/**
 	 * @return Clé primaire

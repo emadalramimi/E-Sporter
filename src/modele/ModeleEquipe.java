@@ -93,12 +93,13 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 	@Override
 	public boolean ajouter(Equipe equipe) {
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into equipe values (NEXT VALUE FOR idEquipe, ?, ?, ?, ?)");
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into equipe values (?, ?, ?, ?, ?, ?)");
+			ps.setInt(1, equipe.getIdEquipe());
 			ps.setString(2, equipe.getNom());
 			ps.setString(3, equipe.getPays());
 			ps.setInt(4, equipe.getClassement());
 			ps.setInt(5, equipe.getWorldRanking());
-			ps.setString(5, equipe.getSaison());
+			ps.setString(6, equipe.getSaison());
 			ps.execute();
 			return true;
 		} catch(SQLException e) {
@@ -148,7 +149,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 	public int getNextValId() {
         int nextVal = 0;
         try {
-            PreparedStatement ps = BDD.getConnexion().prepareStatement("SELECT NEXTVAL('idEquipe')");
+            PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idEquipe");
 
             ResultSet rs = ps.executeQuery();
             
