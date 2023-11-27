@@ -86,7 +86,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 	@Override
 	public boolean ajouter(Joueur joueur) {
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into equipe values (?, ?, ?, ?, ?)");
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into joueur values (?, ?, ?)");
 			ps.setInt(1, joueur.getIdJoueur());
 			ps.setString(2, joueur.getPseudo());
 			ps.setInt(3, joueur.getIdEquipe());
@@ -156,7 +156,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 	public int getNextValId() {
         int nextVal = 0;
         try {
-            PreparedStatement ps = BDD.getConnexion().prepareStatement("SELECT NEXTVAL('idEquipe')");
+            PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idJoueur");
 
             ResultSet rs = ps.executeQuery();
             
