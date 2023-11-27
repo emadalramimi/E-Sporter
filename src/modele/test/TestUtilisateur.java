@@ -79,4 +79,12 @@ private ModeleAdministrateur modele;
         modele.connecter("fauxadmin", "mdpadmin");
     }
     
+    /*
+     * Test l'erreur IdentifiantOuMdpIncorrectsException lorsqu'on essaie de se connecter et que le mot de passe est invalide
+     */
+    @Test(expected = IdentifiantOuMdpIncorrectsException.class)
+    public void testConnexionMotDePasseInvalide() throws IllegalArgumentException, IdentifiantOuMdpIncorrectsException, RuntimeException {
+        modele.connecter("admin", "*admin");
+    }
+    
 }
