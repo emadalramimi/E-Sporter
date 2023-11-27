@@ -1,13 +1,11 @@
 package vue;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
-import vue.theme.JFrameTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
 import vue.theme.ButtonRenderer;
@@ -24,7 +22,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-public class VueTournois extends JFrameTheme {
+public class VueTournois extends JFrame {
 	private JTable table;
 
 	/**
@@ -78,8 +76,8 @@ public class VueTournois extends JFrameTheme {
 		table.setModel(model);
 		int[] tor = new int[6];
 		// Ajouter buttons dans la derniere colonne
-		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
-        buttonColumn.setCellRenderer(new ButtonRenderer(table,tor));
+		//TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
+        //buttonColumn.setCellRenderer(new ButtonRenderer(table, tor, controleur));
 		
 		/**
 		 * Remplir avec données d'exemple
