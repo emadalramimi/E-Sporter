@@ -62,4 +62,13 @@ private ModeleAdministrateur modele;
     	 assertTrue(modele.supprimer(adminToAdd));
     }
     
+    /*
+     * Test l'erreur IllegalArgumentException lorsqu'on essaie de se connecter si l'on l'est déjà
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testConnexionDejaConnecte() throws IllegalArgumentException, IdentifiantOuMdpIncorrectsException, RuntimeException {
+    	modele.connecter("admin", "mdpadmin");
+        modele.connecter("admin", "mdpadmin");
+    }
+    
 }
