@@ -21,4 +21,15 @@ private ModeleAdministrateur modele;
         if (modele.getCompteCourant() != null)
             this.modele.deconnecter();
     }
+    
+    /*
+     * Test si la methode ajouter renvoie true
+     */
+    @Test
+    public void testAjouterTrue() throws Exception {
+    	Administrateur admini = new Administrateur(7, "John", "Doe", "john.doe", "password");
+    	modele.supprimer(admini);
+    	assertTrue(modele.ajouter(admini));
+    }
+    
 }
