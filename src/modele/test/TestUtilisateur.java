@@ -52,4 +52,14 @@ private ModeleAdministrateur modele;
    	 	modele.supprimer(new Administrateur(2, "Admin", "Admin", "admin", "mdpadmin"));
     }
     
+    /*
+     * Test si la methode supprimer renvoie true
+     */
+    @Test
+    public void testSupprimerTrue() throws Exception {
+    	 Administrateur adminToAdd = new Administrateur(7, "John", "Doe", "john.doe", "password");
+    	 modele.ajouter(adminToAdd);
+    	 assertTrue(modele.supprimer(adminToAdd));
+    }
+    
 }
