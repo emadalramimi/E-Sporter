@@ -42,32 +42,32 @@ public class VueEquipes extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout(0, 20));
 		
-		JPanel panel_1 = new JPanel();
-		panel.add(panel_1, BorderLayout.NORTH);
-		panel_1.setBackground(CharteGraphique.FOND);
-		panel_1.setLayout(new GridLayout(1, 0, 0, 0));
+		JPanel panelLabelEquipe = new JPanel();
+		panel.add(panelLabelEquipe, BorderLayout.NORTH);
+		panelLabelEquipe.setBackground(CharteGraphique.FOND);
+		panelLabelEquipe.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JLabel lblNewLabel = new JLabel("Equipes");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel.setFont(CharteGraphique.getPolice(30, true));
-		lblNewLabel.setForeground(CharteGraphique.TEXTE);
-		panel_1.add(lblNewLabel);
+		JLabel lblEquipes = new JLabel("Equipes");
+		lblEquipes.setHorizontalAlignment(SwingConstants.LEFT);
+		lblEquipes.setFont(CharteGraphique.getPolice(30, true));
+		lblEquipes.setForeground(CharteGraphique.TEXTE);
+		panelLabelEquipe.add(lblEquipes);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(CharteGraphique.FOND);
-		FlowLayout flowLayout = (FlowLayout) panel_2.getLayout();
+		JPanel panelAjouter = new JPanel();
+		panelAjouter.setBackground(CharteGraphique.FOND);
+		FlowLayout flowLayout = (FlowLayout) panelAjouter.getLayout();
 		flowLayout.setVgap(0);
 		flowLayout.setHgap(0);
 		flowLayout.setAlignment(FlowLayout.RIGHT);
-		panel_1.add(panel_2);
+		panelLabelEquipe.add(panelAjouter);
 		
-		JButtonTheme btnNewButton = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
-		btnNewButton.addActionListener(controleur);
-		btnNewButton.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel_2.add(btnNewButton);
+		JButtonTheme btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
+		btnAjouter.addActionListener(controleur);
+		btnAjouter.setHorizontalAlignment(SwingConstants.RIGHT);
+		panelAjouter.add(btnAjouter);
 		
-		JScrollPaneTheme scrollPane = new JScrollPaneTheme();
-		panel.add(scrollPane);
+		JScrollPaneTheme scrollPaneEquipes = new JScrollPaneTheme();
+		panel.add(scrollPaneEquipes);
 		
 		// Création du modèle du tableau avec désactivation de l'édition
 		this.model = new DefaultTableModel(
@@ -96,7 +96,7 @@ public class VueEquipes extends JFrame {
 		
 		this.table.setModel(model);
 		
-		scrollPane.setViewportView(table);
+		scrollPaneEquipes.setViewportView(table);
 	}
 	
 	public void afficherFenetreAjoutEquipe() {
