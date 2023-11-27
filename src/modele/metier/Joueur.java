@@ -8,14 +8,14 @@ public class Joueur {
 
 	private int idJoueur;
 	private String pseudo;
-	private String idEquipe;
+	private int idEquipe;
 	
 	/**
 	 * Construit un joueur
 	 * @param idJoueur	Clé primaire
 	 * @param pseudo	Pseudo
 	 */
-	public Joueur(int idJoueur, String pseudo, String idEquipe) {
+	public Joueur(int idJoueur, String pseudo, int idEquipe) {
 		this.idJoueur = idJoueur;
 		this.pseudo = pseudo;
 		this.idEquipe = idEquipe;
@@ -54,15 +54,15 @@ public class Joueur {
 	/**
 	 * @return Clé étrangère équipe
 	 */
-	public String getEquipe() {
-		return this.getEquipe();
+	public int getIdEquipe() {
+		return this.idEquipe;
 	}
 	
 	/**
 	 * Modifie la clé étrangère équipe
 	 * @param idEquipe
 	 */
-	public void setIdEquipe(String idEquipe) {
+	public void setIdEquipe(int idEquipe) {
 		this.idEquipe = idEquipe;
 	}
 

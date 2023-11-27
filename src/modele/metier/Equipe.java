@@ -1,22 +1,49 @@
 package modele.metier;
 
+import java.util.List;
+
 /**
- * Modèle équipe
+ * Modèle métier équipe
  * @author Nassim Khoujane
  */
 public class Equipe {
+
 	private int idEquipe;
 	private String nom;
 	private String pays;
 	private int classement;
 	private int worldRanking;
 	private String saison;
-	// TODO : Ajouter liste de joueurs
+	private List<Joueur> joueurs;
 	
 	/**
 	 * Construit une équipe
-	 * @param idEquipe	Clé primaire
-	 * @param pseudo	Pseudo
+	 * @param idEquipe
+	 * @param nom
+	 * @param pays
+	 * @param classement
+	 * @param worldRanking
+	 * @param saison
+	 * @param joueurs
+	 */
+	public Equipe(int idEquipe, String nom, String pays, int classement, int worldRanking, String saison, List<Joueur> joueurs) {
+		this.idEquipe = idEquipe;
+		this.nom = nom;
+		this.pays = pays;
+		this.classement = classement;
+		this.worldRanking = worldRanking;
+		this.saison = saison;
+		this.joueurs = joueurs;
+	}
+	
+	/**
+	 * Construit une équipe sans la liste des joueurs (pour l'insertion en BDD)
+	 * @param idEquipe
+	 * @param nom
+	 * @param pays
+	 * @param classement
+	 * @param worldRanking
+	 * @param saison
 	 */
 	public Equipe(int idEquipe, String nom, String pays, int classement, int worldRanking, String saison) {
 		this.idEquipe = idEquipe;
@@ -115,6 +142,21 @@ public class Equipe {
 	 */
 	public void setSaison(String saison) {
 		this.saison = saison;
+	}
+	
+	/**
+	 * @return Liste des joueurs
+	 */
+	public List<Joueur> getJoueurs() {
+		return joueurs;
+	}
+
+	/**
+	 * Modifier la liste des joueurs
+	 * @param joueurs
+	 */
+	public void setJoueurs(List<Joueur> joueurs) {
+		this.joueurs = joueurs;
 	}
 
 	@Override

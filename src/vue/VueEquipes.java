@@ -29,6 +29,12 @@ public class VueEquipes extends JFrame {
 	private DefaultTableModel model;
 	
 	private ControleurEquipes controleur;
+	private JButtonTheme btnAjouter;
+	private JPanel panel;
+	private JPanel panelLabelEquipe;
+	private JLabel lblEquipes;
+	private JPanel panelAjouter;
+	private JScrollPaneTheme scrollPaneEquipes;
 	
 	/**
 	 * Create the frame.
@@ -36,38 +42,42 @@ public class VueEquipes extends JFrame {
 	public void afficherVueEquipe(JPanel contentPane) {
 		this.controleur = new ControleurEquipes(this);
 		
-		JPanel panel = new JPanel();
+		// panel contient tous les éléments de la page
+		panel = new JPanel();
 		panel.setBackground(CharteGraphique.FOND);
 		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout(0, 20));
 		
-		JPanel panel_1 = new JPanel();
-		panel.add(panel_1, BorderLayout.NORTH);
-		panel_1.setBackground(CharteGraphique.FOND);
-		panel_1.setLayout(new GridLayout(1, 0, 0, 0));
+		// panelLabelEquipe, le panel contenant le label lblEquipes
+		panelLabelEquipe = new JPanel();
+		panel.add(panelLabelEquipe, BorderLayout.NORTH);
+		panelLabelEquipe.setBackground(CharteGraphique.FOND);
+		panelLabelEquipe.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JLabel lblNewLabel = new JLabel("Equipes");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel.setFont(CharteGraphique.getPolice(30, true));
-		lblNewLabel.setForeground(CharteGraphique.TEXTE);
-		panel_1.add(lblNewLabel);
+		lblEquipes = new JLabel("Equipes");
+		lblEquipes.setHorizontalAlignment(SwingConstants.LEFT);
+		lblEquipes.setFont(CharteGraphique.getPolice(30, true));
+		lblEquipes.setForeground(CharteGraphique.TEXTE);
+		panelLabelEquipe.add(lblEquipes);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(CharteGraphique.FOND);
-		FlowLayout flowLayout = (FlowLayout) panel_2.getLayout();
+		// panelAjouter, le panel contenant le bouton btnAjouter
+		panelAjouter = new JPanel();
+		panelAjouter.setBackground(CharteGraphique.FOND);
+		FlowLayout flowLayout = (FlowLayout) panelAjouter.getLayout();
 		flowLayout.setVgap(0);
 		flowLayout.setHgap(0);
 		flowLayout.setAlignment(FlowLayout.RIGHT);
-		panel_1.add(panel_2);
+		panelLabelEquipe.add(panelAjouter);
 		
-		JButtonTheme btnNewButton = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
-		btnNewButton.addActionListener(controleur);
-		btnNewButton.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel_2.add(btnNewButton);
+		// btnAjouter, un bouton pour permettre l'ajout d'une équipe
+		btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
+		btnAjouter.addActionListener(controleur);
+		btnAjouter.setHorizontalAlignment(SwingConstants.RIGHT);
+		panelAjouter.add(btnAjouter);
 		
-		JScrollPaneTheme scrollPane = new JScrollPaneTheme();
-		panel.add(scrollPane);
+		scrollPaneEquipes = new JScrollPaneTheme();
+		panel.add(scrollPaneEquipes);
 		
 		// Création du modèle du tableau avec désactivation de l'édition
 		this.model = new DefaultTableModel(
@@ -83,6 +93,7 @@ public class VueEquipes extends JFrame {
 		table = new JTableTheme();
 		
 		this.model.setRowCount(0); // vider le tableau
+		//Entrée des données des équipe ainsi que l'option de modification et de suppression des équipes
 		for(Equipe equipe : this.controleur.getEquipes()) {
 			Vector<Object> rowData = new Vector<>();
 			rowData.add(equipe.getNom());
@@ -90,13 +101,13 @@ public class VueEquipes extends JFrame {
 			rowData.add(equipe.getClassement());
 			rowData.add(equipe.getWorldRanking());
 			rowData.add("BoutonModif");
-			rowData.add("BoutonDelete (me rend fou)");
+			rowData.add("BoutonDelete");
 			this.model.addRow(rowData);
 		}
 		
 		this.table.setModel(model);
 		
-		scrollPane.setViewportView(table);
+		scrollPaneEquipes.setViewportView(table);
 	}
 	
 	public void afficherFenetreAjoutEquipe() {

@@ -1,5 +1,6 @@
 package vue;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -8,6 +9,7 @@ import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
+import vue.theme.ButtonRenderer;
 
 import java.awt.BorderLayout;
 
@@ -19,6 +21,7 @@ import java.awt.FlowLayout;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 public class VueTournois extends JFrame {
 	private JTable table;
@@ -62,7 +65,7 @@ public class VueTournois extends JFrame {
 		// Création du modèle du tableau avec désactivation de l'édition
 		DefaultTableModel model = new DefaultTableModel(
 			new Object[][] {}, 
-			new String[] { "Statut", "Nom", "Niveau", "Date d\u00E9but", "Date fin", "Poule" }
+			new String[] { "Statut", "Nom", "Niveau", "Date d\u00E9but", "Date fin", "Poule", "Actions" }
 		) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -72,6 +75,10 @@ public class VueTournois extends JFrame {
 		
 		table = new JTableTheme();
 		table.setModel(model);
+		
+		// Ajouter buttons dans la derniere colonne
+		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
+        buttonColumn.setCellRenderer(new ButtonRenderer());
 		
 		/**
 		 * Remplir avec données d'exemple
@@ -86,6 +93,7 @@ public class VueTournois extends JFrame {
 			rowData.add("30/10/2023");
 			rowData.add("30/11/2023");
 			rowData.add("Poules");
+
 			model.addRow(rowData);
 		}
 		

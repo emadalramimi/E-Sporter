@@ -4,47 +4,52 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controleur.ControleurAjoutEquipe;
 import modele.metier.Pays;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
+import vue.theme.JOptionPaneTheme;
 import vue.theme.JTextFieldTheme;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.awt.Font;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 
 public class VueAjoutEquipe extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel panelEquipe;
 	private JPanel panelJoueurs;
-	private JLabel lblEquipe;
 	private JLabel lblNom;
-	private JTextField textNom;
+	private JTextField txtNom;
 	private JLabel lblPays;
 	private JComboBox<String> cboxPays;
+	private JLabel lblWorldRancking;
+	private JTextFieldTheme txtWorldRanking;
 	private JLabel lblJoueurs;
 	private JTextField txtJoueur1;
 	private JTextField txtJoueur2;
-	private JTextField textJoueur3;
-	private JTextField textJoueur4;
+	private JTextField txtJoueur3;
+	private JTextField txtJoueur4;
 	private JTextField txtJoueur5;
 	private JPanel panelAnnuler;
 	private JButton btnAnnuler;
-	private JPanel panelAjouter;
-	private JButton btnAjouter;
+	private JPanel panelValider;
+	private JButton btnValider;
 	
 	public VueAjoutEquipe() {
+		ControleurAjoutEquipe controleur = new ControleurAjoutEquipe(this);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 450);
@@ -89,14 +94,14 @@ public class VueAjoutEquipe extends JFrame {
 		gbc_lblNom.gridy = 1;
 		panelEquipe.add(lblNom, gbc_lblNom);
 		
-		textNom = new JTextFieldTheme();
+		txtNom = new JTextFieldTheme();
 		GridBagConstraints gbc_textNom = new GridBagConstraints();
-		gbc_textNom.insets = new Insets(0, 0, 5, 0);
+		gbc_textNom.insets = new Insets(0, 0, 20, 0);
 		gbc_textNom.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textNom.gridx = 0;
 		gbc_textNom.gridy = 2;
-		panelEquipe.add(textNom, gbc_textNom);
-		textNom.setColumns(10);
+		panelEquipe.add(txtNom, gbc_textNom);
+		txtNom.setColumns(10);
 		
 		lblPays = new JLabel("Pays de l'équipe");
 		lblPays.setForeground(Color.WHITE);
@@ -109,11 +114,29 @@ public class VueAjoutEquipe extends JFrame {
 		
 		cboxPays = new JComboBox<String>(Pays.getTout());
 		GridBagConstraints gbc_txtEquipe = new GridBagConstraints();
-		gbc_txtEquipe.insets = new Insets(0, 0, 5, 0);
+		gbc_txtEquipe.insets = new Insets(0, 0, 20, 0);
 		gbc_txtEquipe.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtEquipe.gridx = 0;
 		gbc_txtEquipe.gridy = 4;
 		panelEquipe.add(cboxPays, gbc_txtEquipe);
+		
+		lblWorldRancking = new JLabel("World Ranking");
+		lblWorldRancking.setForeground(Color.WHITE);
+		lblWorldRancking.setFont(CharteGraphique.getPolice(19, true));
+		GridBagConstraints gbc_lblWorldRancking = new GridBagConstraints();
+		gbc_lblWorldRancking.insets = new Insets(0, 0, 5, 0);
+		gbc_lblWorldRancking.gridx = 0;
+		gbc_lblWorldRancking.gridy = 5;
+		panelEquipe.add(lblWorldRancking, gbc_lblWorldRancking);
+		
+		txtWorldRanking = new JTextFieldTheme();
+		GridBagConstraints gbc_textWorldRanking = new GridBagConstraints();
+		gbc_textWorldRanking.insets = new Insets(0, 0, 5, 0);
+		gbc_textWorldRanking.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textWorldRanking.gridx = 0;
+		gbc_textWorldRanking.gridy = 6;
+		panelEquipe.add(txtWorldRanking, gbc_textWorldRanking);
+		txtWorldRanking.setColumns(10);
 		
 		panelJoueurs = new JPanel();
 		panelJoueurs.setBackground(CharteGraphique.FOND);
@@ -157,23 +180,23 @@ public class VueAjoutEquipe extends JFrame {
 		panelJoueurs.add(txtJoueur2, gbc_txtJoueur2);
 		txtJoueur2.setColumns(10);
 		
-		textJoueur3 = new JTextFieldTheme();
-		GridBagConstraints gbc_textJoueur3 = new GridBagConstraints();
-		gbc_textJoueur3.insets = new Insets(0, 0, 5, 0);
-		gbc_textJoueur3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textJoueur3.gridx = 0;
-		gbc_textJoueur3.gridy = 3;
-		panelJoueurs.add(textJoueur3, gbc_textJoueur3);
-		textJoueur3.setColumns(10);
+		txtJoueur3 = new JTextFieldTheme();
+		GridBagConstraints gbc_txtJoueur3 = new GridBagConstraints();
+		gbc_txtJoueur3.insets = new Insets(0, 0, 5, 0);
+		gbc_txtJoueur3.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtJoueur3.gridx = 0;
+		gbc_txtJoueur3.gridy = 3;
+		panelJoueurs.add(txtJoueur3, gbc_txtJoueur3);
+		txtJoueur3.setColumns(10);
 		
-		textJoueur4 = new JTextFieldTheme();
-		GridBagConstraints gbc_textJoueur4 = new GridBagConstraints();
-		gbc_textJoueur4.insets = new Insets(0, 0, 5, 0);
-		gbc_textJoueur4.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textJoueur4.gridx = 0;
-		gbc_textJoueur4.gridy = 4;
-		panelJoueurs.add(textJoueur4, gbc_textJoueur4);
-		textJoueur4.setColumns(10);
+		txtJoueur4 = new JTextFieldTheme();
+		GridBagConstraints gbc_txtJoueur4 = new GridBagConstraints();
+		gbc_txtJoueur4.insets = new Insets(0, 0, 5, 0);
+		gbc_txtJoueur4.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtJoueur4.gridx = 0;
+		gbc_txtJoueur4.gridy = 4;
+		panelJoueurs.add(txtJoueur4, gbc_txtJoueur4);
+		txtJoueur4.setColumns(10);
 		
 		txtJoueur5 = new JTextFieldTheme();
 		GridBagConstraints gbc_txtJoueur5 = new GridBagConstraints();
@@ -192,19 +215,88 @@ public class VueAjoutEquipe extends JFrame {
 		gbc_panelAnnuler.gridy = 1;
 		panelCentre.add(panelAnnuler, gbc_panelAnnuler);
 		
-		btnAnnuler = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Annuler");
+		btnAnnuler = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Annuler");
+		btnAnnuler.addActionListener(controleur);
 		panelAnnuler.add(btnAnnuler);
 		
-		panelAjouter = new JPanel();
-		panelAjouter.setBackground(CharteGraphique.FOND);
+		panelValider = new JPanel();
+		panelValider.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelAjouter = new GridBagConstraints();
 		gbc_panelAjouter.anchor = GridBagConstraints.NORTHWEST;
 		gbc_panelAjouter.gridx = 1;
 		gbc_panelAjouter.gridy = 1;
-		panelCentre.add(panelAjouter, gbc_panelAjouter);
+		panelCentre.add(panelValider, gbc_panelAjouter);
 		
-		btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
-		panelAjouter.add(btnAjouter);
+		btnValider = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Valider");
+		btnValider.addActionListener(controleur);
+		panelValider.add(btnValider);
+	}
+	
+	public void fermerFenetre() {
+		this.dispose();
+	}
+	
+	public String getNomEquipe() {
+		return this.txtNom.getText();
+	}
+	
+	public String getPaysEquipe() {
+		return (String) this.cboxPays.getSelectedItem();
+	}
+	
+	public Integer getWorldRanking() throws NumberFormatException {
+		String text = this.txtWorldRanking.getText();
+		if(text.length() > 0) {
+			return Integer.parseInt(text);
+		}
+		return null;
+	}
+	
+	public void viderChamps() {
+		this.txtNom.setText("");
+		this.cboxPays.setSelectedIndex(0);
+		this.txtWorldRanking.setText("");
+		this.txtJoueur1.setText("");
+		this.txtJoueur2.setText("");
+		this.txtJoueur3.setText("");
+		this.txtJoueur4.setText("");
+		this.txtJoueur5.setText("");
+	}
+	
+	public List<String> getNomJoueurs() {
+	    List<String> noms = new ArrayList<>();
+	    
+	    String joueur1 = this.txtJoueur1.getText().trim();
+	    String joueur2 = this.txtJoueur2.getText().trim();
+	    String joueur3 = this.txtJoueur3.getText().trim();
+	    String joueur4 = this.txtJoueur4.getText().trim();
+	    String joueur5 = this.txtJoueur5.getText().trim();
+	    
+	    if (!joueur1.isEmpty()) {
+	        noms.add(joueur1);
+	    }
+	    if (!joueur2.isEmpty()) {
+	        noms.add(joueur2);
+	    }
+	    if (!joueur3.isEmpty()) {
+	        noms.add(joueur3);
+	    }
+	    if (!joueur4.isEmpty()) {
+	        noms.add(joueur4);
+	    }
+	    if (!joueur5.isEmpty()) {
+	        noms.add(joueur5);
+	    }
+	    
+	    return noms;
 	}
 
+	public void afficherPopupErreur(String message) {
+		JOptionPaneTheme.showMessageDialog(this, message, "Erreur", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void afficherPopupMessage(String message) {
+		JOptionPaneTheme.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
 }

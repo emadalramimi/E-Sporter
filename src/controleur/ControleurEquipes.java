@@ -6,18 +6,18 @@ import java.util.List;
 
 import javax.swing.JButton;
 
-import modele.ModeleEquipes;
+import modele.ModeleEquipe;
 import modele.metier.Equipe;
 import vue.VueEquipes;
 
 public class ControleurEquipes implements ActionListener {
 
 	private VueEquipes vue;
-	private ModeleEquipes modele;
+	private ModeleEquipe modele;
 	
 	public ControleurEquipes(VueEquipes vue) {
 		this.vue = vue;
-		this.modele = new ModeleEquipes();
+		this.modele = new ModeleEquipe();
 	}
 	
 	@Override
