@@ -35,7 +35,7 @@ public class VueAjoutEquipe extends JFrame {
 	private JLabel lblPays;
 	private JComboBox<String> cboxPays;
 	private JLabel lblWorldRancking;
-	private JTextFieldTheme txtWorldRancking;
+	private JTextFieldTheme txtWorldRanking;
 	private JLabel lblJoueurs;
 	private JTextField txtJoueur1;
 	private JTextField txtJoueur2;
@@ -92,14 +92,14 @@ public class VueAjoutEquipe extends JFrame {
 		gbc_lblNom.gridy = 1;
 		panelEquipe.add(lblNom, gbc_lblNom);
 		
-		textNom = new JTextFieldTheme();
+		txtNom = new JTextFieldTheme();
 		GridBagConstraints gbc_textNom = new GridBagConstraints();
 		gbc_textNom.insets = new Insets(0, 0, 20, 0);
 		gbc_textNom.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textNom.gridx = 0;
 		gbc_textNom.gridy = 2;
-		panelEquipe.add(textNom, gbc_textNom);
-		textNom.setColumns(10);
+		panelEquipe.add(txtNom, gbc_textNom);
+		txtNom.setColumns(10);
 		
 		lblPays = new JLabel("Pays de l'équipe");
 		lblPays.setForeground(Color.WHITE);
@@ -127,14 +127,14 @@ public class VueAjoutEquipe extends JFrame {
 		gbc_lblWorldRancking.gridy = 5;
 		panelEquipe.add(lblWorldRancking, gbc_lblWorldRancking);
 		
-		textWorldRancking = new JTextFieldTheme();
-		GridBagConstraints gbc_textWorldRancking = new GridBagConstraints();
-		gbc_textWorldRancking.insets = new Insets(0, 0, 5, 0);
-		gbc_textWorldRancking.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textWorldRancking.gridx = 0;
-		gbc_textWorldRancking.gridy = 6;
-		panelEquipe.add(textWorldRancking, gbc_textWorldRancking);
-		textWorldRancking.setColumns(10);
+		txtWorldRanking = new JTextFieldTheme();
+		GridBagConstraints gbc_textWorldRanking = new GridBagConstraints();
+		gbc_textWorldRanking.insets = new Insets(0, 0, 5, 0);
+		gbc_textWorldRanking.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textWorldRanking.gridx = 0;
+		gbc_textWorldRanking.gridy = 6;
+		panelEquipe.add(txtWorldRanking, gbc_textWorldRanking);
+		txtWorldRanking.setColumns(10);
 		
 		panelJoueurs = new JPanel();
 		panelJoueurs.setBackground(CharteGraphique.FOND);
@@ -233,15 +233,15 @@ public class VueAjoutEquipe extends JFrame {
 	}
 	
 	public String getNomEquipe() {
-		return this.textNom.getText();
+		return this.txtNom.getText();
 	}
 	
 	public String getPaysEquipe() {
 		return (String) this.cboxPays.getSelectedItem();
 	}
 	
-	public String getWorldRancking() {
-		return this.txtWorldRancking.getText();
+	public String getWorldRanking() {
+		return this.txtWorldRanking.getText();
 	}
 	
 	public List<String> getNomJoueurs() {
