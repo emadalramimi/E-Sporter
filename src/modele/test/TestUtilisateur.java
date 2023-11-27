@@ -106,4 +106,12 @@ private ModeleAdministrateur modele;
     	assertTrue(modele.getCompteCourant()==null);
     }
     
+    /*
+     * Test l'erreur IllegalArgumentException lorsqu'on essaie de se déconnecter alors que l'on n'était pas connecté
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testDeconnexionInvalide() throws IllegalArgumentException {
+    	modele.deconnecter();
+    }
+    
 }
