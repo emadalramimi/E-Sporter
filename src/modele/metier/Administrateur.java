@@ -102,6 +102,22 @@ public class Administrateur {
 	public void setMotDePasse(String motDePasse) {
 		this.motDePasse = motDePasse;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) { 
+			return false;
+		}
+		if (!(o instanceof Administrateur)) {
+			return false;
+		}
+		Administrateur admin = (Administrateur) o;
+		return this.idAdministrateur == admin.idAdministrateur 
+				&& this.nom == admin.nom
+				&& this.prenom == admin.prenom
+				&& this.identifiant == admin.identifiant
+				&& this.motDePasse == admin.motDePasse;
+	}
 
 	@Override
 	public String toString() {

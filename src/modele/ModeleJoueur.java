@@ -171,4 +171,3 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
     }
 	
 }
-
