@@ -4,8 +4,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import vue.theme.ButtonRenderer;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
+import vue.theme.JFrameTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
 
@@ -17,8 +19,10 @@ import java.util.Vector;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import controleur.ControleurEquipes;
 import modele.metier.Equipe;
@@ -82,7 +86,7 @@ public class VueEquipes extends JFrame {
 		// Création du modèle du tableau avec désactivation de l'édition
 		this.model = new DefaultTableModel(
 			new Object[][] {}, 
-			new String[] {"Nom", "Pays", "Classement", "World Ranking", "Modifier", "Supprimer"}
+			new String[] {"Nom", "Pays", "Classement", "World Ranking", "Actions"}
 		) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -90,9 +94,21 @@ public class VueEquipes extends JFrame {
 			}
 		};
 		
+		
+		
 		table = new JTableTheme();
+		table.setModel(model);
+		
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		int[] teamIds = new int[this.controleur.getEquipes().size()]; 
+		// Ajouter buttons dans la derniere colonne
+		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
+		buttonColumn.setCellRenderer(new ButtonRenderer(table, teamIds));
 		
 		this.model.setRowCount(0); // vider le tableau
+		
+		int i = 0;
 		//Entrée des données des équipe ainsi que l'option de modification et de suppression des équipes
 		for(Equipe equipe : this.controleur.getEquipes()) {
 			Vector<Object> rowData = new Vector<>();
@@ -100,13 +116,11 @@ public class VueEquipes extends JFrame {
 			rowData.add(equipe.getPays());
 			rowData.add(equipe.getClassement());
 			rowData.add(equipe.getWorldRanking());
-			rowData.add("BoutonModif");
-			rowData.add("BoutonDelete");
 			this.model.addRow(rowData);
+			teamIds[i++] = equipe.getIdEquipe();
 		}
 		
 		this.table.setModel(model);
-		
 		scrollPaneEquipes.setViewportView(table);
 	}
 	
@@ -118,5 +132,7 @@ public class VueEquipes extends JFrame {
             e.printStackTrace();
         }
 	}
+	
+	
 
 }
