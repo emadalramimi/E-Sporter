@@ -32,4 +32,13 @@ private ModeleAdministrateur modele;
     	assertTrue(modele.ajouter(admini));
     }
     
+    /*
+     * Test si la methode ajouter renvoie false lorsqu'il y a une erreur
+     */
+    @Test
+    public void testAjouterFalse() throws Exception, SQLException {
+    	 Administrateur adminToAdd = new Administrateur(1, "John", "Doe", "john.doe", "password");
+    	 assertFalse(modele.ajouter(adminToAdd));
+    }
+    
 }
