@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Spliterator;
@@ -13,74 +14,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-/**
- * Modèle joueur
- * @author Nassim Khoujane
- */
-public class Joueur implements DAO<Joueur, Integer> {
+import modele.metier.Joueur;
 
-	private int idJoueur;
-	private String pseudo;
-	private String idEquipe;
-	
-	/**
-	 * Construit un joueur
-	 * @param idJoueur	Clé primaire
-	 * @param pseudo	Pseudo
-	 */
-	public Joueur(int idJoueur, String pseudo, String idEquipe) {
-		this.idJoueur = idJoueur;
-		this.pseudo = pseudo;
-		this.idEquipe = idEquipe;
-	}
+public class ModeleJoueur implements DAO<Joueur, Integer> {
 
 	/**
-	 * @return Clé primaire
-	 */
-	public int getIdJoueur() {
-		return idJoueur;
-	}
-	
-	/**
-	 * Modifie la clé primaire
-	 * @param idJoueur clé primaire
-	 */
-	public void setIdJoueur(int idJoueur) {
-		this.idJoueur = idJoueur;
-	}
-
-	/**
-	 * @return Pseudo
-	 */
-	public String getPseudo() {
-		return pseudo;
-	}
-	
-	/**
-	 * Modifie le pseudo
-	 * @param pseudo
-	 */
-	public void setPseudo(String pseudo) {
-		this.pseudo = pseudo;
-	}
-	
-	/**
-	 * @return Clé étrangère équipe
-	 */
-	public String getEquipe() {
-		return this.getEquipe();
-	}
-	
-	/**
-	 * Modifie la clé étrangère équipe
-	 * @param idEquipe
-	 */
-	public void setIdEquipe(String idEquipe) {
-		this.idEquipe = idEquipe;
-	}
-
-	/**
-	 * @return Liste de tous les joueurs
+	 * @return Liste de tous les équipes
 	 */
 	@Override
 	public List<Joueur> getTout() throws Exception {
@@ -99,7 +38,7 @@ public class Joueur implements DAO<Joueur, Integer> {
                         action.accept(new Joueur(
                     		rs.getInt("idJoueur"),
                     		rs.getString("pseudo"),
-                    		rs.getString("idEquipe")
+                    		rs.getInt("idEquipe")
                         ));
                         return true;
                     } catch (SQLException e) {
@@ -118,7 +57,7 @@ public class Joueur implements DAO<Joueur, Integer> {
 	}
 
 	/**
-	 * @return Retourne un joueur depuis la BDD par sa clé primaire
+	 * @return Retourne une équipe depuis la BDD par sa clé primaire
 	 */
 	@Override
 	public Optional<Joueur> getParId(Integer... idJoueur) throws Exception {
@@ -127,13 +66,13 @@ public class Joueur implements DAO<Joueur, Integer> {
 		
 		ResultSet rs = ps.executeQuery();
 		
-		// Création du joueur s'il existe
+		// Création d'équipe si elle existe
 		Joueur joueur = null;
-		if(rs.first()) {
+		if(rs.next()) {
 			joueur = new Joueur(
 	    		rs.getInt("idJoueur"),
-	    		rs.getString("pseudo"),
-        		rs.getString("idEquipe")
+	    		rs.getString("nom"),
+	    		rs.getInt("idEquipe")
             );
 		}
 		
@@ -145,12 +84,12 @@ public class Joueur implements DAO<Joueur, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
-	public boolean ajouter(Joueur joueur) throws Exception {
+	public boolean ajouter(Joueur joueur) {
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into joueur values (?, ?, ?)");
-			ps.setInt(1, joueur.idJoueur);
-			ps.setString(2, joueur.pseudo);
-			ps.setString(3, joueur.idEquipe);
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into equipe values (?, ?, ?, ?, ?)");
+			ps.setInt(1, joueur.getIdJoueur());
+			ps.setString(2, joueur.getPseudo());
+			ps.setInt(3, joueur.getIdEquipe());
 			ps.execute();
 			return true;
 		} catch(SQLException e) {
@@ -166,9 +105,10 @@ public class Joueur implements DAO<Joueur, Integer> {
 	@Override
 	public boolean modifier(Joueur joueur) throws Exception {
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("update joueur set pseudo = ? where idJoueur = ?");
-			ps.setString(1, joueur.pseudo);
-			ps.setInt(2, joueur.idJoueur);
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("update joueur set pseudo = ?, idEquipe = ? where idJoueur = ?");
+			ps.setString(1, joueur.getPseudo());
+			ps.setInt(2, joueur.getIdEquipe());
+			ps.setInt(3, joueur.getIdJoueur());
 			ps.execute();
 			return true;
 		} catch(SQLException e) {
@@ -185,7 +125,7 @@ public class Joueur implements DAO<Joueur, Integer> {
 	public boolean supprimer(Joueur joueur) throws Exception {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from joueur where idJoueur = ?");
-			ps.setInt(1, joueur.idJoueur);
+			ps.setInt(1, joueur.getIdJoueur());
 			ps.execute();
 			return true;
 		} catch(SQLException e) {
@@ -194,9 +134,41 @@ public class Joueur implements DAO<Joueur, Integer> {
 		}
 	}
 
-	@Override
-	public String toString() {
-		return "Joueur [idJoueur=" + idJoueur + ", pseudo=" + pseudo + ", idEquipe=" + idEquipe + "]";
+	public static List<Joueur> getListeJoueursParId(int idEquipe) {
+		List<Joueur> joueurs = new ArrayList<>();
+		try {
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from joueur where idEquipe = ?");
+			ps.setInt(1, idEquipe);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			// Création de la liste des joueurs
+			while(rs.next()) {
+				joueurs.add(new Joueur(rs.getInt("idJoueur"), rs.getString("pseudo"), rs.getInt("idEquipe")));
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return joueurs;
 	}
+	
+	public int getNextValId() {
+        int nextVal = 0;
+        try {
+            PreparedStatement ps = BDD.getConnexion().prepareStatement("SELECT NEXTVAL('idEquipe')");
 
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                nextVal = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return nextVal;
+    }
+	
 }
+
