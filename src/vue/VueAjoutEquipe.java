@@ -31,11 +31,11 @@ public class VueAjoutEquipe extends JFrame {
 	private JPanel panelEquipe;
 	private JPanel panelJoueurs;
 	private JLabel lblNom;
-	private JTextField textNom;
+	private JTextField txtNom;
 	private JLabel lblPays;
 	private JComboBox<String> cboxPays;
 	private JLabel lblWorldRancking;
-	private JTextFieldTheme textWorldRancking;
+	private JTextFieldTheme txtWorldRancking;
 	private JLabel lblJoueurs;
 	private JTextField txtJoueur1;
 	private JTextField txtJoueur2;
@@ -238,6 +238,10 @@ public class VueAjoutEquipe extends JFrame {
 	
 	public String getPaysEquipe() {
 		return (String) this.cboxPays.getSelectedItem();
+	}
+	
+	public String getWorldRancking() {
+		return this.txtWorldRancking.getText();
 	}
 	
 	public List<String> getNomJoueurs() {
