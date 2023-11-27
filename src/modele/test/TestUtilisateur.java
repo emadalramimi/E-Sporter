@@ -87,4 +87,13 @@ private ModeleAdministrateur modele;
         modele.connecter("admin", "*admin");
     }
     
+    /*
+     * Test si la connexion fonctionne lorsqu'on rentre un identifiant et mot de passe valide
+     */
+    @Test
+    public void testConnexionValide() throws IllegalArgumentException, IdentifiantOuMdpIncorrectsException, RuntimeException {
+        modele.connecter("admin", "mdpadmin");
+        assertTrue(modele!=null);
+    }
+    
 }
