@@ -7,28 +7,29 @@ import javax.swing.border.EmptyBorder;
 import modele.metier.Pays;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
+import vue.theme.JOptionPaneTheme;
 import vue.theme.JTextFieldTheme;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.awt.Font;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 
 public class VueAjoutEquipe extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel panelEquipe;
 	private JPanel panelJoueurs;
-	private JLabel lblEquipe;
 	private JLabel lblNom;
 	private JTextField textNom;
 	private JLabel lblPays;
@@ -36,8 +37,8 @@ public class VueAjoutEquipe extends JFrame {
 	private JLabel lblJoueurs;
 	private JTextField txtJoueur1;
 	private JTextField txtJoueur2;
-	private JTextField textJoueur3;
-	private JTextField textJoueur4;
+	private JTextField txtJoueur3;
+	private JTextField txtJoueur4;
 	private JTextField txtJoueur5;
 	private JPanel panelAnnuler;
 	private JButton btnAnnuler;
@@ -157,23 +158,23 @@ public class VueAjoutEquipe extends JFrame {
 		panelJoueurs.add(txtJoueur2, gbc_txtJoueur2);
 		txtJoueur2.setColumns(10);
 		
-		textJoueur3 = new JTextFieldTheme();
-		GridBagConstraints gbc_textJoueur3 = new GridBagConstraints();
-		gbc_textJoueur3.insets = new Insets(0, 0, 5, 0);
-		gbc_textJoueur3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textJoueur3.gridx = 0;
-		gbc_textJoueur3.gridy = 3;
-		panelJoueurs.add(textJoueur3, gbc_textJoueur3);
-		textJoueur3.setColumns(10);
+		txtJoueur3 = new JTextFieldTheme();
+		GridBagConstraints gbc_txtJoueur3 = new GridBagConstraints();
+		gbc_txtJoueur3.insets = new Insets(0, 0, 5, 0);
+		gbc_txtJoueur3.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtJoueur3.gridx = 0;
+		gbc_txtJoueur3.gridy = 3;
+		panelJoueurs.add(txtJoueur3, gbc_txtJoueur3);
+		txtJoueur3.setColumns(10);
 		
-		textJoueur4 = new JTextFieldTheme();
-		GridBagConstraints gbc_textJoueur4 = new GridBagConstraints();
-		gbc_textJoueur4.insets = new Insets(0, 0, 5, 0);
-		gbc_textJoueur4.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textJoueur4.gridx = 0;
-		gbc_textJoueur4.gridy = 4;
-		panelJoueurs.add(textJoueur4, gbc_textJoueur4);
-		textJoueur4.setColumns(10);
+		txtJoueur4 = new JTextFieldTheme();
+		GridBagConstraints gbc_txtJoueur4 = new GridBagConstraints();
+		gbc_txtJoueur4.insets = new Insets(0, 0, 5, 0);
+		gbc_txtJoueur4.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtJoueur4.gridx = 0;
+		gbc_txtJoueur4.gridy = 4;
+		panelJoueurs.add(txtJoueur4, gbc_txtJoueur4);
+		txtJoueur4.setColumns(10);
 		
 		txtJoueur5 = new JTextFieldTheme();
 		GridBagConstraints gbc_txtJoueur5 = new GridBagConstraints();
@@ -205,6 +206,34 @@ public class VueAjoutEquipe extends JFrame {
 		
 		btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
 		panelAjouter.add(btnAjouter);
+	}
+	
+	public void fermerFenetre() {
+		this.dispose();
+	}
+	
+	public String getNomEquipe() {
+		return this.textNom.getText();
+	}
+	
+	public String getPaysEquipe() {
+		return (String) this.cboxPays.getSelectedItem();
+	}
+	
+	public List<String> getNomJoueurs() {
+		List<String> noms = new ArrayList<>();
+		
+		noms.add(this.txtJoueur1.getText());
+		noms.add(this.txtJoueur2.getText());
+		noms.add(this.txtJoueur3.getText());
+		noms.add(this.txtJoueur4.getText());
+		noms.add(this.txtJoueur5.getText());
+		
+		return noms;
+	}
+	
+	public void afficherPopupErreur(String message) {
+		JOptionPaneTheme.showMessageDialog(this, message, "Erreur", JOptionPane.ERROR_MESSAGE);
 	}
 
 }
