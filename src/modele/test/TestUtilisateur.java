@@ -96,4 +96,14 @@ private ModeleAdministrateur modele;
         assertTrue(modele!=null);
     }
     
+    /*
+     * Test si le compte courant de l'admin est bien null lorsqu'il est déconnecté
+     */
+    @Test
+    public void testDeconnexionValide() throws IllegalArgumentException, IdentifiantOuMdpIncorrectsException, RuntimeException {
+    	modele.connecter("admin", "mdpadmin");
+    	modele.deconnecter();
+    	assertTrue(modele.getCompteCourant()==null);
+    }
+    
 }
