@@ -1,14 +1,24 @@
 package modele.test;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
+import java.sql.SQLException;
+
+import org.junit.Before;
 import org.junit.Test;
 
-class TestUtilisateur {
+import modele.ModeleAdministrateur;
+import modele.exception.IdentifiantOuMdpIncorrectsException;
+import modele.metier.Administrateur;
 
-	@Test
-	void test() {
-		fail("Not yet implemented");
-	}
+public class TestUtilisateur {
 
+private ModeleAdministrateur modele;
+    
+    @Before
+    public void setUp() {
+        this.modele = new ModeleAdministrateur();
+        if (modele.getCompteCourant() != null)
+            this.modele.deconnecter();
+    }
 }
