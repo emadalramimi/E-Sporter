@@ -7,7 +7,6 @@ import javax.swing.border.EmptyBorder;
 import vue.theme.ButtonRenderer;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
-import vue.theme.JFrameTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
 
@@ -94,8 +93,6 @@ public class VueEquipes extends JFrame {
 			}
 		};
 		
-		
-		
 		table = new JTableTheme();
 		table.setModel(model);
 		
@@ -104,7 +101,7 @@ public class VueEquipes extends JFrame {
 		int[] teamIds = new int[this.controleur.getEquipes().size()]; 
 		// Ajouter buttons dans la derniere colonne
 		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
-		buttonColumn.setCellRenderer(new ButtonRenderer(table, teamIds));
+		buttonColumn.setCellRenderer(new ButtonRenderer(table, teamIds, controleur));
 		
 		this.model.setRowCount(0); // vider le tableau
 		
@@ -133,6 +130,6 @@ public class VueEquipes extends JFrame {
         }
 	}
 	
+	// TODO afficher fenetre joueurs ici
 	
-
 }

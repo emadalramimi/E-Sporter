@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import modele.ModeleEquipe;
 import modele.metier.Equipe;
 import vue.VueEquipes;
+import vue.theme.JButtonTableau;
 
 public class ControleurEquipes implements ActionListener {
 
@@ -22,11 +23,30 @@ public class ControleurEquipes implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JButton bouton = (JButton) e.getSource();
-		
-		if(bouton.getText() == "Ajouter") {
-			this.vue.afficherFenetreAjoutEquipe();
+		System.out.println("lol2");
+		if(e.getSource() instanceof JButtonTableau) {
+			System.out.println("lol");
+			JButtonTableau bouton = (JButtonTableau) e.getSource();
+			
+			switch(bouton.getType()) {
+			case VOIR:
+				System.out.println("voir");
+				break;
+			case MODIFIER:
+				System.out.println("modifier");
+				break;
+			case SUPPRIMER:
+				System.out.println("supprimer");
+				break;
+			}
+		} else {
+			JButton bouton = (JButton) e.getSource();
+			
+			if(bouton.getText() == "Ajouter") {
+				this.vue.afficherFenetreAjoutEquipe();
+			}
 		}
+		
 	}
 	
 	public List<Equipe> getEquipes(){
