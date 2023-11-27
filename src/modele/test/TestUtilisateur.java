@@ -41,4 +41,15 @@ private ModeleAdministrateur modele;
     	 assertFalse(modele.ajouter(adminToAdd));
     }
     
+    /*
+     * Test si la methode modifier renvoie true
+     */
+    @Test
+    public void testModifierAdministrateur() throws Exception {
+    	Administrateur adminToAdd = new Administrateur(7, "John", "Doe", "john.doe", "password");
+   	 	modele.ajouter(adminToAdd);
+   	 	assertTrue(modele.modifier(new Administrateur(2, "Admin", "Admin", "admin", "mdpadmin")));
+   	 	modele.supprimer(new Administrateur(2, "Admin", "Admin", "admin", "mdpadmin"));
+    }
+    
 }
