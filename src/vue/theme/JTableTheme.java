@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
@@ -65,6 +66,7 @@ public class JTableTheme extends JTable {
 			} else {
 				this.setFont(CharteGraphique.getPolice(16, false));
 			}
+
 			
 			return component;
 		}

@@ -49,13 +49,15 @@ public class VueConnexion extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 484, 629);
+		
+		// contentPane, un panel contenant tous les éléments de la fenêtre
 		contentPane = new JPanel();
 		contentPane.setBackground(CharteGraphique.FOND);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
+		// panelNord, un panel contenant le logo de la société E-sporter
 		panelNord = new JPanel();
 		FlowLayout fl_panelNord = (FlowLayout) panelNord.getLayout();
 		fl_panelNord.setAlignOnBaseline(true);
@@ -64,11 +66,13 @@ public class VueConnexion extends JFrame {
 		panelNord.setBackground(CharteGraphique.FOND);
 		contentPane.add(panelNord, BorderLayout.NORTH);
 		
+		// lblLogo, le logo de la société E-sporter
 		lblLogo = new JLabel("");
 		lblLogo.setIcon(new ImageIcon(VueConnexion.class.getResource("/images/logo.png")));
 		lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
 		panelNord.add(lblLogo);
 		
+		// panelCentre, un panel contenant les moyens de connexion
 		JPanel panelCentre = new JPanel();
 		panelCentre.setBackground(CharteGraphique.FOND);
 		contentPane.add(panelCentre, BorderLayout.CENTER);
@@ -79,6 +83,7 @@ public class VueConnexion extends JFrame {
 		gbl_panelCentre.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panelCentre.setLayout(gbl_panelCentre);
 		
+		// panelChamps, un panel contenant les champs pour se connecter ainsi que leur intitulé
 		panelChamps = new JPanel();
 		panelChamps.setBackground(new Color(7, 10, 20));
 		GridBagConstraints gbc_panelChamps = new GridBagConstraints();
@@ -104,6 +109,7 @@ public class VueConnexion extends JFrame {
 		gbc_lblIdentifiant.gridy = 0;
 		panelChamps.add(lblIdentifiant, gbc_lblIdentifiant);
 		
+		// textIdentifiant, un JTextFieldTheme permettant d'entrer son identifiant
 		textIdentifiant = new JTextFieldTheme();
 		textIdentifiant.addKeyListener(controleur);
 		GridBagConstraints gbc_textIdentifiant = new GridBagConstraints();
@@ -123,6 +129,7 @@ public class VueConnexion extends JFrame {
 		gbc_lblMotDePasse.gridy = 2;
 		panelChamps.add(lblMotDePasse, gbc_lblMotDePasse);
 		
+		// textIdentifiant, un JPasswordFieldTheme permettant d'entrer son mot de passe
 		motDePasse = new JPasswordFieldTheme();
 		motDePasse.addKeyListener(controleur);
 		GridBagConstraints gbc_motDePasse = new GridBagConstraints();
@@ -132,6 +139,7 @@ public class VueConnexion extends JFrame {
 		gbc_motDePasse.gridy = 3;
 		panelChamps.add(motDePasse, gbc_motDePasse);
 		
+		// chckbxAfficherMotDePasse, un JCheckBox qui permet d'afficher le mot de passe puis de le cacher
 		chckbxAfficherMotDePasse = new JCheckBox("Afficher le mot de passe");
 		chckbxAfficherMotDePasse.addActionListener(controleur);
 		chckbxAfficherMotDePasse.setForeground(Color.WHITE);
@@ -143,6 +151,7 @@ public class VueConnexion extends JFrame {
 		gbc_chckbxAfficherMotDePasse.gridy = 4;
 		panelChamps.add(chckbxAfficherMotDePasse, gbc_chckbxAfficherMotDePasse);
 		
+		// panelBoutons, un JPanel contenant les boutons de connexion et pour quitter l'application
 		panelBoutons = new JPanel();
 		panelBoutons.setBackground(new Color(7, 10, 20));
 		GridBagConstraints gbc_panelBoutons = new GridBagConstraints();
@@ -153,23 +162,28 @@ public class VueConnexion extends JFrame {
 		panelCentre.add(panelBoutons, gbc_panelBoutons);
 		panelBoutons.setLayout(new GridLayout(0, 2, 15, 0));
 		
+		// btnQuitter, un JButtonTheme qui permet de fermer la fenêtre
 		btnQuitter = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Quitter");
 		btnQuitter.addActionListener(controleur);
 		panelBoutons.add(btnQuitter);
 		
+		// btnConnexion, un JButtonTheme qui permet l'accès à l'application si l'identifiant et le mot de passe sont confirmés
 		btnConnexion = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Connexion");
 		btnConnexion.addActionListener(controleur);
 		panelBoutons.add(btnConnexion);
 	}
 	
+	// getIdentifiant, un getter qui renvoie l'identifiant entré sous forme de String
 	public String getIdentifiant() {
 		return this.textIdentifiant.getText();
 	}
 	
+	// getMotDePasse, un getter qui renvoie le mot de passe entré sous forme de String
 	public String getMotDePasse() {
 		return String.valueOf(motDePasse.getPassword());
 	}
 	
+	// Une procédure qui permet l'affichage du mot de passe, sinon le cache
 	public void affichageMotDePasse(boolean affiche) {
 	    if (affiche) {
 	        motDePasse.setEchoChar((char) 0);
@@ -182,6 +196,7 @@ public class VueConnexion extends JFrame {
 		return e.getSource() instanceof JCheckBox && ((JCheckBox) e.getSource()).getText() == "Afficher le mot de passe";
 	}
 	
+	// Affiche un pop-up si l'identifiant ou le mot de passe n'est pas connu
 	public void afficherPopupErreur(String message) {
 		JOptionPaneTheme.showMessageDialog(this, message, "Erreur", JOptionPane.ERROR_MESSAGE);
 	}

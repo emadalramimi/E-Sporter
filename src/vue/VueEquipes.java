@@ -29,6 +29,12 @@ public class VueEquipes extends JFrame {
 	private DefaultTableModel model;
 	
 	private ControleurEquipes controleur;
+	private JButtonTheme btnAjouter;
+	private JPanel panel;
+	private JPanel panelLabelEquipe;
+	private JLabel lblEquipes;
+	private JPanel panelAjouter;
+	private JScrollPaneTheme scrollPaneEquipes;
 	
 	/**
 	 * Create the frame.
@@ -36,24 +42,27 @@ public class VueEquipes extends JFrame {
 	public void afficherVueEquipe(JPanel contentPane) {
 		this.controleur = new ControleurEquipes(this);
 		
-		JPanel panel = new JPanel();
+		// panel contient tous les éléments de la page
+		panel = new JPanel();
 		panel.setBackground(CharteGraphique.FOND);
 		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout(0, 20));
 		
-		JPanel panelLabelEquipe = new JPanel();
+		// panelLabelEquipe, le panel contenant le label lblEquipes
+		panelLabelEquipe = new JPanel();
 		panel.add(panelLabelEquipe, BorderLayout.NORTH);
 		panelLabelEquipe.setBackground(CharteGraphique.FOND);
 		panelLabelEquipe.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JLabel lblEquipes = new JLabel("Equipes");
+		lblEquipes = new JLabel("Equipes");
 		lblEquipes.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEquipes.setFont(CharteGraphique.getPolice(30, true));
 		lblEquipes.setForeground(CharteGraphique.TEXTE);
 		panelLabelEquipe.add(lblEquipes);
 		
-		JPanel panelAjouter = new JPanel();
+		// panelAjouter, le panel contenant le bouton btnAjouter
+		panelAjouter = new JPanel();
 		panelAjouter.setBackground(CharteGraphique.FOND);
 		FlowLayout flowLayout = (FlowLayout) panelAjouter.getLayout();
 		flowLayout.setVgap(0);
@@ -61,12 +70,13 @@ public class VueEquipes extends JFrame {
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		panelLabelEquipe.add(panelAjouter);
 		
-		JButtonTheme btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
+		// btnAjouter, un bouton pour permettre l'ajout d'une équipe
+		btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
 		btnAjouter.addActionListener(controleur);
 		btnAjouter.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelAjouter.add(btnAjouter);
 		
-		JScrollPaneTheme scrollPaneEquipes = new JScrollPaneTheme();
+		scrollPaneEquipes = new JScrollPaneTheme();
 		panel.add(scrollPaneEquipes);
 		
 		// Création du modèle du tableau avec désactivation de l'édition
@@ -83,6 +93,7 @@ public class VueEquipes extends JFrame {
 		table = new JTableTheme();
 		
 		this.model.setRowCount(0); // vider le tableau
+		//Entrée des données des équipe ainsi que l'option de modification et de suppression des équipes
 		for(Equipe equipe : this.controleur.getEquipes()) {
 			Vector<Object> rowData = new Vector<>();
 			rowData.add(equipe.getNom());
@@ -90,7 +101,7 @@ public class VueEquipes extends JFrame {
 			rowData.add(equipe.getClassement());
 			rowData.add(equipe.getWorldRanking());
 			rowData.add("BoutonModif");
-			rowData.add("BoutonDelete (me rend fou)");
+			rowData.add("BoutonDelete");
 			this.model.addRow(rowData);
 		}
 		
