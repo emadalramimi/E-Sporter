@@ -34,6 +34,8 @@ public class VueAjoutEquipe extends JFrame {
 	private JTextField textNom;
 	private JLabel lblPays;
 	private JComboBox<String> cboxPays;
+	private JLabel lblWorldRancking;
+	private JTextFieldTheme textWorldRancking;
 	private JLabel lblJoueurs;
 	private JTextField txtJoueur1;
 	private JTextField txtJoueur2;
@@ -92,7 +94,7 @@ public class VueAjoutEquipe extends JFrame {
 		
 		textNom = new JTextFieldTheme();
 		GridBagConstraints gbc_textNom = new GridBagConstraints();
-		gbc_textNom.insets = new Insets(0, 0, 5, 0);
+		gbc_textNom.insets = new Insets(0, 0, 20, 0);
 		gbc_textNom.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textNom.gridx = 0;
 		gbc_textNom.gridy = 2;
@@ -110,11 +112,29 @@ public class VueAjoutEquipe extends JFrame {
 		
 		cboxPays = new JComboBox<String>(Pays.getTout());
 		GridBagConstraints gbc_txtEquipe = new GridBagConstraints();
-		gbc_txtEquipe.insets = new Insets(0, 0, 5, 0);
+		gbc_txtEquipe.insets = new Insets(0, 0, 20, 0);
 		gbc_txtEquipe.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtEquipe.gridx = 0;
 		gbc_txtEquipe.gridy = 4;
 		panelEquipe.add(cboxPays, gbc_txtEquipe);
+		
+		lblWorldRancking = new JLabel("World Ranking");
+		lblWorldRancking.setForeground(Color.WHITE);
+		lblWorldRancking.setFont(CharteGraphique.getPolice(19, true));
+		GridBagConstraints gbc_lblWorldRancking = new GridBagConstraints();
+		gbc_lblWorldRancking.insets = new Insets(0, 0, 5, 0);
+		gbc_lblWorldRancking.gridx = 0;
+		gbc_lblWorldRancking.gridy = 5;
+		panelEquipe.add(lblWorldRancking, gbc_lblWorldRancking);
+		
+		textWorldRancking = new JTextFieldTheme();
+		GridBagConstraints gbc_textWorldRancking = new GridBagConstraints();
+		gbc_textWorldRancking.insets = new Insets(0, 0, 5, 0);
+		gbc_textWorldRancking.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textWorldRancking.gridx = 0;
+		gbc_textWorldRancking.gridy = 6;
+		panelEquipe.add(textWorldRancking, gbc_textWorldRancking);
+		textWorldRancking.setColumns(10);
 		
 		panelJoueurs = new JPanel();
 		panelJoueurs.setBackground(CharteGraphique.FOND);
