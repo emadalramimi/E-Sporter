@@ -3,7 +3,6 @@ package controleur;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -33,28 +32,37 @@ public class ControleurAjoutEquipe implements ActionListener {
 		if(bouton.getText() == "Valider") {
 			String nom = vue.getNomEquipe();
 			String pays = vue.getPaysEquipe();
+			
 			List<String> nomsJoueurs = vue.getNomJoueurs();
 			
-			if(nom == null || pays == null || nomsJoueurs.size() != 5) {
+			if(nom.isEmpty() || pays.isEmpty() || nomsJoueurs.size() != 5) {
 				vue.afficherPopupErreur("Veuillez remplir tous les champs.");
-			} else {
-				int idEquipe = modeleEquipe.getNextValId();
-				
-				List<Joueur> joueurs = new ArrayList<>();
-				
-				for(String nomJoueur: nomsJoueurs) {
-					joueurs.add(new Joueur(this.modeleJoueur.getNextValId(), nomJoueur, idEquipe));
-				}
-				
-				Equipe equipe = new Equipe(idEquipe, nom, pays, 1000, 1000, String.valueOf(LocalDate.now().getYear()), joueurs);
-				
-				this.modeleEquipe.ajouter(equipe);
-				for(Joueur joueur : joueurs) {
-					this.modeleJoueur.ajouter(joueur);
-				}
-				
-				System.out.println("ok");
+				throw new IllegalArgumentException("Tous les champs ne sont pas remplis.");
 			}
+			
+			int worldRanking = 1000;
+			try {
+				if(vue.getWorldRanking() != null) {
+					worldRanking = vue.getWorldRanking();
+				}
+			} catch(NumberFormatException err) {
+				this.vue.afficherPopupErreur("Le World Ranking doit être un entier.");
+				throw err;
+			}
+			
+			int idEquipe = this.modeleEquipe.getNextValId();
+			
+			Equipe equipe = new Equipe(idEquipe, nom, pays, 1000, worldRanking, String.valueOf(LocalDate.now().getYear()));
+			modeleEquipe.ajouter(equipe);
+			
+			for(String nomJoueur: nomsJoueurs) {
+				int idJoueur = this.modeleJoueur.getNextValId();
+				Joueur joueur = new Joueur(idJoueur, nomJoueur, idEquipe);
+				this.modeleJoueur.ajouter(joueur);
+			}
+			
+			this.vue.afficherPopupMessage("L'équipe a bien été ajoutée.");
+			this.vue.viderChamps();
 		} else if(bouton.getText() == "Annuler") {
 			vue.fermerFenetre();
 		}
