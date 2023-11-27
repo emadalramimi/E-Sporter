@@ -240,8 +240,13 @@ public class VueAjoutEquipe extends JFrame {
 		return (String) this.cboxPays.getSelectedItem();
 	}
 	
-	public String getWorldRanking() {
-		return this.txtWorldRanking.getText();
+	public Integer getWorldRanking() {
+		try {	
+			return Integer.parseInt(this.txtWorldRanking.getText());
+		} catch (NumberFormatException e) {
+	        System.err.println("Invalid integer format");
+	    }
+		return null;
 	}
 	
 	public List<String> getNomJoueurs() {
@@ -259,5 +264,4 @@ public class VueAjoutEquipe extends JFrame {
 	public void afficherPopupErreur(String message) {
 		JOptionPaneTheme.showMessageDialog(this, message, "Erreur", JOptionPane.ERROR_MESSAGE);
 	}
-
 }
