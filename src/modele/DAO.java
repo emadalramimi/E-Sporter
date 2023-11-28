@@ -7,6 +7,7 @@ public interface DAO<T, T1> {
 
 	List<T> getTout() throws Exception;
 	
+	@SuppressWarnings("unchecked")
 	Optional<T> getParId(T1... id) throws Exception;
 
     boolean ajouter(T valeur) throws Exception;

@@ -15,8 +15,9 @@ public class VueJoueurs extends JFrame {
     private JPanel contentPane;
 
     public VueJoueurs(List<Joueur> joueurs) {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 200, 200);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setTitle("Liste des joueurs");
+        setBounds(100, 100, 400, 200);
         contentPane = new JPanel();
         contentPane.setBorder(null);
         setContentPane(contentPane);
@@ -25,12 +26,12 @@ public class VueJoueurs extends JFrame {
         JScrollPane scrollPane = new JScrollPane();
         contentPane.add(scrollPane);
 
-        DefaultListModel<Joueur> listModel = new DefaultListModel<>();
+        DefaultListModel<String> listModel = new DefaultListModel<>();
 
-        JList<Joueur> list = new JList<>(listModel);
+        JList<String> list = new JList<>(listModel);
 
         for (Joueur joueur : joueurs) {
-            listModel.addElement(joueur);
+            listModel.addElement(joueur.getPseudo());
         }
 
         scrollPane.setViewportView(list);

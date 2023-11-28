@@ -7,30 +7,31 @@ import java.util.List;
 import javax.swing.JButton;
 
 import modele.ModeleEquipe;
+import modele.ModeleJoueur;
 import modele.metier.Equipe;
 import vue.VueEquipes;
-import vue.theme.JButtonTableau;
+import vue.theme.JButtonTable;
 
 public class ControleurEquipes implements ActionListener {
 
 	private VueEquipes vue;
-	private ModeleEquipe modele;
+	private ModeleEquipe modeleEquipe;
+	private ModeleJoueur modeleJoueur;
 	
 	public ControleurEquipes(VueEquipes vue) {
 		this.vue = vue;
-		this.modele = new ModeleEquipe();
+		this.modeleEquipe = new ModeleEquipe();
+		this.modeleJoueur = new ModeleJoueur();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("lol2");
-		if(e.getSource() instanceof JButtonTableau) {
-			System.out.println("lol");
-			JButtonTableau bouton = (JButtonTableau) e.getSource();
-			
+		if(e.getSource() instanceof JButtonTable) {
+			JButtonTable bouton = (JButtonTable) e.getSource();
+			int idEquipe = bouton.getIdElement();
 			switch(bouton.getType()) {
 			case VOIR:
-				System.out.println("voir");
+				this.vue.afficherVueJoueurs(this.modeleJoueur.getListeJoueursParId(idEquipe));
 				break;
 			case MODIFIER:
 				System.out.println("modifier");
@@ -51,9 +52,8 @@ public class ControleurEquipes implements ActionListener {
 	
 	public List<Equipe> getEquipes(){
 		try {
-			return this.modele.getTout();
+			return this.modeleEquipe.getTout();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

@@ -6,9 +6,10 @@ import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 public class JTableTheme extends JTable {
 
@@ -27,6 +28,13 @@ public class JTableTheme extends JTable {
 		
 		// Pour qu'une seule ligne à la fois soit sélectionnée
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		// Empêcher le redimensionnement des colonnes
+		TableColumnModel columnModel = this.getColumnModel();
+	    for (int i = 0; i < columnModel.getColumnCount(); i++) {
+	        TableColumn column = columnModel.getColumn(i);
+	        column.setResizable(false);
+	    }
 	}
 	
 	/**
@@ -44,6 +52,7 @@ public class JTableTheme extends JTable {
 			// Définir la hauteur de la rangée de titre
 			this.setPreferredSize(new Dimension(this.getWidth(), 50));
 			
+			// Couleur du texte
 			this.setForeground(CharteGraphique.TEXTE);
 			
 			// Couleur de fond des cellules alternantes
@@ -67,7 +76,6 @@ public class JTableTheme extends JTable {
 				this.setFont(CharteGraphique.getPolice(16, false));
 			}
 
-			
 			return component;
 		}
 	}

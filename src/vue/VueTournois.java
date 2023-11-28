@@ -8,7 +8,6 @@ import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
-import vue.theme.ButtonRenderer;
 
 import java.awt.BorderLayout;
 
@@ -20,7 +19,6 @@ import java.awt.FlowLayout;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 public class VueTournois extends JFrame {
 	private JTable table;
@@ -74,10 +72,6 @@ public class VueTournois extends JFrame {
 		
 		table = new JTableTheme();
 		table.setModel(model);
-		int[] tor = new int[6];
-		// Ajouter buttons dans la derniere colonne
-		//TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
-        //buttonColumn.setCellRenderer(new ButtonRenderer(table, tor, controleur));
 		
 		/**
 		 * Remplir avec données d'exemple

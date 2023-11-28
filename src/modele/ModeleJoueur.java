@@ -134,7 +134,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 		}
 	}
 
-	public static List<Joueur> getListeJoueursParId(int idEquipe) {
+	public List<Joueur> getListeJoueursParId(int idEquipe) {
 		List<Joueur> joueurs = new ArrayList<>();
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from joueur where idEquipe = ?");

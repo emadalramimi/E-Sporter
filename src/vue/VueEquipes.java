@@ -4,8 +4,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import vue.theme.ButtonRenderer;
+import vue.theme.TableButtonsPanel;
 import vue.theme.CharteGraphique;
+import vue.theme.TableButtonsCellEditor;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
@@ -14,30 +15,32 @@ import java.awt.BorderLayout;
 
 import javax.swing.JLabel;
 
+import java.util.List;
 import java.util.Vector;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import controleur.ControleurEquipes;
 import modele.metier.Equipe;
+import modele.metier.Joueur;
 
 public class VueEquipes extends JFrame {
 	
 	private JTable table;
 	private DefaultTableModel model;
-	
-	private ControleurEquipes controleur;
 	private JButtonTheme btnAjouter;
 	private JPanel panel;
 	private JPanel panelLabelEquipe;
 	private JLabel lblEquipes;
 	private JPanel panelAjouter;
 	private JScrollPaneTheme scrollPaneEquipes;
+
+	private ControleurEquipes controleur;
+	private VueAjoutEquipe vueAjoutEquipe;
 	
 	/**
 	 * Create the frame.
@@ -85,51 +88,69 @@ public class VueEquipes extends JFrame {
 		// Création du modèle du tableau avec désactivation de l'édition
 		this.model = new DefaultTableModel(
 			new Object[][] {}, 
-			new String[] {"Nom", "Pays", "Classement", "World Ranking", "Actions"}
+			new String[] {"ID", "Nom", "Pays", "Classement", "World Ranking", "Actions"}
 		) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				return false;
+				if(column != table.getColumnCount() - 1) {
+					return false;
+				}
+				return true;
 			}
 		};
 		
 		table = new JTableTheme();
 		table.setModel(model);
 		
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		int[] teamIds = new int[this.controleur.getEquipes().size()]; 
-		// Ajouter buttons dans la derniere colonne
-		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
-		buttonColumn.setCellRenderer(new ButtonRenderer(table, teamIds, controleur));
-		
 		this.model.setRowCount(0); // vider le tableau
 		
-		int i = 0;
 		//Entrée des données des équipe ainsi que l'option de modification et de suppression des équipes
-		for(Equipe equipe : this.controleur.getEquipes()) {
-			Vector<Object> rowData = new Vector<>();
-			rowData.add(equipe.getNom());
-			rowData.add(equipe.getPays());
-			rowData.add(equipe.getClassement());
-			rowData.add(equipe.getWorldRanking());
-			this.model.addRow(rowData);
-			teamIds[i++] = equipe.getIdEquipe();
+		List<Equipe> equipes = this.controleur.getEquipes();
+		for(Equipe equipe : equipes) {
+		    Vector<Object> rowData = new Vector<>();
+		    rowData.add(equipe.getIdEquipe());
+		    rowData.add(equipe.getNom());
+		    rowData.add(equipe.getPays());
+		    rowData.add(equipe.getClassement());
+		    rowData.add(equipe.getWorldRanking());
+		    this.model.addRow(rowData);
 		}
+
+		// Ajouter buttons dans la derniere colonne
+		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
+		buttonColumn.setCellRenderer(new TableButtonsPanel(table, controleur, 0));
+		buttonColumn.setCellEditor(new TableButtonsCellEditor(controleur));
+		
+		// Masquage de la colonne ID
+		TableColumn idColumn = table.getColumnModel().getColumn(0);
+		idColumn.setMinWidth(1);
+		idColumn.setMaxWidth(1);
+		idColumn.setWidth(1);
+		idColumn.setPreferredWidth(1);
 		
 		this.table.setModel(model);
+		
 		scrollPaneEquipes.setViewportView(table);
 	}
 	
 	public void afficherFenetreAjoutEquipe() {
+        if (vueAjoutEquipe == null) {
+        	vueAjoutEquipe = new VueAjoutEquipe();
+        	vueAjoutEquipe.setLocationRelativeTo(this);
+        	vueAjoutEquipe.setVisible(true);
+        } else {
+        	vueAjoutEquipe.toFront();
+        }
+    }
+	
+	public void afficherVueJoueurs(List<Joueur> joueurs) {
 		try {
-            VueAjoutEquipe frame = new VueAjoutEquipe();
+			VueJoueurs frame = new VueJoueurs(joueurs);
+			frame.setLocationRelativeTo(this);
             frame.setVisible(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
 	}
-	
-	// TODO afficher fenetre joueurs ici
 	
 }

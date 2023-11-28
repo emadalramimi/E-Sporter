@@ -16,6 +16,12 @@ import java.util.stream.StreamSupport;
 import modele.metier.Equipe;
 
 public class ModeleEquipe implements DAO<Equipe, Integer> {
+	
+	private ModeleJoueur modeleJoueur;
+	
+	public ModeleEquipe() {
+		this.modeleJoueur = new ModeleJoueur();
+	}
 
 	/**
 	 * @return Liste de tous les équipes
@@ -41,7 +47,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
                     		rs.getInt("classement"),
                     		rs.getInt("worldRanking"),
                     		rs.getString("saison"),
-                    		ModeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))
+                    		ModeleEquipe.this.modeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))
                         ));
                         return true;
                     } catch (SQLException e) {
@@ -79,7 +85,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 	    		rs.getInt("classement"),
 	    		rs.getInt("worldRanking"),
 	    		rs.getString("saison"),
-	    		ModeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))
+	    		ModeleEquipe.this.modeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))
             );
 		}
 		

@@ -9,23 +9,18 @@ import vue.VueTournois;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class ButtonRenderer extends JPanel implements TableCellRenderer {
+public class TableButtonsPanel extends JPanel implements TableCellRenderer {
 
-    private JButtonTableau button1;
-    private JButtonTableau button2;
-    private JButtonTableau button3;
-    private JTable table;
-    private int[] teamIds;
+    private JButtonTable button1;
+    private JButtonTable button2;
+    private JButtonTable button3;
 
-    public ButtonRenderer(JTable table, int[] teamIds, ActionListener controleur) {
-        setLayout(new FlowLayout(FlowLayout.CENTER, 5, 2));
-
-        this.table = table;
-        this.teamIds = teamIds;
-
-        button1 = new JButtonTableau(JButtonTableau.Type.VOIR);
-        button2 = new JButtonTableau(JButtonTableau.Type.MODIFIER);
-        button3 = new JButtonTableau(JButtonTableau.Type.SUPPRIMER);
+    public TableButtonsPanel(JTable table, ActionListener controleur, int row) {
+    	setLayout(new FlowLayout(FlowLayout.CENTER, 5, 2));
+        
+        button1 = new JButtonTable(JButtonTable.Type.VOIR, row);
+        button2 = new JButtonTable(JButtonTable.Type.MODIFIER, row);
+        button3 = new JButtonTable(JButtonTable.Type.SUPPRIMER, row);
         setBackground(CharteGraphique.FOND);
 
         button1.setBackground(CharteGraphique.FOND);
@@ -43,6 +38,7 @@ public class ButtonRenderer extends JPanel implements TableCellRenderer {
 
         setBorder(BorderFactory.createLineBorder(CharteGraphique.BORDURE));
 
+        // TODO PASSER EN FRANCAIS
         button1.setIcon(new ImageIcon(VueTournois.class.getResource("/images/eye.png")));
         button2.setIcon(new ImageIcon(VueTournois.class.getResource("/images/pen.png")));
         button3.setIcon(new ImageIcon(VueTournois.class.getResource("/images/trash.png")));
@@ -57,9 +53,8 @@ public class ButtonRenderer extends JPanel implements TableCellRenderer {
     }
 
     @Override
-    public Component getTableCellRendererComponent(
-            JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        if (row % 2 == 0) {
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    	if (row % 2 == 0) {
             setBackground(CharteGraphique.FOND_SECONDAIRE);
             button1.setBackground(CharteGraphique.FOND_SECONDAIRE);
             button2.setBackground(CharteGraphique.FOND_SECONDAIRE);
