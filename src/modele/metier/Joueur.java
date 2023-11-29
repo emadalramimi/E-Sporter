@@ -20,6 +20,10 @@ public class Joueur {
 		this.pseudo = pseudo;
 		this.idEquipe = idEquipe;
 	}
+	
+	public Joueur(String pseudo) {
+		this.pseudo = pseudo;
+	}
 
 	/**
 	 * @return Clé primaire
@@ -69,6 +73,13 @@ public class Joueur {
 	@Override
 	public String toString() {
 		return "Joueur [idJoueur=" + idJoueur + ", pseudo=" + pseudo + ", idEquipe=" + idEquipe + "]";
+	}
+	
+	public boolean equals(Object o) {
+		if(o == null || !(o instanceof Joueur)) {
+			return false;
+		}
+		return this.pseudo == ((Joueur) o).pseudo;
 	}
 
 }
