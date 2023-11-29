@@ -4,7 +4,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import controleur.ControleurAjoutEquipe;
+import controleur.ControleurSaisieEquipe;
+import modele.metier.Equipe;
+import modele.metier.Joueur;
 import modele.metier.Pays;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
@@ -22,11 +24,12 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
-public class VueAjoutEquipe extends JFrame {
+public class VueSaisieEquipe extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel panelEquipe;
@@ -48,8 +51,8 @@ public class VueAjoutEquipe extends JFrame {
 	private JPanel panelValider;
 	private JButton btnValider;
 	
-	public VueAjoutEquipe() {
-		ControleurAjoutEquipe controleur = new ControleurAjoutEquipe(this);
+	public VueSaisieEquipe(Optional<Equipe> equipeOptionnel) {
+		ControleurSaisieEquipe controleur = new ControleurSaisieEquipe(this, equipeOptionnel);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 450);
@@ -226,10 +229,29 @@ public class VueAjoutEquipe extends JFrame {
 		gbc_panelAjouter.gridx = 1;
 		gbc_panelAjouter.gridy = 1;
 		panelCentre.add(panelValider, gbc_panelAjouter);
+
+		Equipe equipe = equipeOptionnel.orElse(null);
 		
-		btnValider = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Valider");
+		if(equipe == null) {
+			btnValider = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Valider");
+		} else {
+			btnValider = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Modifier");
+		}
 		btnValider.addActionListener(controleur);
 		panelValider.add(btnValider);
+		
+		if(equipe != null) {
+			this.txtNom.setText(equipe.getNom());
+			this.cboxPays.setSelectedItem(equipe.getPays());
+			this.txtWorldRanking.setText(String.valueOf(equipe.getWorldRanking()));
+			
+			List<Joueur> joueurs = equipe.getJoueurs();
+            this.txtJoueur1.setText(joueurs.get(0).getPseudo());
+            this.txtJoueur2.setText(joueurs.get(1).getPseudo());
+            this.txtJoueur3.setText(joueurs.get(2).getPseudo());
+            this.txtJoueur4.setText(joueurs.get(3).getPseudo());
+            this.txtJoueur5.setText(joueurs.get(4).getPseudo());
+		}
 	}
 	
 	public void fermerFenetre() {
@@ -250,17 +272,6 @@ public class VueAjoutEquipe extends JFrame {
 			return Integer.parseInt(text);
 		}
 		return null;
-	}
-	
-	public void viderChamps() {
-		this.txtNom.setText("");
-		this.cboxPays.setSelectedIndex(0);
-		this.txtWorldRanking.setText("");
-		this.txtJoueur1.setText("");
-		this.txtJoueur2.setText("");
-		this.txtJoueur3.setText("");
-		this.txtJoueur4.setText("");
-		this.txtJoueur5.setText("");
 	}
 	
 	public List<String> getNomJoueurs() {
@@ -298,5 +309,4 @@ public class VueAjoutEquipe extends JFrame {
 	public void afficherPopupMessage(String message) {
 		JOptionPaneTheme.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
 	}
-	
 }

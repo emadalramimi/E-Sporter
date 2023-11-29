@@ -8,14 +8,17 @@ import vue.theme.TableButtonsPanel;
 import vue.theme.CharteGraphique;
 import vue.theme.TableButtonsCellEditor;
 import vue.theme.JButtonTheme;
+import vue.theme.JOptionPaneTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
 
 import java.awt.BorderLayout;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Vector;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
@@ -40,7 +43,7 @@ public class VueEquipes extends JFrame {
 	private JScrollPaneTheme scrollPaneEquipes;
 
 	private ControleurEquipes controleur;
-	private VueAjoutEquipe vueAjoutEquipe;
+	private VueSaisieEquipe vueSaisieEquipe;
 	
 	/**
 	 * Create the frame.
@@ -133,13 +136,13 @@ public class VueEquipes extends JFrame {
 		scrollPaneEquipes.setViewportView(table);
 	}
 	
-	public void afficherFenetreAjoutEquipe() {
-        if (vueAjoutEquipe == null) {
-        	vueAjoutEquipe = new VueAjoutEquipe();
-        	vueAjoutEquipe.setLocationRelativeTo(this);
-        	vueAjoutEquipe.setVisible(true);
+	public void afficherFenetreSaisieEquipe(Optional<Equipe> equipe) {
+        if (this.vueSaisieEquipe == null || !this.vueSaisieEquipe.isVisible()) {
+        	this.vueSaisieEquipe = new VueSaisieEquipe(equipe);
+        	this.vueSaisieEquipe.setLocationRelativeTo(this);
+        	this.vueSaisieEquipe.setVisible(true);
         } else {
-        	vueAjoutEquipe.toFront();
+        	this.vueSaisieEquipe.toFront();
         }
     }
 	
@@ -152,5 +155,22 @@ public class VueEquipes extends JFrame {
             e.printStackTrace();
         }
 	}
+	
+	public void afficherPopupErreur(String message) {
+		JOptionPaneTheme.showMessageDialog(this, message, "Erreur", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void afficherPopupMessage(String message) {
+		JOptionPaneTheme.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public boolean afficherConfirmationSuppression() {
+		Object[] options = {"Oui", "Annuler"};
+        int choix = JOptionPane.showOptionDialog(null, "Êtes-vous sûr de vouloir supprimer cette équipe ?", "Confirmation",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[0]);
+        
+        return choix == 0; // Renvoie true si "Oui" est sélectionné
+    }
 	
 }
