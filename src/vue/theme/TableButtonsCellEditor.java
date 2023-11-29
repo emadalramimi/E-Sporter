@@ -17,9 +17,9 @@ public class TableButtonsCellEditor extends DefaultCellEditor {
 	}
 
 	@Override
-	public Component getTableCellEditorComponent(JTable table, Object o, boolean bln, int row, int i1) {
-		TableButtonsPanel br = new TableButtonsPanel(table, this.controleur, (int) table.getValueAt(row, 0));
-		return br;
+	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+		TableButtonsPanel tableButtonsPanel = new TableButtonsPanel(table, this.controleur, (int) table.getValueAt(row, 0));
+		return tableButtonsPanel;
 	}
 	
 }

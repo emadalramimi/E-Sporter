@@ -15,12 +15,12 @@ public class TableButtonsPanel extends JPanel implements TableCellRenderer {
     private JButtonTable button2;
     private JButtonTable button3;
 
-    public TableButtonsPanel(JTable table, ActionListener controleur, int row) {
+    public TableButtonsPanel(JTable table, ActionListener controleur, int idElement) {
     	setLayout(new FlowLayout(FlowLayout.CENTER, 5, 2));
         
-        button1 = new JButtonTable(JButtonTable.Type.VOIR, row);
-        button2 = new JButtonTable(JButtonTable.Type.MODIFIER, row);
-        button3 = new JButtonTable(JButtonTable.Type.SUPPRIMER, row);
+        button1 = new JButtonTable(JButtonTable.Type.VOIR, idElement);
+        button2 = new JButtonTable(JButtonTable.Type.MODIFIER, idElement);
+        button3 = new JButtonTable(JButtonTable.Type.SUPPRIMER, idElement);
         setBackground(CharteGraphique.FOND);
 
         button1.setBackground(CharteGraphique.FOND);
