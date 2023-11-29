@@ -121,12 +121,12 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 	@Override
 	public boolean modifier(Equipe equipe) {
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set nom = ?, pays = ?, classement = ?, worldRanking = ?, saison = ? where idEquipe = ?");
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set nom = ?, pays = ?, worldRanking = ? where idEquipe = ?");
+			// On ne peut pas modifier le classement et la saison d'une équipe ?
 			ps.setString(1, equipe.getNom());
 			ps.setString(2, equipe.getPays());
-			ps.setInt(3, equipe.getClassement());
-			ps.setInt(4, equipe.getWorldRanking());
-			ps.setString(5, equipe.getSaison());
+			ps.setInt(3, equipe.getWorldRanking());
+			ps.setInt(4, equipe.getIdEquipe());
 			ps.execute();
 			return true;
 		} catch(SQLException e) {
@@ -140,11 +140,14 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
-	public boolean supprimer(Equipe equipe) throws Exception {
+	public boolean supprimer(Equipe equipe) {
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from equipe where idEquipe = ?");
-			ps.setInt(1, equipe.getIdEquipe());
-			ps.execute();
+			PreparedStatement psJoueurs = BDD.getConnexion().prepareStatement("delete from joueur where idEquipe = ?");
+			PreparedStatement psEquipe = BDD.getConnexion().prepareStatement("delete from equipe where idEquipe = ?");
+			psJoueurs.setInt(1, equipe.getIdEquipe());
+			psEquipe.setInt(1, equipe.getIdEquipe());
+			psJoueurs.execute();
+			psEquipe.execute();
 			return true;
 		} catch(SQLException e) {
 			e.printStackTrace();
