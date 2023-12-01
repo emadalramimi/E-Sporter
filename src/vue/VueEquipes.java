@@ -126,7 +126,7 @@ public class VueEquipes extends JFrame {
 		txtRecherche.setColumns(20);
 		panelTableauFiltres.add(txtRecherche);
 		
-		btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/eye.png")));
+		btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/actions/vue.png")));
 		btnRecherche.addActionListener(controleur);
 		panelTableauFiltres.add(btnRecherche);
 		
