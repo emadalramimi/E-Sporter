@@ -75,11 +75,18 @@ public class Joueur {
 		return "Joueur [idJoueur=" + idJoueur + ", pseudo=" + pseudo + ", idEquipe=" + idEquipe + "]";
 	}
 	
+	@Override
 	public boolean equals(Object o) {
-		if(o == null || !(o instanceof Joueur)) {
-			return false;
-		}
-		return this.pseudo == ((Joueur) o).pseudo;
+	    if (o == null) {
+	        return false;
+	    }
+	    if (!(o instanceof Joueur)) {
+	        return false;
+	    }
+	    Joueur joueur = (Joueur) o;
+	    return this.idJoueur == joueur.idJoueur
+	            && this.pseudo.equals(joueur.pseudo)
+	            && this.idEquipe == joueur.idEquipe;
 	}
 
 }
