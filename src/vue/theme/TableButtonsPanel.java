@@ -58,6 +58,9 @@ public class TableButtonsPanel extends JPanel implements TableCellRenderer {
         button1.setContentAreaFilled(false);
         button2.setContentAreaFilled(false);
         button3.setContentAreaFilled(false);
+        button1.setFocusPainted(false);
+        button2.setFocusPainted(false);
+        button3.setFocusPainted(false);
 
         add(button1);
         add(button2);
