@@ -1,6 +1,7 @@
 package vue.theme;
 
 import java.awt.Cursor;
+import java.awt.Graphics;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,13 +21,14 @@ public class JButtonMenu extends JButton {
 	 */
 	public JButtonMenu(String label, ControleurBase.Menus menu) {
 		super(label);
+		super.setContentAreaFilled(false);
 		this.menu = menu;
 		this.cheminIcone = "/images/menu/" + menu.toString().toLowerCase() + ".png";
         this.cheminIconeActif = cheminIcone.replace(".png", "_actif.png");
         
         this.setIcon(new ImageIcon(JButtonMenu.class.getResource(cheminIcone)));
 		this.setBorder(null);
-		this.setBackground(CharteGraphique.FOND);
+		this.setBackground(CharteGraphique.FOND_SECONDAIRE);
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
 	
@@ -45,4 +47,14 @@ public class JButtonMenu extends JButton {
 		}
 	}
 	
+	@Override
+    protected void paintComponent(Graphics g) {
+        g.setColor(getBackground());
+        g.fillRect(0, 0, getWidth(), getHeight());
+        super.paintComponent(g);
+    }
+
+    @Override
+    public void setContentAreaFilled(boolean b) {}
+    
 }

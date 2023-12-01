@@ -3,11 +3,12 @@ package vue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
 
 import controleur.ControleurConnexion;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
+import vue.theme.JFrameTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.JPasswordFieldTheme;
 import vue.theme.JTextFieldTheme;
@@ -18,7 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
@@ -29,9 +29,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
 
-public class VueConnexion extends JFrame {
+public class VueConnexion extends JFrameTheme {
 
-	private JPanel contentPane;
 	private JPanel panelNord;
 	private JLabel lblLogo;
 	private JPanel panelBoutons;
@@ -51,11 +50,7 @@ public class VueConnexion extends JFrame {
 		setBounds(100, 100, 484, 629);
 		
 		// contentPane, un panel contenant tous les éléments de la fenêtre
-		contentPane = new JPanel();
-		contentPane.setBackground(CharteGraphique.FOND);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
+		JPanel contentPane = super.getContentPane();
 		
 		// panelNord, un panel contenant le logo de la société E-sporter
 		panelNord = new JPanel();
@@ -110,7 +105,7 @@ public class VueConnexion extends JFrame {
 		panelChamps.add(lblIdentifiant, gbc_lblIdentifiant);
 		
 		// textIdentifiant, un JTextFieldTheme permettant d'entrer son identifiant
-		textIdentifiant = new JTextFieldTheme();
+		textIdentifiant = new JTextFieldTheme(20);
 		textIdentifiant.addKeyListener(controleur);
 		GridBagConstraints gbc_textIdentifiant = new GridBagConstraints();
 		gbc_textIdentifiant.fill = GridBagConstraints.BOTH;
@@ -130,7 +125,7 @@ public class VueConnexion extends JFrame {
 		panelChamps.add(lblMotDePasse, gbc_lblMotDePasse);
 		
 		// textIdentifiant, un JPasswordFieldTheme permettant d'entrer son mot de passe
-		motDePasse = new JPasswordFieldTheme();
+		motDePasse = new JPasswordFieldTheme(20);
 		motDePasse.addKeyListener(controleur);
 		GridBagConstraints gbc_motDePasse = new GridBagConstraints();
 		gbc_motDePasse.fill = GridBagConstraints.HORIZONTAL;
@@ -177,14 +172,20 @@ public class VueConnexion extends JFrame {
 	 * @return contenu du champ identifiant
 	 */
 	public String getIdentifiant() {
-		return this.textIdentifiant.getText();
+		if(this.textIdentifiant.getText().isEmpty()) {
+			return null;
+		}
+		return this.textIdentifiant.getText().trim();
 	}
 	
 	/**
 	 * @return contenu du champ mot de passe
 	 */
 	public String getMotDePasse() {
-		return String.valueOf(motDePasse.getPassword());
+		if(this.motDePasse.getPassword().length == 0) {
+			return null;
+		}
+		return String.valueOf(this.motDePasse.getPassword());
 	}
 	
 	/**

@@ -2,14 +2,15 @@ package vue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
+import controleur.ControleurEquipes;
 import controleur.ControleurSaisieEquipe;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
 import modele.metier.Pays;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
+import vue.theme.JFrameTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.JTextFieldTheme;
 
@@ -29,7 +30,7 @@ import java.util.Optional;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
-public class VueSaisieEquipe extends JFrame {
+public class VueSaisieEquipe extends JFrameTheme {
 
 	private JPanel contentPane;
 	private JPanel panelEquipe;
@@ -51,17 +52,13 @@ public class VueSaisieEquipe extends JFrame {
 	private JPanel panelValider;
 	private JButton btnValider;
 	
-	public VueSaisieEquipe(Optional<Equipe> equipeOptionnel) {
-		ControleurSaisieEquipe controleur = new ControleurSaisieEquipe(this, equipeOptionnel);
+	public VueSaisieEquipe(VueEquipes vueEquipes, ControleurEquipes controleurEquipes, Optional<Equipe> equipeOptionnel) {
+		ControleurSaisieEquipe controleur = new ControleurSaisieEquipe(this, vueEquipes, controleurEquipes, equipeOptionnel);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 450);
-		contentPane = new JPanel();
-		contentPane.setBackground(CharteGraphique.FOND);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
+		
+		contentPane = super.getContentPane();
 		
 		JPanel panelCentre = new JPanel();
 		panelCentre.setBackground(CharteGraphique.FOND);
@@ -97,7 +94,7 @@ public class VueSaisieEquipe extends JFrame {
 		gbc_lblNom.gridy = 1;
 		panelEquipe.add(lblNom, gbc_lblNom);
 		
-		txtNom = new JTextFieldTheme();
+		txtNom = new JTextFieldTheme(20);
 		GridBagConstraints gbc_textNom = new GridBagConstraints();
 		gbc_textNom.insets = new Insets(0, 0, 20, 0);
 		gbc_textNom.fill = GridBagConstraints.HORIZONTAL;
@@ -123,7 +120,7 @@ public class VueSaisieEquipe extends JFrame {
 		gbc_txtEquipe.gridy = 4;
 		panelEquipe.add(cboxPays, gbc_txtEquipe);
 		
-		lblWorldRancking = new JLabel("World Ranking");
+		lblWorldRancking = new JLabel("World Ranking (optionnel)");
 		lblWorldRancking.setForeground(Color.WHITE);
 		lblWorldRancking.setFont(CharteGraphique.getPolice(19, true));
 		GridBagConstraints gbc_lblWorldRancking = new GridBagConstraints();
@@ -132,7 +129,7 @@ public class VueSaisieEquipe extends JFrame {
 		gbc_lblWorldRancking.gridy = 5;
 		panelEquipe.add(lblWorldRancking, gbc_lblWorldRancking);
 		
-		txtWorldRanking = new JTextFieldTheme();
+		txtWorldRanking = new JTextFieldTheme(10);
 		GridBagConstraints gbc_textWorldRanking = new GridBagConstraints();
 		gbc_textWorldRanking.insets = new Insets(0, 0, 5, 0);
 		gbc_textWorldRanking.fill = GridBagConstraints.HORIZONTAL;
@@ -156,7 +153,7 @@ public class VueSaisieEquipe extends JFrame {
 		gbl_panelJoueurs.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelJoueurs.setLayout(gbl_panelJoueurs);
 		
-		lblJoueurs = new JLabel("Joueurs");
+		lblJoueurs = new JLabel("Pseudo des joueurs");
 		lblJoueurs.setForeground(Color.WHITE);
 		lblJoueurs.setFont(CharteGraphique.getPolice(19, true));
 		GridBagConstraints gbc_lblJoueurs = new GridBagConstraints();
@@ -165,7 +162,7 @@ public class VueSaisieEquipe extends JFrame {
 		gbc_lblJoueurs.gridy = 0;
 		panelJoueurs.add(lblJoueurs, gbc_lblJoueurs);
 		
-		txtJoueur1 = new JTextFieldTheme();
+		txtJoueur1 = new JTextFieldTheme(20);
 		GridBagConstraints gbc_txtJoueur1 = new GridBagConstraints();
 		gbc_txtJoueur1.insets = new Insets(0, 0, 5, 0);
 		gbc_txtJoueur1.fill = GridBagConstraints.HORIZONTAL;
@@ -174,7 +171,7 @@ public class VueSaisieEquipe extends JFrame {
 		panelJoueurs.add(txtJoueur1, gbc_txtJoueur1);
 		txtJoueur1.setColumns(10);
 		
-		txtJoueur2 = new JTextFieldTheme();
+		txtJoueur2 = new JTextFieldTheme(20);
 		GridBagConstraints gbc_txtJoueur2 = new GridBagConstraints();
 		gbc_txtJoueur2.insets = new Insets(0, 0, 5, 0);
 		gbc_txtJoueur2.fill = GridBagConstraints.HORIZONTAL;
@@ -183,7 +180,7 @@ public class VueSaisieEquipe extends JFrame {
 		panelJoueurs.add(txtJoueur2, gbc_txtJoueur2);
 		txtJoueur2.setColumns(10);
 		
-		txtJoueur3 = new JTextFieldTheme();
+		txtJoueur3 = new JTextFieldTheme(20);
 		GridBagConstraints gbc_txtJoueur3 = new GridBagConstraints();
 		gbc_txtJoueur3.insets = new Insets(0, 0, 5, 0);
 		gbc_txtJoueur3.fill = GridBagConstraints.HORIZONTAL;
@@ -192,7 +189,7 @@ public class VueSaisieEquipe extends JFrame {
 		panelJoueurs.add(txtJoueur3, gbc_txtJoueur3);
 		txtJoueur3.setColumns(10);
 		
-		txtJoueur4 = new JTextFieldTheme();
+		txtJoueur4 = new JTextFieldTheme(20);
 		GridBagConstraints gbc_txtJoueur4 = new GridBagConstraints();
 		gbc_txtJoueur4.insets = new Insets(0, 0, 5, 0);
 		gbc_txtJoueur4.fill = GridBagConstraints.HORIZONTAL;
@@ -201,7 +198,7 @@ public class VueSaisieEquipe extends JFrame {
 		panelJoueurs.add(txtJoueur4, gbc_txtJoueur4);
 		txtJoueur4.setColumns(10);
 		
-		txtJoueur5 = new JTextFieldTheme();
+		txtJoueur5 = new JTextFieldTheme(20);
 		GridBagConstraints gbc_txtJoueur5 = new GridBagConstraints();
 		gbc_txtJoueur5.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtJoueur5.gridx = 0;
@@ -259,7 +256,7 @@ public class VueSaisieEquipe extends JFrame {
 	}
 	
 	public String getNomEquipe() {
-		return this.txtNom.getText();
+		return this.txtNom.getText().trim();
 	}
 	
 	public String getPaysEquipe() {

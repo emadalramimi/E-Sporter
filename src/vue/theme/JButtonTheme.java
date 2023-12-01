@@ -3,6 +3,7 @@ package vue.theme;
 import java.awt.Color;
 import java.awt.Cursor;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.border.EmptyBorder;
 
@@ -12,6 +13,8 @@ public class JButtonTheme extends JButton {
 		PRIMAIRE, SECONDAIRE
 	}
 	
+	private Types type;
+	
 	/**
 	 * JButton personnalisé au thème E-sporter
 	 * @param type : primaire ou secondaire
@@ -19,7 +22,18 @@ public class JButtonTheme extends JButton {
 	 */
 	public JButtonTheme(Types type, String label) {
 		super(label);
+		this.type = type;
+		this.initialiser();
 
+	}
+	
+	public JButtonTheme(Types type, ImageIcon icone) {
+		super(icone);
+		this.type = type;
+		this.initialiser();
+	}
+	
+	private void initialiser() {
 		// Modifications de base
 		this.setFont(CharteGraphique.getPolice(19, false));
 		this.setBorder(new EmptyBorder(7, 10, 7, 10));

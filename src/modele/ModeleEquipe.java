@@ -120,6 +120,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 	 */
 	@Override
 	public boolean modifier(Equipe equipe) {
+		// TODO SPRINT 2 : Si l'équipe est inscrite à un tournoi, ne pas la modifier.
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set nom = ?, pays = ?, worldRanking = ? where idEquipe = ?");
 			// On ne peut pas modifier le classement et la saison d'une équipe ?
@@ -142,14 +143,13 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 	@Override
 	public boolean supprimer(Equipe equipe) {
 		try {
-			PreparedStatement psJoueurs = BDD.getConnexion().prepareStatement("delete from joueur where idEquipe = ?");
+			// TODO SPRINT 2 : Si l'équipe est inscrite à un tournoi, ne pas la supprimer.
+			this.modeleJoueur.supprimerJoueursEquipe(equipe.getIdEquipe());
 			PreparedStatement psEquipe = BDD.getConnexion().prepareStatement("delete from equipe where idEquipe = ?");
-			psJoueurs.setInt(1, equipe.getIdEquipe());
 			psEquipe.setInt(1, equipe.getIdEquipe());
-			psJoueurs.execute();
 			psEquipe.execute();
 			return true;
-		} catch(SQLException e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -171,5 +171,11 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
         
         return nextVal;
     }
+	
+	public List<Equipe> getParNom(String nom) throws Exception {
+		return this.getTout().stream()
+				.filter(e -> e.getNom().toLowerCase().contains(nom.toLowerCase()))
+				.collect(Collectors.toList());
+	}
 	
 }

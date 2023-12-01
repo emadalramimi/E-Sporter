@@ -1,16 +1,20 @@
 package vue;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import vue.theme.TableButtonsPanel;
+import vue.theme.JButtonTheme.Types;
 import vue.theme.CharteGraphique;
 import vue.theme.TableButtonsCellEditor;
 import vue.theme.JButtonTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
+import vue.theme.JTextFieldTheme;
 
 import java.awt.BorderLayout;
 
@@ -21,8 +25,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Vector;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -40,6 +49,9 @@ public class VueEquipes extends JFrame {
 	private JPanel panelLabelEquipe;
 	private JLabel lblEquipes;
 	private JPanel panelAjouter;
+	private JPanel panelTableauFiltres;
+    private JTextFieldTheme txtRecherche;
+    private JButtonTheme btnRecherche;
 	private JScrollPaneTheme scrollPaneEquipes;
 
 	private ControleurEquipes controleur;
@@ -56,11 +68,21 @@ public class VueEquipes extends JFrame {
 		panel.setBackground(CharteGraphique.FOND);
 		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
 		contentPane.add(panel, BorderLayout.CENTER);
-		panel.setLayout(new BorderLayout(0, 20));
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[]{1020, 0};
+		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 1.0};
+		panel.setLayout(gbl_panel);
 		
 		// panelLabelEquipe, le panel contenant le label lblEquipes
 		panelLabelEquipe = new JPanel();
-		panel.add(panelLabelEquipe, BorderLayout.NORTH);
+		GridBagConstraints gbc_panelLabelEquipe = new GridBagConstraints();
+		gbc_panelLabelEquipe.anchor = GridBagConstraints.NORTH;
+		gbc_panelLabelEquipe.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panelLabelEquipe.insets = new Insets(0, 0, 20, 0);
+		gbc_panelLabelEquipe.gridx = 0;
+		gbc_panelLabelEquipe.gridy = 0;
+		panel.add(panelLabelEquipe, gbc_panelLabelEquipe);
 		panelLabelEquipe.setBackground(CharteGraphique.FOND);
 		panelLabelEquipe.setLayout(new GridLayout(1, 0, 0, 0));
 		
@@ -85,8 +107,31 @@ public class VueEquipes extends JFrame {
 		btnAjouter.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelAjouter.add(btnAjouter);
 		
+		panelTableauFiltres = new JPanel();
+		panelTableauFiltres.setBackground(CharteGraphique.FOND);
+		GridBagConstraints gbc_panelRecherche = new GridBagConstraints();
+		gbc_panelRecherche.insets = new Insets(0, 0, 20, 0);
+		gbc_panelRecherche.fill = GridBagConstraints.BOTH;
+		gbc_panelRecherche.gridx = 0;
+		gbc_panelRecherche.gridy = 1;
+		panel.add(panelTableauFiltres, gbc_panelRecherche);
+		panelTableauFiltres.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		
+		txtRecherche = new JTextFieldTheme(20);
+		txtRecherche.addKeyListener(controleur);
+		txtRecherche.setColumns(20);
+		panelTableauFiltres.add(txtRecherche);
+		
+		btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/eye.png")));
+		btnRecherche.addActionListener(controleur);
+		panelTableauFiltres.add(btnRecherche);
+		
 		scrollPaneEquipes = new JScrollPaneTheme();
-		panel.add(scrollPaneEquipes);
+		GridBagConstraints gbc_scrollPaneEquipes = new GridBagConstraints();
+		gbc_scrollPaneEquipes.fill = GridBagConstraints.BOTH;
+		gbc_scrollPaneEquipes.gridx = 0;
+		gbc_scrollPaneEquipes.gridy = 2;
+		panel.add(scrollPaneEquipes, gbc_scrollPaneEquipes);
 		
 		// Création du modèle du tableau avec désactivation de l'édition
 		this.model = new DefaultTableModel(
@@ -105,20 +150,6 @@ public class VueEquipes extends JFrame {
 		table = new JTableTheme();
 		table.setModel(model);
 		
-		this.model.setRowCount(0); // vider le tableau
-		
-		//Entrée des données des équipe ainsi que l'option de modification et de suppression des équipes
-		List<Equipe> equipes = this.controleur.getEquipes();
-		for(Equipe equipe : equipes) {
-		    Vector<Object> rowData = new Vector<>();
-		    rowData.add(equipe.getIdEquipe());
-		    rowData.add(equipe.getNom());
-		    rowData.add(equipe.getPays());
-		    rowData.add(equipe.getClassement());
-		    rowData.add(equipe.getWorldRanking());
-		    this.model.addRow(rowData);
-		}
-
 		// Ajouter buttons dans la derniere colonne
 		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
 		buttonColumn.setCellRenderer(new TableButtonsPanel(table, controleur, 0));
@@ -131,14 +162,14 @@ public class VueEquipes extends JFrame {
 		idColumn.setWidth(1);
 		idColumn.setPreferredWidth(1);
 		
-		this.table.setModel(model);
+		this.remplirTableau(this.controleur.getEquipes());
 		
 		scrollPaneEquipes.setViewportView(table);
 	}
 	
 	public void afficherFenetreSaisieEquipe(Optional<Equipe> equipe) {
         if (this.vueSaisieEquipe == null || !this.vueSaisieEquipe.isVisible()) {
-        	this.vueSaisieEquipe = new VueSaisieEquipe(equipe);
+        	this.vueSaisieEquipe = new VueSaisieEquipe(this, this.controleur, equipe);
         	this.vueSaisieEquipe.setLocationRelativeTo(this);
         	this.vueSaisieEquipe.setVisible(true);
         } else {
@@ -172,5 +203,38 @@ public class VueEquipes extends JFrame {
         
         return choix == 0; // Renvoie true si "Oui" est sélectionné
     }
+	
+	public boolean estBoutonRecherche(JButton bouton) {
+		if(bouton instanceof JButtonTheme) {
+			String iconeRecherche = VueTournois.class.getResource("/images/eye.png").toString();
+		    return bouton.getIcon().toString().equals(iconeRecherche);
+		}
+		return false;
+	}
+	
+	public boolean estChampRecherche(JTextField champ) {
+		return this.txtRecherche.equals(champ);
+	}
+	
+	public String getRequeteRecherche() {
+		return this.txtRecherche.getText().trim();
+	}
+	
+	public void remplirTableau(List<Equipe> equipes) {
+		// Vider le tableau
+		this.model.setRowCount(0);
+		
+		// Remplir avec les données d'équipes
+		for(Equipe equipe : equipes) {
+		    Vector<Object> rowData = new Vector<>();
+		    rowData.add(equipe.getIdEquipe());
+		    rowData.add(equipe.getNom());
+		    rowData.add(equipe.getPays());
+		    rowData.add(equipe.getClassement());
+		    rowData.add(equipe.getWorldRanking());
+		    this.model.addRow(rowData);
+		}
+		this.table.setModel(this.model);
+	}
 	
 }

@@ -79,7 +79,7 @@ public class ControleurConnexion extends KeyAdapter implements ActionListener {
 	 */
 	private void connecter() {
 		// Si tous les champs ne sont pas remplis
-		if(vue.getIdentifiant().length() == 0 || vue.getMotDePasse().length() == 0) {
+		if(vue.getIdentifiant() == null || vue.getMotDePasse() == null) {
 			vue.afficherPopupErreur("Veuillez remplir tous les champs.");
 		} else {
 			// Sinon, on connecte l'administrateur

@@ -13,17 +13,22 @@ import modele.ModeleEquipe;
 import modele.ModeleJoueur;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
+import vue.VueEquipes;
 import vue.VueSaisieEquipe;
 
 public class ControleurSaisieEquipe implements ActionListener {
 
-	private VueSaisieEquipe vue;
+	private VueSaisieEquipe vueSaisieEquipe;
+	private VueEquipes vueEquipes;
+	private ControleurEquipes controleurEquipes;
 	private ModeleEquipe modeleEquipe;
 	private ModeleJoueur modeleJoueur;
 	private Optional<Equipe> equipeOptionnel;
 	
-	public ControleurSaisieEquipe(VueSaisieEquipe vue, Optional<Equipe> equipeOptionnel) {
-		this.vue = vue;
+	public ControleurSaisieEquipe(VueSaisieEquipe vue, VueEquipes vueEquipes, ControleurEquipes controleurEquipes, Optional<Equipe> equipeOptionnel) {
+		this.vueSaisieEquipe = vue;
+		this.vueEquipes = vueEquipes;
+		this.controleurEquipes = controleurEquipes;
 		this.equipeOptionnel = equipeOptionnel;
 		this.modeleEquipe = new ModeleEquipe();
 		this.modeleJoueur = new ModeleJoueur();
@@ -34,23 +39,23 @@ public class ControleurSaisieEquipe implements ActionListener {
 		JButton bouton = (JButton) e.getSource();
 		
 		if(bouton.getText() == "Valider" || bouton.getText() == "Modifier") {
-			String nom = vue.getNomEquipe();
-			String pays = vue.getPaysEquipe();
+			String nom = vueSaisieEquipe.getNomEquipe();
+			String pays = vueSaisieEquipe.getPaysEquipe();
 			
-			List<String> nomsJoueurs = vue.getNomJoueurs();
+			List<String> nomsJoueurs = vueSaisieEquipe.getNomJoueurs();
 			
 			if(nom.isEmpty() || pays.isEmpty() || nomsJoueurs.size() != 5) {
-				vue.afficherPopupErreur("Veuillez remplir tous les champs.");
+				vueSaisieEquipe.afficherPopupErreur("Veuillez remplir tous les champs.");
 				throw new IllegalArgumentException("Tous les champs ne sont pas remplis.");
 			}
 			
 			int worldRanking = 1000;
 			try {
-				if(vue.getWorldRanking() != null) {
-					worldRanking = vue.getWorldRanking();
+				if(vueSaisieEquipe.getWorldRanking() != null) {
+					worldRanking = vueSaisieEquipe.getWorldRanking();
 				}
 			} catch(NumberFormatException err) {
-				this.vue.afficherPopupErreur("Le World Ranking doit être un entier.");
+				this.vueSaisieEquipe.afficherPopupErreur("Le World Ranking doit être un entier.");
 				throw err;
 			}
 			
@@ -66,12 +71,13 @@ public class ControleurSaisieEquipe implements ActionListener {
 					this.modeleJoueur.ajouter(joueur);
 				}
 				
-				this.vue.afficherPopupMessage("L'équipe a bien été ajoutée.");
+				this.vueSaisieEquipe.afficherPopupMessage("L'équipe a bien été ajoutée.");
+				this.vueEquipes.remplirTableau(this.controleurEquipes.getEquipes());
 			} else if(bouton.getText() == "Modifier") {
 				Equipe equipe = this.equipeOptionnel.orElse(null);
 				
 				if(equipe == null) {
-					this.vue.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
+					this.vueSaisieEquipe.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
 					throw new RuntimeException("Equipe inexistante");
 				}
 				
@@ -98,17 +104,18 @@ public class ControleurSaisieEquipe implements ActionListener {
 				// TODO faire un commit ici
 				
 				if(this.modeleEquipe.modifier(equipe)) {
-					this.vue.afficherPopupMessage("L'équipe a bien été modifiée.");
+					this.vueSaisieEquipe.afficherPopupMessage("L'équipe a bien été modifiée.");
+					this.vueEquipes.remplirTableau(this.controleurEquipes.getEquipes());
 				} else {
-					this.vue.afficherPopupErreur("Une erreur est survenue.");
+					this.vueSaisieEquipe.afficherPopupErreur("Une erreur est survenue.");
 				}
 				
 				// TODO mettre à jour le tableau
 			}
 			
-			this.vue.fermerFenetre();
+			this.vueSaisieEquipe.fermerFenetre();
 		} else if(bouton.getText() == "Annuler") {
-			this.vue.fermerFenetre();
+			this.vueSaisieEquipe.fermerFenetre();
 		}
 	}
 

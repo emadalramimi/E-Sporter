@@ -12,6 +12,7 @@ import modele.ModeleAdministrateur;
 import modele.metier.Administrateur;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonMenu;
+import vue.theme.JFrameTheme;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -21,7 +22,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 
-public class VueBase extends JFrame {
+public class VueBase extends JFrameTheme {
 	
 	private JPanel contenu;
 	private JLabel lblUtilisateur;
@@ -36,12 +37,15 @@ public class VueBase extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1300, 700);
-		JPanel contentPane = new JPanel();
-		contentPane.setBackground(CharteGraphique.FOND);
-		contentPane.setBorder(null);
-
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
+//		JPanel contentPane = new JPanel();
+//		contentPane.setBackground(CharteGraphique.FOND);
+//		contentPane.setBorder(null);
+//
+//		setContentPane(contentPane);
+//		contentPane.setLayout(new BorderLayout(0, 0));
+		
+		// contentPane, un panel contenant tous les éléments de la fenêtre
+		JPanel contentPane = super.getContentPane();
 		
 		this.contenu = new JPanel();
 		this.contenu.setBackground(CharteGraphique.FOND);
@@ -82,7 +86,7 @@ public class VueBase extends JFrame {
 		
 		JPanel panelMenuCentre = new JPanel();
 		panelMenuCentre.setBorder(null);
-		panelMenuCentre.setBackground(new Color(18, 26, 55));
+		panelMenuCentre.setBackground(CharteGraphique.FOND_SECONDAIRE);
 		panelCentre.add(panelMenuCentre);
 		GridBagLayout gbl_panelMenuCentre = new GridBagLayout();
 		gbl_panelMenuCentre.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
@@ -189,11 +193,11 @@ public class VueBase extends JFrame {
 		fl_panelDroite.setVgap(0);
 		fl_panelDroite.setHgap(0);
 		fl_panelDroite.setAlignment(FlowLayout.RIGHT);
-		panelDroite.setBackground(new Color(18, 26, 55));
+		panelDroite.setBackground(CharteGraphique.FOND_SECONDAIRE);
 		panelMenu.add(panelDroite);
 		
 		JPanel panelMenuDroite = new JPanel();
-		panelMenuDroite.setBackground(new Color(18, 26, 55));
+		panelMenuDroite.setBackground(CharteGraphique.FOND_SECONDAIRE);
 		panelDroite.add(panelMenuDroite);
 		GridBagLayout gbl_panelMenuDroite = new GridBagLayout();
 		gbl_panelMenuDroite.columnWidths = new int[]{0, 0, 0};
