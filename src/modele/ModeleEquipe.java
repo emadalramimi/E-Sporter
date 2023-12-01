@@ -149,9 +149,10 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 	/**
 	 * Supprime l'équipe dans la BDD
 	 * @return true si l'opération s'est bien déroulée, false sinon
+	 * @throws Exception 
 	 */
 	@Override
-	public boolean supprimer(Equipe equipe) {
+	public boolean supprimer(Equipe equipe) throws Exception {
 		try {
 			// TODO SPRINT 2 : Si l'équipe est inscrite à un tournoi, ne pas la supprimer.
 			this.modeleJoueur.supprimerJoueursEquipe(equipe.getIdEquipe());

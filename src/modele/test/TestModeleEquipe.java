@@ -57,18 +57,18 @@ public class TestModeleEquipe {
 	}
 	
 	@Test
-	public void testAjouterTrue() throws Exception {
+	public void testAjouterTrue() {
 		assertTrue(modele.ajouter(equipe));
 	}
 	
 	@Test
-	public void testAjouterFalse() throws Exception {
+	public void testAjouterFalse() {
 		assertTrue(modele.ajouter(equipe));
 		assertFalse(modele.ajouter(equipeAModif));
 	}
 	
 	@Test
-	public void testModifierTrue() throws Exception {
+	public void testModifierTrue() {
 		modele.ajouter(equipe);
 		assertTrue(modele.modifier(equipeAModif));
 	}

@@ -100,7 +100,6 @@ public class TestModeleJoueur {
 	    assertTrue(result.contains(joueur1));
 	    assertTrue(result.contains(joueur2));
 	    assertTrue(result.contains(joueur3));
-	    modeleEquipe.supprimer(equipe);
 	}
 
 

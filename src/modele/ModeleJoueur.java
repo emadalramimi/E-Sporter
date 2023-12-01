@@ -34,7 +34,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
                     try {
                         if (!rs.next()) {
                             return false;
-                        }
+                        }	
                         action.accept(new Joueur(
                     		rs.getInt("idJoueur"),
                     		rs.getString("pseudo"),
@@ -134,7 +134,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 		}
 	}
 	
-	public boolean supprimerJoueursEquipe(int idEquipe) {
+	public boolean supprimerJoueursEquipe(int idEquipe) throws Exception {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from joueur where idEquipe = ?");
 			ps.setInt(1, idEquipe);
