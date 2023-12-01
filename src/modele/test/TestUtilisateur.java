@@ -23,6 +23,14 @@ public class TestUtilisateur {
     }
     
     /*
+     * Test si la methode getParId envoi les bonnes données pour un administrateur
+     */
+    @Test
+    public void testGetParId() throws Exception {
+    	assertEquals(modele.getParId(1).toString(), "Optional[Administrateur [idAdministrateur=1, nom=Istrateur, prenom=Admin, identifiant=admin, motDePasse=mdp]]");
+    }
+    
+    /*
      * Test si la methode ajouter renvoie true
      */
     @Test
