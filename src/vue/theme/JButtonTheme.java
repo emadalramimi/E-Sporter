@@ -24,7 +24,6 @@ public class JButtonTheme extends JButton {
 		super(label);
 		this.type = type;
 		this.initialiser();
-
 	}
 	
 	public JButtonTheme(Types type, ImageIcon icone) {
@@ -39,6 +38,8 @@ public class JButtonTheme extends JButton {
 		this.setBorder(new EmptyBorder(7, 10, 7, 10));
 		this.setForeground(Color.WHITE);
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		setFocusPainted(false);
 		
 		// Modification de la couleur de fond selon le type
 		switch(type) {

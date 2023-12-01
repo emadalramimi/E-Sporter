@@ -221,6 +221,7 @@ public class VueEquipes extends JFrame {
 		return false;
 	}
 	
+	
 	public boolean estChampRecherche(JTextField champ) {
 		return this.txtRecherche.equals(champ);
 	}
