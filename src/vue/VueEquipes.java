@@ -126,7 +126,7 @@ public class VueEquipes extends JFrame {
 		txtRecherche.setColumns(20);
 		panelTableauFiltres.add(txtRecherche);
 		
-		btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/actions/vue.png")));
+		btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/actions/rechercher.png")));
 		btnRecherche.addActionListener(controleur);
 		panelTableauFiltres.add(btnRecherche);
 		
@@ -215,7 +215,7 @@ public class VueEquipes extends JFrame {
 	
 	public boolean estBoutonRecherche(JButton bouton) {
 		if(bouton instanceof JButtonTheme) {
-			String iconeRecherche = VueTournois.class.getResource("/images/eye.png").toString();
+			String iconeRecherche = VueTournois.class.getResource("/images/actions/rechercher.png").toString();
 		    return bouton.getIcon().toString().equals(iconeRecherche);
 		}
 		return false;
