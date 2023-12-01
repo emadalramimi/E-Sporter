@@ -99,9 +99,14 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 			ps.setString(4, administrateur.getIdentifiant());
 			ps.setString(5, administrateur.getMotDePasse());
 			ps.execute();
+			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			return false;
 		}
 	}
@@ -120,9 +125,14 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 			ps.setString(4, administrateur.getMotDePasse());
 			ps.setInt(5, administrateur.getIdAdministrateur());
 			ps.execute();
+			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			return false;
 		}
 	}
@@ -137,9 +147,14 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from administrateur where idAdministrateur = ?");
 			ps.setInt(1, administrateur.getIdAdministrateur());
 			ps.execute();
+			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			return false;
 		}
 	}

@@ -134,7 +134,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 		}
 	}
 	
-	public boolean supprimerJoueursEquipe(int idEquipe) throws Exception {
+	public boolean supprimerJoueursEquipe(int idEquipe) {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from joueur where idEquipe = ?");
 			ps.setInt(1, idEquipe);

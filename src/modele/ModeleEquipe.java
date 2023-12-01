@@ -107,9 +107,14 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 			ps.setInt(5, equipe.getWorldRanking());
 			ps.setString(6, equipe.getSaison());
 			ps.execute();
+			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			return false;
 		}
 	}
@@ -129,9 +134,14 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 			ps.setInt(3, equipe.getWorldRanking());
 			ps.setInt(4, equipe.getIdEquipe());
 			ps.execute();
+			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			return false;
 		}
 	}
@@ -148,9 +158,14 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 			PreparedStatement psEquipe = BDD.getConnexion().prepareStatement("delete from equipe where idEquipe = ?");
 			psEquipe.setInt(1, equipe.getIdEquipe());
 			psEquipe.execute();
+			BDD.getConnexion().commit();
 			return true;
-		} catch(Exception e) {
-			e.printStackTrace();
+		} catch(SQLException e) {
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			return false;
 		}
 	}

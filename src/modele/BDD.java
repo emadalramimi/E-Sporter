@@ -24,6 +24,7 @@ public class BDD {
 				
 				// Création d'une connexion
 				connection = DriverManager.getConnection(urlConnexion);
+				connection.setAutoCommit(false);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -40,7 +41,14 @@ public class BDD {
 			BDD bdd = new BDD();
 			bdd.construireTables(st);
 			bdd.insererDonnees(st);
-			System.out.println("Connexion fermée");
+			
+			try {
+				BDD.getConnexion().commit();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			System.out.println("Création BDD OK");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
