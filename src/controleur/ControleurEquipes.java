@@ -2,10 +2,13 @@ package controleur;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JButton;
+import javax.swing.JTextField;
 
 import modele.ModeleEquipe;
 import modele.ModeleJoueur;
@@ -13,7 +16,7 @@ import modele.metier.Equipe;
 import vue.VueEquipes;
 import vue.theme.JButtonTable;
 
-public class ControleurEquipes implements ActionListener {
+public class ControleurEquipes extends KeyAdapter implements ActionListener {
 
 	private VueEquipes vue;
 	private ModeleEquipe modeleEquipe;
@@ -54,20 +57,46 @@ public class ControleurEquipes implements ActionListener {
 				if(this.vue.afficherConfirmationSuppression()) {
 					if(this.modeleEquipe.supprimer(equipe)) {
 						this.vue.afficherPopupMessage("L'équipe a bien été supprimée");
+						this.vue.remplirTableau(this.getEquipes());
 					} else {
 						this.vue.afficherPopupErreur("Une erreur est survenue");
 					}
 				}
 				break;
 			}
-		} else {
+		} else if(e.getSource() instanceof JButton) {
 			JButton bouton = (JButton) e.getSource();
 			
 			if(bouton.getText() == "Ajouter") {
 				this.vue.afficherFenetreSaisieEquipe(Optional.empty());
+			} else if(this.vue.estBoutonRecherche(bouton)) {
+				String requeteRecherche = this.vue.getRequeteRecherche();
+				if(requeteRecherche != null) {
+					this.rechercher(this.vue.getRequeteRecherche());
+				}
 			}
 		}
 		
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		JTextField txtRecherche = (JTextField) e.getSource();
+		String requeteRecherche = this.vue.getRequeteRecherche();
+		if (this.vue.estChampRecherche(txtRecherche)) {
+	        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+	            this.rechercher(requeteRecherche);
+	        } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+	            if (
+	            	requeteRecherche != null
+	            	&& requeteRecherche.length() == 1
+	            	|| txtRecherche.getSelectedText() != null
+	            	&& txtRecherche.getSelectedText().equals(requeteRecherche)
+	            ) {
+	                this.rechercher("");
+	            }
+	        }
+	    }
 	}
 	
 	public List<Equipe> getEquipes(){
@@ -77,6 +106,15 @@ public class ControleurEquipes implements ActionListener {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private void rechercher(String requeteRecherche) {
+		try {
+			this.vue.remplirTableau(this.modeleEquipe.getParNom(requeteRecherche));
+		} catch (Exception e1) {
+			this.vue.afficherPopupErreur("Une erreur est survenue");
+			throw new RuntimeException("Erreur dans la recherche");
+		}
 	}
 	
 }

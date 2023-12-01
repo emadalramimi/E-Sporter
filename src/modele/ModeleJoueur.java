@@ -133,6 +133,18 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			return false;
 		}
 	}
+	
+	public boolean supprimerJoueursEquipe(int idEquipe) throws Exception {
+		try {
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from joueur where idEquipe = ?");
+			ps.setInt(1, idEquipe);
+			ps.execute();
+			return true;
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	public List<Joueur> getListeJoueursParId(int idEquipe) {
 		List<Joueur> joueurs = new ArrayList<>();
