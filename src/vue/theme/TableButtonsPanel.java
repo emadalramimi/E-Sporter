@@ -42,7 +42,6 @@ public class TableButtonsPanel extends JPanel implements TableCellRenderer {
 
         setBorder(BorderFactory.createLineBorder(CharteGraphique.BORDURE));
 
-        // TODO PASSER EN FRANCAIS
         button1.setIcon(new ImageIcon(VueTournois.class.getResource("/images/actions/vue.png")));
         button2.setIcon(new ImageIcon(VueTournois.class.getResource("/images/actions/modifier.png")));
         button3.setIcon(new ImageIcon(VueTournois.class.getResource("/images/actions/supprimer.png")));
