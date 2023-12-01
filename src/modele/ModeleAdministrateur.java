@@ -65,25 +65,25 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 	 */
 	@Override
 	public Optional<Administrateur> getParId(Integer... idAdministrateur) throws Exception {
-	    PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from administrateur where idAdministrateur = ?");
-	    ps.setInt(1, idAdministrateur[0]);
-
-	    ResultSet rs = ps.executeQuery();
-
-	    Administrateur administrateur = null;
-	    if (rs.next()) {
-	        administrateur = new Administrateur(
-	                rs.getInt("idAdministrateur"),
-	                rs.getString("nom"),
-	                rs.getString("prenom"),
-	                rs.getString("identifiant"),
-	                rs.getString("motDePasse")
-	        );
-	    }
-
-	    return Optional.ofNullable(administrateur);
+		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from administrateur where idAdministrateur = ?");
+		ps.setInt(1, idAdministrateur[0]);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		// Création de l'administrateur s'il existe
+		Administrateur administrateur = null;
+		if(rs.next()) {
+			administrateur = new Administrateur(
+	    		rs.getInt("idAdministrateur"),
+	    		rs.getString("nom"),
+	    		rs.getString("prenom"),
+	    		rs.getString("identifiant"),
+	    		rs.getString("motDePasse")
+            );
+		}
+		
+		return Optional.ofNullable(administrateur);
 	}
-
 
 	/**
 	 * Ajoute l'administrateur dans la BDD
@@ -175,7 +175,7 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 	        );
 			
 			compteCourant = administrateur;
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
