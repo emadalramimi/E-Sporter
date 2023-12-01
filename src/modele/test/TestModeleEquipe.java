@@ -35,6 +35,27 @@ public class TestModeleEquipe {
 		equipe = new Equipe(10, "Equipe", "Canada", 2, 2, "Saison 2023", listJoueurs);
 		equipeAModif = new Equipe(10, "EquipeModif", "France", 3, 3, "Saison 2024", listJoueurs);
     }
+	
+	@Test
+	public void testGetTout() throws Exception {
+	    assertNotNull(modele.getTout());
+	    Equipe equipeFromDb = modele.getParId(1).orElse(null);
+	    assertNotNull(equipeFromDb);
+	    List<Equipe> result = modele.getTout();
+	    assertNotNull(result);
+	    assertFalse(result.isEmpty());
+	    assertEquals(equipeFromDb, result.get(0));
+	}
+	
+	@Test
+	public void testGetParId() throws Exception {
+	    Equipe equipeFromDb = modele.getParId(1).orElse(null);
+	    assertNotNull(equipeFromDb);
+	    Optional<Equipe> result = modele.getParId(equipeFromDb.getIdEquipe());
+	    assertTrue(result.isPresent());
+	    assertEquals(equipeFromDb, result.get());
+	}
+	
 	@Test
 	public void testAjouterTrue() throws Exception {
 		assertTrue(modele.ajouter(equipe));
@@ -66,6 +87,24 @@ public class TestModeleEquipe {
 		assertTrue(modele.supprimer(equipe));
 	}
 	
+	@Test
+	public void testGetNextValId() {
+	    int nextVal = modele.getNextValId();
+	    assertTrue(nextVal != 0);
+	}
+	
+	@Test
+	public void testGetParNom() throws Exception {
+	    modele.ajouter(equipe);
+	    List<Equipe> listTest = new ArrayList<>();
+	    listTest.add(equipe);
+	    List<Equipe> result = modele.getParNom(equipe.getNom());
+	    assertEquals(listTest.size(), result.size());
+	    for (int i = 0; i < listTest.size(); i++) {
+	        assertTrue(listTest.get(i).equals(result.get(i)));
+	    }
+	}
+
 	@After
     public void cleanup() throws Exception {
         List<Integer> idsToPreserve = Arrays.asList(1, 2, 3, 4);
