@@ -56,12 +56,14 @@ public class VueEquipes extends JFrame {
 
 	private ControleurEquipes controleur;
 	private VueSaisieEquipe vueSaisieEquipe;
+	private VueBase vueBase;
 	
 	/**
 	 * Create the frame.
 	 */
-	public void afficherVueEquipe(JPanel contentPane) {
+	public void afficherVueEquipe(JPanel contentPane, VueBase vueBase) {
 		this.controleur = new ControleurEquipes(this);
+		this.vueBase = vueBase;
 		
 		// panel contient tous les éléments de la page
 		panel = new JPanel();
@@ -170,6 +172,7 @@ public class VueEquipes extends JFrame {
 	public void afficherFenetreSaisieEquipe(Optional<Equipe> equipe) {
         if (this.vueSaisieEquipe == null || !this.vueSaisieEquipe.isVisible()) {
         	this.vueSaisieEquipe = new VueSaisieEquipe(this, this.controleur, equipe);
+        	this.vueBase.ajouterFenetreEnfant(this.vueSaisieEquipe);
         	this.vueSaisieEquipe.setLocationRelativeTo(this);
         	this.vueSaisieEquipe.setVisible(true);
         } else {

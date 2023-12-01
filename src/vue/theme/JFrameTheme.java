@@ -22,6 +22,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.LinkedList;
+import java.util.List;
 
 public class JFrameTheme extends JFrame {
 
@@ -34,8 +36,12 @@ public class JFrameTheme extends JFrame {
     private JButtonTitlebar btnReduire;
     private JButtonTitlebar btnToggleAgrandir;
     private JButtonTitlebar btnFermer;
+    
+    private List<JFrame> fenetresEnfant;
 
     public JFrameTheme() {
+    	this.fenetresEnfant = new LinkedList<>();
+    	
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1009, 607);
         setUndecorated(true);
@@ -81,7 +87,10 @@ public class JFrameTheme extends JFrame {
         btnFermer.setIcon(new ImageIcon(VueBase.class.getResource("/images/titlebar/fermer_gris.png")));
         btnFermer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dispose();
+            	for(JFrame fenetreEnfant : JFrameTheme.this.fenetresEnfant) {
+            		fenetreEnfant.dispose();
+            	}
+                JFrameTheme.this.dispose();
             }
         });
         btnFermer.addMouseListener(new RedHoverMouseAdapter());
@@ -115,6 +124,14 @@ public class JFrameTheme extends JFrame {
 
     public JPanel getContentPane() {
         return this.wrapperPane;
+    }
+    
+    public void ajouterFenetreEnfant(JFrame fenetre) {
+    	this.fenetresEnfant.add(fenetre);
+    }
+    
+    public void retirerFenetreEnfant(JFrame fenetre) {
+    	this.fenetresEnfant.remove(fenetre);
     }
 
     private void setButtonProperties(JButton button) {
