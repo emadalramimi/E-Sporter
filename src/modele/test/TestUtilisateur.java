@@ -13,12 +13,12 @@ import modele.metier.Administrateur;
 
 public class TestUtilisateur {
 
-private ModeleAdministrateur modele;
+	private ModeleAdministrateur modele;
     
     @Before
     public void setUp() {
         this.modele = new ModeleAdministrateur();
-        if (modele.getCompteCourant() != null)
+        if (ModeleAdministrateur.getCompteCourant() != null)
             this.modele.deconnecter();
     }
     
@@ -67,8 +67,8 @@ private ModeleAdministrateur modele;
      */
     @Test(expected = IllegalArgumentException.class)
     public void testConnexionDejaConnecte() throws IllegalArgumentException, IdentifiantOuMdpIncorrectsException, RuntimeException {
-    	modele.connecter("admin", "mdpadmin");
-        modele.connecter("admin", "mdpadmin");
+    	modele.connecter("admin", "mdp");
+        modele.connecter("admin", "mdp");
     }
     
     /*
@@ -76,7 +76,7 @@ private ModeleAdministrateur modele;
      */
     @Test(expected = IdentifiantOuMdpIncorrectsException.class)
     public void testConnexionIdentifiantInvalide() throws IllegalArgumentException, IdentifiantOuMdpIncorrectsException, RuntimeException {
-        modele.connecter("fauxadmin", "mdpadmin");
+        modele.connecter("fauxadmin", "mdp");
     }
     
     /*
@@ -92,7 +92,7 @@ private ModeleAdministrateur modele;
      */
     @Test
     public void testConnexionValide() throws IllegalArgumentException, IdentifiantOuMdpIncorrectsException, RuntimeException {
-        modele.connecter("admin", "mdpadmin");
+        modele.connecter("admin", "mdp");
         assertTrue(modele!=null);
     }
     
@@ -101,9 +101,9 @@ private ModeleAdministrateur modele;
      */
     @Test
     public void testDeconnexionValide() throws IllegalArgumentException, IdentifiantOuMdpIncorrectsException, RuntimeException {
-    	modele.connecter("admin", "mdpadmin");
+    	modele.connecter("admin", "mdp");
     	modele.deconnecter();
-    	assertTrue(modele.getCompteCourant()==null);
+    	assertTrue(ModeleAdministrateur.getCompteCourant()==null);
     }
     
     /*
@@ -119,6 +119,6 @@ private ModeleAdministrateur modele;
      */
     @Test
     public void testGetCompteCourant() {
-    	assertEquals(modele.getCompteCourant(), null);
+    	assertEquals(ModeleAdministrateur.getCompteCourant(), null);
     }
 }
