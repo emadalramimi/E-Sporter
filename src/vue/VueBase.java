@@ -261,7 +261,7 @@ public class VueBase extends JFrameTheme {
 			break;
 		case EQUIPES:
 			VueEquipes vueEquipe = new VueEquipes();
-			vueEquipe.afficherVueEquipe(this.contenu, this);
+			vueEquipe.afficherVueEquipe(this.contenu);
 			break;
 		case HISTORIQUE:
 			break;

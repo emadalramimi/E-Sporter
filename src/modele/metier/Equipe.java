@@ -164,5 +164,22 @@ public class Equipe {
 		return "Equipe [idEquipe=" + idEquipe + ", nom=" + nom + ", pays=" + pays + ", classement=" + classement
 				+ ", worldRanking=" + worldRanking + ", saison=" + saison + "]";
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+	    if (o == null) {
+	        return false;
+	    }
+	    if (!(o instanceof Equipe)) {
+	        return false;
+	    }
+	    Equipe equipe = (Equipe) o;
+	    return this.idEquipe == equipe.idEquipe
+	            && this.nom.equals(equipe.nom)
+	            && this.pays.equals(equipe.pays)
+	            && this.classement == equipe.classement
+	            && this.worldRanking == equipe.worldRanking
+	            && this.saison.equals(equipe.saison);
+	}
 
 }
