@@ -190,7 +190,6 @@ public class VueEquipes extends JFrame {
 		this.vueBase.ajouterFenetreEnfant(this.vueJoueurs);
 		this.vueJoueurs.setLocationRelativeTo(this);
 		this.vueJoueurs.setVisible(true);
-		System.out.println(this.vueBase.fenetresEnfant);
 	}
 	
 	public void retirerFenetreEnfant(JFrameTheme fenetre) {
