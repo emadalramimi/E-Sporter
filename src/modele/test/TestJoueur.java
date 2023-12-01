@@ -1,31 +1,70 @@
 package modele.test;
 
 import static org.junit.Assert.*;
+
+import org.junit.Before;
 import org.junit.Test;
 
-import modele.Joueur;
+import modele.metier.Joueur;
+
 
 public class TestJoueur {
-	@Test
-	void testGetters() {
-		Joueur j1 = new Joueur(1, "yay", 3);
-		Joueur j2 = new Joueur(2, "s0m", 3);
-		assertNotEquals(j1.getIdJoueur(),j2.getIdJoueur());
-		assertNotEquals(j1.getPseudo(),j2.getPseudo());
-		assertEquals(j1.getPseudo(),"yay");
-		assertEquals(j1.getIdEquipe(), j2.getIdEquipe());
+	
+	private Joueur joueur1;
+	private Joueur joueur2;
+	
+	@Before
+    public void setUp() {
+		joueur1 = new Joueur(1, "yay", 2);
+		joueur2 = new Joueur(2, "s0m", 2);
 	}
+	
 	@Test
-	void testSetters() {
-		Joueur j1 = new Joueur(2, "yay", 3);
-		Joueur j2 = new Joueur(2, "s0m", 3);
-		j1.setIdJoueur(3);
-		j2.setPseudo("yayy");
-		j2.setIdEquipe(4);
-		assertNotEquals(j1.getIdJoueur(),j2.getIdJoueur());
-		assertNotEquals(j2.getPseudo(),"s0m");
-		assertEquals(j2.getPseudo(),"yayy");
-		assertEquals(j2.getIdEquipe(), 4);
-		assertNotEquals(j2.getIdEquipe(), j1.getIdEquipe());
+	public void testGetIdJoueur() {
+		assertEquals(joueur1.getIdJoueur(), 1);
+		assertEquals(joueur2.getIdJoueur(), 2);
+		assertNotEquals(joueur1.getIdJoueur(), joueur2.getIdJoueur());
 	}
+	
+	@Test
+	public void testSetIdJoueur() {
+		joueur1.setIdJoueur(3);
+		joueur2.setIdJoueur(4);
+		assertEquals(joueur1.getIdJoueur(), 3);
+		assertEquals(joueur2.getIdJoueur(), 4);
+		assertNotEquals(joueur1.getIdJoueur(), joueur2.getIdJoueur());
+	}
+	
+	@Test
+	public void testGetPseudo() {
+		assertEquals(joueur1.getPseudo(), "yay");
+		assertEquals(joueur2.getPseudo(), "s0m");
+		assertNotEquals(joueur1.getPseudo(), joueur2.getPseudo());
+	}
+	
+	@Test
+	public void testSetPseudo() {
+		joueur1.setPseudo("tarik");
+		joueur2.setPseudo("jollz");
+		assertEquals(joueur1.getPseudo(), "tarik");
+		assertEquals(joueur2.getPseudo(), "jollz");
+		assertNotEquals(joueur1.getPseudo(), joueur2.getPseudo());
+	}
+	
+	@Test
+	public void testGetIdEquipe() {
+		assertEquals(joueur1.getIdEquipe(), 2);
+		assertEquals(joueur2.getIdEquipe(), 2);
+		assertEquals(joueur1.getIdEquipe(), joueur2.getIdEquipe());
+	}
+	
+	@Test
+	public void testSetIdEquipe() {
+		joueur1.setIdEquipe(3);
+		joueur2.setIdEquipe(4);
+		assertEquals(joueur1.getIdEquipe(), 3);
+		assertEquals(joueur2.getIdEquipe(), 4);
+		assertNotEquals(joueur1.getIdEquipe(), joueur2.getIdEquipe());
+	}
+	
 }
