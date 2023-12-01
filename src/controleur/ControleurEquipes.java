@@ -46,7 +46,7 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 				this.vue.afficherVueJoueurs(this.modeleJoueur.getListeJoueursParId(idEquipe));
 				break;
 			case MODIFIER:
-				this.vue.afficherFenetreSaisieEquipe(equipeOptionnel);
+				this.vue.afficherVueSaisieEquipe(equipeOptionnel);
 				break;
 			case SUPPRIMER:
 				Equipe equipe = equipeOptionnel.orElse(null);
@@ -68,7 +68,7 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 			JButton bouton = (JButton) e.getSource();
 			
 			if(bouton.getText() == "Ajouter") {
-				this.vue.afficherFenetreSaisieEquipe(Optional.empty());
+				this.vue.afficherVueSaisieEquipe(Optional.empty());
 			} else if(this.vue.estBoutonRecherche(bouton)) {
 				String requeteRecherche = this.vue.getRequeteRecherche();
 				if(requeteRecherche != null) {

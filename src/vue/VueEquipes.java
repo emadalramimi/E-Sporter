@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import vue.theme.TableButtonsPanel;
 import vue.theme.JButtonTheme.Types;
+import vue.theme.JFrameTheme;
 import vue.theme.CharteGraphique;
 import vue.theme.TableButtonsCellEditor;
 import vue.theme.JButtonTheme;
@@ -56,6 +57,7 @@ public class VueEquipes extends JFrame {
 
 	private ControleurEquipes controleur;
 	private VueSaisieEquipe vueSaisieEquipe;
+	private VueJoueurs vueJoueurs;
 	private VueBase vueBase;
 	
 	/**
@@ -169,7 +171,7 @@ public class VueEquipes extends JFrame {
 		scrollPaneEquipes.setViewportView(table);
 	}
 	
-	public void afficherFenetreSaisieEquipe(Optional<Equipe> equipe) {
+	public void afficherVueSaisieEquipe(Optional<Equipe> equipe) {
         if (this.vueSaisieEquipe == null || !this.vueSaisieEquipe.isVisible()) {
         	this.vueSaisieEquipe = new VueSaisieEquipe(this, this.controleur, equipe);
         	this.vueBase.ajouterFenetreEnfant(this.vueSaisieEquipe);
@@ -181,13 +183,18 @@ public class VueEquipes extends JFrame {
     }
 	
 	public void afficherVueJoueurs(List<Joueur> joueurs) {
-		try {
-			VueJoueurs frame = new VueJoueurs(joueurs);
-			frame.setLocationRelativeTo(this);
-            frame.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		if(this.vueJoueurs != null) {
+			this.vueJoueurs.fermerFenetre();
+		}
+		this.vueJoueurs = new VueJoueurs(joueurs, this);
+		this.vueBase.ajouterFenetreEnfant(this.vueJoueurs);
+		this.vueJoueurs.setLocationRelativeTo(this);
+		this.vueJoueurs.setVisible(true);
+		System.out.println(this.vueBase.fenetresEnfant);
+	}
+	
+	public void retirerFenetreEnfant(JFrameTheme fenetre) {
+		this.vueBase.retirerFenetreEnfant(fenetre);
 	}
 	
 	public void afficherPopupErreur(String message) {

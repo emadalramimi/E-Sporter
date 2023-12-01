@@ -39,7 +39,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 	private JTextField txtNom;
 	private JLabel lblPays;
 	private JComboBox<String> cboxPays;
-	private JLabel lblWorldRancking;
+	private JLabel lblWorldRanking;
 	private JTextFieldTheme txtWorldRanking;
 	private JLabel lblJoueurs;
 	private JTextField txtJoueur1;
@@ -52,8 +52,11 @@ public class VueSaisieEquipe extends JFrameTheme {
 	private JPanel panelValider;
 	private JButton btnValider;
 	
+	private VueEquipes vueEquipes;
+	
 	public VueSaisieEquipe(VueEquipes vueEquipes, ControleurEquipes controleurEquipes, Optional<Equipe> equipeOptionnel) {
 		ControleurSaisieEquipe controleur = new ControleurSaisieEquipe(this, vueEquipes, controleurEquipes, equipeOptionnel);
+		this.vueEquipes = vueEquipes;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 450);
@@ -120,14 +123,14 @@ public class VueSaisieEquipe extends JFrameTheme {
 		gbc_txtEquipe.gridy = 4;
 		panelEquipe.add(cboxPays, gbc_txtEquipe);
 		
-		lblWorldRancking = new JLabel("World Ranking (optionnel)");
-		lblWorldRancking.setForeground(Color.WHITE);
-		lblWorldRancking.setFont(CharteGraphique.getPolice(19, true));
+		lblWorldRanking = new JLabel("World Ranking (optionnel)");
+		lblWorldRanking.setForeground(Color.WHITE);
+		lblWorldRanking.setFont(CharteGraphique.getPolice(19, true));
 		GridBagConstraints gbc_lblWorldRancking = new GridBagConstraints();
 		gbc_lblWorldRancking.insets = new Insets(0, 0, 5, 0);
 		gbc_lblWorldRancking.gridx = 0;
 		gbc_lblWorldRancking.gridy = 5;
-		panelEquipe.add(lblWorldRancking, gbc_lblWorldRancking);
+		panelEquipe.add(lblWorldRanking, gbc_lblWorldRancking);
 		
 		txtWorldRanking = new JTextFieldTheme(10);
 		GridBagConstraints gbc_textWorldRanking = new GridBagConstraints();
@@ -251,7 +254,9 @@ public class VueSaisieEquipe extends JFrameTheme {
 		}
 	}
 	
+	@Override
 	public void fermerFenetre() {
+		vueEquipes.retirerFenetreEnfant(VueSaisieEquipe.this);
 		this.dispose();
 	}
 	

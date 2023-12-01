@@ -80,11 +80,12 @@ public class ControleurBase extends MouseAdapter {
 		if(boutonClique != this.boutonActif) {
 			if(boutonClique.getMenu().getEstActivable()) {
 				this.setBoutonActif(boutonClique);
+				this.vue.fermerFenetresEnfant();
 				this.vue.changerOnglet(boutonClique.getMenu());
 			} else if (boutonClique.getMenu() == Menus.DECONNEXION) {
 				if(this.vue.afficherConfirmationDeconnexion()) {
 					this.modeleAdministrateur.deconnecter();
-					this.vue.dispose();
+					this.vue.fermerFenetre();
 				}
 			}
 		}

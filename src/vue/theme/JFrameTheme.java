@@ -37,7 +37,7 @@ public class JFrameTheme extends JFrame {
     private JButtonTitlebar btnToggleAgrandir;
     private JButtonTitlebar btnFermer;
     
-    private List<JFrame> fenetresEnfant;
+    public List<JFrameTheme> fenetresEnfant;
 
     public JFrameTheme() {
     	this.fenetresEnfant = new LinkedList<>();
@@ -87,10 +87,7 @@ public class JFrameTheme extends JFrame {
         btnFermer.setIcon(new ImageIcon(VueBase.class.getResource("/images/titlebar/fermer_gris.png")));
         btnFermer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	for(JFrame fenetreEnfant : JFrameTheme.this.fenetresEnfant) {
-            		fenetreEnfant.dispose();
-            	}
-                JFrameTheme.this.dispose();
+                JFrameTheme.this.fermerFenetre();
             }
         });
         btnFermer.addMouseListener(new RedHoverMouseAdapter());
@@ -126,12 +123,23 @@ public class JFrameTheme extends JFrame {
         return this.wrapperPane;
     }
     
-    public void ajouterFenetreEnfant(JFrame fenetre) {
+    public void ajouterFenetreEnfant(JFrameTheme fenetre) {
     	this.fenetresEnfant.add(fenetre);
     }
     
-    public void retirerFenetreEnfant(JFrame fenetre) {
+    public void retirerFenetreEnfant(JFrameTheme fenetre) {
     	this.fenetresEnfant.remove(fenetre);
+    }
+    
+    public void fermerFenetre() {
+    	this.fermerFenetresEnfant();
+    	this.dispose();
+    }
+    
+    public void fermerFenetresEnfant() {
+    	for(JFrameTheme fenetreEnfant : this.fenetresEnfant) {
+    		fenetreEnfant.fermerFenetre();
+    	}
     }
 
     private void setButtonProperties(JButton button) {
