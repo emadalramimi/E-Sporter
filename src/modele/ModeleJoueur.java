@@ -34,7 +34,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
                     try {
                         if (!rs.next()) {
                             return false;
-                        }	
+                        }
                         action.accept(new Joueur(
                     		rs.getInt("idJoueur"),
                     		rs.getString("pseudo"),
