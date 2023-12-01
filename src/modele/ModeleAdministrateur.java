@@ -72,7 +72,7 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 		
 		// Création de l'administrateur s'il existe
 		Administrateur administrateur = null;
-		if(rs.first()) {
+		if(rs.next()) {
 			administrateur = new Administrateur(
 	    		rs.getInt("idAdministrateur"),
 	    		rs.getString("nom"),
