@@ -136,7 +136,7 @@ public class VueEquipes extends JFrame {
 		// Création du modèle du tableau avec désactivation de l'édition
 		this.model = new DefaultTableModel(
 			new Object[][] {}, 
-			new String[] {"ID", "Nom", "Pays", "Classement", "World Ranking", "Actions"}
+			new String[] {"ID", "Nom", "Pays", "World Ranking", "Actions"}
 		) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -230,7 +230,6 @@ public class VueEquipes extends JFrame {
 		    rowData.add(equipe.getIdEquipe());
 		    rowData.add(equipe.getNom());
 		    rowData.add(equipe.getPays());
-		    rowData.add(equipe.getClassement());
 		    rowData.add(equipe.getWorldRanking());
 		    this.model.addRow(rowData);
 		}
