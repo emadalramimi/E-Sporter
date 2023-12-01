@@ -45,6 +45,21 @@ public class TestModeleEquipe {
 		assertTrue(modele.ajouter(equipe));
 		assertFalse(modele.ajouter(equipeAModif));
 	}
+	
+	@Test
+	public void testModifierTrue() throws Exception {
+		modele.ajouter(equipe);
+		assertTrue(modele.modifier(equipeAModif));
+	}
+	
+	/*
+	@Test
+	public void testModifierFalse() throws Exception {
+	    Equipe equipeToModify = new Equipe(15, "EquipeModif", "France", 3, 3, "Saison 2024", listJoueurs);
+	    assertFalse(modele.modifier(equipeToModify));
+	}
+	*/
+
 	@After
     public void cleanup() throws Exception {
         List<Integer> idsToPreserve = Arrays.asList(1, 2, 3, 4);
