@@ -60,6 +60,12 @@ public class TestModeleEquipe {
 	}
 	*/
 
+	@Test
+	public void testSupprimerTrue() throws Exception {
+		modele.ajouter(equipe);
+		assertTrue(modele.supprimer(equipe));
+	}
+	
 	@After
     public void cleanup() throws Exception {
         List<Integer> idsToPreserve = Arrays.asList(1, 2, 3, 4);
