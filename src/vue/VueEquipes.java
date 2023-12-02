@@ -1,23 +1,24 @@
 package vue;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import vue.theme.TableButtonsPanel;
 import vue.theme.JButtonTheme.Types;
 import vue.theme.JFrameTheme;
+import vue.theme.JOptionPaneTheme;
 import vue.theme.CharteGraphique;
 import vue.theme.TableButtonsCellEditor;
 import vue.theme.JButtonTheme;
-import vue.theme.JOptionPaneTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
 import vue.theme.JTextFieldTheme;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -34,14 +35,19 @@ import java.awt.GridBagLayout;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import controleur.ControleurEquipes;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
+import modele.metier.Pays;
 
-public class VueEquipes extends JFrame {
+/**
+ * IHM équipes
+ */
+public class VueEquipes extends JFrameTheme {
 	
 	private JTable table;
 	private DefaultTableModel model;
@@ -60,9 +66,6 @@ public class VueEquipes extends JFrame {
 	private VueJoueurs vueJoueurs;
 	private VueBase vueBase;
 	
-	/**
-	 * Create the frame.
-	 */
 	public void afficherVueEquipe(JPanel contentPane, VueBase vueBase) {
 		this.controleur = new ControleurEquipes(this);
 		this.vueBase = vueBase;
@@ -121,15 +124,18 @@ public class VueEquipes extends JFrame {
 		panel.add(panelTableauFiltres, gbc_panelRecherche);
 		panelTableauFiltres.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		
+		// Champ de recherche
 		txtRecherche = new JTextFieldTheme(20);
 		txtRecherche.addKeyListener(controleur);
 		txtRecherche.setColumns(20);
 		panelTableauFiltres.add(txtRecherche);
 		
+		// Bouton de recherche
 		btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/actions/rechercher.png")));
 		btnRecherche.addActionListener(controleur);
 		panelTableauFiltres.add(btnRecherche);
 		
+		// ScrollPane englobant le tableau
 		scrollPaneEquipes = new JScrollPaneTheme();
 		GridBagConstraints gbc_scrollPaneEquipes = new GridBagConstraints();
 		gbc_scrollPaneEquipes.fill = GridBagConstraints.BOTH;
@@ -151,6 +157,7 @@ public class VueEquipes extends JFrame {
 			}
 		};
 		
+		// Tableau d'équipes
 		table = new JTableTheme();
 		table.setModel(model);
 		
@@ -159,9 +166,13 @@ public class VueEquipes extends JFrame {
 		buttonColumn.setCellRenderer(new TableButtonsPanel(table, controleur, 0));
 		buttonColumn.setCellEditor(new TableButtonsCellEditor(controleur));
 		
-		// Masquage de la colonne ID
+		// Règles d'affichage du drapeau du pays
+		TableColumn paysColumn = table.getColumnModel().getColumn(2);
+	    paysColumn.setCellRenderer(new ImageTableCellRenderer());
+		
+		// Masquage de la colonne ID (sert pour obtenir l'Equipe d'une ligne dont un bouton est cliqué)
 		TableColumn idColumn = table.getColumnModel().getColumn(0);
-		idColumn.setMinWidth(1);
+		idColumn.setMinWidth(1); // 1px pour garder la bordure
 		idColumn.setMaxWidth(1);
 		idColumn.setWidth(1);
 		idColumn.setPreferredWidth(1);
@@ -171,7 +182,12 @@ public class VueEquipes extends JFrame {
 		scrollPaneEquipes.setViewportView(table);
 	}
 	
+	/**
+	 * Ouvre la fenêtre de saisie équipe et modification équipe si equipe est renseignée
+	 * @param equipe : équipe à modifier (optionnel)
+	 */
 	public void afficherVueSaisieEquipe(Optional<Equipe> equipe) {
+		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
         if (this.vueSaisieEquipe == null || !this.vueSaisieEquipe.isVisible()) {
         	this.vueSaisieEquipe = new VueSaisieEquipe(this, this.controleur, equipe);
         	this.vueBase.ajouterFenetreEnfant(this.vueSaisieEquipe);
@@ -182,7 +198,12 @@ public class VueEquipes extends JFrame {
         }
     }
 	
+	/**
+	 * Ouvre la fenêtre avec le détail des joueurs de l'équipe
+	 * @param joueurs : liste des joueurs de l'équipe
+	 */
 	public void afficherVueJoueurs(List<Joueur> joueurs) {
+		// Une fenêtre à la fois, si une est déjà ouverte, alors la fermer avant
 		if(this.vueJoueurs != null) {
 			this.vueJoueurs.fermerFenetre();
 		}
@@ -192,27 +213,38 @@ public class VueEquipes extends JFrame {
 		this.vueJoueurs.setVisible(true);
 	}
 	
+	/**
+	 * Retire une fenêtre enfant de la liste des fenêtres enfant dans VueBase
+	 * @param fenetre
+	 */
 	public void retirerFenetreEnfant(JFrameTheme fenetre) {
 		this.vueBase.retirerFenetreEnfant(fenetre);
 	}
 	
-	public void afficherPopupErreur(String message) {
-		JOptionPaneTheme.showMessageDialog(this, message, "Erreur", JOptionPane.ERROR_MESSAGE);
-	}
-	
-	public void afficherPopupMessage(String message) {
-		JOptionPaneTheme.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
-	}
-	
+	/**
+	 * Affiche un message de confirmation de suppression d'équipe
+	 * @return true si "Oui" a été sélectionné, false si "Annuler" a été sélectionné ou si la popup a été fermée
+	 */
 	public boolean afficherConfirmationSuppression() {
 		Object[] options = {"Oui", "Annuler"};
-        int choix = JOptionPane.showOptionDialog(null, "Êtes-vous sûr de vouloir supprimer cette équipe ?", "Confirmation",
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
-                        null, options, options[0]);
+        int choix = JOptionPaneTheme.showOptionDialog(
+	    	null,
+	    	"Êtes-vous sûr de vouloir supprimer cette équipe ?",
+	    	"Confirmation",
+	        JOptionPane.DEFAULT_OPTION,
+	        JOptionPane.QUESTION_MESSAGE,
+	        null,
+	        options,
+	        options[0]
+        );
         
-        return choix == 0; // Renvoie true si "Oui" est sélectionné
+        return choix == 0;
     }
 	
+	/**
+	 * @param bouton
+	 * @return true si bouton est le bouton de recherche, false sinon
+	 */
 	public boolean estBoutonRecherche(JButton bouton) {
 		if(bouton instanceof JButtonTheme) {
 			String iconeRecherche = VueTournois.class.getResource("/images/actions/rechercher.png").toString();
@@ -221,15 +253,25 @@ public class VueEquipes extends JFrame {
 		return false;
 	}
 	
-	
+	/**
+	 * @param champ
+	 * @return true si le champ est le champ de recherche, false sinon
+	 */
 	public boolean estChampRecherche(JTextField champ) {
 		return this.txtRecherche.equals(champ);
 	}
 	
+	/**
+	 * @return la requête de recherche tapée par l'utilisateur
+	 */
 	public String getRequeteRecherche() {
 		return this.txtRecherche.getText().trim();
 	}
 	
+	/**
+	 * Remplit/met à jour le tableau d'équipes
+	 * @param equipes : liste des équipes à mettre dans le tableau
+	 */
 	public void remplirTableau(List<Equipe> equipes) {
 		// Vider le tableau
 		this.model.setRowCount(0);
@@ -239,11 +281,67 @@ public class VueEquipes extends JFrame {
 		    Vector<Object> rowData = new Vector<>();
 		    rowData.add(equipe.getIdEquipe());
 		    rowData.add(equipe.getNom());
-		    rowData.add(equipe.getPays());
+		    
+		    Pays pays = Pays.valueOfNom(equipe.getPays());
+	        ImageIcon drapeau = pays.getDrapeauPays();
+	        rowData.add(new LabelIcon(drapeau, equipe.getPays()));
+	        
 		    rowData.add(equipe.getWorldRanking());
 		    this.model.addRow(rowData);
 		}
+		
+		// Mise à jour du tableau
 		this.table.setModel(this.model);
 	}
 	
+	/**
+	 * Classe interne de label avec une icone (pour les drapeaux)
+	 */
+	private static class LabelIcon {
+
+        ImageIcon icon;
+        String label;
+
+        public LabelIcon(ImageIcon icon, String label) {
+            this.icon = icon;
+            this.label = label;
+        }
+        
+    }
+	
+	/**
+	 * Classe interne pour afficher les drapeaux
+	 */
+	private static class ImageTableCellRenderer extends DefaultTableCellRenderer {
+		
+		@Override
+	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+			// Affichage du label et de l'icone à gauche
+	        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+	        LabelIcon labelIcon = (LabelIcon) value;
+	        setIcon(labelIcon.icon);
+	        setText(labelIcon.label);
+	        
+	        // Couleur de fond des cellules alternantes
+ 			if(row % 2 == 0) {
+ 				this.setBackground(CharteGraphique.FOND_SECONDAIRE);
+ 			} else {
+ 				this.setBackground(CharteGraphique.FOND);
+ 			}
+ 			
+ 			// Bordure de la cellule du tableau
+ 			setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, CharteGraphique.BORDURE));
+ 			
+ 			// Police
+ 			this.setFont(CharteGraphique.getPolice(16, false));
+ 			this.setForeground(CharteGraphique.TEXTE);
+ 			
+ 			// Centrer les textes dans toutes les cellules
+			this.setHorizontalAlignment(CENTER);
+			this.setVerticalAlignment(CENTER);
+	        
+	        return label;
+	    }
+		
+	}
 }
