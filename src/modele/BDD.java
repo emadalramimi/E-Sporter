@@ -5,10 +5,17 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Class de gestion de la base de données
+ */
 public class BDD {
 	
 	private static Connection connection;
 	
+	/**
+	 * Singleton de connexion à la base de données
+	 * @return la connexion à la base de données
+	 */
 	public static synchronized Connection getConnexion() {
 		if(connection == null) {
 			try {
@@ -31,13 +38,32 @@ public class BDD {
 		}
 		return connection;
 	}
+	
+	/**
+	 * Ferme la connexion en cours (à la fermeture de la fenêtre)
+	 */
+	public static void fermerConnexion() {
+		if(BDD.connection != null) {
+			try {
+				BDD.connection.commit();
+				BDD.connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
+	/**
+	 * Point d'entrée de BDD (pour remettre à zéro la base de données et insérer les données d'exemple)
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		try {
 			Statement st = BDD.getConnexion().createStatement();
 			
 			System.out.println("Connexion OK");
 			
+			// Construit la BDD
 			BDD bdd = new BDD();
 			bdd.construireTables(st);
 			bdd.insererDonnees(st);
@@ -54,6 +80,10 @@ public class BDD {
 		}
 	}
 	
+	/**
+	 * Remet à zéro la base de données puis construit les tables
+	 * @param st
+	 */
 	private void construireTables(Statement st) {
 		try {
 			st.executeUpdate("DROP TABLE jouer");
@@ -382,7 +412,10 @@ public class BDD {
 		}
 	}
 						
-	
+	/**
+	 * Insère les données d'exemple dans la base de données (environnement de développement)
+	 * @param st
+	 */
 	public void insererDonnees(Statement st) {
 		try {
 			st.executeUpdate(
@@ -463,7 +496,7 @@ public class BDD {
 					"INSERT INTO equipe VALUES ("
 					+ "NEXT VALUE FOR idEquipe,"
 					+ "'CFO Academy',"
-					+ "'Taiwan',"
+					+ "'Taïwan',"
 					+ "3,"
 					+ "414,"
 					+ "'Saison 2023'"
@@ -472,7 +505,7 @@ public class BDD {
 					"INSERT INTO equipe VALUES ("
 					+ "NEXT VALUE FOR idEquipe,"
 					+ "'DCG Academy',"
-					+ "'Taiwan',"
+					+ "'Taïwan',"
 					+ "1,"
 					+ "362,"
 					+ "'Saison 2023'"
@@ -481,7 +514,7 @@ public class BDD {
 					"INSERT INTO equipe VALUES ("
 					+ "NEXT VALUE FOR idEquipe,"
 					+ "'Taipei Bravo',"
-					+ "'Taiwan',"
+					+ "'Taïwan',"
 					+ "4,"
 					+ "275,"
 					+ "'Saison 2023'"
@@ -490,7 +523,7 @@ public class BDD {
 					"INSERT INTO equipe VALUES ("
 					+ "NEXT VALUE FOR idEquipe,"
 					+ "'PSG Academy',"
-					+ "'Taiwan',"
+					+ "'Taïwan',"
 					+ "2,"
 					+ "237,"
 					+ "'Saison 2023'"

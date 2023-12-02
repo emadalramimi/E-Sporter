@@ -12,6 +12,9 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+/**
+ * Extension de JScrollPane de Swing
+ */
 public class JScrollPaneTheme extends JScrollPane {
 
 	/**

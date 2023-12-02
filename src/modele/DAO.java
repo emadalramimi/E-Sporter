@@ -3,6 +3,11 @@ package modele;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Interface DAO
+ * @param <T>
+ * @param <T1>
+ */
 public interface DAO<T, T1> {
 
 	List<T> getTout() throws Exception;

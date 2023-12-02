@@ -8,6 +8,9 @@ import javax.swing.JButton;
 
 import controleur.ControleurBase;
 
+/**
+ * Extension du JButton de Swing pour le menu de l'application
+ */
 public class JButtonMenu extends JButton {
 
 	private ControleurBase.Menus menu;
@@ -21,11 +24,16 @@ public class JButtonMenu extends JButton {
 	 */
 	public JButtonMenu(String label, ControleurBase.Menus menu) {
 		super(label);
+		// Enlève la couleur de fond du menu au clic
 		super.setContentAreaFilled(false);
 		this.menu = menu;
+		
+		// Création des chemins des icones (actif et inactif)
 		this.cheminIcone = "/images/menu/" + menu.toString().toLowerCase() + ".png";
         this.cheminIconeActif = cheminIcone.replace(".png", "_actif.png");
         
+        
+        // Personnalisation de l'icone
         this.setIcon(new ImageIcon(JButtonMenu.class.getResource(cheminIcone)));
 		this.setBorder(null);
 		this.setBackground(CharteGraphique.FOND_SECONDAIRE);
@@ -39,6 +47,10 @@ public class JButtonMenu extends JButton {
 		return this.menu;
 	}
 	
+	/**
+	 * Change l'icone du menu
+	 * @param actif : état d'activité
+	 */
 	public void activerIconeBouton(boolean actif) {
 		if(actif) {
 			this.setIcon(new ImageIcon(JButtonMenu.class.getResource(this.cheminIconeActif)));
@@ -47,6 +59,9 @@ public class JButtonMenu extends JButton {
 		}
 	}
 	
+	/**
+	 * Enlève la couleur de fond de base de Swing au clic
+	 */
 	@Override
     protected void paintComponent(Graphics g) {
         g.setColor(getBackground());
@@ -54,6 +69,9 @@ public class JButtonMenu extends JButton {
         super.paintComponent(g);
     }
 
+	/**
+	 * Enlève la couleur de fond de base de Swing au clic
+	 */
     @Override
     public void setContentAreaFilled(boolean b) {}
     

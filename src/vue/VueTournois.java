@@ -1,11 +1,11 @@
 package vue;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
+import vue.theme.JFrameTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
 
@@ -20,11 +20,11 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-public class VueTournois extends JFrame {
+public class VueTournois extends JFrameTheme {
 	private JTable table;
 
 	/**
-	 * Create the frame.
+	 * WIP : PAGE D'EXEMPLE
 	 */
 	public void afficherVueTournois(JPanel contentPane) {
 		JPanel panel = new JPanel();

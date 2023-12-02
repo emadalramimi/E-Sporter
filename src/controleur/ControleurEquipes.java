@@ -16,23 +16,35 @@ import modele.metier.Equipe;
 import vue.VueEquipes;
 import vue.theme.JButtonTable;
 
+/**
+ * Controleur de VueEquipes
+ */
 public class ControleurEquipes extends KeyAdapter implements ActionListener {
 
 	private VueEquipes vue;
 	private ModeleEquipe modeleEquipe;
 	private ModeleJoueur modeleJoueur;
 	
+	/**
+	 * Constructeur du controleur de VueEquipes
+	 * @param vue : vueEquipes
+	 */
 	public ControleurEquipes(VueEquipes vue) {
 		this.vue = vue;
 		this.modeleEquipe = new ModeleEquipe();
 		this.modeleJoueur = new ModeleJoueur();
 	}
 	
+	/**
+	 * Quand on effectue une action sur un élément de VueEquipes
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// Clic sur un bouton du tableau (voir, modifier, supprimer)
 		if(e.getSource() instanceof JButtonTable) {
 			JButtonTable bouton = (JButtonTable) e.getSource();
 			
+			// Récupération de l'ID de l'équipe sélectionné
 			int idEquipe = bouton.getIdElement();
 			Optional<Equipe> equipeOptionnel;
 			try {
@@ -41,24 +53,32 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 				equipeOptionnel = Optional.empty();
 			}
 			
+			// Traitement différent en fonction du bouton
 			switch(bouton.getType()) {
 			case VOIR:
+				// Afficher la liste des joueurs
 				this.vue.afficherVueJoueurs(this.modeleJoueur.getListeJoueursParId(idEquipe));
 				break;
 			case MODIFIER:
+				// Afficher une page de saisie d'équipe vierge
 				this.vue.afficherVueSaisieEquipe(equipeOptionnel);
 				break;
 			case SUPPRIMER:
+				// Suppression d'une équipe
 				Equipe equipe = equipeOptionnel.orElse(null);
+				// Si équipe n'est pas trouvée
 				if(equipe == null) {
 					this.vue.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
 					throw new RuntimeException("Equipe est inexistant");
 				}
+				// Affiche une demande de confirmation de suppression
 				if(this.vue.afficherConfirmationSuppression()) {
+					// Supprime l'équipe, affiche un message d'équipe supprimée et met à jour le tableau sur VueEquipes
 					if(this.modeleEquipe.supprimer(equipe)) {
 						this.vue.afficherPopupMessage("L'équipe a bien été supprimée");
 						this.vue.remplirTableau(this.getEquipes());
 					} else {
+						// En cas d'erreur
 						this.vue.afficherPopupErreur("Une erreur est survenue");
 					}
 				}
@@ -67,9 +87,13 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 		} else if(e.getSource() instanceof JButton) {
 			JButton bouton = (JButton) e.getSource();
 			
+			// Si il s'agit du bouton ajouter
 			if(bouton.getText() == "Ajouter") {
+				// Ouverture de la fenêtre d'ajout d'équipe
 				this.vue.afficherVueSaisieEquipe(Optional.empty());
-			} else if(this.vue.estBoutonRecherche(bouton)) {
+			}
+			// Si il s'agit du bouton de recherche
+			else if(this.vue.estBoutonRecherche(bouton)) {
 				String requeteRecherche = this.vue.getRequeteRecherche();
 				if(requeteRecherche != null) {
 					this.rechercher(this.vue.getRequeteRecherche());
@@ -79,14 +103,22 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 		
 	}
 	
+	/**
+	 * Quand on appuie sur une touche du clavier dans le champ de recherche
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		JTextField txtRecherche = (JTextField) e.getSource();
-		String requeteRecherche = this.vue.getRequeteRecherche();
+		// Si il s'agit du champ de recherche
 		if (this.vue.estChampRecherche(txtRecherche)) {
+			// Récupère la requête de recherche
+			String requeteRecherche = this.vue.getRequeteRecherche();
+			// Effectuer la recherche à l'appui de la touche entrée
 	        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 	            this.rechercher(requeteRecherche);
-	        } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+	        }
+	        // Lorsqu'on supprime tous les caractères dans le champ de recherche, sortir de la recherche
+	        else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
 	            if (
 	            	requeteRecherche != null
 	            	&& requeteRecherche.length() == 1
@@ -99,6 +131,9 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 	    }
 	}
 	
+	/**
+	 * @return La liste de toutes les équipes
+	 */
 	public List<Equipe> getEquipes(){
 		try {
 			return this.modeleEquipe.getTout();
@@ -108,8 +143,13 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 		return null;
 	}
 	
+	/**
+	 * Effectue une recherche de requête requeteRecherche
+	 * @param requeteRecherche
+	 */
 	private void rechercher(String requeteRecherche) {
 		try {
+			// Mise à jour du tableau avec les résultats de recherche
 			this.vue.remplirTableau(this.modeleEquipe.getParNom(requeteRecherche));
 		} catch (Exception e1) {
 			this.vue.afficherPopupErreur("Une erreur est survenue");

@@ -1,8 +1,7 @@
 package modele.metier;
 
 /**
- * Modèle administrateur
- * @author Nassim Khoujane
+ * Modèle métier Administrateur
  */
 public class Administrateur {
 
@@ -103,6 +102,9 @@ public class Administrateur {
 		this.motDePasse = motDePasse;
 	}
 	
+	/**
+	 * Retourne true si un Object o est égal à Administrateur (this), faux sinon
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (o == null) { 
@@ -118,7 +120,7 @@ public class Administrateur {
 				&& this.identifiant == admin.identifiant
 				&& this.motDePasse == admin.motDePasse;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Administrateur [idAdministrateur=" + idAdministrateur + ", nom=" + nom + ", prenom=" + prenom

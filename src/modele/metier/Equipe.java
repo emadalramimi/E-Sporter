@@ -4,7 +4,6 @@ import java.util.List;
 
 /**
  * Modèle métier équipe
- * @author Nassim Khoujane
  */
 public class Equipe {
 
@@ -158,13 +157,10 @@ public class Equipe {
 	public void setJoueurs(List<Joueur> joueurs) {
 		this.joueurs = joueurs;
 	}
-
-	@Override
-	public String toString() {
-		return "Equipe [idEquipe=" + idEquipe + ", nom=" + nom + ", pays=" + pays + ", classement=" + classement
-				+ ", worldRanking=" + worldRanking + ", saison=" + saison + "]";
-	}
 	
+	/**
+	 * Retourne true si un Object o est égal à Equipe (this), faux sinon
+	 */
 	@Override
 	public boolean equals(Object o) {
 	    if (o == null) {
@@ -180,6 +176,12 @@ public class Equipe {
 	            && this.classement == equipe.classement
 	            && this.worldRanking == equipe.worldRanking
 	            && this.saison.equals(equipe.saison);
+	}
+
+	@Override
+	public String toString() {
+		return "Equipe [idEquipe=" + idEquipe + ", nom=" + nom + ", pays=" + pays + ", classement=" + classement
+				+ ", worldRanking=" + worldRanking + ", saison=" + saison + "]";
 	}
 
 }

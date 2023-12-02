@@ -8,11 +8,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controleur.ControleurBase;
+import modele.BDD;
 import modele.ModeleAdministrateur;
 import modele.metier.Administrateur;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonMenu;
 import vue.theme.JFrameTheme;
+import vue.theme.JOptionPaneTheme;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,6 +24,9 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 
+/**
+ * Vue qui sert de base pour les fenêtres principales (contenant le menu)
+ */
 public class VueBase extends JFrameTheme {
 	
 	private JPanel contenu;
@@ -30,23 +35,18 @@ public class VueBase extends JFrameTheme {
 	private ControleurBase controleurBase;
 	
 	/**
-	 * Create the frame.
+	 * Crée la VueBase
 	 */
 	public VueBase() {
 		this.controleurBase = new ControleurBase(this);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1300, 700);
-//		JPanel contentPane = new JPanel();
-//		contentPane.setBackground(CharteGraphique.FOND);
-//		contentPane.setBorder(null);
-//
-//		setContentPane(contentPane);
-//		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		// contentPane, un panel contenant tous les éléments de la fenêtre
 		JPanel contentPane = super.getContentPane();
 		
+		// Panel de contenu de l'onglet
 		this.contenu = new JPanel();
 		this.contenu.setBackground(CharteGraphique.FOND);
 		contentPane.add(this.contenu, BorderLayout.CENTER);
@@ -67,16 +67,19 @@ public class VueBase extends JFrameTheme {
 	 * @param panel de type BorderLayout
 	 */
 	public void afficherMenu(JPanel panel, ControleurBase.Menus actif) {
+		// Panel du menu
 		JPanel panelMenu = new JPanel();
 		panelMenu.setBorder(new EmptyBorder(10, 10, 10, 10));
 		panelMenu.setBackground(CharteGraphique.FOND_SECONDAIRE);
 		panel.add(panelMenu, BorderLayout.NORTH);
 		panelMenu.setLayout(new GridLayout(1, 0, 20, 0));
 		
+		// Logo
 		JLabel lblLogo = new JLabel("");
 		lblLogo.setIcon(new ImageIcon(VueBase.class.getResource("/images/logo_menu.png")));
 		panelMenu.add(lblLogo);
 		
+		// Panel centre
 		JPanel panelCentre = new JPanel();
 		FlowLayout fl_panelCentre = (FlowLayout) panelCentre.getLayout();
 		fl_panelCentre.setVgap(0);
@@ -84,6 +87,7 @@ public class VueBase extends JFrameTheme {
 		panelCentre.setBackground(CharteGraphique.FOND_SECONDAIRE);
 		panelMenu.add(panelCentre);
 		
+		// Panel du menu au centre
 		JPanel panelMenuCentre = new JPanel();
 		panelMenuCentre.setBorder(null);
 		panelMenuCentre.setBackground(CharteGraphique.FOND_SECONDAIRE);
@@ -95,9 +99,11 @@ public class VueBase extends JFrameTheme {
 		gbl_panelMenuCentre.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panelMenuCentre.setLayout(gbl_panelMenuCentre);
 		
+		// Bouton tournois
 		JButtonMenu btnTournois = new JButtonMenu("", ControleurBase.Menus.TOURNOIS);
 		btnTournois.setToolTipText("Tournois");
 		btnTournois.addMouseListener(this.controleurBase);
+		// Si le menu actuel est tournoi
 		if(actif == ControleurBase.Menus.TOURNOIS) {
 			this.controleurBase.setBoutonActif(btnTournois);
 		}
@@ -108,9 +114,11 @@ public class VueBase extends JFrameTheme {
 		gbc_btnTournois.gridy = 0;
 		panelMenuCentre.add(btnTournois, gbc_btnTournois);
 		
+		// Bouton équipes
 		JButtonMenu btnEquipes = new JButtonMenu("", ControleurBase.Menus.EQUIPES);
 		btnEquipes.setToolTipText("Équipes");
 		btnEquipes.addMouseListener(this.controleurBase);
+		// Si le menu actuel est équipes
 		if(actif == ControleurBase.Menus.EQUIPES) {
 			this.controleurBase.setBoutonActif(btnEquipes);
 		}
@@ -122,9 +130,11 @@ public class VueBase extends JFrameTheme {
 		gbc_btnEquipes.gridy = 0;
 		panelMenuCentre.add(btnEquipes, gbc_btnEquipes);
 		
+		// Bouton historique
 		JButtonMenu btnHistorique = new JButtonMenu("", ControleurBase.Menus.HISTORIQUE);
 		btnHistorique.setToolTipText("Historique des points");
 		btnHistorique.addMouseListener(this.controleurBase);
+		// Si le menu actuel est historique
 		if(actif == ControleurBase.Menus.HISTORIQUE) {
 			this.controleurBase.setBoutonActif(btnHistorique);
 		}
@@ -135,9 +145,11 @@ public class VueBase extends JFrameTheme {
 		gbc_btnHistorique.gridy = 0;
 		panelMenuCentre.add(btnHistorique, gbc_btnHistorique);
 
+		// Bouton palmarès
 		JButtonMenu btnPalmares = new JButtonMenu("", ControleurBase.Menus.PALMARES);
 		btnPalmares.setToolTipText("Palmarès");
 		btnPalmares.addMouseListener(this.controleurBase);
+		// Si le menu actuel est palmarès
 		if(actif == ControleurBase.Menus.PALMARES) {
 			this.controleurBase.setBoutonActif(btnPalmares);
 		}
@@ -149,6 +161,7 @@ public class VueBase extends JFrameTheme {
 		gbc_btnPalmares.gridy = 0;
 		panelMenuCentre.add(btnPalmares, gbc_btnPalmares);
 		
+		// Label du bouton tournois
 		JLabel lblTournois = new JLabel("Tournois");
 		lblTournois.setForeground(Color.WHITE);
 		lblTournois.setFont(CharteGraphique.getPolice(11, false));
@@ -159,6 +172,7 @@ public class VueBase extends JFrameTheme {
 		gbc_lblTournois.gridy = 1;
 		panelMenuCentre.add(lblTournois, gbc_lblTournois);
 		
+		// Label du bouton équipes
 		JLabel lblEquipes = new JLabel("Équipes");
 		lblEquipes.setForeground(Color.WHITE);
 		lblEquipes.setFont(CharteGraphique.getPolice(11, false));
@@ -169,6 +183,7 @@ public class VueBase extends JFrameTheme {
 		gbc_lblEquipes.gridy = 1;
 		panelMenuCentre.add(lblEquipes, gbc_lblEquipes);
 		
+		// Label du bouton historique
 		JLabel lblHistorique = new JLabel("Historique");
 		lblHistorique.setForeground(Color.WHITE);
 		lblHistorique.setFont(CharteGraphique.getPolice(11, false));
@@ -179,6 +194,7 @@ public class VueBase extends JFrameTheme {
 		gbc_lblHistorique.gridy = 1;
 		panelMenuCentre.add(lblHistorique, gbc_lblHistorique);
 		
+		// Label du bouton palmarès
 		JLabel lblPalmares = new JLabel("Palmarès");
 		lblPalmares.setForeground(Color.WHITE);
 		lblPalmares.setFont(CharteGraphique.getPolice(11, false));
@@ -188,6 +204,7 @@ public class VueBase extends JFrameTheme {
 		gbc_lblPalmares.gridy = 1;
 		panelMenuCentre.add(lblPalmares, gbc_lblPalmares);
 		
+		// Panel de droite
 		JPanel panelDroite = new JPanel();
 		FlowLayout fl_panelDroite = (FlowLayout) panelDroite.getLayout();
 		fl_panelDroite.setVgap(0);
@@ -196,6 +213,7 @@ public class VueBase extends JFrameTheme {
 		panelDroite.setBackground(CharteGraphique.FOND_SECONDAIRE);
 		panelMenu.add(panelDroite);
 		
+		// Panel du menu à droite
 		JPanel panelMenuDroite = new JPanel();
 		panelMenuDroite.setBackground(CharteGraphique.FOND_SECONDAIRE);
 		panelDroite.add(panelMenuDroite);
@@ -206,8 +224,8 @@ public class VueBase extends JFrameTheme {
 		gbl_panelMenuDroite.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panelMenuDroite.setLayout(gbl_panelMenuDroite);
 		
+		// Bouton utilisateur (bouton qui ne mène pas à un onglet)
 		JButtonMenu btnUtilisateur = new JButtonMenu("", ControleurBase.Menus.UTILISATEUR);
-		btnUtilisateur.setToolTipText("Admin");
 		btnUtilisateur.addMouseListener(this.controleurBase);
 		this.controleurBase.ajouterBoutonMenu(btnUtilisateur);
 		GridBagConstraints gbc_btnUtilisateur = new GridBagConstraints();
@@ -217,6 +235,7 @@ public class VueBase extends JFrameTheme {
 		gbc_btnUtilisateur.gridy = 0;
 		panelMenuDroite.add(btnUtilisateur, gbc_btnUtilisateur);
 		
+		// Bouton déconnexion (bouton qui ne mène pas à un onglet)
 		JButtonMenu btnDeconnexion = new JButtonMenu("", ControleurBase.Menus.DECONNEXION);
 		btnDeconnexion.setToolTipText("Déconnexion");
 		btnDeconnexion.addMouseListener(this.controleurBase);
@@ -228,6 +247,7 @@ public class VueBase extends JFrameTheme {
 		gbc_btnDeconnexion.gridy = 0;
 		panelMenuDroite.add(btnDeconnexion, gbc_btnDeconnexion);
 		
+		// Label du bouton utilisateur
 		this.lblUtilisateur = new JLabel("");
 		this.lblUtilisateur.setForeground(Color.WHITE);
 		this.lblUtilisateur.setFont(CharteGraphique.getPolice(11, false));
@@ -238,6 +258,7 @@ public class VueBase extends JFrameTheme {
 		gbc_lblUtilisateur.gridy = 1;
 		panelMenuDroite.add(this.lblUtilisateur, gbc_lblUtilisateur);
 		
+		// Label du bouton déconnexion
 		JLabel lblDeconnexion = new JLabel("Déconnexion");
 		lblDeconnexion.setForeground(Color.WHITE);
 		lblDeconnexion.setFont(CharteGraphique.getPolice(11, false));
@@ -248,12 +269,18 @@ public class VueBase extends JFrameTheme {
 		panelMenuDroite.add(lblDeconnexion, gbc_lblDeconnexion);
 	}
 	
+	/**
+	 * Change l'onglet actuel
+	 * @param menu : onglet à charger
+	 */
 	public void changerOnglet(ControleurBase.Menus menu) {
+		// Si le menu dispose d'un onglet attribué
 		if(menu.getEstActivable()) {
 			this.contenu.removeAll();
 			this.contenu.updateUI();
 		}
 		
+		// Ouvrir l'onglet en fonction du menu
 		switch(menu) {
 		case TOURNOIS:
 			VueTournois vueTournois = new VueTournois();
@@ -271,17 +298,35 @@ public class VueBase extends JFrameTheme {
 			break;
 		}
 		
+		// Mise à jour de l'affichage
 		this.contenu.revalidate();
 	    this.contenu.repaint();
 	}
 	
+	@Override
+	public void fermerFenetre() {
+		BDD.fermerConnexion();
+		super.fermerFenetre();
+	}
+	
+	/**
+	 * Affiche un message de confirmation de déconnexion
+	 * @return true si "Oui" a été sélectionné, false si "Annuler" a été sélectionné ou si la popup a été fermée
+	 */
 	public boolean afficherConfirmationDeconnexion() {
 		Object[] options = {"Oui", "Annuler"};
-        int choix = JOptionPane.showOptionDialog(null, "Êtes-vous sûr de vouloir vous déconnecter ?", "Confirmation",
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
-                        null, options, options[0]);
+        int choix = JOptionPaneTheme.showOptionDialog(
+			null,
+			"Êtes-vous sûr de vouloir vous déconnecter ?",
+			"Confirmation",
+			JOptionPane.DEFAULT_OPTION,
+			JOptionPane.QUESTION_MESSAGE,
+	        null,
+	        options,
+	        options[0]
+        );
         
-        return choix == 0; // Renvoie true si "Oui" est sélectionné
+        return choix == 0;
     }
 
 }
