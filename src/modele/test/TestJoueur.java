@@ -15,8 +15,8 @@ public class TestJoueur {
 	
 	@Before
     public void setUp() {
-		joueur1 = new Joueur(1, "yay", 2);
-		joueur2 = new Joueur(2, "s0m", 2);
+		joueur1 = new Joueur(1, "joueur1", 2);
+		joueur2 = new Joueur(2, "joueur2", 2);
 	}
 	
 	@Test
@@ -37,8 +37,8 @@ public class TestJoueur {
 	
 	@Test
 	public void testGetPseudo() {
-		assertEquals(joueur1.getPseudo(), "yay");
-		assertEquals(joueur2.getPseudo(), "s0m");
+		assertEquals(joueur1.getPseudo(), "joueur1");
+		assertEquals(joueur2.getPseudo(), "joueur2");
 		assertNotEquals(joueur1.getPseudo(), joueur2.getPseudo());
 	}
 	
