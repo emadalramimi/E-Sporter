@@ -71,7 +71,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 		if(rs.next()) {
 			joueur = new Joueur(
 	    		rs.getInt("idJoueur"),
-	    		rs.getString("nom"),
+	    		rs.getString("pseudo"),
 	    		rs.getInt("idEquipe")
             );
 		}
