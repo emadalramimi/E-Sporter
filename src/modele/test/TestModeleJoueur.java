@@ -23,7 +23,7 @@ public class TestModeleJoueur {
 	private Joueur joueurModif;
 	
 	@Before
-	public void setup() throws Exception {
+	public void setUp() throws Exception {
 		modele = new ModeleJoueur();
 		joueur = new Joueur(50, "joueur", 1);
 		joueurModif = new Joueur(50, "joueurModif", 1);
@@ -81,6 +81,18 @@ public class TestModeleJoueur {
 	}
 	
 	@Test
+	public void testSupprimerJoueursParEquipe() throws Exception {
+		ModeleEquipe modeleEquipe = new ModeleEquipe();
+		Equipe equipe = new Equipe(10, "Equipe", "Canada", 2, 2, "Saison 2023");
+		modeleEquipe.ajouter(equipe);
+		modele.ajouter(joueur);
+		modele.modifier(new Joueur(50, "joueurTest", 10));
+		assertTrue(modele.supprimerJoueursEquipe(equipe.getIdEquipe()));
+		assertTrue(!(modele.getTout().contains(joueur)));
+	}
+		
+	
+	@Test
 	public void testGetListeJoueursParId() throws Exception {
 		ModeleEquipe modeleEquipe = new ModeleEquipe();
 	    Equipe equipe = new Equipe(10, "Equipe", "Canada", 2, 2, "Saison 2023");
@@ -97,10 +109,9 @@ public class TestModeleJoueur {
 	    assertTrue(result.contains(joueur2));
 	    assertTrue(result.contains(joueur3));
 	}
-
-
+	
 	@After
-    public void cleanup() throws Exception {
+    public void tearsDown() throws Exception {
         List<Integer> idsToPreserve = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ,20);
         modele.getTout().stream()
                 .filter(joueur -> !idsToPreserve.contains(joueur.getIdJoueur()))
@@ -112,5 +123,4 @@ public class TestModeleJoueur {
                     }
                 });
     }
-	
 }
