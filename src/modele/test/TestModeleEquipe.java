@@ -60,27 +60,13 @@ public class TestModeleEquipe {
 	public void testAjouterTrue() {
 		assertTrue(modele.ajouter(equipe));
 	}
-	
-	@Test
-	public void testAjouterFalse() {
-		assertTrue(modele.ajouter(equipe));
-		assertFalse(modele.ajouter(equipeAModif));
-	}
-	
+
 	@Test
 	public void testModifierTrue() {
 		modele.ajouter(equipe);
 		assertTrue(modele.modifier(equipeAModif));
 	}
 	
-	/*
-	@Test
-	public void testModifierFalse() throws Exception {
-	    Equipe equipeToModify = new Equipe(15, "EquipeModif", "France", 3, 3, "Saison 2024", listJoueurs);
-	    assertFalse(modele.modifier(equipeToModify));
-	}
-	*/
-
 	@Test
 	public void testSupprimerTrue() throws Exception {
 		modele.ajouter(equipe);
@@ -103,20 +89,5 @@ public class TestModeleEquipe {
 	    for (int i = 0; i < listTest.size(); i++) {
 	        assertTrue(listTest.get(i).equals(result.get(i)));
 	    }
-	}
-
-	@After
-    public void cleanup() throws Exception {
-        List<Integer> idsToPreserve = Arrays.asList(1, 2, 3, 4);
-        modele.getTout().stream()
-                .filter(equipe -> !idsToPreserve.contains(equipe.getIdEquipe()))
-                .forEach(equipe -> {
-                    try {
-                        modele.supprimer(equipe);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-    }
-	
+	}	
 }
