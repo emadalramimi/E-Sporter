@@ -68,7 +68,7 @@ public class TestModeleEquipe {
 	}
 	
 	@Test
-	public void testSupprimerTrue() throws Exception {
+	public void testSupprimerTrue() {
 		modele.ajouter(equipe);
 		assertTrue(modele.supprimer(equipe));
 	}
