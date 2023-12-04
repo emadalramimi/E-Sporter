@@ -85,9 +85,9 @@ public class Joueur {
 	        return false;
 	    }
 	    Joueur joueur = (Joueur) o;
-	    return this.idJoueur == joueur.idJoueur
-	            && this.pseudo.equals(joueur.pseudo)
-	            && this.idEquipe == joueur.idEquipe;
+	    return this.idJoueur == joueur.getIdJoueur()
+	            && this.pseudo.equals(joueur.getPseudo())
+	            && this.idEquipe == joueur.getIdEquipe();
 	}
 
 	@Override
