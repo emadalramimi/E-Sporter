@@ -12,12 +12,18 @@ import modele.exception.IdentifiantOuMdpIncorrectsException;
 import vue.VueBase;
 import vue.VueConnexion;
 
+/**
+ * Controleur de VueConnexion
+ */
 public class ControleurConnexion extends KeyAdapter implements ActionListener {
 
 	private VueConnexion vue;
 	private ModeleAdministrateur modele;
 	private Etat etat;
 	
+	/**
+	 * Etats d'affichage du mot de passe
+	 */
 	private enum Etat {
 		MDP_AFFICHE,
 		MDP_CACHE
@@ -30,6 +36,7 @@ public class ControleurConnexion extends KeyAdapter implements ActionListener {
 	public ControleurConnexion(VueConnexion vue) {
 		this.vue = vue;
 		this.modele = new ModeleAdministrateur();
+		// Le mot de passe est caché par défaut
 		this.etat = Etat.MDP_CACHE;
 	}
 	

@@ -19,53 +19,70 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 
+/**
+ * IHM liste de joueurs d'une équipe
+ */
 public class VueJoueurs extends JFrameTheme {
 	
     private JPanel contentPane;
     private VueEquipes vue;
     
     public VueJoueurs(List<Joueur> joueurs, VueEquipes vue) {
+    	// Obtention de la vue pour retirer cette fenêtre de la liste des fenêtres enfant à sa fermeture
     	this.vue = vue;
+    	
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 400, 210);
         
         contentPane = super.getContentPane();
         
+        // Titre
         JLabel lblTitre = new JLabel("Liste des joueurs");
         lblTitre.setForeground(CharteGraphique.TEXTE);
         lblTitre.setFont(CharteGraphique.getPolice(19, true));
 
+        // Panel de titre
         JPanel titrePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         titrePanel.add(lblTitre);
         titrePanel.setBackground(CharteGraphique.FOND_SECONDAIRE);
         contentPane.add(titrePanel, BorderLayout.NORTH);
 
+        // ScrollPane de la liste des joueurs
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBackground(CharteGraphique.FOND_SECONDAIRE);
         scrollPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.add(scrollPane);
 
-        DefaultListModel<String> listModel = new DefaultListModel<>();
+        // Crée la liste des joueurs
+        DefaultListModel<String> listeModel = new DefaultListModel<>();
 
-        JList<String> list = new JList<>(listModel);
-        list.setCellRenderer(new TexteCentreListCellRenderer());
-        list.setBackground(CharteGraphique.FOND_SECONDAIRE);
-        list.setForeground(CharteGraphique.TEXTE);
-        list.setFont(CharteGraphique.getPolice(16, false));
+        JList<String> liste = new JList<>(listeModel);
+        liste.setCellRenderer(new TexteCentreListCellRenderer());
+        liste.setBackground(CharteGraphique.FOND_SECONDAIRE);
+        liste.setForeground(CharteGraphique.TEXTE);
+        liste.setFont(CharteGraphique.getPolice(16, false));
 
+        // Ajoute les joueurs à la liste
         for (Joueur joueur : joueurs) {
-            listModel.addElement(joueur.getPseudo());
+            listeModel.addElement(joueur.getPseudo());
         }
 
-        scrollPane.setViewportView(list);
+        scrollPane.setViewportView(liste);
     }
     
+    /**
+     * Retire la fenêtre de la liste des fenêtres enfant dans la fenêtre parente
+     * puis ferme la fenêtre courante
+     */
     @Override
     public void fermerFenetre() {
     	this.vue.retirerFenetreEnfant(this);
     	this.dispose();
     }
     
+    /**
+     * Centrer le pseudo des joueurs dans la liste
+     */
     private class TexteCentreListCellRenderer extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

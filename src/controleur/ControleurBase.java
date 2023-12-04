@@ -9,8 +9,14 @@ import modele.ModeleAdministrateur;
 import vue.VueBase;
 import vue.theme.JButtonMenu;
 
+/**
+ * Controleur de VueBase
+ */
 public class ControleurBase extends MouseAdapter {
 
+	/**
+	 * Enumérations des menus disponibles
+	 */
 	public enum Menus {
 		TOURNOIS(true), EQUIPES(true), HISTORIQUE(true), PALMARES(true), UTILISATEUR(false), DECONNEXION(false);
 		
@@ -37,6 +43,10 @@ public class ControleurBase extends MouseAdapter {
 	private VueBase vue;
 	private ModeleAdministrateur modeleAdministrateur;
 	
+	/**
+	 * Constructeur du controleur
+	 * @param vue : vueBase
+	 */
 	public ControleurBase(VueBase vue) {
 		this.boutonsMenu = new LinkedList<>();
 		this.boutonActif = null;
@@ -79,10 +89,12 @@ public class ControleurBase extends MouseAdapter {
 		JButtonMenu boutonClique = (JButtonMenu) e.getSource();
 		if(boutonClique != this.boutonActif) {
 			if(boutonClique.getMenu().getEstActivable()) {
+				// Changement d'onglet
 				this.setBoutonActif(boutonClique);
 				this.vue.fermerFenetresEnfant();
 				this.vue.changerOnglet(boutonClique.getMenu());
 			} else if (boutonClique.getMenu() == Menus.DECONNEXION) {
+				// Quand on clique sur se déconnecter
 				if(this.vue.afficherConfirmationDeconnexion()) {
 					this.modeleAdministrateur.deconnecter();
 					this.vue.fermerFenetre();

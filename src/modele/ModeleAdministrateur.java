@@ -28,7 +28,7 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 		Statement st = BDD.getConnexion().createStatement();
 		ResultSet rs = st.executeQuery("select * from administrateur");
 		
-		// Parcours les administrateurs dans la base de données et les formate dans une liste
+		// Parcourt les administrateurs dans la base de données et les formate dans une liste
 		Stream<Administrateur> stream = StreamSupport.stream(
     		new Spliterators.AbstractSpliterator<Administrateur>(Long.MAX_VALUE, Spliterator.ORDERED) {
                 @Override
@@ -195,6 +195,10 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 		}
 	}
 	
+	/**
+	 * Déconnecte l'administrateur
+	 * @throws IllegalArgumentException si l'administrateur est déjà déconnecté
+	 */
 	public void deconnecter() throws IllegalArgumentException {
 		if(compteCourant == null) {
 			throw new IllegalArgumentException("Vous êtes déjà déconnecté.");
@@ -203,6 +207,9 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 		compteCourant = null;
 	}
 	
+	/**
+	 * @return l'administrateur actuellement connecté
+	 */
 	public static Administrateur getCompteCourant() {
 		return compteCourant;
 	}

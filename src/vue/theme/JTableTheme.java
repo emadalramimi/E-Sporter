@@ -11,6 +11,9 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+/**
+ * Extension de JTable de Swing
+ */
 public class JTableTheme extends JTable {
 
 	/**

@@ -9,14 +9,12 @@ import controleur.ControleurConnexion;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JFrameTheme;
-import vue.theme.JOptionPaneTheme;
 import vue.theme.JPasswordFieldTheme;
 import vue.theme.JTextFieldTheme;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
@@ -29,6 +27,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
 
+/**
+ * IHM de connexion
+ */
 public class VueConnexion extends JFrameTheme {
 
 	private JPanel panelNord;
@@ -67,7 +68,7 @@ public class VueConnexion extends JFrameTheme {
 		lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
 		panelNord.add(lblLogo);
 		
-		// panelCentre, un panel contenant les moyens de connexion
+		// panelCentre, un panel contenant les champs de connexion
 		JPanel panelCentre = new JPanel();
 		panelCentre.setBackground(CharteGraphique.FOND);
 		contentPane.add(panelCentre, BorderLayout.CENTER);
@@ -94,6 +95,7 @@ public class VueConnexion extends JFrameTheme {
 		gbl_panelChamps.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelChamps.setLayout(gbl_panelChamps);
 		
+		// Label identifiant
 		lblIdentifiant = new JLabel("Identifiant");
 		lblIdentifiant.setForeground(Color.WHITE);
 		lblIdentifiant.setFont(CharteGraphique.getPolice(19, false));
@@ -206,14 +208,6 @@ public class VueConnexion extends JFrameTheme {
 	 */
 	public boolean isCheckboxAfficherMdp(ActionEvent e) {
 		return e.getSource() instanceof JCheckBox && ((JCheckBox) e.getSource()).getText() == "Afficher le mot de passe";
-	}
-	
-	/**
-	 * Affiche un popup erreur
-	 * @param message
-	 */
-	public void afficherPopupErreur(String message) {
-		JOptionPaneTheme.showMessageDialog(this, message, "Erreur", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	/**

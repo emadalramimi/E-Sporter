@@ -43,17 +43,13 @@ public class TestModeleJoueur {
 	    }
 	}
 	
-	/*
 	@Test
 	public void testGetParId() throws Exception {
-	    Joueur JoueurTest = new Joueur(60, "JoueurTest", 1);
-	    modele.ajouter(JoueurTest);
-	    Optional<Joueur> retrievedJoueur = modele.getParId(60);
-	    System.out.println("Expected: " + JoueurTest);
-	    System.out.println("Actual  : " + retrievedJoueur.orElse(null));
-	    assertEquals(JoueurTest, retrievedJoueur.get());
+	    modele.ajouter(joueur);
+	    assertNotNull(joueur);
+	    Optional<Joueur> retrievedJoueur = modele.getParId(joueur.getIdJoueur());
+	    assertEquals(joueur, retrievedJoueur.get());
 	}
-	*/
 
 	@Test
 	public void testAjouterTrue() throws Exception {

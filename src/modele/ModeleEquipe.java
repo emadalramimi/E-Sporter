@@ -31,7 +31,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 		Statement st = BDD.getConnexion().createStatement();
 		ResultSet rs = st.executeQuery("select * from equipe");
 		
-		// Parcours les équipes dans la base de données et les formate dans une liste
+		// Parcourt les équipes dans la base de données et les formate dans une liste
 		Stream<Equipe> stream = StreamSupport.stream(
     		new Spliterators.AbstractSpliterator<Equipe>(Long.MAX_VALUE, Spliterator.ORDERED) {
                 @Override
@@ -128,7 +128,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 		// TODO SPRINT 2 : Si l'équipe est inscrite à un tournoi, ne pas la modifier.
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set nom = ?, pays = ?, worldRanking = ? where idEquipe = ?");
-			// On ne peut pas modifier le classement et la saison d'une équipe ?
+			// On ne peut pas modifier le classement et la saison d'une équipe
 			ps.setString(1, equipe.getNom());
 			ps.setString(2, equipe.getPays());
 			ps.setInt(3, equipe.getWorldRanking());
@@ -171,6 +171,9 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 		}
 	}
 	
+	/**
+	 * @return le prochain identifiant unique d'équipe
+	 */
 	public int getNextValId() {
         int nextVal = 0;
         try {
@@ -188,6 +191,11 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
         return nextVal;
     }
 	
+	/**
+	 * @param nom : contenu dans le nom d'une équipe
+	 * @return la liste des équipes contenant la variable nom dans leur nom d'équipe
+	 * @throws Exception
+	 */
 	public List<Equipe> getParNom(String nom) throws Exception {
 		return this.getTout().stream()
 				.filter(e -> e.getNom().toLowerCase().contains(nom.toLowerCase()))

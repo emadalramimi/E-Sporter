@@ -26,7 +26,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 		Statement st = BDD.getConnexion().createStatement();
 		ResultSet rs = st.executeQuery("select * from joueur");
 		
-		// Parcours les joueurs dans la base de données et les formate dans une liste
+		// Parcourt les joueurs dans la base de données et les formate dans une liste
 		Stream<Joueur> stream = StreamSupport.stream(
     		new Spliterators.AbstractSpliterator<Joueur>(Long.MAX_VALUE, Spliterator.ORDERED) {
                 @Override
@@ -66,7 +66,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 		
 		ResultSet rs = ps.executeQuery();
 		
-		// Création d'équipe si elle existe
+		// Création de joueur si il existe
 		Joueur joueur = null;
 		if(rs.next()) {
 			joueur = new Joueur(
@@ -91,6 +91,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			ps.setString(2, joueur.getPseudo());
 			ps.setInt(3, joueur.getIdEquipe());
 			ps.execute();
+			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -110,6 +111,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			ps.setInt(2, joueur.getIdEquipe());
 			ps.setInt(3, joueur.getIdJoueur());
 			ps.execute();
+			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -127,6 +129,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from joueur where idJoueur = ?");
 			ps.setInt(1, joueur.getIdJoueur());
 			ps.execute();
+			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -134,11 +137,17 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 		}
 	}
 	
-	public boolean supprimerJoueursEquipe(int idEquipe) throws Exception {
+	/**
+	 * Supprime tous les joueurs d'une équipe idEquipe
+	 * @param idEquipe : identifiant de l'équipe
+	 * @return tru si l'opération s'est bien déroulée, false sinon
+	 */
+	public boolean supprimerJoueursEquipe(int idEquipe) {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from joueur where idEquipe = ?");
 			ps.setInt(1, idEquipe);
 			ps.execute();
+			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -146,6 +155,10 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 		}
 	}
 
+	/**
+	 * @param idEquipe : identifiant de l'équipe
+	 * @return la liste des joueurs appartenant à l'équipe idEquipe
+	 */
 	public List<Joueur> getListeJoueursParId(int idEquipe) {
 		List<Joueur> joueurs = new ArrayList<>();
 		try {
@@ -165,6 +178,9 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 		return joueurs;
 	}
 	
+	/**
+	 * @return le prochain identifiant unique de joueur
+	 */
 	public int getNextValId() {
         int nextVal = 0;
         try {
