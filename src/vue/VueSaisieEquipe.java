@@ -18,6 +18,9 @@ import java.awt.BorderLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -59,9 +62,18 @@ public class VueSaisieEquipe extends JFrameTheme {
 		this.vueEquipes = vueEquipes;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 800, 450);
+		setBounds(100, 100, 812, 526);
 		
 		contentPane = super.getContentPane();
+		
+		contentPane.setBorder(new EmptyBorder(15,15,15,15));
+		
+        // Titre
+		JLabel titre = new JLabel("Ajouter une équipe");
+        titre.setHorizontalAlignment(SwingConstants.CENTER);
+        titre.setFont(CharteGraphique.getPolice(30, true));
+        titre.setForeground(CharteGraphique.TEXTE);
+        getContentPane().add(titre, BorderLayout.NORTH);
 		
 		// Panel centre
 		JPanel panelCentre = new JPanel();
@@ -78,16 +90,15 @@ public class VueSaisieEquipe extends JFrameTheme {
 		panelEquipe = new JPanel();
 		panelEquipe.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelEquipe = new GridBagConstraints();
+		gbc_panelEquipe.insets = new Insets(50, 0, 50, 25);
 		gbc_panelEquipe.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panelEquipe.insets = new Insets(0, 25, 25, 15);
 		gbc_panelEquipe.gridx = 0;
 		gbc_panelEquipe.gridy = 0;
 		panelCentre.add(panelEquipe, gbc_panelEquipe);
 		GridBagLayout gbl_panelEquipe = new GridBagLayout();
 		gbl_panelEquipe.columnWidths = new int[] {0, 0};
-		gbl_panelEquipe.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_panelEquipe.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panelEquipe.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelEquipe.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
 		panelEquipe.setLayout(gbl_panelEquipe);
 		
 		// Label nom de l'équipe
@@ -97,7 +108,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		GridBagConstraints gbc_lblNom = new GridBagConstraints();
 		gbc_lblNom.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNom.gridx = 0;
-		gbc_lblNom.gridy = 1;
+		gbc_lblNom.gridy = 0;
 		panelEquipe.add(lblNom, gbc_lblNom);
 		
 		// Champ nom de l'équipe
@@ -106,7 +117,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		gbc_textNom.insets = new Insets(0, 0, 20, 0);
 		gbc_textNom.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textNom.gridx = 0;
-		gbc_textNom.gridy = 2;
+		gbc_textNom.gridy = 1;
 		panelEquipe.add(txtNom, gbc_textNom);
 		txtNom.setColumns(10);
 		
@@ -117,7 +128,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		GridBagConstraints gbc_lblPays = new GridBagConstraints();
 		gbc_lblPays.insets = new Insets(0, 0, 5, 0);
 		gbc_lblPays.gridx = 0;
-		gbc_lblPays.gridy = 3;
+		gbc_lblPays.gridy = 2;
 		panelEquipe.add(lblPays, gbc_lblPays);
 		
 		// Liste déroulante des pays
@@ -126,7 +137,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		gbc_txtEquipe.insets = new Insets(0, 0, 20, 0);
 		gbc_txtEquipe.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtEquipe.gridx = 0;
-		gbc_txtEquipe.gridy = 4;
+		gbc_txtEquipe.gridy = 3;
 		panelEquipe.add(cboxPays, gbc_txtEquipe);
 		
 		// Label World Ranking
@@ -136,7 +147,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		GridBagConstraints gbc_lblWorldRancking = new GridBagConstraints();
 		gbc_lblWorldRancking.insets = new Insets(0, 0, 5, 0);
 		gbc_lblWorldRancking.gridx = 0;
-		gbc_lblWorldRancking.gridy = 5;
+		gbc_lblWorldRancking.gridy = 4;
 		panelEquipe.add(lblWorldRanking, gbc_lblWorldRancking);
 		
 		// Champ World Ranking
@@ -145,7 +156,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		gbc_textWorldRanking.insets = new Insets(0, 0, 5, 0);
 		gbc_textWorldRanking.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textWorldRanking.gridx = 0;
-		gbc_textWorldRanking.gridy = 6;
+		gbc_textWorldRanking.gridy = 5;
 		panelEquipe.add(txtWorldRanking, gbc_textWorldRanking);
 		txtWorldRanking.setColumns(10);
 		
@@ -153,8 +164,8 @@ public class VueSaisieEquipe extends JFrameTheme {
 		panelJoueurs = new JPanel();
 		panelJoueurs.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelJoueurs = new GridBagConstraints();
+		gbc_panelJoueurs.insets = new Insets(50, 25, 50, 0);
 		gbc_panelJoueurs.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panelJoueurs.insets = new Insets(0, 25, 25, 15);
 		gbc_panelJoueurs.gridx = 1;
 		gbc_panelJoueurs.gridy = 0;
 		panelCentre.add(panelJoueurs, gbc_panelJoueurs);
