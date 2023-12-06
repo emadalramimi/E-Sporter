@@ -90,4 +90,19 @@ public class TestModeleEquipe {
 	        assertTrue(listTest.get(i).equals(result.get(i)));
 	    }
 	}	
+	
+	@After
+    public void tearsDown() throws Exception {
+        List<Integer> idsToPreserve = Arrays.asList(1, 2, 3, 4);
+        modele.getTout().stream()
+                .filter(equipe -> !idsToPreserve.contains(equipe.getIdEquipe()))
+                .forEach(equipe -> {
+                    try {
+                        modele.supprimer(equipe);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
+	
 }
