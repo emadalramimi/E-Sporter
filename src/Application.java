@@ -14,14 +14,8 @@ public class Application {
 		System.setProperty("sun.java2d.uiScale", "1.0");
 		
 		// Ouverture de la fenêtre de connexion
-		try {
-			VueConnexion frame = new VueConnexion();
-			// Centrer la fenêtre
-			frame.setLocationRelativeTo(null);
-			frame.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		VueConnexion vue = new VueConnexion();
+		vue.afficher();
 	}
 
 }

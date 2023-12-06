@@ -3,7 +3,6 @@ package vue;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -14,7 +13,6 @@ import modele.metier.Administrateur;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonMenu;
 import vue.theme.JFrameTheme;
-import vue.theme.JOptionPaneTheme;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -309,24 +307,4 @@ public class VueBase extends JFrameTheme {
 		super.fermerFenetre();
 	}
 	
-	/**
-	 * Affiche un message de confirmation de déconnexion
-	 * @return true si "Oui" a été sélectionné, false si "Annuler" a été sélectionné ou si la popup a été fermée
-	 */
-	public boolean afficherConfirmationDeconnexion() {
-		Object[] options = {"Oui", "Annuler"};
-        int choix = JOptionPaneTheme.showOptionDialog(
-			null,
-			"Êtes-vous sûr de vouloir vous déconnecter ?",
-			"Confirmation",
-			JOptionPane.DEFAULT_OPTION,
-			JOptionPane.QUESTION_MESSAGE,
-	        null,
-	        options,
-	        options[0]
-        );
-        
-        return choix == 0;
-    }
-
 }

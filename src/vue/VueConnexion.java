@@ -171,6 +171,20 @@ public class VueConnexion extends JFrameTheme {
 	}
 	
 	/**
+	 * Affiche la fenêtre de connexion
+	 */
+	public void afficher() {
+		try {
+			VueConnexion frame = new VueConnexion();
+			// Centrer la fenêtre
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * @return contenu du champ identifiant
 	 */
 	public String getIdentifiant() {
