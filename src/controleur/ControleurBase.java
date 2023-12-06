@@ -7,6 +7,7 @@ import java.util.List;
 
 import modele.ModeleAdministrateur;
 import vue.VueBase;
+import vue.VueConnexion;
 import vue.theme.JButtonMenu;
 
 /**
@@ -95,10 +96,10 @@ public class ControleurBase extends MouseAdapter {
 				this.vue.changerOnglet(boutonClique.getMenu());
 			} else if (boutonClique.getMenu() == Menus.DECONNEXION) {
 				// Quand on clique sur se déconnecter
-				if(this.vue.afficherConfirmationDeconnexion()) {
-					this.modeleAdministrateur.deconnecter();
-					this.vue.fermerFenetre();
-				}
+				this.modeleAdministrateur.deconnecter();
+				VueConnexion vueConnexion = new VueConnexion();
+				vueConnexion.afficher();
+				this.vue.fermerFenetre();
 			}
 		}
 	}

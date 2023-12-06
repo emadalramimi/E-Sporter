@@ -43,14 +43,17 @@ public class BDD {
 	 * Ferme la connexion en cours (à la fermeture de la fenêtre)
 	 */
 	public static void fermerConnexion() {
-		if(BDD.connection != null) {
-			try {
-				BDD.connection.commit();
-				BDD.connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+	    if (connection != null) {
+	        try {
+	            if (!connection.isClosed()) {
+	                connection.commit();
+	                connection.close();
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        connection = null;
+	    }
 	}
 
 	/**

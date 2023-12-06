@@ -203,7 +203,6 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 		if(compteCourant == null) {
 			throw new IllegalArgumentException("Vous êtes déjà déconnecté.");
 		}
-		
 		compteCourant = null;
 	}
 	
