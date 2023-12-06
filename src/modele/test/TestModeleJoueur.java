@@ -89,6 +89,7 @@ public class TestModeleJoueur {
 		modele.modifier(new Joueur(50, "joueurTest", 10));
 		assertTrue(modele.supprimerJoueursEquipe(equipe.getIdEquipe()));
 		assertTrue(!(modele.getTout().contains(joueur)));
+		modeleEquipe.supprimer(equipe);
 	}
 		
 	
