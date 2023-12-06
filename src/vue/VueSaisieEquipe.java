@@ -15,7 +15,6 @@ import vue.theme.JFrameTheme;
 import vue.theme.JTextFieldTheme;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -93,7 +92,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		
 		// Label nom de l'équipe
 		lblNom = new JLabel("Nom de l'équipe");
-		lblNom.setForeground(Color.WHITE);
+		lblNom.setForeground(CharteGraphique.TEXTE);
 		lblNom.setFont(CharteGraphique.getPolice(19, true));
 		GridBagConstraints gbc_lblNom = new GridBagConstraints();
 		gbc_lblNom.insets = new Insets(0, 0, 5, 0);
@@ -113,7 +112,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		
 		// Label pays de l'équipe
 		lblPays = new JLabel("Pays de l'équipe");
-		lblPays.setForeground(Color.WHITE);
+		lblPays.setForeground(CharteGraphique.TEXTE);
 		lblPays.setFont(CharteGraphique.getPolice(19, true));
 		GridBagConstraints gbc_lblPays = new GridBagConstraints();
 		gbc_lblPays.insets = new Insets(0, 0, 5, 0);
@@ -132,7 +131,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		
 		// Label World Ranking
 		lblWorldRanking = new JLabel("World Ranking (optionnel)");
-		lblWorldRanking.setForeground(Color.WHITE);
+		lblWorldRanking.setForeground(CharteGraphique.TEXTE);
 		lblWorldRanking.setFont(CharteGraphique.getPolice(19, true));
 		GridBagConstraints gbc_lblWorldRancking = new GridBagConstraints();
 		gbc_lblWorldRancking.insets = new Insets(0, 0, 5, 0);
@@ -168,7 +167,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		
 		// Label titre des joueurs
 		lblJoueurs = new JLabel("Pseudo des joueurs");
-		lblJoueurs.setForeground(Color.WHITE);
+		lblJoueurs.setForeground(CharteGraphique.TEXTE);
 		lblJoueurs.setFont(CharteGraphique.getPolice(19, true));
 		GridBagConstraints gbc_lblJoueurs = new GridBagConstraints();
 		gbc_lblJoueurs.insets = new Insets(0, 0, 5, 0);

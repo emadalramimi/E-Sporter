@@ -66,14 +66,11 @@ public class JTableTheme extends JTable {
 			}
 			
 			// Changement de la couleur et de l'aspect des bordures
-			if(column == 0) {
-				this.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, CharteGraphique.BORDURE));
-			} else {
-				this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, CharteGraphique.BORDURE));
-			}
+			this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, CharteGraphique.BORDURE));
 			
 			// Changement de la police (en gras pour les titres)
 			if(row == -1) {
+				this.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, CharteGraphique.BORDURE));
 				this.setFont(CharteGraphique.getPolice(16, true));
 			} else {
 				this.setFont(CharteGraphique.getPolice(16, false));

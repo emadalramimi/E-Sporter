@@ -15,7 +15,8 @@ public class JTextFieldTheme extends JTextField {
      * Extension de JTextField aux couleurs du thème
      * @param limite : limite de caractères du champ
      */
-    public JTextFieldTheme(int limite) {this.setForeground(CharteGraphique.TEXTE);
+    public JTextFieldTheme(int limite) {
+    	this.setForeground(CharteGraphique.TEXTE);
     	// Personnalisation du champ
         this.setFont(CharteGraphique.getPolice(19, false));
         this.setBackground(CharteGraphique.FOND_SECONDAIRE);

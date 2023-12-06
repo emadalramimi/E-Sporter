@@ -15,7 +15,6 @@ import vue.theme.JButtonMenu;
 import vue.theme.JFrameTheme;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -161,7 +160,7 @@ public class VueBase extends JFrameTheme {
 		
 		// Label du bouton tournois
 		JLabel lblTournois = new JLabel("Tournois");
-		lblTournois.setForeground(Color.WHITE);
+		lblTournois.setForeground(CharteGraphique.TEXTE);
 		lblTournois.setFont(CharteGraphique.getPolice(11, false));
 		GridBagConstraints gbc_lblTournois = new GridBagConstraints();
 		gbc_lblTournois.anchor = GridBagConstraints.NORTH;
@@ -172,7 +171,7 @@ public class VueBase extends JFrameTheme {
 		
 		// Label du bouton équipes
 		JLabel lblEquipes = new JLabel("Équipes");
-		lblEquipes.setForeground(Color.WHITE);
+		lblEquipes.setForeground(CharteGraphique.TEXTE);
 		lblEquipes.setFont(CharteGraphique.getPolice(11, false));
 		GridBagConstraints gbc_lblEquipes = new GridBagConstraints();
 		gbc_lblEquipes.anchor = GridBagConstraints.NORTH;
@@ -183,7 +182,7 @@ public class VueBase extends JFrameTheme {
 		
 		// Label du bouton historique
 		JLabel lblHistorique = new JLabel("Historique");
-		lblHistorique.setForeground(Color.WHITE);
+		lblHistorique.setForeground(CharteGraphique.TEXTE);
 		lblHistorique.setFont(CharteGraphique.getPolice(11, false));
 		GridBagConstraints gbc_lblHistorique = new GridBagConstraints();
 		gbc_lblHistorique.anchor = GridBagConstraints.NORTH;
@@ -194,7 +193,7 @@ public class VueBase extends JFrameTheme {
 		
 		// Label du bouton palmarès
 		JLabel lblPalmares = new JLabel("Palmarès");
-		lblPalmares.setForeground(Color.WHITE);
+		lblPalmares.setForeground(CharteGraphique.TEXTE);
 		lblPalmares.setFont(CharteGraphique.getPolice(11, false));
 		GridBagConstraints gbc_lblPalmares = new GridBagConstraints();
 		gbc_lblPalmares.anchor = GridBagConstraints.NORTH;
@@ -247,7 +246,7 @@ public class VueBase extends JFrameTheme {
 		
 		// Label du bouton utilisateur
 		this.lblUtilisateur = new JLabel("");
-		this.lblUtilisateur.setForeground(Color.WHITE);
+		this.lblUtilisateur.setForeground(CharteGraphique.TEXTE);
 		this.lblUtilisateur.setFont(CharteGraphique.getPolice(11, false));
 		GridBagConstraints gbc_lblUtilisateur = new GridBagConstraints();
 		gbc_lblUtilisateur.anchor = GridBagConstraints.NORTH;
@@ -258,7 +257,7 @@ public class VueBase extends JFrameTheme {
 		
 		// Label du bouton déconnexion
 		JLabel lblDeconnexion = new JLabel("Déconnexion");
-		lblDeconnexion.setForeground(Color.WHITE);
+		lblDeconnexion.setForeground(CharteGraphique.TEXTE);
 		lblDeconnexion.setFont(CharteGraphique.getPolice(11, false));
 		GridBagConstraints gbc_lblDeconnexion = new GridBagConstraints();
 		gbc_lblDeconnexion.anchor = GridBagConstraints.NORTH;

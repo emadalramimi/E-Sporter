@@ -21,7 +21,6 @@ import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 
@@ -81,7 +80,7 @@ public class VueConnexion extends JFrameTheme {
 		
 		// panelChamps, un panel contenant les champs pour se connecter ainsi que leur intitulé
 		panelChamps = new JPanel();
-		panelChamps.setBackground(new Color(7, 10, 20));
+		panelChamps.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelChamps = new GridBagConstraints();
 		gbc_panelChamps.fill = GridBagConstraints.BOTH;
 		gbc_panelChamps.insets = new Insets(0, 0, 30, 0);
@@ -97,7 +96,7 @@ public class VueConnexion extends JFrameTheme {
 		
 		// Label identifiant
 		lblIdentifiant = new JLabel("Identifiant");
-		lblIdentifiant.setForeground(Color.WHITE);
+		lblIdentifiant.setForeground(CharteGraphique.TEXTE);
 		lblIdentifiant.setFont(CharteGraphique.getPolice(19, false));
 		GridBagConstraints gbc_lblIdentifiant = new GridBagConstraints();
 		gbc_lblIdentifiant.anchor = GridBagConstraints.WEST;
@@ -117,7 +116,7 @@ public class VueConnexion extends JFrameTheme {
 		panelChamps.add(textIdentifiant, gbc_textIdentifiant);
 		
 		lblMotDePasse = new JLabel("Mot de passe");
-		lblMotDePasse.setForeground(Color.WHITE);
+		lblMotDePasse.setForeground(CharteGraphique.TEXTE);
 		lblMotDePasse.setFont(CharteGraphique.getPolice(19, false));
 		GridBagConstraints gbc_lblMotDePasse = new GridBagConstraints();
 		gbc_lblMotDePasse.anchor = GridBagConstraints.WEST;
@@ -139,9 +138,9 @@ public class VueConnexion extends JFrameTheme {
 		// chckbxAfficherMotDePasse, un JCheckBox qui permet d'afficher le mot de passe puis de le cacher
 		chckbxAfficherMotDePasse = new JCheckBox("Afficher le mot de passe");
 		chckbxAfficherMotDePasse.addActionListener(controleur);
-		chckbxAfficherMotDePasse.setForeground(Color.WHITE);
+		chckbxAfficherMotDePasse.setForeground(CharteGraphique.TEXTE);
 		chckbxAfficherMotDePasse.setFont(CharteGraphique.getPolice(16, false));
-		chckbxAfficherMotDePasse.setBackground(new Color(7, 10, 20));
+		chckbxAfficherMotDePasse.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_chckbxAfficherMotDePasse = new GridBagConstraints();
 		gbc_chckbxAfficherMotDePasse.anchor = GridBagConstraints.WEST;
 		gbc_chckbxAfficherMotDePasse.gridx = 0;
@@ -150,7 +149,7 @@ public class VueConnexion extends JFrameTheme {
 		
 		// panelBoutons, un JPanel contenant les boutons de connexion et pour quitter l'application
 		panelBoutons = new JPanel();
-		panelBoutons.setBackground(new Color(7, 10, 20));
+		panelBoutons.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelBoutons = new GridBagConstraints();
 		gbc_panelBoutons.anchor = GridBagConstraints.NORTH;
 		gbc_panelBoutons.fill = GridBagConstraints.HORIZONTAL;

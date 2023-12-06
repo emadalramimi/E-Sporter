@@ -23,7 +23,7 @@ public class JScrollPaneTheme extends JScrollPane {
 	 */
 	public JScrollPaneTheme() {
 		// Définition de la bordure, de la couleur de fond
-		this.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, CharteGraphique.BORDURE));
+		this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		this.getViewport().setBackground(CharteGraphique.FOND);
 		
 		// Modification de la barre de scroll (fond, ascenseur et couleur du coin)

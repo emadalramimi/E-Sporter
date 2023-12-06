@@ -93,6 +93,7 @@ public class TableButtonsPanel extends JPanel implements TableCellRenderer {
             boutonModifier.setBackground(CharteGraphique.FOND);
             boutonSupprimer.setBackground(CharteGraphique.FOND);
         }
+    	this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, CharteGraphique.BORDURE));
 
         return this;
     }
