@@ -81,6 +81,7 @@ public enum Pays {
     MALDIVES("Maldives", "mv"),
     MALI("Mali", "ml"),
     MALTE("Malte", "mt"),
+    MAROC("Maroc", "ma"),
     MARTINIQUE("Martinique", "mq"),
     MAURITANIE("Mauritanie", "mr"),
     MAURICE("Maurice", "mu"),
