@@ -76,6 +76,8 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
             );
 		}
 		
+		rs.close();
+		ps.close();
 		return Optional.ofNullable(joueur);
 	}
 
@@ -91,6 +93,8 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			ps.setString(2, joueur.getPseudo());
 			ps.setInt(3, joueur.getIdEquipe());
 			ps.execute();
+			
+			ps.close();
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
@@ -111,6 +115,8 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			ps.setInt(2, joueur.getIdEquipe());
 			ps.setInt(3, joueur.getIdJoueur());
 			ps.execute();
+			
+			ps.close();
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
@@ -129,6 +135,8 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from joueur where idJoueur = ?");
 			ps.setInt(1, joueur.getIdJoueur());
 			ps.execute();
+			
+			ps.close();
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
@@ -147,6 +155,8 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from joueur where idEquipe = ?");
 			ps.setInt(1, idEquipe);
 			ps.execute();
+			
+			ps.close();
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
@@ -171,6 +181,9 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			while(rs.next()) {
 				joueurs.add(new Joueur(rs.getInt("idJoueur"), rs.getString("pseudo"), rs.getInt("idEquipe")));
 			}
+			
+			rs.close();
+			ps.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -191,6 +204,9 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
             if (rs.next()) {
                 nextVal = rs.getInt(1);
             }
+            
+            rs.close();
+            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

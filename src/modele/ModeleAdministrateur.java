@@ -82,6 +82,8 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
             );
 		}
 		
+		rs.close();
+		ps.close();
 		return Optional.ofNullable(administrateur);
 	}
 
@@ -99,7 +101,9 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 			ps.setString(4, administrateur.getIdentifiant());
 			ps.setString(5, administrateur.getMotDePasse());
 			ps.execute();
+			
 			BDD.getConnexion().commit();
+			ps.close();
 			return true;
 		} catch(SQLException e) {
 			try {
@@ -125,7 +129,10 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 			ps.setString(4, administrateur.getMotDePasse());
 			ps.setInt(5, administrateur.getIdAdministrateur());
 			ps.execute();
+			
+			
 			BDD.getConnexion().commit();
+			ps.close();
 			return true;
 		} catch(SQLException e) {
 			try {
@@ -147,7 +154,9 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from administrateur where idAdministrateur = ?");
 			ps.setInt(1, administrateur.getIdAdministrateur());
 			ps.execute();
+			
 			BDD.getConnexion().commit();
+			ps.close();
 			return true;
 		} catch(SQLException e) {
 			try {
@@ -190,6 +199,8 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 	        );
 			
 			compteCourant = administrateur;
+			rs.close();
+			ps.close();
 		} catch(SQLException e) {
 			throw new RuntimeException(e);
 		}

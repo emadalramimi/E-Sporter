@@ -23,7 +23,7 @@ public class TestModeleEquipe {
 	private List<Joueur> listJoueurs;
 	
 	@Before
-	public void setup() throws Exception {
+	public void setUp() throws Exception {
 		modele = new ModeleEquipe();
 		listJoueurs = new ArrayList<>(Arrays.asList(
 				new Joueur(1, "Joueur1", 2),

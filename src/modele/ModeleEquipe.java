@@ -89,6 +89,8 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
             );
 		}
 		
+		rs.close();
+		ps.close();
 		return Optional.ofNullable(equipe);
 	}
 
@@ -107,7 +109,9 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 			ps.setInt(5, equipe.getWorldRanking());
 			ps.setString(6, equipe.getSaison());
 			ps.execute();
+			
 			BDD.getConnexion().commit();
+			ps.close();
 			return true;
 		} catch(SQLException e) {
 			try {
@@ -134,7 +138,9 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 			ps.setInt(3, equipe.getWorldRanking());
 			ps.setInt(4, equipe.getIdEquipe());
 			ps.execute();
+			
 			BDD.getConnexion().commit();
+			ps.close();
 			return true;
 		} catch(SQLException e) {
 			try {
@@ -149,17 +155,18 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 	/**
 	 * Supprime l'équipe dans la BDD
 	 * @return true si l'opération s'est bien déroulée, false sinon
-	 * @throws Exception 
 	 */
 	@Override
 	public boolean supprimer(Equipe equipe){
 		try {
 			// TODO SPRINT 2 : Si l'équipe est inscrite à un tournoi, ne pas la supprimer.
 			this.modeleJoueur.supprimerJoueursEquipe(equipe.getIdEquipe());
-			PreparedStatement psEquipe = BDD.getConnexion().prepareStatement("delete from equipe where idEquipe = ?");
-			psEquipe.setInt(1, equipe.getIdEquipe());
-			psEquipe.execute();
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from equipe where idEquipe = ?");
+			ps.setInt(1, equipe.getIdEquipe());
+			ps.execute();
+			
 			BDD.getConnexion().commit();
+			ps.close();
 			return true;
 		} catch(SQLException e) {
 			try {
@@ -184,6 +191,9 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
             if (rs.next()) {
                 nextVal = rs.getInt(1);
             }
+            
+            rs.close();
+            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
