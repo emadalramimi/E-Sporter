@@ -22,6 +22,8 @@ import javax.swing.JLabel;
 import java.util.List;
 import java.util.Vector;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.FlowLayout;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -35,7 +37,6 @@ import modele.metier.Tournoi;
 
 public class VueTournois extends JFrameTheme {
 	private JTable table;
-	private ControleurTournois controleur;
 	private DefaultTableModel model;
 	private JButtonTheme btnAjouter;
 	private JPanel panelAjouter;
@@ -44,7 +45,6 @@ public class VueTournois extends JFrameTheme {
 	 * WIP : PAGE D'EXEMPLE
 	 */
 	public void afficherVueTournois(JPanel contentPane) {
-		this.controleur = new ControleurTournois(this);
 		JPanel panel = new JPanel();
 		panel.setBackground(CharteGraphique.FOND);
 		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
@@ -62,29 +62,26 @@ public class VueTournois extends JFrameTheme {
 		lblNewLabel.setForeground(CharteGraphique.TEXTE);
 		panel_1.add(lblNewLabel);
 		
-		panelAjouter = new JPanel();
-		panelAjouter.setBackground(CharteGraphique.FOND);
-		FlowLayout flowLayout = (FlowLayout) panelAjouter.getLayout();
-		flowLayout.setVgap(0);
-		flowLayout.setHgap(0);
-		flowLayout.setAlignment(FlowLayout.RIGHT);
-		panel_1.add(panelAjouter);
-		btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
-		btnAjouter.addActionListener(controleur);
-		btnAjouter.setHorizontalAlignment(SwingConstants.RIGHT);
-		panelAjouter.add(btnAjouter);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(CharteGraphique.FOND);
-		FlowLayout flowLayout = (FlowLayout) panel_2.getLayout();
-		flowLayout.setVgap(0);
-		flowLayout.setHgap(0);
-		flowLayout.setAlignment(FlowLayout.RIGHT);
+		FlowLayout flowLayout1 = (FlowLayout) panel_2.getLayout();
+		flowLayout1.setVgap(0);
+		flowLayout1.setHgap(0);
+		flowLayout1.setAlignment(FlowLayout.RIGHT);
 		panel_1.add(panel_2);
 		
 		JButtonTheme btnNewButton = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
 		btnNewButton.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel_2.add(btnNewButton);
+		
+		btnNewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Action à effectuer lors du clic sur le bouton Ajouter
+                ouvrirVueSaisieTournois();
+            }
+        });
 		
 		JScrollPaneTheme scrollPane = new JScrollPaneTheme();
 		panel.add(scrollPane);
@@ -106,12 +103,24 @@ public class VueTournois extends JFrameTheme {
 		table = new JTableTheme();
 		table.setModel(model);
 		
+		//TODO Apres le controleur
 		// Ajouter buttons dans la derniere colonne
-		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
-		buttonColumn.setCellRenderer(new TableButtonsPanel(table, controleur, 0));
-		buttonColumn.setCellEditor(new TableButtonsCellEditor(controleur));
+//		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
+//		buttonColumn.setCellRenderer(new TableButtonsPanel(table, controleur, 0));
+//		buttonColumn.setCellEditor(new TableButtonsCellEditor(controleur));
 		
-		this.remplirTableau(this.controleur.getTournois());
+		model.setRowCount(0); // vider le tableau
+		for(int i = 0; i < 20; i++) {
+			Vector<Object> rowData = new Vector<>();
+			rowData.add("Ouvert");
+			rowData.add("KCX 2023");
+			rowData.add("International classé");
+			rowData.add("30/10/2023");
+			rowData.add("30/11/2023");
+			rowData.add("Poules");
+
+			model.addRow(rowData);
+		}
 		scrollPane.setViewportView(table);
 	}
 	
@@ -135,5 +144,12 @@ public class VueTournois extends JFrameTheme {
 		// Mise à jour du tableau
 		this.table.setModel(this.model);
 	}
+	
+	private void ouvrirVueSaisieTournois() {
+        VueSaisieTournois vueSaisieTournois = new VueSaisieTournois(this);
+        vueSaisieTournois.setVisible(true);
+    }
+	
+	
 
 }
