@@ -26,10 +26,12 @@ public class VueSaisieTournois extends JFrameTheme {
     
     private JPanel contentPane;
     private VueTournois vue;
+    private DefaultListModel<String> listeModel;
     
     
     public VueSaisieTournois(VueTournois vue) {
         this.vue = vue;
+        this.listeModel = new DefaultListModel<>();
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 400, 300);
@@ -54,11 +56,18 @@ public class VueSaisieTournois extends JFrameTheme {
 
         // Ajouter du bouton
         JButtonTheme monBouton = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
+        monBouton.addActionListener(e -> {
+			try {
+				ouvrirVueAjouterEquipes();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		});
         buttonPanel.add(monBouton);
         topPanel.add(buttonPanel, BorderLayout.EAST);
 
         contentPane.add(topPanel, BorderLayout.NORTH);
-
+        
         // ScrollPane de la liste des equipes
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBackground(CharteGraphique.FOND_SECONDAIRE);
@@ -69,9 +78,6 @@ public class VueSaisieTournois extends JFrameTheme {
         DefaultListModel<String> listeModel = new DefaultListModel<>();
         listeModel.addElement("Equipe Alpha");
         listeModel.addElement("Equipe Beta");
-        listeModel.addElement("Equipe Gamma");
-        listeModel.addElement("Equipe Delta");
-        listeModel.addElement("Equipe Epsilon");
 
         JList<String> liste = new JList<>(listeModel);
         liste.setCellRenderer(new TexteCentreListCellRenderer());
@@ -90,6 +96,11 @@ public class VueSaisieTournois extends JFrameTheme {
     public void fermerFenetre() {
     	this.vue.retirerFenetreEnfant(this);
     	this.dispose();
+    }
+    
+    private void ouvrirVueAjouterEquipes() throws Exception {
+        VueAjouterEquipes vueAjouterEquipes = new VueAjouterEquipes(vue, listeModel);
+        vueAjouterEquipes.setVisible(true);
     }
     
     /**
