@@ -16,6 +16,7 @@ import java.util.stream.StreamSupport;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
 import modele.metier.Tournoi;
+import modele.metier.Tournoi.Notoriete;
 
 public class ModeleTournoi implements DAO<Tournoi, Integer> {
 
@@ -33,11 +34,11 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
                         if (!rs.next()) {
                             return false;
                         }
+                        Notoriete notoriete = (Notoriete) rs.getObject("notoriete");
                         action.accept(new Tournoi(
                         		rs.getInt("idTournoi"),
                     			rs.getString("nomTournoi"),
-                    			//je sais pas comment get Notoriete ici
-                    			rs.get("notoriete"),
+                    			notoriete,
                     			rs.getInt("dateDebut"),
                     			rs.getInt("dateFin"),
                     			rs.getBoolean("estCloture"),
@@ -72,12 +73,12 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 		
 		// Création de joueur si il existe
 		Tournoi tournoi = null;
+		Notoriete notoriete = (Notoriete) rs.getObject("notoriete");
 		if(rs.next()) {
 			tournoi = new Tournoi(
 					rs.getInt("idTournoi"),
         			rs.getString("nomTournoi"),
-        			//ici je ne sais pas
-        			rs.get("notoriete"),
+        			notoriete,
         			rs.getInt("dateDebut"),
         			rs.getInt("dateFin"),
         			rs.getBoolean("estCloture"),
@@ -179,7 +180,6 @@ ps.execute();
             if (rs.next()) {
                 nextVal = rs.getInt(1);
             }
-            
             rs.close();
             ps.close();
         } catch (SQLException e) {
