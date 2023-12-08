@@ -3,9 +3,9 @@ package modele.metier;
 import java.util.List;
 
 /**
- * Modèle métier tournoi
+ * Modèle métier Tournoi
  */
-public class Tournoi {
+public class Tournoi implements Utilisateur {
 	
 	//TODO ajouter une méthode à l'énum permettant de get le multiplicateur de pts
 	public enum Notoriete {
@@ -23,6 +23,15 @@ public class Tournoi {
 
         public String getLibelle() {
             return libelle;
+        }
+        
+        public static Notoriete valueOfLibelle(String libelle) {
+            for (Notoriete notoriete : values()) {
+                if (notoriete.getLibelle().equalsIgnoreCase(libelle)) {
+                    return notoriete;
+                }
+            }
+            throw new IllegalArgumentException("Notoriété avec le libellé '" + libelle + "' non trouvé.");
         }
     }
 	
@@ -47,8 +56,7 @@ public class Tournoi {
 	 * @param identifiant
 	 * @param motDePasse
 	 */
-	public Tournoi(int idTournoi, String nomTournoi, Notoriete notoriete, int dateDebut, int dateFin, boolean estCloture,
-			String identifiant, String motDePasse) {
+	public Tournoi(int idTournoi, String nomTournoi, Notoriete notoriete, int dateDebut, int dateFin, boolean estCloture, String identifiant, String motDePasse) {
 		this.idTournoi = idTournoi;
 		this.nomTournoi = nomTournoi;
 		this.notoriete = notoriete;
@@ -152,6 +160,7 @@ public class Tournoi {
 	/**
 	 * @return Identifiant
 	 */
+	@Override
 	public String getIdentifiant() {
 		return identifiant;
 	}
@@ -160,6 +169,7 @@ public class Tournoi {
 	 * Modifie l'identifiant
 	 * @param identifiant
 	 */
+	@Override
 	public void setIdentifiant(String identifiant) {
 		this.identifiant = identifiant;
 	}
@@ -167,6 +177,7 @@ public class Tournoi {
 	/**
 	 * @return MotDePasse
 	 */
+	@Override
 	public String getMotDePasse() {
 		return motDePasse;
 	}
@@ -175,8 +186,13 @@ public class Tournoi {
 	 * Modifie le mot de passe
 	 * @param motDePasse
 	 */
+	@Override
 	public void setMotDePasse(String motDePasse) {
 		this.motDePasse = motDePasse;
+	}
+	
+	public Role getRole() {
+		return Role.ARBITRE;
 	}
 	
 	/**
@@ -207,25 +223,25 @@ public class Tournoi {
 	    }
 	    Tournoi tournoi = (Tournoi) o;
 	    return this.idTournoi == tournoi.getIdTournoi()
-	            && this.dateDebut == tournoi.getDateDebut()
-	            && this.dateFin == tournoi.getDateFin()
-	            && this.nomTournoi.equals(tournoi.getNomTournoi())
-	     	    && this.notoriete.equals(tournoi.getNotoriete())
-	     	    && this.identifiant.equals(tournoi.getIdentifiant())
-	     	    && this.motDePasse.equals(tournoi.getMotDePasse())
-	     	    && this.estCloture == tournoi.isEstCloture();
+	        && this.dateDebut == tournoi.getDateDebut()
+	        && this.dateFin == tournoi.getDateFin()
+	        && this.nomTournoi.equals(tournoi.getNomTournoi())
+	 	    && this.notoriete.equals(tournoi.getNotoriete())
+	 	    && this.identifiant.equals(tournoi.getIdentifiant())
+	 	    && this.motDePasse.equals(tournoi.getMotDePasse())
+	 	    && this.estCloture == tournoi.isEstCloture();
 	}
 	
 	@Override
 	public String toString() {
 		return "Tournoi [idTournoi=" + idTournoi 
-				+ ", nomTournoi=" + nomTournoi 
-				+ ", notoriete=" + notoriete 
-				+ ", dateDebut=" + dateDebut 
-				+ ", dateFin=" + dateFin 
-				+ ", estCloture=" + estCloture
-				+ ", identifiant=" + identifiant
-				+ ", motDePasse=" + motDePasse + "]";
+			+ ", nomTournoi=" + nomTournoi 
+			+ ", notoriete=" + notoriete 
+			+ ", dateDebut=" + dateDebut 
+			+ ", dateFin=" + dateFin 
+			+ ", estCloture=" + estCloture
+			+ ", identifiant=" + identifiant
+			+ ", motDePasse=" + motDePasse + "]";
 	}
 	
 }

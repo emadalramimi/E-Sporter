@@ -3,7 +3,7 @@ package modele.metier;
 /**
  * Modèle métier Administrateur
  */
-public class Administrateur {
+public class Administrateur implements Utilisateur {
 
 	private int idAdministrateur;
 	private String nom;
@@ -28,6 +28,7 @@ public class Administrateur {
 	}
 
 	/**
+	 * Retourne la clé primaire
 	 * @return Clé primaire
 	 */
 	public int getIdAdministrateur() {
@@ -43,6 +44,7 @@ public class Administrateur {
 	}
 
 	/**
+	 * Retourne le nom
 	 * @return Nom
 	 */
 	public String getNom() {
@@ -51,13 +53,14 @@ public class Administrateur {
 	
 	/**
 	 * Modifie le nom
-	 * @param nom
+	 * @param nom Nom
 	 */
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
 	/**
+	 * Retourne le prénom
 	 * @return Prénom
 	 */
 	public String getPrenom() {
@@ -66,23 +69,26 @@ public class Administrateur {
 	
 	/**
 	 * Modifie le prénom
-	 * @param prenom
+	 * @param prenom Prénom
 	 */
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
 
 	/**
+	 * Retourne l'identifiant de connexion
 	 * @return Identifiant de connexion
 	 */
+	@Override
 	public String getIdentifiant() {
 		return identifiant;
 	}
 	
 	/**
 	 * Modifie l'identifiant
-	 * @param identifiant
+	 * @param identifiant Identifiant
 	 */
+	@Override
 	public void setIdentifiant(String identifiant) {
 		this.identifiant = identifiant;
 	}
@@ -90,16 +96,22 @@ public class Administrateur {
 	/**
 	 * @return Mot de passe de connexion
 	 */
+	@Override
 	public String getMotDePasse() {
 		return motDePasse;
 	}
 	
 	/**
 	 * Modifie le mot de passe
-	 * @param motDePasse
+	 * @param motDePasse Mot de passe
 	 */
+	@Override
 	public void setMotDePasse(String motDePasse) {
 		this.motDePasse = motDePasse;
+	}
+	
+	public Role getRole() {
+		return Role.ADMINISTRATEUR;
 	}
 	
 	/**

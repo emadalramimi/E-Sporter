@@ -8,8 +8,10 @@ import javax.swing.border.EmptyBorder;
 
 import controleur.ControleurBase;
 import modele.BDD;
-import modele.ModeleAdministrateur;
+import modele.ModeleUtilisateur;
 import modele.metier.Administrateur;
+import modele.metier.Tournoi;
+import modele.metier.Utilisateur;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonMenu;
 import vue.theme.JFrameTheme;
@@ -28,6 +30,7 @@ public class VueBase extends JFrameTheme {
 	
 	private JPanel contenu;
 	private JLabel lblUtilisateur;
+	private JButtonMenu btnUtilisateur;
 	
 	private ControleurBase controleurBase;
 	
@@ -54,9 +57,18 @@ public class VueBase extends JFrameTheme {
 		this.changerOnglet(ControleurBase.Menus.TOURNOIS);
 		
 		// Affichage de l'utilisateur courant
-		Administrateur compteCourant = ModeleAdministrateur.getCompteCourant();
-		this.lblUtilisateur.setText(compteCourant.getPrenom());
-		this.lblUtilisateur.setToolTipText(compteCourant.getPrenom() + " " + compteCourant.getNom());
+		Utilisateur compteCourant = ModeleUtilisateur.getCompteCourant();
+		if(compteCourant.getRole() == Utilisateur.Role.ADMINISTRATEUR) {
+			Administrateur administrateurCourant = (Administrateur) compteCourant;
+			this.lblUtilisateur.setText(administrateurCourant.getPrenom());
+			String description = administrateurCourant.getPrenom() + " " + administrateurCourant.getNom();
+			this.lblUtilisateur.setToolTipText(description);
+			this.btnUtilisateur.setToolTipText(description);
+		} else if(compteCourant.getRole() == Utilisateur.Role.ARBITRE) {
+			this.lblUtilisateur.setText("Arbitre");
+			Tournoi tournoiCourant = (Tournoi) compteCourant;
+			this.lblUtilisateur.setToolTipText(tournoiCourant.getNomTournoi());
+		}
 	}
 	
 	/**
@@ -222,15 +234,15 @@ public class VueBase extends JFrameTheme {
 		panelMenuDroite.setLayout(gbl_panelMenuDroite);
 		
 		// Bouton utilisateur (bouton qui ne mène pas à un onglet)
-		JButtonMenu btnUtilisateur = new JButtonMenu("", ControleurBase.Menus.UTILISATEUR);
-		btnUtilisateur.addMouseListener(this.controleurBase);
-		this.controleurBase.ajouterBoutonMenu(btnUtilisateur);
+		this.btnUtilisateur = new JButtonMenu("", ControleurBase.Menus.UTILISATEUR);
+		this.btnUtilisateur.addMouseListener(this.controleurBase);
+		this.controleurBase.ajouterBoutonMenu(this.btnUtilisateur);
 		GridBagConstraints gbc_btnUtilisateur = new GridBagConstraints();
 		gbc_btnUtilisateur.anchor = GridBagConstraints.NORTH;
 		gbc_btnUtilisateur.insets = new Insets(0, 0, 5, 10);
 		gbc_btnUtilisateur.gridx = 0;
 		gbc_btnUtilisateur.gridy = 0;
-		panelMenuDroite.add(btnUtilisateur, gbc_btnUtilisateur);
+		panelMenuDroite.add(this.btnUtilisateur, gbc_btnUtilisateur);
 		
 		// Bouton déconnexion (bouton qui ne mène pas à un onglet)
 		JButtonMenu btnDeconnexion = new JButtonMenu("", ControleurBase.Menus.DECONNEXION);

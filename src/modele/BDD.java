@@ -218,7 +218,7 @@ public class BDD {
 		            + "dateFin INT, "
 		            + "estCloture BOOLEAN, "
 		            + "identifiant VARCHAR(20), "
-		            + "motDePasse VARCHAR(20), "
+		            + "motDePasse VARCHAR(72), "
 		            + "PRIMARY KEY(idTournoi)"
 		            + ")");
 		} catch (SQLException e) {
@@ -300,7 +300,7 @@ public class BDD {
 		            + "nom VARCHAR(20), "
 		            + "prenom VARCHAR(20), "
 		            + "identifiant VARCHAR(20), "
-		            + "motDePasse VARCHAR(20), "
+		            + "motDePasse VARCHAR(72), "
 		            + "PRIMARY KEY(idAdministrateur)"
 		            + ")");
 		} catch (SQLException e) {
@@ -430,7 +430,7 @@ public class BDD {
 					+ "1675292400,"
 					+ "TRUE,"
 					+ "'Pcl2023',"
-					+ "'$Pcl2023'"
+					+ "'" + ModeleUtilisateur.chiffrerMotDePasse("$Pcl2023") + "'"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO tournoi VALUES ("
@@ -441,7 +441,7 @@ public class BDD {
 					+ "1675292400,"
 					+ "TRUE,"
 					+ "'AsiaStar',"
-					+ "'$AsiaStar'"
+					+ "'" + ModeleUtilisateur.chiffrerMotDePasse("$AsiaStar") + "'"
 					+ ")");
 			
 			st.executeUpdate(
@@ -453,7 +453,7 @@ public class BDD {
 					+ "1677193200,"
 					+ "TRUE,"
 					+ "'Ultraliga',"
-					+ "'$Ultraliga'"
+					+ "'" + ModeleUtilisateur.chiffrerMotDePasse("$Ultraliga") + "'"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO tournoi VALUES ("
@@ -464,7 +464,7 @@ public class BDD {
 					+ "1675292400,"
 					+ "TRUE,"
 					+ "'Superliga',"
-					+ "'$Superliga'"
+					+ "'" + ModeleUtilisateur.chiffrerMotDePasse("$Superliga") + "'"
 					+ ")");
 					
 			st.executeUpdate(
@@ -476,7 +476,7 @@ public class BDD {
 					+ "1675292400,"
 					+ "TRUE,"
 					+ "'Lcd2023Autumn',"
-					+ "'$Lcd2023Autumn'"
+					+ "'" + ModeleUtilisateur.chiffrerMotDePasse("$Lcd2023Autumn") + "'"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO tournoi VALUES ("
@@ -487,7 +487,7 @@ public class BDD {
 					+ "1675292400,"
 					+ "TRUE,"
 					+ "'EliteSeries',"
-					+ "'$EliteSeries'"
+					+ "'" + ModeleUtilisateur.chiffrerMotDePasse("$EliteSeries") + "'"
 					+ ")");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table tournoi");
@@ -687,7 +687,7 @@ public class BDD {
 					+ "'Istrateur',"
 					+ "'Admin',"
 					+ "'admin',"
-					+ "'mdp')"
+					+ "'" + ModeleUtilisateur.chiffrerMotDePasse("mdp") + "')"
 			);
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table administrateur");

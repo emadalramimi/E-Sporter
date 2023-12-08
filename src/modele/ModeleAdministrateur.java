@@ -13,12 +13,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import modele.exception.IdentifiantOuMdpIncorrectsException;
 import modele.metier.Administrateur;
 
 public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
-	
-	private static Administrateur compteCourant;
 
 	/**
 	 * @return Liste de tous les administrateurs
@@ -99,7 +96,7 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 			ps.setString(2, administrateur.getNom());
 			ps.setString(3, administrateur.getPrenom());
 			ps.setString(4, administrateur.getIdentifiant());
-			ps.setString(5, administrateur.getMotDePasse());
+			ps.setString(5, ModeleUtilisateur.chiffrerMotDePasse(administrateur.getMotDePasse()));
 			ps.execute();
 			
 			BDD.getConnexion().commit();
@@ -117,19 +114,18 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 
 	/**
 	 * Modifie l'administrateur dans la BDD
+	 * Cette méthode ne peut pas changer le mot de passe de l'administrateur
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
 	public boolean modifier(Administrateur administrateur) {
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("update administrateur set nom = ?, prenom = ?, identifiant = ?, motDePasse = ? where idAdministrateur = ?");
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("update administrateur set nom = ?, prenom = ?, identifiant = ? where idAdministrateur = ?");
 			ps.setString(1, administrateur.getNom());
 			ps.setString(2, administrateur.getPrenom());
 			ps.setString(3, administrateur.getIdentifiant());
-			ps.setString(4, administrateur.getMotDePasse());
-			ps.setInt(5, administrateur.getIdAdministrateur());
+			ps.setInt(4, administrateur.getIdAdministrateur());
 			ps.execute();
-			
 			
 			BDD.getConnexion().commit();
 			ps.close();
@@ -168,60 +164,27 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 		}
 	}
 	
-	/**
-	 * Connecte un administrateur avec son couple identifiant/mot de passe s'il existe
-	 * @param identifiant
-	 * @param motDePasse
-	 * @throws IdentifiantOuMdpIncorrectsException
-	 * @throws RuntimeException
-	 */
-	public void connecter(String identifiant, String motDePasse) throws IdentifiantOuMdpIncorrectsException, IllegalArgumentException, RuntimeException {
-		if(compteCourant != null) {
-			throw new IllegalArgumentException("Un administrateur est déjà connecté");
-		}
-		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from administrateur where identifiant = ? and motDePasse = ?");
-			ps.setString(1, identifiant);
-			ps.setString(2, motDePasse);
-			
-			ResultSet rs = ps.executeQuery();
-			
-			if(!rs.next()) {
-				throw new IdentifiantOuMdpIncorrectsException("Identifiant ou mot de passe incorrects");
-			}
+	public Optional<Administrateur> getParIdentifiant(String identifiant) throws SQLException {
+		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from administrateur where identifiant = ?");
+		ps.setString(1, identifiant);
+
+		ResultSet rs = ps.executeQuery();
 		
-			Administrateur administrateur = new Administrateur(
+		// Création de l'administrateur s'il existe
+		Administrateur administrateur = null;
+		if(rs.next()) {
+			administrateur = new Administrateur(
 	    		rs.getInt("idAdministrateur"),
 	    		rs.getString("nom"),
 	    		rs.getString("prenom"),
 	    		rs.getString("identifiant"),
 	    		rs.getString("motDePasse")
-	        );
-			
-			compteCourant = administrateur;
-			rs.close();
-			ps.close();
-		} catch(SQLException e) {
-			throw new RuntimeException(e);
+            );
 		}
-	}
-	
-	/**
-	 * Déconnecte l'administrateur
-	 * @throws IllegalArgumentException si l'administrateur est déjà déconnecté
-	 */
-	public void deconnecter() throws IllegalArgumentException {
-		if(compteCourant == null) {
-			throw new IllegalArgumentException("Vous êtes déjà déconnecté.");
-		}
-		compteCourant = null;
-	}
-	
-	/**
-	 * @return l'administrateur actuellement connecté
-	 */
-	public static Administrateur getCompteCourant() {
-		return compteCourant;
+
+		rs.close();
+		ps.close();
+		return Optional.ofNullable(administrateur);
 	}
 	
 }

@@ -13,8 +13,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import modele.metier.Equipe;
-import modele.metier.Joueur;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
@@ -34,16 +32,15 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
                         if (!rs.next()) {
                             return false;
                         }
-                        Notoriete notoriete = (Notoriete) rs.getObject("notoriete");
                         action.accept(new Tournoi(
-                        		rs.getInt("idTournoi"),
-                    			rs.getString("nomTournoi"),
-                    			notoriete,
-                    			rs.getInt("dateDebut"),
-                    			rs.getInt("dateFin"),
-                    			rs.getBoolean("estCloture"),
-                    			rs.getString("identifiant"),
-                    			rs.getString("motDePasse")
+                    		rs.getInt("idTournoi"),
+                			rs.getString("nomTournoi"),
+                			Notoriete.valueOfLibelle(rs.getString("notoriete")),
+                			rs.getInt("dateDebut"),
+                			rs.getInt("dateFin"),
+                			rs.getBoolean("estCloture"),
+                			rs.getString("identifiant"),
+                			rs.getString("motDePasse")
                         ));
                         return true;
                     } catch (SQLException e) {
@@ -73,17 +70,16 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 		
 		// Création de joueur si il existe
 		Tournoi tournoi = null;
-		Notoriete notoriete = (Notoriete) rs.getObject("notoriete");
 		if(rs.next()) {
 			tournoi = new Tournoi(
-					rs.getInt("idTournoi"),
-        			rs.getString("nomTournoi"),
-        			notoriete,
-        			rs.getInt("dateDebut"),
-        			rs.getInt("dateFin"),
-        			rs.getBoolean("estCloture"),
-        			rs.getString("identifiant"),
-        			rs.getString("motDePasse")
+				rs.getInt("idTournoi"),
+				rs.getString("nomTournoi"),
+				Notoriete.valueOfLibelle(rs.getString("notoriete")),
+				rs.getInt("dateDebut"),
+				rs.getInt("dateFin"),
+				rs.getBoolean("estCloture"),
+				rs.getString("identifiant"),
+				rs.getString("motDePasse")
             );
 		}
 		
@@ -136,7 +132,7 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 			ps.setString(6, tournoi.getIdentifiant());
 			ps.setString(7, tournoi.getMotDePasse());
 			ps.setInt(8, tournoi.getIdTournoi());
-ps.execute();
+			ps.execute();
 			
 			ps.close();
 			BDD.getConnexion().commit();
@@ -188,5 +184,31 @@ ps.execute();
         
         return nextVal;
     }
+	
+	public Optional<Tournoi> getParIdentifiant(String identifiant) throws SQLException {
+		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from tournoi where identifiant = ?");
+		ps.setString(1, identifiant);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		// Création de tournoi s'il existe
+		Tournoi tournoi = null;
+		if(rs.next()) {
+			tournoi = new Tournoi(
+				rs.getInt("idTournoi"),
+    			rs.getString("nomTournoi"),
+    			Notoriete.valueOfLibelle(rs.getString("notoriete")),
+    			rs.getInt("dateDebut"),
+    			rs.getInt("dateFin"),
+    			rs.getBoolean("estCloture"),
+    			rs.getString("identifiant"),
+    			rs.getString("motDePasse")
+            );
+		}
+		
+		rs.close();
+		ps.close();
+		return Optional.ofNullable(tournoi);
+	}
 
 }

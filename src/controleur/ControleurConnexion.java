@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 
-import modele.ModeleAdministrateur;
+import modele.ModeleUtilisateur;
 import modele.exception.IdentifiantOuMdpIncorrectsException;
 import vue.VueBase;
 import vue.VueConnexion;
@@ -18,7 +18,7 @@ import vue.VueConnexion;
 public class ControleurConnexion extends KeyAdapter implements ActionListener {
 
 	private VueConnexion vue;
-	private ModeleAdministrateur modele;
+	private ModeleUtilisateur modele;
 	private Etat etat;
 	
 	/**
@@ -35,7 +35,7 @@ public class ControleurConnexion extends KeyAdapter implements ActionListener {
 	 */
 	public ControleurConnexion(VueConnexion vue) {
 		this.vue = vue;
-		this.modele = new ModeleAdministrateur();
+		this.modele = new ModeleUtilisateur();
 		// Le mot de passe est caché par défaut
 		this.etat = Etat.MDP_CACHE;
 	}
@@ -108,6 +108,7 @@ public class ControleurConnexion extends KeyAdapter implements ActionListener {
 			} catch (RuntimeException err) {
 				// Si une autre erreur SQL est survenue (deux instances ouvertes par exemple)
 				vue.afficherPopupErreur("Une erreur inattendue est survenue.");
+				err.printStackTrace();
 			}
 		}
 	}

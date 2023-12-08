@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
 
-import modele.ModeleAdministrateur;
+import modele.ModeleUtilisateur;
 import vue.VueBase;
 import vue.VueConnexion;
 import vue.theme.JButtonMenu;
@@ -42,7 +42,7 @@ public class ControleurBase extends MouseAdapter {
 	private List<JButtonMenu> boutonsMenu;
 	private JButtonMenu boutonActif;
 	private VueBase vue;
-	private ModeleAdministrateur modeleAdministrateur;
+	private ModeleUtilisateur modeleUtilisateur;
 	
 	/**
 	 * Constructeur du controleur
@@ -52,7 +52,7 @@ public class ControleurBase extends MouseAdapter {
 		this.boutonsMenu = new LinkedList<>();
 		this.boutonActif = null;
 		this.vue = vue;
-		this.modeleAdministrateur = new ModeleAdministrateur();
+		this.modeleUtilisateur = new ModeleUtilisateur();
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class ControleurBase extends MouseAdapter {
 				this.vue.changerOnglet(boutonClique.getMenu());
 			} else if (boutonClique.getMenu() == Menus.DECONNEXION) {
 				// Quand on clique sur se déconnecter
-				this.modeleAdministrateur.deconnecter();
+				this.modeleUtilisateur.deconnecter();
 				VueConnexion vueConnexion = new VueConnexion();
 				vueConnexion.afficher();
 				this.vue.fermerFenetre();
