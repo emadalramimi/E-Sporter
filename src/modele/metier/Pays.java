@@ -158,6 +158,7 @@ public enum Pays {
     }
 
     /**
+     * Retourne le nom du pays
      * @return le nom du pays
      */
     public String getNomPays() {
@@ -165,6 +166,7 @@ public enum Pays {
     }
 
     /**
+     * Retourne le code du pays
      * @return le code du pays
      */
     public String getCodePays() {
@@ -172,6 +174,7 @@ public enum Pays {
     }
     
     /**
+     * Retourne le drapeau du pays
      * @return le drapeau du pays
      */
     public ImageIcon getDrapeauPays() {
@@ -179,6 +182,7 @@ public enum Pays {
     }
 
     /**
+     * Retourne une liste du nom de tous les pays
      * @return une liste du nom de tous les pays
      */
     public static String[] getTout() {
@@ -191,6 +195,7 @@ public enum Pays {
     }
     
     /**
+     * Retourne un pays à partir de son nom
      * @param nom
      * @return un Pays à partir de son nom
      */

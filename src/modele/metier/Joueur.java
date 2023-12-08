@@ -22,13 +22,14 @@ public class Joueur {
 	
 	/**
 	 * Construit un joueur sans identifiant, ni clé étrangère (pour l'insertion en BDD)
-	 * @param pseudo
+	 * @param pseudo Pseudo
 	 */
 	public Joueur(String pseudo) {
 		this.pseudo = pseudo;
 	}
 
 	/**
+	 * Retourne la clé primaire
 	 * @return Clé primaire
 	 */
 	public int getIdJoueur() {
@@ -37,13 +38,14 @@ public class Joueur {
 	
 	/**
 	 * Modifie la clé primaire
-	 * @param idJoueur clé primaire
+	 * @param idJoueur Clé primaire
 	 */
 	public void setIdJoueur(int idJoueur) {
 		this.idJoueur = idJoueur;
 	}
 
 	/**
+	 * Retourne le pseudo
 	 * @return Pseudo
 	 */
 	public String getPseudo() {
@@ -59,6 +61,7 @@ public class Joueur {
 	}
 	
 	/**
+	 * Retourne la clé étrangère équipe
 	 * @return Clé étrangère équipe
 	 */
 	public int getIdEquipe() {

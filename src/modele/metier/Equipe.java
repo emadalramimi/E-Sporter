@@ -3,7 +3,7 @@ package modele.metier;
 import java.util.List;
 
 /**
- * Modèle métier équipe
+ * Modèle métier Équipe
  */
 public class Equipe {
 
@@ -54,6 +54,7 @@ public class Equipe {
 	}
 
 	/**
+	 * Retourne la clé priamire
 	 * @return Clé primaire
 	 */
 	public int getIdEquipe() {
@@ -69,6 +70,7 @@ public class Equipe {
 	}
 
 	/**
+	 * Retourne le nom
 	 * @return Nom
 	 */
 	public String getNom() {
@@ -77,13 +79,14 @@ public class Equipe {
 	
 	/**
 	 * Modifie le nom
-	 * @param nom
+	 * @param nom Nom
 	 */
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
 	/**
+	 * Retourne le pays
 	 * @return Pays
 	 */
 	public String getPays() {
@@ -92,13 +95,14 @@ public class Equipe {
 	
 	/**
 	 * Modifie le pays
-	 * @param pays
+	 * @param pays Pays
 	 */
 	public void setPays(String pays) {
 		this.pays = pays;
 	}
 
 	/**
+	 * Retourne le classement
 	 * @return Classement
 	 */
 	public int getClassement() {
@@ -107,28 +111,30 @@ public class Equipe {
 	
 	/**
 	 * Modifie le classement
-	 * @param classement
+	 * @param classement Classement
 	 */
 	public void setClassement(int classement) {
 		this.classement = classement;
 	}
 
 	/**
-	 * @return WorldRanking
+	 * Retourne le World Ranking
+	 * @return World Ranking
 	 */
 	public int getWorldRanking() {
 		return this.worldRanking;
 	}
 	
 	/**
-	 * Modifie le worldRanking
-	 * @param worldRanking
+	 * Modifie le World Ranking
+	 * @param worldRanking World Ranking
 	 */
 	public void setWorldRanking(int worldRanking) {
 		this.worldRanking = worldRanking;
 	}
 
 	/**
+	 * Retourne la saison
 	 * @return Saison
 	 */
 	public String getSaison() {
@@ -137,13 +143,14 @@ public class Equipe {
 	
 	/**
 	 * Modifie la saison
-	 * @param saison
+	 * @param saison Saison
 	 */
 	public void setSaison(String saison) {
 		this.saison = saison;
 	}
 	
 	/**
+	 * Retourne la liste des joueurs
 	 * @return Liste des joueurs
 	 */
 	public List<Joueur> getJoueurs() {
@@ -151,8 +158,8 @@ public class Equipe {
 	}
 
 	/**
-	 * Modifier la liste des joueurs
-	 * @param joueurs
+	 * Modifie la liste des joueurs
+	 * @param joueurs Liste des joueurs
 	 */
 	public void setJoueurs(List<Joueur> joueurs) {
 		this.joueurs = joueurs;
