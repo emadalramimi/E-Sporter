@@ -212,4 +212,10 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 				.collect(Collectors.toList());
 	}
 	
+	public Equipe[] getTableauEquipes() throws Exception {
+		return this.getTout().stream()
+				.sorted()
+				.toArray(Equipe[]::new);
+	}
+	
 }
