@@ -146,8 +146,8 @@ public class VueTournois extends JFrameTheme {
 	}
 	
 	private void ouvrirVueSaisieTournois() {
-        VueSaisieTournois vueSaisieTournois = new VueSaisieTournois(this);
-        vueSaisieTournois.setVisible(true);
+        VueSaisieTournoi vueSaisieTournoi = new VueSaisieTournoi();
+        vueSaisieTournoi.setVisible(true);
     }
 	
 	

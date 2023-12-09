@@ -14,18 +14,20 @@ import vue.theme.JFrameTheme;
 /**
  * IHM liste des equipes
  */
-public class VueAjouterEquipes extends JFrameTheme {
+public class VueSaisieTournoiEquipe extends JFrameTheme {
 
     private JPanel contentPane;
-    private VueTournois vue;
+    private VueSaisieTournoi vue;
     private JComboBoxTheme<String> comboBoxEquipes;
     private JButtonTheme btnAjouter;
     private ModeleEquipe modeleEquipe;
     private DefaultListModel<String> listeModel;
+    private DefaultListModel<Equipe> listeEquipes;
 
-    public VueAjouterEquipes(VueTournois vue, DefaultListModel<String> listeModel) throws Exception {
-        this.vue = vue;
+    public VueSaisieTournoiEquipe(VueSaisieTournoi vueSaisieTournoi, DefaultListModel<String> listeModel, DefaultListModel<Equipe> listeEquipes) throws Exception {
+        this.vue = vueSaisieTournoi;
         this.listeModel = listeModel;
+        this.listeEquipes = listeEquipes;
         this.modeleEquipe = new ModeleEquipe();
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -54,27 +56,35 @@ public class VueAjouterEquipes extends JFrameTheme {
         contentPane.add(combinedPanel, BorderLayout.NORTH);
 
         // Combo Box Equipes
-        String[] equipeNames = getEquipeNames();
+        String[] equipeNames = getEquipeNoms();
         comboBoxEquipes = new JComboBoxTheme<>(equipeNames);
         contentPane.add(comboBoxEquipes, BorderLayout.CENTER);
 
-        btnAjouter.addActionListener(e -> ajouterEquipeAction());
+        btnAjouter.addActionListener(e -> {
+			try {
+				ajouterEquipeAction();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		});
     }
 
-    private String[] getEquipeNames() throws Exception {
+    private String[] getEquipeNoms() throws Exception {
         List<Equipe> equipes = modeleEquipe.getTout();
         List<String> names = equipes.stream().map(Equipe::getNom).collect(Collectors.toList());
         return names.toArray(new String[0]);
     }
 
-    private void ajouterEquipeAction() {
-        String selectedEquipe = (String) comboBoxEquipes.getSelectedItem();
-        listeModel.addElement(selectedEquipe);
+    private void ajouterEquipeAction() throws Exception {
+        String selectedEquipeNom = (String) comboBoxEquipes.getSelectedItem();
+        List<Equipe> equipes = modeleEquipe.getParNom(selectedEquipeNom);
+        
+        for (Equipe equipe : equipes) {
+            listeModel.addElement(equipe.getNom());
+            listeEquipes.addElement(equipe);
+        }
     }
+
     
-    @Override
-    public void fermerFenetre() {
-        this.vue.retirerFenetreEnfant(this);
-        this.dispose();
-    }
+
 }
