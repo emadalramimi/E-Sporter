@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Modèle métier Équipe
  */
-public class Equipe {
+public class Equipe implements Comparable<Equipe> {
 
 	private int idEquipe;
 	private String nom;
@@ -189,6 +189,11 @@ public class Equipe {
 	public String toString() {
 		return "Equipe [idEquipe=" + idEquipe + ", nom=" + nom + ", pays=" + pays + ", classement=" + classement
 				+ ", worldRanking=" + worldRanking + ", saison=" + saison + "]";
+	}
+
+	@Override
+	public int compareTo(Equipe equipe) {
+		return this.nom.compareTo(equipe.nom);
 	}
 
 }
