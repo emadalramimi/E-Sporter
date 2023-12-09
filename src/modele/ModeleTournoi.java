@@ -21,7 +21,7 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 	@Override
 	public List<Tournoi> getTout() throws Exception {
 		Statement st = BDD.getConnexion().createStatement();
-		ResultSet rs = st.executeQuery("select * from joueur");
+		ResultSet rs = st.executeQuery("select * from tournoi");
 		
 		// Parcourt les tournois dans la base de données et les formate dans une liste
 		Stream<Tournoi> stream = StreamSupport.stream(
@@ -150,7 +150,7 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 	@Override
 	public boolean supprimer(Tournoi tournoi) throws Exception {
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from joueur where idTournoi = ?");
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from tournoi where idTournoi = ?");
 			ps.setInt(1, tournoi.getIdTournoi());
 			ps.execute();
 			
