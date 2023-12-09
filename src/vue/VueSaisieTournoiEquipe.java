@@ -1,90 +1,105 @@
 package vue;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.List;
-import java.util.stream.Collectors;
-import modele.ModeleEquipe;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
+
 import modele.metier.Equipe;
-import vue.theme.CharteGraphique;
-import vue.theme.JButtonTheme;
-import vue.theme.JComboBoxTheme;
 import vue.theme.JFrameTheme;
 
-/**
- * IHM liste des equipes
- */
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import java.awt.GridBagLayout;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.SwingConstants;
+
+import controleur.ControleurSaisieTournoiEquipe;
+
 public class VueSaisieTournoiEquipe extends JFrameTheme {
 
-    private JPanel contentPane;
-    private VueSaisieTournoi vue;
-    private JComboBoxTheme<String> comboBoxEquipes;
-    private JButtonTheme btnAjouter;
-    private ModeleEquipe modeleEquipe;
-    private DefaultListModel<String> listeModel;
-    private DefaultListModel<Equipe> listeEquipes;
+	private JPanel contentPane;
+	private JComboBox<Equipe> comboBox;
 
-    public VueSaisieTournoiEquipe(VueSaisieTournoi vueSaisieTournoi, DefaultListModel<String> listeModel, DefaultListModel<Equipe> listeEquipes) throws Exception {
-        this.vue = vueSaisieTournoi;
-        this.listeModel = listeModel;
-        this.listeEquipes = listeEquipes;
-        this.modeleEquipe = new ModeleEquipe();
+	public VueSaisieTournoiEquipe(VueSaisieTournoi vueSaisieTournoi, Equipe[] equipes) {
+		ControleurSaisieTournoiEquipe controleur = new ControleurSaisieTournoiEquipe(this, vueSaisieTournoi);
+		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 242, 138);
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 450, 100); 
+		contentPane = super.getContentPane();
+		
+		GridBagLayout gbl_contentPane = new GridBagLayout();
+		gbl_contentPane.columnWeights = new double[]{0.0, 0.0};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0};
+		contentPane.setLayout(gbl_contentPane);
+		
+		JLabel lblNewLabel = new JLabel("Sélectionner une équipe");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.gridwidth = 2;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 10, 0);
+		gbc_lblNewLabel.gridx = 0;
+		gbc_lblNewLabel.gridy = 0;
+		contentPane.add(lblNewLabel, gbc_lblNewLabel);
+		
+		comboBox = new JComboBox<>(equipes);
+		comboBox.setRenderer(new EquipeComboBoxRenderer());
+		GridBagConstraints gbc_comboBox = new GridBagConstraints();
+		gbc_comboBox.gridwidth = 2;
+		gbc_comboBox.insets = new Insets(0, 0, 10, 0);
+		gbc_comboBox.gridx = 0;
+		gbc_comboBox.gridy = 1;
+		contentPane.add(comboBox, gbc_comboBox);
+		
+		JButton btnNewButton_1 = new JButton("Annuler");
+		btnNewButton_1.addActionListener(controleur);
+		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
+		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton_1.gridx = 0;
+		gbc_btnNewButton_1.gridy = 2;
+		contentPane.add(btnNewButton_1, gbc_btnNewButton_1);
+		
+		JButton btnNewButton = new JButton("Ajouter l'équipe");
+		btnNewButton.addActionListener(controleur);
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.gridx = 1;
+		gbc_btnNewButton.gridy = 2;
+		contentPane.add(btnNewButton, gbc_btnNewButton);
+	}
+	
+	private class EquipeComboBoxRenderer extends JLabel implements ListCellRenderer<Object> {
 
-        contentPane = super.getContentPane();
-        contentPane.setLayout(new BorderLayout());
-        
-        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        titlePanel.setBackground(CharteGraphique.FOND_SECONDAIRE);
-        JLabel lblTitre = new JLabel("Choisir une equipe");
-        lblTitre.setForeground(CharteGraphique.TEXTE);
-        lblTitre.setFont(CharteGraphique.getPolice(19, true));
-        titlePanel.add(lblTitre);
+	    public EquipeComboBoxRenderer() {
+	        setOpaque(true);
+	        setHorizontalAlignment(LEFT);
+	        setVerticalAlignment(CENTER);
+	    }
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.setBackground(CharteGraphique.FOND_SECONDAIRE);
-        btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
-        buttonPanel.add(btnAjouter);
+	    @Override
+	    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	        if (value instanceof Equipe) {
+	            Equipe equipe = (Equipe) value;
+	            setText(equipe.getNom()); // Afficher uniquement le nom de l'équipe
+	        }
 
-        JPanel combinedPanel = new JPanel(new BorderLayout());
-        combinedPanel.add(titlePanel, BorderLayout.WEST);
-        combinedPanel.add(buttonPanel, BorderLayout.EAST);
-        combinedPanel.setBackground(CharteGraphique.FOND_SECONDAIRE);
+	        if (isSelected) {
+	            setBackground(list.getSelectionBackground());
+	            setForeground(list.getSelectionForeground());
+	        } else {
+	            setBackground(list.getBackground());
+	            setForeground(list.getForeground());
+	        }
 
-        contentPane.add(combinedPanel, BorderLayout.NORTH);
-
-        // Combo Box Equipes
-        String[] equipeNames = getEquipeNoms();
-        comboBoxEquipes = new JComboBoxTheme<>(equipeNames);
-        contentPane.add(comboBoxEquipes, BorderLayout.CENTER);
-
-        btnAjouter.addActionListener(e -> {
-			try {
-				ajouterEquipeAction();
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		});
-    }
-
-    private String[] getEquipeNoms() throws Exception {
-        List<Equipe> equipes = modeleEquipe.getTout();
-        List<String> names = equipes.stream().map(Equipe::getNom).collect(Collectors.toList());
-        return names.toArray(new String[0]);
-    }
-
-    private void ajouterEquipeAction() throws Exception {
-        String selectedEquipeNom = (String) comboBoxEquipes.getSelectedItem();
-        List<Equipe> equipes = modeleEquipe.getParNom(selectedEquipeNom);
-        
-        for (Equipe equipe : equipes) {
-            listeModel.addElement(equipe.getNom());
-            listeEquipes.addElement(equipe);
-        }
-    }
-
-    
+	        return this;
+	    }
+	}
+	
+	public Equipe getEquipe() {
+		return (Equipe) this.comboBox.getSelectedItem();
+	}
 
 }

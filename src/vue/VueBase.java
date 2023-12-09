@@ -293,7 +293,7 @@ public class VueBase extends JFrameTheme {
 		switch(menu) {
 		case TOURNOIS:
 			VueTournois vueTournois = new VueTournois();
-			vueTournois.afficherVueTournois(this.contenu);
+			vueTournois.afficherVueTournois(this.contenu, this);
 			break;
 		case EQUIPES:
 			VueEquipes vueEquipe = new VueEquipes();

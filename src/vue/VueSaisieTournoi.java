@@ -1,26 +1,28 @@
 package vue;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controleur.ControleurSaisieTournoi;
 import modele.metier.Arbitre;
 import modele.metier.Equipe;
 import modele.metier.Tournoi;
+import vue.theme.JFrameTheme;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.util.List;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -28,46 +30,34 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 
-public class VueSaisieTournoi extends JFrame {
+public class VueSaisieTournoi extends JFrameTheme {
 
 	private JPanel contentPane;
-	private JTextField textFieldNom;
-	private JTextField textFieldDateDebut;
-	private JTextField textFieldIdentifiant;
-	private JPasswordField passwordField;
-	private JTextField textFieldDateFin;
-	private JComboBox comboBoxNotoriete;
-	private DefaultListModel<String> listeModel;
-	private DefaultListModel<Equipe> listeEquipes;
-	private DefaultListModel<Arbitre> listeArbitres;
+	
+	private JTextField txtNom;
+	private JTextField txtDateDebut;
+	private JTextField txtIdentifiantArbitres;
+	private JPasswordField motDePasseArbitres;
+	private JTextField txtDateFin;
+	private JComboBox<String> cboxNotoriete;
+	
+	private DefaultListModel<Equipe> listModelEquipes;
+	private DefaultListModel<Arbitre> listModelArbitres;
+	
+	private VueSaisieTournoiEquipe vueSaisieTournoiEquipe;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VueSaisieTournoi frame = new VueSaisieTournoi();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public VueSaisieTournoi() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ControleurSaisieTournoi controleur = new ControleurSaisieTournoi(this);
+		
+		this.listModelEquipes = new DefaultListModel<>();
+		this.listModelArbitres = new DefaultListModel<>();
+		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 517, 422);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
+		contentPane = super.getContentPane();
 		
 		JPanel panelCentre = new JPanel();
 		contentPane.add(panelCentre, BorderLayout.CENTER);
@@ -91,9 +81,8 @@ public class VueSaisieTournoi extends JFrame {
 		panelSaisie.add(panelInfo);
 		GridBagLayout gbl_panelInfo = new GridBagLayout();
 		gbl_panelInfo.columnWidths = new int[]{0, 0};
-		gbl_panelInfo.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panelInfo.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panelInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		panelInfo.setLayout(gbl_panelInfo);
 		
 		JLabel lblNom = new JLabel("Nom de le tournoi");
@@ -103,14 +92,14 @@ public class VueSaisieTournoi extends JFrame {
 		gbc_lblNom.gridy = 0;
 		panelInfo.add(lblNom, gbc_lblNom);
 		
-		textFieldNom = new JTextField();
+		txtNom = new JTextField();
 		GridBagConstraints gbc_textFieldNom = new GridBagConstraints();
 		gbc_textFieldNom.insets = new Insets(0, 0, 5, 0);
 		gbc_textFieldNom.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldNom.gridx = 0;
 		gbc_textFieldNom.gridy = 1;
-		panelInfo.add(textFieldNom, gbc_textFieldNom);
-		textFieldNom.setColumns(10);
+		panelInfo.add(txtNom, gbc_textFieldNom);
+		txtNom.setColumns(10);
 		
 		JLabel lblDateDebut = new JLabel("Date début");
 		GridBagConstraints gbc_lblDateDebut = new GridBagConstraints();
@@ -119,15 +108,15 @@ public class VueSaisieTournoi extends JFrame {
 		gbc_lblDateDebut.gridy = 2;
 		panelInfo.add(lblDateDebut, gbc_lblDateDebut);
 		
-		textFieldDateDebut = new JTextField();
+		txtDateDebut = new JTextField();
 		GridBagConstraints gbc_textFieldDateDebut = new GridBagConstraints();
 		gbc_textFieldDateDebut.anchor = GridBagConstraints.NORTH;
 		gbc_textFieldDateDebut.insets = new Insets(0, 0, 5, 0);
 		gbc_textFieldDateDebut.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldDateDebut.gridx = 0;
 		gbc_textFieldDateDebut.gridy = 3;
-		panelInfo.add(textFieldDateDebut, gbc_textFieldDateDebut);
-		textFieldDateDebut.setColumns(10);
+		panelInfo.add(txtDateDebut, gbc_textFieldDateDebut);
+		txtDateDebut.setColumns(10);
 		
 		JLabel lblDateFin = new JLabel("Date Fin");
 		GridBagConstraints gbc_lblDateFin = new GridBagConstraints();
@@ -136,22 +125,21 @@ public class VueSaisieTournoi extends JFrame {
 		gbc_lblDateFin.gridy = 4;
 		panelInfo.add(lblDateFin, gbc_lblDateFin);
 		
-		textFieldDateFin = new JTextField();
+		txtDateFin = new JTextField();
 		GridBagConstraints gbc_textFieldDateFin = new GridBagConstraints();
 		gbc_textFieldDateFin.insets = new Insets(0, 0, 5, 0);
 		gbc_textFieldDateFin.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldDateFin.gridx = 0;
 		gbc_textFieldDateFin.gridy = 5;
-		panelInfo.add(textFieldDateFin, gbc_textFieldDateFin);
-		textFieldDateFin.setColumns(10);
+		panelInfo.add(txtDateFin, gbc_textFieldDateFin);
+		txtDateFin.setColumns(10);
 		
 		JPanel panel_4_1 = new JPanel();
 		panelSaisie.add(panel_4_1);
 		GridBagLayout gbl_panel_4_1 = new GridBagLayout();
 		gbl_panel_4_1.columnWidths = new int[]{0, 0};
-		gbl_panel_4_1.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_4_1.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_4_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_4_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		panel_4_1.setLayout(gbl_panel_4_1);
 		
 		JLabel lblIdentifiant = new JLabel("Identifiant ");
@@ -161,14 +149,14 @@ public class VueSaisieTournoi extends JFrame {
 		gbc_lblIdentifiant.gridy = 0;
 		panel_4_1.add(lblIdentifiant, gbc_lblIdentifiant);
 		
-		textFieldIdentifiant = new JTextField();
-		textFieldIdentifiant.setColumns(10);
+		txtIdentifiantArbitres = new JTextField();
+		txtIdentifiantArbitres.setColumns(10);
 		GridBagConstraints gbc_textFieldIdentifiant = new GridBagConstraints();
 		gbc_textFieldIdentifiant.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldIdentifiant.insets = new Insets(0, 0, 5, 0);
 		gbc_textFieldIdentifiant.gridx = 0;
 		gbc_textFieldIdentifiant.gridy = 1;
-		panel_4_1.add(textFieldIdentifiant, gbc_textFieldIdentifiant);
+		panel_4_1.add(txtIdentifiantArbitres, gbc_textFieldIdentifiant);
 		
 		JLabel lblMDP = new JLabel("Mot de passe");
 		GridBagConstraints gbc_lblMDP = new GridBagConstraints();
@@ -177,13 +165,13 @@ public class VueSaisieTournoi extends JFrame {
 		gbc_lblMDP.gridy = 2;
 		panel_4_1.add(lblMDP, gbc_lblMDP);
 		
-		passwordField = new JPasswordField();
+		motDePasseArbitres = new JPasswordField();
 		GridBagConstraints gbc_passwordField = new GridBagConstraints();
 		gbc_passwordField.insets = new Insets(0, 0, 5, 0);
 		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_passwordField.gridx = 0;
 		gbc_passwordField.gridy = 3;
-		panel_4_1.add(passwordField, gbc_passwordField);
+		panel_4_1.add(motDePasseArbitres, gbc_passwordField);
 		
 		JLabel lblNotoriete = new JLabel("Notoriété");
 		GridBagConstraints gbc_lblNotoriete = new GridBagConstraints();
@@ -192,17 +180,17 @@ public class VueSaisieTournoi extends JFrame {
 		gbc_lblNotoriete.gridy = 4;
 		panel_4_1.add(lblNotoriete, gbc_lblNotoriete);
 		
-		comboBoxNotoriete = new JComboBox();
-		comboBoxNotoriete.setModel(new DefaultComboBoxModel<>());
+		cboxNotoriete = new JComboBox<String>();
+		cboxNotoriete.setModel(new DefaultComboBoxModel<>());
 	    for (Tournoi.Notoriete notoriete : Tournoi.Notoriete.values()) {
-	        comboBoxNotoriete.addItem(notoriete.getLibelle());
+	        cboxNotoriete.addItem(notoriete.getLibelle());
 	    }
 		GridBagConstraints gbc_comboBoxNotoriete = new GridBagConstraints();
 		gbc_comboBoxNotoriete.insets = new Insets(0, 0, 5, 0);
 		gbc_comboBoxNotoriete.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBoxNotoriete.gridx = 0;
 		gbc_comboBoxNotoriete.gridy = 5;
-		panel_4_1.add(comboBoxNotoriete, gbc_comboBoxNotoriete);
+		panel_4_1.add(cboxNotoriete, gbc_comboBoxNotoriete);
 		
 		JPanel panelAjouter = new JPanel();
 		GridBagConstraints gbc_panelAjouter = new GridBagConstraints();
@@ -223,21 +211,15 @@ public class VueSaisieTournoi extends JFrame {
 		panelEquipes.add(panelBtn, BorderLayout.SOUTH);
 		
 		JButton btnAjouterEquipe = new JButton("Ajouter une équipe");
-		btnAjouterEquipe.addActionListener(e -> {
-			try {
-				ouvrirVueSaisieTournoiEquipe();
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		});
+		btnAjouterEquipe.addActionListener(controleur);
 		panelBtn.add(btnAjouterEquipe);
 		
 		JScrollPane scrollPaneListeEquipes = new JScrollPane();
 		panelEquipes.add(scrollPaneListeEquipes, BorderLayout.CENTER);
 		
-		listeModel = new DefaultListModel<>();
-		
-		JList listEquipes = new JList(listeModel);
+		JList<Equipe> listEquipes = new JList<>(listModelEquipes);
+		listEquipes.setCellRenderer(new EquipeListCellRenderer());
+		listEquipes.addFocusListener(controleur);
 		scrollPaneListeEquipes.setViewportView(listEquipes);
 		
 		JPanel panelArbitres = new JPanel();
@@ -251,19 +233,14 @@ public class VueSaisieTournoi extends JFrame {
 		panelArbitres.add(panelBtnAjouterArbitre, BorderLayout.SOUTH);
 		
 		JButton btnAjouterArbitre = new JButton("Ajouter un arbitre");
-//		btnAjouterArbitre.addActionListener(e -> {
-//			try {
-//				ouvrirVueSaisieTournoiArbitre();
-//			} catch (Exception e1) {
-//				e1.printStackTrace();
-//			}
-//		});
+		btnAjouterArbitre.addActionListener(controleur);
 		panelBtnAjouterArbitre.add(btnAjouterArbitre);
 		
 		JScrollPane scrollPaneListeArbitre = new JScrollPane();
 		panelArbitres.add(scrollPaneListeArbitre, BorderLayout.CENTER);
 		
-		JList listArbitres = new JList();
+		JList<Arbitre> listArbitres = new JList<>(listModelArbitres);
+		listArbitres.setCellRenderer(new ArbitreListCellRenderer());
 		scrollPaneListeArbitre.setViewportView(listArbitres);
 		
 		JPanel panelBtnCreer = new JPanel();
@@ -272,8 +249,8 @@ public class VueSaisieTournoi extends JFrame {
 		JButton btnAnnuler = new JButton("Annuler");
 		panelBtnCreer.add(btnAnnuler);
 		
-		JButton btnCreerTournoi = new JButton("Creer tournoi");
-		panelBtnCreer.add(btnCreerTournoi);
+		JButton btnValider = new JButton("Valider");
+		panelBtnCreer.add(btnValider);
 		
 		JPanel panelTitre = new JPanel();
 		contentPane.add(panelTitre, BorderLayout.NORTH);
@@ -282,43 +259,64 @@ public class VueSaisieTournoi extends JFrame {
 		panelTitre.add(lblTitre);
 	}
 	
+	private class EquipeListCellRenderer extends DefaultListCellRenderer {
+	    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
+	        this.setText(((Equipe) value).getNom());
+
+	        return this;
+	    }
+	}
+	
+	private class ArbitreListCellRenderer extends DefaultListCellRenderer {
+	    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+	        this.setText(((Arbitre) value).getNom());
+
+	        return this;
+	    }
+	}
+	
 	public String getNomTournoi() {
-        return textFieldNom.getText();
+        return txtNom.getText().trim();
     }
 
     public String getDateDebut() {
-        return textFieldDateDebut.getText();
+        return txtDateDebut.getText().trim();
     }
 
     public String getDateFin() {
-        return textFieldDateFin.getText();
+        return txtDateFin.getText().trim();
     }
 
     public String getIdentifiant() {
-        return textFieldIdentifiant.getText();
+        return txtIdentifiantArbitres.getText().trim();
     }
 
     public String getMotDePasse() {
-        return new String(passwordField.getPassword());
+        return new String(motDePasseArbitres.getPassword());
     }
-	public String getNotoriete() {
-		return (String) this.comboBoxNotoriete.getSelectedItem();
-	}
-    private void ouvrirVueSaisieTournoiEquipe() throws Exception {
-    	VueSaisieTournoiEquipe VueSaisieTournoiEquipe = new VueSaisieTournoiEquipe(this, listeModel, listeEquipes);
-    	VueSaisieTournoiEquipe.setVisible(true);
-    }
-    public List<Equipe> getEquipes() {
-		return (List<Equipe>) this.listeEquipes;
-	}
-    public List<Arbitre> getArbitres() {
-		return (List<Arbitre>) this.listeArbitres;
-	}
     
-//    private void ouvrirVueSaisieTournoiArbitre() throws Exception {
-//    	VueSaisieTournoiArbitre VueSaisieTournoiArbitre = new VueSaisieTournoiArbitre(this, listeModel, listeArbitres);
-//    	VueSaisieTournoiArbitre.setVisible(true);
-//    }
+	public String getNotoriete() {
+		return (String) this.cboxNotoriete.getSelectedItem();
+	}
+	
+	public void afficherVueSaisieTournoiEquipe(Equipe[] equipes) {
+		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
+        if (this.vueSaisieTournoiEquipe == null || !this.vueSaisieTournoiEquipe.isVisible()) {
+        	this.vueSaisieTournoiEquipe = new VueSaisieTournoiEquipe(this, equipes);
+        	this.ajouterFenetreEnfant(this.vueSaisieTournoiEquipe);
+        	this.vueSaisieTournoiEquipe.setLocationRelativeTo(this);
+        	this.vueSaisieTournoiEquipe.setVisible(true);
+        } else {
+        	this.vueSaisieTournoiEquipe.toFront();
+        }
+	}
+	
+	public void ajouterEquipe(Equipe equipe) {
+		this.listModelEquipes.addElement(equipe);
+	}
 
 }
