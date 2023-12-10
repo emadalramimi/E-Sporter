@@ -6,14 +6,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import vue.VueSaisieTournoi;
-import vue.VueSaisieTournoiEquipe;
+import vue.VueSaisieTournoiEquipeArbitre;
 
-public class ControleurSaisieTournoiEquipe implements ActionListener {
+public class ControleurSaisieTournoiEquipeArbitre implements ActionListener {
 
-	private VueSaisieTournoiEquipe vueSaisieTournoiEquipe;
+	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipe;
 	private VueSaisieTournoi vueSaisieTournoi;
 	
-	public ControleurSaisieTournoiEquipe(VueSaisieTournoiEquipe vueSaisieTournoiEquipe, VueSaisieTournoi vueSaisieTournoi) {
+	public ControleurSaisieTournoiEquipeArbitre(VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipe, VueSaisieTournoi vueSaisieTournoi) {
 		this.vueSaisieTournoiEquipe = vueSaisieTournoiEquipe;
 		this.vueSaisieTournoi = vueSaisieTournoi;
 	}
@@ -25,6 +25,12 @@ public class ControleurSaisieTournoiEquipe implements ActionListener {
 		switch(bouton.getText()) {
 		case "Ajouter l'équipe":
 			this.vueSaisieTournoi.ajouterEquipe(this.vueSaisieTournoiEquipe.getEquipe());
+			this.vueSaisieTournoiEquipe.fermerFenetre();
+			break;
+		case "Ajouter l'arbitre":
+			this.vueSaisieTournoi.ajouterArbitre(this.vueSaisieTournoiEquipe.getArbitre());
+			this.vueSaisieTournoiEquipe.fermerFenetre();
+			break;
 		case "Annuler":
 			this.vueSaisieTournoiEquipe.fermerFenetre();
 			break;
