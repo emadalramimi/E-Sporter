@@ -11,7 +11,7 @@ import org.jdatepicker.impl.UtilDateModel;
 import controleur.ControleurSaisieTournoi;
 import modele.metier.Arbitre;
 import modele.metier.Equipe;
-import modele.metier.Tournoi;
+import modele.metier.Tournoi.Notoriete;
 import vue.theme.JFrameTheme;
 import vue.theme.JOptionPaneTheme;
 
@@ -22,7 +22,6 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 
@@ -30,7 +29,10 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.swing.JTextField;
@@ -40,17 +42,13 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import java.awt.FlowLayout;
+import javax.swing.SpinnerNumberModel;
 
 public class VueSaisieTournoi extends JFrameTheme {
 
 	private JPanel contentPane;
-	
-	private JTextField txtNom;
-	private JTextField txtDateDebut;
-	private JTextField txtIdentifiantArbitres;
-	private JPasswordField motDePasseArbitres;
-	private JTextField txtDateFin;
-	private JComboBox<String> cboxNotoriete;
 	
 	private JList<Equipe> listeEquipes;
 	private JList<Arbitre> listeArbitres;
@@ -60,13 +58,29 @@ public class VueSaisieTournoi extends JFrameTheme {
 	
 	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipe;
 	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiArbitre;
+	private JTextField txtNom;
+	private JTextField txtIdentifiantArbitres;
+	private JPasswordField motDePasseArbitres;
+	private JComboBox<String> cboxNotoriete;
+	private JSpinner spinner;
+	private JSpinner spinner_1;
+	private JSpinner spinner1;
+	private JSpinner spinner_11;
+	
+	private UtilDateModel modelDateDebut;
+	private UtilDateModel modelDateFin;
 
 	public VueSaisieTournoi() {
 		ControleurSaisieTournoi controleur = new ControleurSaisieTournoi(this);
 		
 		this.listModelEquipes = new DefaultListModel<>();
 		this.listModelArbitres = new DefaultListModel<>();
-		
+
+        Properties properties = new Properties();
+        properties.put("text.today", "Aujourd'hui");
+        properties.put("text.month", "Mois");
+        properties.put("text.year", "Année");
+        
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 517, 422);
 		contentPane = new JPanel();
@@ -92,125 +106,165 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelCentre.add(panelSaisie, gbc_panelSaisie);
 		panelSaisie.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JPanel panelInfo = new JPanel();
-		panelSaisie.add(panelInfo);
-		GridBagLayout gbl_panelInfo = new GridBagLayout();
-		gbl_panelInfo.columnWidths = new int[]{0, 0};
-		gbl_panelInfo.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panelInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		panelInfo.setLayout(gbl_panelInfo);
-		
-		JLabel lblNom = new JLabel("Nom du tournoi");
-		GridBagConstraints gbc_lblNom = new GridBagConstraints();
-		gbc_lblNom.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNom.gridx = 0;
-		gbc_lblNom.gridy = 0;
-		panelInfo.add(lblNom, gbc_lblNom);
-		
-		txtNom = new JTextField();
-		GridBagConstraints gbc_textFieldNom = new GridBagConstraints();
-		gbc_textFieldNom.insets = new Insets(0, 0, 5, 0);
-		gbc_textFieldNom.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldNom.gridx = 0;
-		gbc_textFieldNom.gridy = 1;
-		panelInfo.add(txtNom, gbc_textFieldNom);
-		txtNom.setColumns(10);
-		
-		JLabel lblDateDebut = new JLabel("Date début");
-		GridBagConstraints gbc_lblDateDebut = new GridBagConstraints();
-		gbc_lblDateDebut.insets = new Insets(0, 0, 5, 0);
-		gbc_lblDateDebut.gridx = 0;
-		gbc_lblDateDebut.gridy = 2;
-		panelInfo.add(lblDateDebut, gbc_lblDateDebut);
-		
-		UtilDateModel model = new UtilDateModel();
-		Properties properties = new Properties();
-		properties.put("text.today", "Aujourd'hui");
-		properties.put("text.month", "Mois");
-		properties.put("text.year", "Année");
-		JDatePanelImpl datePanel = new JDatePanelImpl(model, properties);
-		JDatePickerImpl dateDebutPicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-		GridBagConstraints gbc_dateDebutPicker = new GridBagConstraints();
-		gbc_dateDebutPicker.anchor = GridBagConstraints.NORTH;
-		gbc_dateDebutPicker.insets = new Insets(0, 0, 5, 0);
-		gbc_dateDebutPicker.fill = GridBagConstraints.HORIZONTAL;
-		gbc_dateDebutPicker.gridx = 0;
-		gbc_dateDebutPicker.gridy = 3;
-		panelInfo.add(dateDebutPicker, gbc_dateDebutPicker);
-		
-		JLabel lblDateFin = new JLabel("Date Fin");
-		GridBagConstraints gbc_lblDateFin = new GridBagConstraints();
-		gbc_lblDateFin.insets = new Insets(0, 0, 5, 0);
-		gbc_lblDateFin.gridx = 0;
-		gbc_lblDateFin.gridy = 4;
-		panelInfo.add(lblDateFin, gbc_lblDateFin);
-		
-		txtDateFin = new JTextField();
-		GridBagConstraints gbc_textFieldDateFin = new GridBagConstraints();
-		gbc_textFieldDateFin.insets = new Insets(0, 0, 5, 0);
-		gbc_textFieldDateFin.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldDateFin.gridx = 0;
-		gbc_textFieldDateFin.gridy = 5;
-		panelInfo.add(txtDateFin, gbc_textFieldDateFin);
-		txtDateFin.setColumns(10);
-		
 		JPanel panel_4_1 = new JPanel();
 		panelSaisie.add(panel_4_1);
 		GridBagLayout gbl_panel_4_1 = new GridBagLayout();
-		gbl_panel_4_1.columnWidths = new int[]{0, 0};
-		gbl_panel_4_1.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_4_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_panel_4_1.columnWeights = new double[]{1.0};
+		gbl_panel_4_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		panel_4_1.setLayout(gbl_panel_4_1);
 		
 		JLabel lblIdentifiant = new JLabel("Identifiant ");
 		GridBagConstraints gbc_lblIdentifiant = new GridBagConstraints();
 		gbc_lblIdentifiant.insets = new Insets(0, 0, 5, 0);
 		gbc_lblIdentifiant.gridx = 0;
-		gbc_lblIdentifiant.gridy = 0;
+		gbc_lblIdentifiant.gridy = 2;
 		panel_4_1.add(lblIdentifiant, gbc_lblIdentifiant);
 		
 		txtIdentifiantArbitres = new JTextField();
 		txtIdentifiantArbitres.setColumns(10);
-		GridBagConstraints gbc_textFieldIdentifiant = new GridBagConstraints();
-		gbc_textFieldIdentifiant.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldIdentifiant.insets = new Insets(0, 0, 5, 0);
-		gbc_textFieldIdentifiant.gridx = 0;
-		gbc_textFieldIdentifiant.gridy = 1;
-		panel_4_1.add(txtIdentifiantArbitres, gbc_textFieldIdentifiant);
+		GridBagConstraints gbc_txtIdentifiantArbitres = new GridBagConstraints();
+		gbc_txtIdentifiantArbitres.insets = new Insets(0, 0, 5, 0);
+		gbc_txtIdentifiantArbitres.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtIdentifiantArbitres.gridx = 0;
+		gbc_txtIdentifiantArbitres.gridy = 3;
+		panel_4_1.add(txtIdentifiantArbitres, gbc_txtIdentifiantArbitres);
 		
 		JLabel lblMDP = new JLabel("Mot de passe");
 		GridBagConstraints gbc_lblMDP = new GridBagConstraints();
 		gbc_lblMDP.insets = new Insets(0, 0, 5, 0);
 		gbc_lblMDP.gridx = 0;
-		gbc_lblMDP.gridy = 2;
+		gbc_lblMDP.gridy = 4;
 		panel_4_1.add(lblMDP, gbc_lblMDP);
 		
 		motDePasseArbitres = new JPasswordField();
-		GridBagConstraints gbc_passwordField = new GridBagConstraints();
-		gbc_passwordField.insets = new Insets(0, 0, 5, 0);
-		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_passwordField.gridx = 0;
-		gbc_passwordField.gridy = 3;
-		panel_4_1.add(motDePasseArbitres, gbc_passwordField);
+		GridBagConstraints gbc_motDePasseArbitres = new GridBagConstraints();
+		gbc_motDePasseArbitres.insets = new Insets(0, 0, 5, 0);
+		gbc_motDePasseArbitres.fill = GridBagConstraints.HORIZONTAL;
+		gbc_motDePasseArbitres.gridx = 0;
+		gbc_motDePasseArbitres.gridy = 5;
+		panel_4_1.add(motDePasseArbitres, gbc_motDePasseArbitres);
 		
 		JLabel lblNotoriete = new JLabel("Notoriété");
 		GridBagConstraints gbc_lblNotoriete = new GridBagConstraints();
 		gbc_lblNotoriete.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNotoriete.gridx = 0;
-		gbc_lblNotoriete.gridy = 4;
+		gbc_lblNotoriete.gridy = 6;
 		panel_4_1.add(lblNotoriete, gbc_lblNotoriete);
 		
 		cboxNotoriete = new JComboBox<String>();
-		cboxNotoriete.setModel(new DefaultComboBoxModel<>());
-	    for (Tournoi.Notoriete notoriete : Tournoi.Notoriete.values()) {
-	        cboxNotoriete.addItem(notoriete.getLibelle());
-	    }
-		GridBagConstraints gbc_comboBoxNotoriete = new GridBagConstraints();
-		gbc_comboBoxNotoriete.insets = new Insets(0, 0, 5, 0);
-		gbc_comboBoxNotoriete.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBoxNotoriete.gridx = 0;
-		gbc_comboBoxNotoriete.gridy = 5;
-		panel_4_1.add(cboxNotoriete, gbc_comboBoxNotoriete);
+		for (Notoriete notoriete : Notoriete.values()) {
+		    cboxNotoriete.addItem(notoriete.getLibelle());
+		}
+		GridBagConstraints gbc_cboxNotoriete = new GridBagConstraints();
+		gbc_cboxNotoriete.insets = new Insets(0, 0, 5, 0);
+		gbc_cboxNotoriete.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cboxNotoriete.gridx = 0;
+		gbc_cboxNotoriete.gridy = 7;
+		panel_4_1.add(cboxNotoriete, gbc_cboxNotoriete);
+		
+		JLabel lblNom = new JLabel("Nom du tournoi");
+		GridBagConstraints gbc_lblNom = new GridBagConstraints();
+		gbc_lblNom.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNom.gridx = 0;
+		gbc_lblNom.gridy = 0;
+		panel_4_1.add(lblNom, gbc_lblNom);
+		
+		txtNom = new JTextField();
+		txtNom.setColumns(10);
+		GridBagConstraints gbc_txtNom = new GridBagConstraints();
+		gbc_txtNom.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtNom.gridx = 0;
+		gbc_txtNom.gridy = 1;
+		panel_4_1.add(txtNom, gbc_txtNom);
+		
+		JPanel panelInfo = new JPanel();
+        panelSaisie.add(panelInfo);
+        GridBagLayout gbl_panelInfo = new GridBagLayout();
+        panelInfo.setLayout(gbl_panelInfo);
+
+        JLabel lblDateDebut = new JLabel("Date début");
+        GridBagConstraints gbc_lblDateDebut = new GridBagConstraints();
+        gbc_lblDateDebut.insets = new Insets(0, 0, 5, 0);
+        gbc_lblDateDebut.gridx = 0;
+        gbc_lblDateDebut.gridy = 0;
+        panelInfo.add(lblDateDebut, gbc_lblDateDebut);
+
+        modelDateDebut = new UtilDateModel();
+        JDatePanelImpl dateDebutPanel = new JDatePanelImpl(modelDateDebut, properties);
+        JDatePickerImpl dateDebutPicker = new JDatePickerImpl(dateDebutPanel, new DateLabelFormatter());
+        GridBagConstraints gbc_dateDebutPicker = new GridBagConstraints();
+        gbc_dateDebutPicker.anchor = GridBagConstraints.NORTH;
+        gbc_dateDebutPicker.insets = new Insets(0, 0, 5, 0);
+        gbc_dateDebutPicker.fill = GridBagConstraints.HORIZONTAL;
+        gbc_dateDebutPicker.gridx = 0;
+        gbc_dateDebutPicker.gridy = 1;
+        panelInfo.add(dateDebutPicker, gbc_dateDebutPicker);
+
+        JPanel panel = new JPanel();
+        FlowLayout flowLayout_1 = new FlowLayout();
+        flowLayout_1.setVgap(0);
+        panel.setLayout(flowLayout_1);
+        GridBagConstraints gbc_panel = new GridBagConstraints();
+        gbc_panel.insets = new Insets(0, 0, 5, 0);
+        gbc_panel.fill = GridBagConstraints.BOTH;
+        gbc_panel.gridx = 0;
+        gbc_panel.gridy = 2;
+        panelInfo.add(panel, gbc_panel);
+
+        JLabel lblHeure = new JLabel("Heure : ");
+        panel.add(lblHeure);
+
+        spinner = new JSpinner();
+        spinner.setModel(new SpinnerNumberModel(0, 0, 23, 1));
+        panel.add(spinner);
+
+        JLabel lblNewLabel_1 = new JLabel("h");
+        panel.add(lblNewLabel_1);
+
+        spinner_1 = new JSpinner();
+        spinner_1.setModel(new SpinnerNumberModel(0, 0, 59, 1));
+        panel.add(spinner_1);
+
+        JLabel lblDateDebut_1 = new JLabel("Date début");
+        GridBagConstraints gbc_lblDateDebut_1 = new GridBagConstraints();
+        gbc_lblDateDebut_1.insets = new Insets(0, 0, 5, 0);
+        gbc_lblDateDebut_1.gridx = 0;
+        gbc_lblDateDebut_1.gridy = 3;
+        panelInfo.add(lblDateDebut_1, gbc_lblDateDebut_1);
+
+        modelDateFin = new UtilDateModel();
+        JDatePanelImpl dateFinPanel = new JDatePanelImpl(modelDateFin, properties);
+        JDatePickerImpl dateFinPicker = new JDatePickerImpl(dateFinPanel, new DateLabelFormatter());
+        GridBagConstraints gbc_dateFinPicker = new GridBagConstraints();
+        gbc_dateFinPicker.fill = GridBagConstraints.HORIZONTAL;
+        gbc_dateFinPicker.gridx = 0;
+        gbc_dateFinPicker.gridy = 4;
+        panelInfo.add(dateFinPicker, gbc_dateFinPicker);
+
+        JPanel panel1 = new JPanel();
+        FlowLayout flowLayout_11 = new FlowLayout();
+        flowLayout_11.setVgap(0);
+        panel1.setLayout(flowLayout_11);
+        GridBagConstraints gbc_panel1 = new GridBagConstraints();
+        gbc_panel1.insets = new Insets(0, 0, 5, 0);
+        gbc_panel1.fill = GridBagConstraints.BOTH;
+        gbc_panel1.gridx = 0;
+        gbc_panel1.gridy = 5; // Changer le grid y pour le placer à un emplacement différent
+        panelInfo.add(panel1, gbc_panel1);
+
+        JLabel lblHeure1 = new JLabel("Heure : ");
+        panel1.add(lblHeure1);
+
+        spinner1 = new JSpinner();
+        spinner1.setModel(new SpinnerNumberModel(0, 0, 23, 1));
+        panel1.add(spinner1);
+
+        JLabel lblNewLabel_11 = new JLabel("h");
+        panel1.add(lblNewLabel_11);
+
+        spinner_11 = new JSpinner();
+        spinner_11.setModel(new SpinnerNumberModel(0, 0, 59, 1));
+        panel1.add(spinner_11);
 		
 		JPanel panelAjouter = new JPanel();
 		GridBagConstraints gbc_panelAjouter = new GridBagConstraints();
@@ -298,7 +352,6 @@ public class VueSaisieTournoi extends JFrameTheme {
 	}
 	
 	private class DateLabelFormatter extends AbstractFormatter {
-
 	    private String datePattern = "dd/MM/yyyy";
 	    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
@@ -316,20 +369,53 @@ public class VueSaisieTournoi extends JFrameTheme {
 
 	        return "";
 	    }
-
 	}
 	
 	public String getNomTournoi() {
-        return txtNom.getText().trim();
+        return this.txtNom.getText().trim();
     }
 
-    public String getDateDebut() {
-        return txtDateDebut.getText().trim();
-    }
+	public long getDateTimeDebut() {
+	    // Récupérer la date du modèle
+	    Date dateDebut = this.modelDateDebut.getValue();
+	    
+	    // Récupérer l'heure depuis les spinners
+	    int heure = (int) spinner.getValue();
+	    int minute = (int) spinner_1.getValue();
+	    
+	    // Combiner la date et l'heure pour former un objet Calendar
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(dateDebut);
+	    calendar.set(Calendar.HOUR_OF_DAY, heure);
+	    calendar.set(Calendar.MINUTE, minute);
+	    
+	    // Obtenir le timestamp en millisecondes
+	    long timestamp = calendar.getTimeInMillis() / 1000;
+	    
+	    // Retourner le timestamp correspondant à la date et l'heure de début en secondes
+	    return timestamp;
+	}
 
-    public String getDateFin() {
-        return txtDateFin.getText().trim();
-    }
+	public long getDateTimeFin() {
+	    // Récupérer la date du modèle
+	    Date dateFin = this.modelDateFin.getValue();
+	    
+	    // Récupérer l'heure depuis les spinners
+	    int heure = (int) spinner.getValue();
+	    int minute = (int) spinner_1.getValue();
+	    
+	    // Combiner la date et l'heure pour former un objet Calendar
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(dateFin);
+	    calendar.set(Calendar.HOUR_OF_DAY, heure);
+	    calendar.set(Calendar.MINUTE, minute);
+	    
+	    // Obtenir le timestamp en millisecondes
+	    long timestamp = calendar.getTimeInMillis() / 1000;
+	    
+	    // Retourner le timestamp correspondant à la date et l'heure de début en secondes
+	    return timestamp;
+	}
 
     public String getIdentifiant() {
         return txtIdentifiantArbitres.getText().trim();
@@ -339,8 +425,8 @@ public class VueSaisieTournoi extends JFrameTheme {
         return new String(motDePasseArbitres.getPassword());
     }
     
-	public String getNotoriete() {
-		return (String) this.cboxNotoriete.getSelectedItem();
+	public Notoriete getNotoriete() {
+		return Notoriete.valueOfLibelle((String) this.cboxNotoriete.getSelectedItem());
 	}
 	
 	public void afficherVueSaisieTournoiEquipe(Equipe[] equipes) {
@@ -394,6 +480,22 @@ public class VueSaisieTournoi extends JFrameTheme {
 	public boolean estListeArbitres(JList<?> liste) {
 		return liste.equals(this.listeArbitres);
 	}
+	
+	public List<Equipe> getEquipes() {
+	    List<Equipe> equipes = new ArrayList<>();
+	    for (int i = 0; i < listModelEquipes.size(); i++) {
+	        equipes.add(listModelEquipes.getElementAt(i));
+	    }
+	    return equipes;
+	}
+	
+	public List<Arbitre> getArbitres() {
+	    List<Arbitre> arbitres = new ArrayList<>();
+	    for (int i = 0; i < listModelArbitres.size(); i++) {
+	        arbitres.add(listModelArbitres.getElementAt(i));
+	    }
+	    return arbitres;
+	}
 
 	public boolean afficherConfirmationSuppression(String message) {
 		Object[] options = {"Oui", "Annuler"};
@@ -410,5 +512,13 @@ public class VueSaisieTournoi extends JFrameTheme {
         
         return choix == 0;
     }
+	
+	public boolean tousChampsRemplis() {
+	    return !this.getNomTournoi().isEmpty()
+	    		&& !this.getIdentifiant().isEmpty()
+	    		&& !this.getMotDePasse().isEmpty()
+	    		&& modelDateDebut.getValue() != null
+		        && modelDateFin.getValue() != null;
+	}
 
 }
