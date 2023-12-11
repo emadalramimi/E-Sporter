@@ -38,12 +38,14 @@ public class Tournoi implements Utilisateur {
 	private int idTournoi;
 	private String nomTournoi;
 	private Notoriete notoriete;
-	private int dateDebut;
-	private int dateFin;
+	private long dateDebut;
+	private long dateFin;
 	private boolean estCloture;
 	private String identifiant;
 	private String motDePasse;
 	private List<Poule> poules;
+	private List<Equipe> equipes;
+	private List<Arbitre> arbitres;
 	
 	/**
 	 * Construit un tournoi
@@ -55,8 +57,10 @@ public class Tournoi implements Utilisateur {
 	 * @param estCloture
 	 * @param identifiant
 	 * @param motDePasse
+	 * @param equipes
+	 * @param arbitres
 	 */
-	public Tournoi(int idTournoi, String nomTournoi, Notoriete notoriete, int dateDebut, int dateFin, boolean estCloture, String identifiant, String motDePasse) {
+	public Tournoi(int idTournoi, String nomTournoi, Notoriete notoriete, long dateDebut, long dateFin, boolean estCloture, String identifiant, String motDePasse, List<Equipe> equipes, List<Arbitre> arbitres) {
 		this.idTournoi = idTournoi;
 		this.nomTournoi = nomTournoi;
 		this.notoriete = notoriete;
@@ -65,6 +69,20 @@ public class Tournoi implements Utilisateur {
 		this.estCloture = estCloture;
 		this.identifiant = identifiant;
 		this.motDePasse = motDePasse;
+		this.equipes = equipes;
+		this.arbitres = arbitres;
+	}
+	
+	public Tournoi(String nomTournoi, Notoriete notoriete, long dateDebut, long dateFin, boolean estCloture, String identifiant, String motDePasse, List<Equipe> equipes, List<Arbitre> arbitres) {
+		this.nomTournoi = nomTournoi;
+		this.notoriete = notoriete;
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.estCloture = estCloture;
+		this.identifiant = identifiant;
+		this.motDePasse = motDePasse;
+		this.equipes = equipes;
+		this.arbitres = arbitres;
 	}
 
 	/**
@@ -115,7 +133,7 @@ public class Tournoi implements Utilisateur {
 	/**
 	 * @return DateDebut
 	 */
-	public int getDateDebut() {
+	public long getDateDebut() {
 		return dateDebut;
 	}
 
@@ -123,14 +141,14 @@ public class Tournoi implements Utilisateur {
 	 * Modifie la date de début
 	 * @param dateDebut
 	 */
-	public void setDateDebut(int dateDebut) {
+	public void setDateDebut(long dateDebut) {
 		this.dateDebut = dateDebut;
 	}
 
 	/**
 	 * @return DateFin
 	 */
-	public int getDateFin() {
+	public long getDateFin() {
 		return dateFin;
 	}
 
@@ -138,7 +156,7 @@ public class Tournoi implements Utilisateur {
 	 * Modifie la date de fin
 	 * @param dateFin
 	 */
-	public void setDateFin(int dateFin) {
+	public void setDateFin(long dateFin) {
 		this.dateFin = dateFin;
 	}
 
@@ -210,6 +228,22 @@ public class Tournoi implements Utilisateur {
 		this.poules = poules;
 	}
 	
+	public List<Equipe> getEquipes() {
+		return this.equipes;
+	}
+	
+	public void setEquipes(List<Equipe> equipes) {
+		this.equipes = equipes;
+	}
+	
+	public List<Arbitre> getArbitres() {
+		return this.arbitres;
+	}
+	
+	public void setArbitres(List<Arbitre> arbitres) {
+		this.arbitres = arbitres;
+	}
+	
 	/**
 	 * Retourne true si un Object o est égal à Tournoi (this), faux sinon
 	 */
@@ -229,19 +263,17 @@ public class Tournoi implements Utilisateur {
 	 	    && this.notoriete.equals(tournoi.getNotoriete())
 	 	    && this.identifiant.equals(tournoi.getIdentifiant())
 	 	    && this.motDePasse.equals(tournoi.getMotDePasse())
-	 	    && this.estCloture == tournoi.isEstCloture();
+	 	    && this.estCloture == tournoi.isEstCloture()
+	 	    && this.equipes.equals(tournoi.getEquipes())
+	 	    && this.arbitres.equals(tournoi.getArbitres());
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Tournoi [idTournoi=" + idTournoi 
-			+ ", nomTournoi=" + nomTournoi 
-			+ ", notoriete=" + notoriete 
-			+ ", dateDebut=" + dateDebut 
-			+ ", dateFin=" + dateFin 
-			+ ", estCloture=" + estCloture
-			+ ", identifiant=" + identifiant
-			+ ", motDePasse=" + motDePasse + "]";
+		return "Tournoi [idTournoi=" + idTournoi + ", nomTournoi=" + nomTournoi + ", notoriete=" + notoriete
+				+ ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", estCloture=" + estCloture + ", identifiant="
+				+ identifiant + ", motDePasse=" + motDePasse + ", poules=" + poules + ", equipes=" + equipes
+				+ ", arbitres=" + arbitres + "]";
 	}
 	
 }
