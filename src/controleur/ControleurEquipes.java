@@ -76,7 +76,12 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 					// Supprime l'équipe, affiche un message d'équipe supprimée et met à jour le tableau sur VueEquipes
 					if(this.modeleEquipe.supprimer(equipe)) {
 						this.vue.afficherPopupMessage("L'équipe a bien été supprimée");
-						this.vue.remplirTableau(this.getEquipes());
+						try {
+							this.vue.remplirTableau(this.modeleEquipe.getTout());
+						} catch (Exception err) {
+							this.vue.afficherPopupErreur("Impossible de récupérer les équipes");
+							throw new RuntimeException("Impossible de récupérer les équipes");
+						}
 					} else {
 						// En cas d'erreur
 						this.vue.afficherPopupErreur("Une erreur est survenue");
@@ -114,33 +119,19 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 			// Récupère la requête de recherche
 			String requeteRecherche = this.vue.getRequeteRecherche();
 			// Effectuer la recherche à l'appui de la touche entrée
-	        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-	            this.rechercher(requeteRecherche);
-	        }
-	        // Lorsqu'on supprime tous les caractères dans le champ de recherche, sortir de la recherche
-	        else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-	            if (
-	            	requeteRecherche != null
-	            	&& requeteRecherche.length() == 1
-	            	|| txtRecherche.getSelectedText() != null
-	            	&& txtRecherche.getSelectedText().equals(requeteRecherche)
-	            ) {
-	                this.rechercher("");
-	            }
-	        }
-	    }
-	}
-	
-	/**
-	 * @return La liste de toutes les équipes
-	 */
-	public List<Equipe> getEquipes(){
-		try {
-			return this.modeleEquipe.getTout();
-		} catch (Exception e) {
-			e.printStackTrace();
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				this.rechercher(requeteRecherche);
+			}
+			// Lorsqu'on supprime tous les caractères dans le champ de recherche, sortir de la recherche
+			else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+				if (requeteRecherche != null
+						&& requeteRecherche.length() == 1
+						|| txtRecherche.getSelectedText() != null
+								&& txtRecherche.getSelectedText().equals(requeteRecherche)) {
+					this.rechercher("");
+				}
+			}
 		}
-		return null;
 	}
 	
 	/**
@@ -155,6 +146,19 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 			this.vue.afficherPopupErreur("Une erreur est survenue");
 			throw new RuntimeException("Erreur dans la recherche");
 		}
+	}
+
+	/**
+	 * Retourne la liste de toutes les équipes de la saison pour VueEquipes
+	 * @return La liste de toutes les équipes de la siaosn
+	 */
+	public List<Equipe> getEquipes() {
+		try {
+			return this.modeleEquipe.getTout();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 }
