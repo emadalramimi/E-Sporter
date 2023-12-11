@@ -4,6 +4,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
 import controleur.ControleurSaisieTournoi;
 import modele.metier.Arbitre;
 import modele.metier.Equipe;
@@ -24,9 +28,14 @@ import javax.swing.DefaultListModel;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Properties;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
@@ -114,15 +123,20 @@ public class VueSaisieTournoi extends JFrameTheme {
 		gbc_lblDateDebut.gridy = 2;
 		panelInfo.add(lblDateDebut, gbc_lblDateDebut);
 		
-		txtDateDebut = new JTextField();
-		GridBagConstraints gbc_textFieldDateDebut = new GridBagConstraints();
-		gbc_textFieldDateDebut.anchor = GridBagConstraints.NORTH;
-		gbc_textFieldDateDebut.insets = new Insets(0, 0, 5, 0);
-		gbc_textFieldDateDebut.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldDateDebut.gridx = 0;
-		gbc_textFieldDateDebut.gridy = 3;
-		panelInfo.add(txtDateDebut, gbc_textFieldDateDebut);
-		txtDateDebut.setColumns(10);
+		UtilDateModel model = new UtilDateModel();
+		Properties properties = new Properties();
+		properties.put("text.today", "Aujourd'hui");
+		properties.put("text.month", "Mois");
+		properties.put("text.year", "Année");
+		JDatePanelImpl datePanel = new JDatePanelImpl(model, properties);
+		JDatePickerImpl dateDebutPicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+		GridBagConstraints gbc_dateDebutPicker = new GridBagConstraints();
+		gbc_dateDebutPicker.anchor = GridBagConstraints.NORTH;
+		gbc_dateDebutPicker.insets = new Insets(0, 0, 5, 0);
+		gbc_dateDebutPicker.fill = GridBagConstraints.HORIZONTAL;
+		gbc_dateDebutPicker.gridx = 0;
+		gbc_dateDebutPicker.gridy = 3;
+		panelInfo.add(dateDebutPicker, gbc_dateDebutPicker);
 		
 		JLabel lblDateFin = new JLabel("Date Fin");
 		GridBagConstraints gbc_lblDateFin = new GridBagConstraints();
@@ -275,11 +289,34 @@ public class VueSaisieTournoi extends JFrameTheme {
 	        if(value instanceof Equipe) {
 	        	this.setText(((Equipe) value).getNom());
 	        } else if(value instanceof Arbitre) {
-	        	this.setText(((Arbitre) value).getNom());
+	        	Arbitre arbitre = (Arbitre) value;
+	        	this.setText(arbitre.getNom() + " " + arbitre.getPrenom());
 	        }
 
 	        return this;
 	    }
+	}
+	
+	private class DateLabelFormatter extends AbstractFormatter {
+
+	    private String datePattern = "dd/MM/yyyy";
+	    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+
+	    @Override
+	    public Object stringToValue(String text) throws ParseException {
+	        return dateFormatter.parseObject(text);
+	    }
+
+	    @Override
+	    public String valueToString(Object value) throws ParseException {
+	        if (value != null) {
+	            Calendar cal = (Calendar) value;
+	            return dateFormatter.format(cal.getTime());
+	        }
+
+	        return "";
+	    }
+
 	}
 	
 	public String getNomTournoi() {
@@ -331,7 +368,9 @@ public class VueSaisieTournoi extends JFrameTheme {
 	}
 	
 	public void ajouterEquipe(Equipe equipe) {
-		this.listModelEquipes.addElement(equipe);
+		if(!this.listModelEquipes.contains(equipe)) {
+			this.listModelEquipes.addElement(equipe);
+		}
 	}
 	
 	public void supprimerEquipe(Equipe equipe) {
@@ -339,7 +378,9 @@ public class VueSaisieTournoi extends JFrameTheme {
 	}
 	
 	public void ajouterArbitre(Arbitre arbitre) {
-		this.listModelArbitres.addElement(arbitre);
+		if(!this.listModelArbitres.contains(arbitre)) {
+			this.listModelArbitres.addElement(arbitre);
+		}
 	}
 	
 	public void supprimerArbitre(Arbitre arbitre) {

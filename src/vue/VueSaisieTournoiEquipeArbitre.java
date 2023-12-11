@@ -131,7 +131,8 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	        if (value instanceof Equipe) {
 	            setText(((Equipe) value).getNom());
 	        } else if (value instanceof Arbitre) {
-	        	setText(((Arbitre) value).getNom());
+	        	Arbitre arbitre = (Arbitre) value;
+	        	setText(arbitre.getNom() + " " + arbitre.getPrenom());
 	        }
 
 	        if (isSelected) {
