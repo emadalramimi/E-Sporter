@@ -2,7 +2,6 @@ package controleur;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +60,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 			
 			// Si un des champs est vide
 			if(nom.isEmpty() || pays.isEmpty() || nomsJoueurs.size() != 5) {
-				vueSaisieEquipe.afficherPopupErreur("Veuillez remplir tous les champs.");
+				this.vueSaisieEquipe.afficherPopupErreur("Veuillez remplir tous les champs.");
 				throw new IllegalArgumentException("Tous les champs ne sont pas remplis.");
 			}
 			
@@ -78,28 +77,26 @@ public class ControleurSaisieEquipe implements ActionListener {
 			
 			// Création de l'équipe au clic de valider
 			if(bouton.getText() == "Valider") {
-				// Génération d'un identifiant unique pour la BDD
-				int idEquipe = this.modeleEquipe.getNextValId();
+				Equipe equipe = new Equipe(nom, pays);
 				
-				Equipe equipe = new Equipe(idEquipe, nom, pays, 1000, worldRanking, String.valueOf(LocalDate.now().getYear()));
+				// Créer des instances de Joueur pour chaque pseudo de joueur renseigné
+				List<Joueur> joueurs = new ArrayList<>();
+				for(String nomJoueur: nomsJoueurs) {
+					joueurs.add(new Joueur(nomJoueur));
+				}
+				equipe.setJoueurs(joueurs);
 				
 				// Ajout de l'équipe dans la base de données
 				modeleEquipe.ajouter(equipe);
 				
-				// Créer des instances de Joueur pour chaque pseudo de joueur renseigné
-				for(String nomJoueur: nomsJoueurs) {
-					// Génération de l'identifiant unique de joueur
-					int idJoueur = this.modeleJoueur.getNextValId();
-					
-					Joueur joueur = new Joueur(idJoueur, nomJoueur, idEquipe);
-					
-					// Ajout du joueur dans la BDD
-					this.modeleJoueur.ajouter(joueur);
-				}
-				
 				// Message de confirmation et mise à jour du tableau
 				this.vueSaisieEquipe.afficherPopupMessage("L'équipe a bien été ajoutée.");
-				this.vueEquipes.remplirTableau(this.controleurEquipes.getEquipes());
+				try {
+					this.vueEquipes.remplirTableau(this.modeleEquipe.getEquipesSaison());
+				} catch (Exception err) {
+					this.vueSaisieEquipe.afficherPopupErreur("Impossible de récupérer les équipes");
+					throw new RuntimeException("Impossible de récupérer les équipes", err);
+				}
 			} 
 			// Modification de l'équipe au clic de modifier
 			else if(bouton.getText() == "Modifier") {
@@ -130,7 +127,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 						try {
 							this.modeleJoueur.modifier(joueursEquipe.get(i));
 						} catch (Exception err) {
-							throw new RuntimeException("Erreur dans la modification des joueurs");
+							throw new RuntimeException("Erreur dans la modification des joueurs", err);
 						}
 					}
 				}
@@ -138,7 +135,12 @@ public class ControleurSaisieEquipe implements ActionListener {
 				// Modification de l'équipe et affichage d'un message de succès/erreur
 				if(this.modeleEquipe.modifier(equipe)) {
 					this.vueSaisieEquipe.afficherPopupMessage("L'équipe a bien été modifiée.");
-					this.vueEquipes.remplirTableau(this.controleurEquipes.getEquipes());
+					try {
+						this.vueEquipes.remplirTableau(this.modeleEquipe.getEquipesSaison());
+					} catch (Exception err) {
+						this.vueSaisieEquipe.afficherPopupErreur("Impossible de récupérer les équipes");
+						throw new RuntimeException("Impossible de récupérer les équipes", err);
+					}
 				} else {
 					this.vueSaisieEquipe.afficherPopupErreur("Une erreur est survenue.");
 				}
