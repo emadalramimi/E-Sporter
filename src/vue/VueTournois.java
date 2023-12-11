@@ -172,7 +172,7 @@ public class VueTournois extends JFrameTheme {
 	public void afficherVueSaisieTournoi(Optional<Tournoi> tournoi) {
 		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
         if (this.vueSaisieTournoi == null || !this.vueSaisieTournoi.isVisible()) {
-        	this.vueSaisieTournoi = new VueSaisieTournoi(/*this, this.controleur, tournoi*/);
+        	this.vueSaisieTournoi = new VueSaisieTournoi(this);
         	this.vueBase.ajouterFenetreEnfant(this.vueSaisieTournoi);
         	this.vueSaisieTournoi.setLocationRelativeTo(this);
         	this.vueSaisieTournoi.setVisible(true);
