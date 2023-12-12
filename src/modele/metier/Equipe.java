@@ -35,9 +35,10 @@ public class Equipe implements Comparable<Equipe> {
 		this.joueurs = joueurs;
 	}
 	
-	public Equipe(String nom, String pays) {
+	public Equipe(String nom, String pays, List<Joueur> joueurs) {
 		this.nom = nom;
 		this.pays = pays;
+		this.joueurs = joueurs;
 	}
 
 	/**

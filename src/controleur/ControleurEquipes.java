@@ -50,7 +50,8 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 			try {
 				equipeOptionnel = this.modeleEquipe.getParId(idEquipe);
 			} catch(Exception err) {
-				equipeOptionnel = Optional.empty();
+				this.vue.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
+				throw new RuntimeException("Equipe inexistante");
 			}
 			
 			// Traitement différent en fonction du bouton
@@ -74,17 +75,18 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 				// Affiche une demande de confirmation de suppression
 				if(this.vue.afficherConfirmationSuppression()) {
 					// Supprime l'équipe, affiche un message d'équipe supprimée et met à jour le tableau sur VueEquipes
-					if(this.modeleEquipe.supprimer(equipe)) {
-						this.vue.afficherPopupMessage("L'équipe a bien été supprimée");
-						try {
-							this.vue.remplirTableau(this.modeleEquipe.getTout());
-						} catch (Exception err) {
-							this.vue.afficherPopupErreur("Impossible de récupérer les équipes");
-							throw new RuntimeException("Impossible de récupérer les équipes");
-						}
-					} else {
-						// En cas d'erreur
-						this.vue.afficherPopupErreur("Une erreur est survenue");
+					try {
+						this.modeleEquipe.supprimer(equipe);
+					} catch (Exception err) {
+						this.vue.afficherPopupErreur("Une erreur est survenue dans la suppression de l'équipe.");
+						throw new RuntimeException("Erreur dans la suppression de l'équipe");
+					}
+					this.vue.afficherPopupMessage("L'équipe a bien été supprimée");
+					try {
+						this.vue.remplirTableau(this.modeleEquipe.getEquipesSaison());
+					} catch (Exception err) {
+						this.vue.afficherPopupErreur("Impossible de récupérer les équipes");
+						throw new RuntimeException("Impossible de récupérer les équipes");
 					}
 				}
 				break;
@@ -154,7 +156,7 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 	 */
 	public List<Equipe> getEquipes() {
 		try {
-			return this.modeleEquipe.getTout();
+			return this.modeleEquipe.getEquipesSaison();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

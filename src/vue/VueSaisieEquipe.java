@@ -42,8 +42,6 @@ public class VueSaisieEquipe extends JFrameTheme {
 	private JTextField txtNom;
 	private JLabel lblPays;
 	private JComboBoxTheme<String> cboxPays;
-	private JLabel lblWorldRanking;
-	private JTextFieldTheme txtWorldRanking;
 	private JLabel lblJoueurs;
 	private JTextField txtJoueur1;
 	private JTextField txtJoueur2;
@@ -58,7 +56,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 	private VueEquipes vueEquipes;
 	
 	public VueSaisieEquipe(VueEquipes vueEquipes, ControleurEquipes controleurEquipes, Optional<Equipe> equipeOptionnel) {
-		ControleurSaisieEquipe controleur = new ControleurSaisieEquipe(this, vueEquipes, controleurEquipes, equipeOptionnel);
+		ControleurSaisieEquipe controleur = new ControleurSaisieEquipe(this, vueEquipes, equipeOptionnel);
 		this.vueEquipes = vueEquipes;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -139,26 +137,6 @@ public class VueSaisieEquipe extends JFrameTheme {
 		gbc_txtEquipe.gridx = 0;
 		gbc_txtEquipe.gridy = 3;
 		panelEquipe.add(cboxPays, gbc_txtEquipe);
-		
-		// Label World Ranking
-		lblWorldRanking = new JLabel("World Ranking (optionnel)");
-		lblWorldRanking.setForeground(CharteGraphique.TEXTE);
-		lblWorldRanking.setFont(CharteGraphique.getPolice(19, true));
-		GridBagConstraints gbc_lblWorldRancking = new GridBagConstraints();
-		gbc_lblWorldRancking.insets = new Insets(0, 0, 5, 0);
-		gbc_lblWorldRancking.gridx = 0;
-		gbc_lblWorldRancking.gridy = 4;
-		panelEquipe.add(lblWorldRanking, gbc_lblWorldRancking);
-		
-		// Champ World Ranking
-		txtWorldRanking = new JTextFieldTheme(10);
-		GridBagConstraints gbc_textWorldRanking = new GridBagConstraints();
-		gbc_textWorldRanking.insets = new Insets(0, 0, 5, 0);
-		gbc_textWorldRanking.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textWorldRanking.gridx = 0;
-		gbc_textWorldRanking.gridy = 5;
-		panelEquipe.add(txtWorldRanking, gbc_textWorldRanking);
-		txtWorldRanking.setColumns(10);
 		
 		// Panel joueurs
 		panelJoueurs = new JPanel();
@@ -275,7 +253,6 @@ public class VueSaisieEquipe extends JFrameTheme {
 		if(equipe != null) {
 			this.txtNom.setText(equipe.getNom());
 			this.cboxPays.setSelectedItem(equipe.getPays());
-			this.txtWorldRanking.setText(String.valueOf(equipe.getWorldRanking()));
 			
 			List<Joueur> joueurs = equipe.getJoueurs();
             this.txtJoueur1.setText(joueurs.get(0).getPseudo());
@@ -308,18 +285,6 @@ public class VueSaisieEquipe extends JFrameTheme {
 	 */
 	public String getPaysEquipe() {
 		return (String) this.cboxPays.getSelectedItem();
-	}
-	
-	/**
-	 * @return le World Ranking renseigné
-	 */
-	public Integer getWorldRanking() throws NumberFormatException {
-		// Traduction du contenu en Integer
-		String contenu = this.txtWorldRanking.getText();
-		if(contenu.length() > 0) {
-			return Integer.parseInt(contenu);
-		}
-		return null;
 	}
 	
 	/**

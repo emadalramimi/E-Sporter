@@ -22,7 +22,6 @@ public class ControleurSaisieEquipe implements ActionListener {
 
 	private VueSaisieEquipe vueSaisieEquipe;
 	private VueEquipes vueEquipes;
-	private ControleurEquipes controleurEquipes;
 	private ModeleEquipe modeleEquipe;
 	private ModeleJoueur modeleJoueur;
 	private Optional<Equipe> equipeOptionnel;
@@ -34,10 +33,9 @@ public class ControleurSaisieEquipe implements ActionListener {
 	 * @param controleurEquipes : Pour mettre à jour le tableau à l'insertion d'une nouvelle donnée
 	 * @param equipeOptionnel : À saisir si modification d'équipe
 	 */
-	public ControleurSaisieEquipe(VueSaisieEquipe vueSaisieEquipes, VueEquipes vueEquipes, ControleurEquipes controleurEquipes, Optional<Equipe> equipeOptionnel) {
+	public ControleurSaisieEquipe(VueSaisieEquipe vueSaisieEquipes, VueEquipes vueEquipes, Optional<Equipe> equipeOptionnel) {
 		this.vueSaisieEquipe = vueSaisieEquipes;
 		this.vueEquipes = vueEquipes;
-		this.controleurEquipes = controleurEquipes;
 		this.equipeOptionnel = equipeOptionnel;
 		this.modeleEquipe = new ModeleEquipe();
 		this.modeleJoueur = new ModeleJoueur();
@@ -64,27 +62,16 @@ public class ControleurSaisieEquipe implements ActionListener {
 				throw new IllegalArgumentException("Tous les champs ne sont pas remplis.");
 			}
 			
-			// Récupération du worldRanking (1000 si non renseigné)
-			int worldRanking = 1000;
-			try {
-				if(vueSaisieEquipe.getWorldRanking() != null) {
-					worldRanking = vueSaisieEquipe.getWorldRanking();
-				}
-			} catch(NumberFormatException err) {
-				this.vueSaisieEquipe.afficherPopupErreur("Le World Ranking doit être un entier.");
-				throw err;
-			}
-			
 			// Création de l'équipe au clic de valider
 			if(bouton.getText() == "Valider") {
-				Equipe equipe = new Equipe(nom, pays);
+				
 				
 				// Créer des instances de Joueur pour chaque pseudo de joueur renseigné
 				List<Joueur> joueurs = new ArrayList<>();
-				for(String nomJoueur: nomsJoueurs) {
+				for (String nomJoueur : nomsJoueurs) {
 					joueurs.add(new Joueur(nomJoueur));
 				}
-				equipe.setJoueurs(joueurs);
+				Equipe equipe = new Equipe(nom, pays, joueurs);
 				
 				// Ajout de l'équipe dans la base de données
 				modeleEquipe.ajouter(equipe);
@@ -112,37 +99,28 @@ public class ControleurSaisieEquipe implements ActionListener {
 				// Modification des champs
 				equipe.setNom(nom);
 				equipe.setPays(pays);
-				equipe.setWorldRanking(worldRanking);
 				
-				// Récupération des joueurs saisis et détection d'un changement pour mettre à jour le Joueur concerné
+				// Récupération des joueurs saisis et mise à jour des joueurs de l'équipe
 				List<Joueur> joueursEquipe = equipe.getJoueurs();
-				List<Joueur> joueursSaisis = new ArrayList<>();
-				for(String nomJoueur: nomsJoueurs) {
-					joueursSaisis.add(new Joueur(nomJoueur));
-				}
 				for(int i = 0; i < joueursEquipe.size(); i++) {
-					if(joueursEquipe.get(i) != joueursSaisis.get(i)) {
-						// Modification du pseudo du joueur
-						joueursEquipe.get(i).setPseudo(joueursSaisis.get(i).getPseudo());
-						try {
-							this.modeleJoueur.modifier(joueursEquipe.get(i));
-						} catch (Exception err) {
-							throw new RuntimeException("Erreur dans la modification des joueurs", err);
-						}
-					}
+					joueursEquipe.get(i).setPseudo(nomsJoueurs.get(i));
 				}
 				
 				// Modification de l'équipe et affichage d'un message de succès/erreur
-				if(this.modeleEquipe.modifier(equipe)) {
-					this.vueSaisieEquipe.afficherPopupMessage("L'équipe a bien été modifiée.");
-					try {
-						this.vueEquipes.remplirTableau(this.modeleEquipe.getEquipesSaison());
-					} catch (Exception err) {
-						this.vueSaisieEquipe.afficherPopupErreur("Impossible de récupérer les équipes");
-						throw new RuntimeException("Impossible de récupérer les équipes", err);
-					}
-				} else {
-					this.vueSaisieEquipe.afficherPopupErreur("Une erreur est survenue.");
+				try {
+					this.modeleEquipe.modifier(equipe);
+				} catch (Exception err) {
+					this.vueSaisieEquipe
+							.afficherPopupErreur("Une erreur est survenue lors de la modification de l'équipe.");
+					throw new RuntimeException("Erreur dans la modification de l'équipe", err);
+				}
+				
+				this.vueSaisieEquipe.afficherPopupMessage("L'équipe a bien été modifiée.");
+				try {
+					this.vueEquipes.remplirTableau(this.modeleEquipe.getEquipesSaison());
+				} catch (Exception err) {
+					this.vueSaisieEquipe.afficherPopupErreur("Impossible de récupérer les équipes");
+					throw new RuntimeException("Impossible de récupérer les équipes", err);
 				}
 			}
 			
