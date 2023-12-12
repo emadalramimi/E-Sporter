@@ -109,9 +109,9 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 			equipe.setClassement(1000);
 			
 			Equipe equipeSaisonDerniere = this.getTout().stream()
-					.filter(e -> e.equals(equipe))
-					.findFirst()
-					.orElse(null);
+				.filter(e -> e.equals(equipe) && e.getSaison().equals(String.valueOf(LocalDate.now().getYear() - 1)))
+				.findFirst()
+				.orElse(null);
 			
 			if(equipeSaisonDerniere != null) {
 				equipe.setWorldRanking(equipeSaisonDerniere.getClassement());
@@ -142,7 +142,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-			return false;
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -151,17 +151,25 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
-	public boolean modifier(Equipe equipe) {
-		// TODO SPRINT 2 : Si l'équipe est inscrite à un tournoi, ne pas la modifier.
+	public boolean modifier(Equipe equipe) throws Exception {
+		if (this.estEquipeInscriteUnTournoi(equipe)) {
+			throw new RuntimeException("L'équipe est inscrite à un tournoi.");
+		}
+		
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set nom = ?, pays = ?, worldRanking = ? where idEquipe = ?");
-			// On ne peut pas modifier le classement et la saison d'une équipe
+			// On ne peut pas modify the classement and the saison of an equipe
 			ps.setString(1, equipe.getNom());
 			ps.setString(2, equipe.getPays());
 			ps.setInt(3, equipe.getWorldRanking());
 			ps.setInt(4, equipe.getIdEquipe());
 			ps.execute();
-			
+
+			List<Joueur> joueursEquipe = equipe.getJoueurs();
+			for(Joueur joueur : joueursEquipe) {
+				this.modeleJoueur.modifier(joueur);
+			}
+
 			BDD.getConnexion().commit();
 			ps.close();
 			return true;
@@ -171,7 +179,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-			return false;
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -180,9 +188,12 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
-	public boolean supprimer(Equipe equipe) {
+	public boolean supprimer(Equipe equipe) throws Exception {
+		if (this.estEquipeInscriteUnTournoi(equipe)) {
+			throw new RuntimeException("L'équipe est inscrite à un tournoi");
+		}
+
 		try {
-			// TODO SPRINT 2 : Si l'équipe est inscrite à un tournoi, ne pas la supprimer.
 			this.modeleJoueur.supprimerJoueursEquipe(equipe.getIdEquipe());
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from equipe where idEquipe = ?");
 			ps.setInt(1, equipe.getIdEquipe());
@@ -197,7 +208,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-			return false;
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -237,7 +248,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 	
 	public List<Equipe> getEquipesSaison() throws Exception {
 		return this.getTout().stream()
-				.filter(e -> e.getSaison() == String.valueOf(LocalDate.now().getYear()))
+				.filter(e -> e.getSaison().equals(String.valueOf(LocalDate.now().getYear())))
 				.collect(Collectors.toList());
 	}
 	
@@ -249,46 +260,63 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 
 	public List<Equipe> getEquipesTournoi(int idTournoi) {
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from equipe, participer where equipe.idEquipe = participer.idEquipe and participer.idTournoi = ?");
+			PreparedStatement ps = BDD.getConnexion().prepareStatement(
+					"select * from equipe, participer where equipe.idEquipe = participer.idEquipe and participer.idTournoi = ?");
 			ps.setInt(1, idTournoi);
-			
+
 			ResultSet rs = ps.executeQuery();
-			
+
 			// Parcourt les arbitres dans la base de données et les formate dans une liste
 			Stream<Equipe> stream = StreamSupport.stream(
-	    		new Spliterators.AbstractSpliterator<Equipe>(Long.MAX_VALUE, Spliterator.ORDERED) {
-	                @Override
-	                public boolean tryAdvance(Consumer <? super Equipe> action) {
-	                    try {
-	                        if (!rs.next()) {
-	                            return false;
-	                        }
-	                        action.accept(new Equipe(
-	                    		rs.getInt("idEquipe"),
-								rs.getString("nom"),
-								rs.getString("pays"),
-								rs.getInt("classement"),
-								rs.getInt("worldRanking"),
-								rs.getString("saison"),
-								ModeleEquipe.this.modeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))
-	                        ));
-	                        return true;
-	                    } catch (SQLException e) {
-	                        throw new RuntimeException(e);
-	                    }
-	                }
-		        }, false).onClose(() -> {
-					try {
-						ps.close();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				});
-			
+					new Spliterators.AbstractSpliterator<Equipe>(Long.MAX_VALUE, Spliterator.ORDERED) {
+						@Override
+						public boolean tryAdvance(Consumer<? super Equipe> action) {
+							try {
+								if (!rs.next()) {
+									return false;
+								}
+								action.accept(new Equipe(
+										rs.getInt("idEquipe"),
+										rs.getString("nom"),
+										rs.getString("pays"),
+										rs.getInt("classement"),
+										rs.getInt("worldRanking"),
+										rs.getString("saison"),
+										ModeleEquipe.this.modeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))));
+								return true;
+							} catch (SQLException e) {
+								throw new RuntimeException(e);
+							}
+						}
+					}, false).onClose(() -> {
+						try {
+							ps.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+					});
+
 			return stream.collect(Collectors.toList());
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	private boolean estEquipeInscriteUnTournoi(Equipe equipe) {
+		try {
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from participer where idEquipe = ?");
+			ps.setInt(1, equipe.getIdEquipe());
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 	

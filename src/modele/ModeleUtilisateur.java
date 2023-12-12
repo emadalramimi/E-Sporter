@@ -84,10 +84,11 @@ public class ModeleUtilisateur {
         return utilisateur;
     }
 
-    private void validerUtilisateur(Utilisateur utilisateur, String motDePasse) throws IdentifiantOuMdpIncorrectsException {
-        if (utilisateur == null || !this.verifierMotDePasse(motDePasse, utilisateur.getMotDePasse())) {
-            throw new IdentifiantOuMdpIncorrectsException("Identifiant ou mot de passe incorrects");
-        }
-    }
+	private void validerUtilisateur(Utilisateur utilisateur, String motDePasse)
+			throws IdentifiantOuMdpIncorrectsException {
+		if (utilisateur == null || !this.verifierMotDePasse(motDePasse, utilisateur.getMotDePasse())) {
+			throw new IdentifiantOuMdpIncorrectsException("Identifiant ou mot de passe incorrects");
+		}
+	}
 	
 }

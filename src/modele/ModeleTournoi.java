@@ -109,6 +109,9 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 		try {
 			int idTournoi = this.getNextValId();
 			tournoi.setIdTournoi(idTournoi);
+
+			// Chiffrement du mot de passe
+			tournoi.setMotDePasse(ModeleUtilisateur.chiffrerMotDePasse(tournoi.getMotDePasse()));
 			
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into tournoi values (?, ?, ?, ?, ?, ?, ?, ?)");
 			System.out.println(tournoi.getIdTournoi());
@@ -121,13 +124,19 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 			ps.setString(7, tournoi.getIdentifiant());
 			ps.setString(8, tournoi.getMotDePasse());
 			ps.execute();
-			
 			ps.close();
+
+			// TODO : Ajouter dans participer
+
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -145,8 +154,8 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 			ps.setLong(3, tournoi.getDateDebut());
 			ps.setLong(4, tournoi.getDateFin());
 			ps.setBoolean(5, tournoi.isEstCloture());
-			ps.setString(6, tournoi.getIdentifiant());
-			ps.setString(7, tournoi.getMotDePasse());
+			// ps.setString(6, tournoi.getIdentifiant());
+			// ps.setString(7, tournoi.getMotDePasse());
 			ps.setInt(8, tournoi.getIdTournoi());
 			ps.execute();
 			
@@ -154,8 +163,12 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -174,8 +187,12 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -204,26 +221,25 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 	public Optional<Tournoi> getParIdentifiant(String identifiant) throws SQLException {
 		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from tournoi where identifiant = ?");
 		ps.setString(1, identifiant);
-		
+
 		ResultSet rs = ps.executeQuery();
-		
+
 		// Création de tournoi s'il existe
 		Tournoi tournoi = null;
-		if(rs.next()) {
+		if (rs.next()) {
 			tournoi = new Tournoi(
-				rs.getInt("idTournoi"),
-    			rs.getString("nomTournoi"),
-    			Notoriete.valueOfLibelle(rs.getString("notoriete")),
-    			rs.getInt("dateDebut"),
-    			rs.getInt("dateFin"),
-    			rs.getBoolean("estCloture"),
-    			rs.getString("identifiant"),
-    			rs.getString("motDePasse"),
-				ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
-				ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
-            );
+					rs.getInt("idTournoi"),
+					rs.getString("nomTournoi"),
+					Notoriete.valueOfLibelle(rs.getString("notoriete")),
+					rs.getInt("dateDebut"),
+					rs.getInt("dateFin"),
+					rs.getBoolean("estCloture"),
+					rs.getString("identifiant"),
+					rs.getString("motDePasse"),
+					ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
+					ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi")));
 		}
-		
+
 		rs.close();
 		ps.close();
 		return Optional.ofNullable(tournoi);

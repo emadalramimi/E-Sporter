@@ -94,8 +94,12 @@ public class ModeleArbitre implements DAO<Arbitre, Integer> {
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -115,8 +119,12 @@ public class ModeleArbitre implements DAO<Arbitre, Integer> {
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -135,8 +143,12 @@ public class ModeleArbitre implements DAO<Arbitre, Integer> {
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
 	}
 

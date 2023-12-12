@@ -89,7 +89,7 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
-	public boolean ajouter(Administrateur administrateur) {
+	public boolean ajouter(Administrateur administrateur) throws Exception {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into administrateur values (?, ?, ?, ?, ?)");
 			ps.setInt(1, administrateur.getIdAdministrateur());
@@ -108,7 +108,7 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-			return false;
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -118,7 +118,7 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
-	public boolean modifier(Administrateur administrateur) {
+	public boolean modifier(Administrateur administrateur) throws Exception {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("update administrateur set nom = ?, prenom = ?, identifiant = ? where idAdministrateur = ?");
 			ps.setString(1, administrateur.getNom());
@@ -136,7 +136,7 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-			return false;
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -145,7 +145,7 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
-	public boolean supprimer(Administrateur administrateur) {
+	public boolean supprimer(Administrateur administrateur) throws Exception {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from administrateur where idAdministrateur = ?");
 			ps.setInt(1, administrateur.getIdAdministrateur());
@@ -160,7 +160,7 @@ public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-			return false;
+			throw new RuntimeException(e);
 		}
 	}
 	

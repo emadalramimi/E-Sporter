@@ -86,7 +86,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
-	public boolean ajouter(Joueur joueur) {
+	public boolean ajouter(Joueur joueur) throws Exception {
 		try {
 			int idJoueur = this.getNextValId();
 			joueur.setIdJoueur(idJoueur);
@@ -101,8 +101,12 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -123,8 +127,12 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -143,8 +151,12 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -153,7 +165,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 	 * @param idEquipe : identifiant de l'équipe
 	 * @return tru si l'opération s'est bien déroulée, false sinon
 	 */
-	public boolean supprimerJoueursEquipe(int idEquipe) {
+	public boolean supprimerJoueursEquipe(int idEquipe) throws Exception {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from joueur where idEquipe = ?");
 			ps.setInt(1, idEquipe);
@@ -163,8 +175,12 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
 	}
 
