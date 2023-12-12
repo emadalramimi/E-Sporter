@@ -18,6 +18,14 @@ import modele.metier.Tournoi.Notoriete;
 
 public class ModeleTournoi implements DAO<Tournoi, Integer> {
 
+	private ModeleArbitre modeleArbitre;
+	private ModeleEquipe modeleEquipes;
+
+	public ModeleTournoi() {
+		this.modeleArbitre = new ModeleArbitre();
+		this.modeleEquipes = new ModeleEquipe();
+	}
+
 	@Override
 	public List<Tournoi> getTout() throws Exception {
 		Statement st = BDD.getConnexion().createStatement();
@@ -40,7 +48,9 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
                 			rs.getInt("dateFin"),
                 			rs.getBoolean("estCloture"),
                 			rs.getString("identifiant"),
-                			rs.getString("motDePasse")
+							rs.getString("motDePasse"),
+							ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
+                			ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
                         ));
                         return true;
                     } catch (SQLException e) {
@@ -79,7 +89,9 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 				rs.getInt("dateFin"),
 				rs.getBoolean("estCloture"),
 				rs.getString("identifiant"),
-				rs.getString("motDePasse")
+				rs.getString("motDePasse"),
+				ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
+				ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
             );
 		}
 		
@@ -95,12 +107,16 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 	@Override
 	public boolean ajouter(Tournoi tournoi) throws Exception {
 		try {
+			int idTournoi = this.getNextValId();
+			tournoi.setIdTournoi(idTournoi);
+			
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into tournoi values (?, ?, ?, ?, ?, ?, ?, ?)");
+			System.out.println(tournoi.getIdTournoi());
 			ps.setInt(1, tournoi.getIdTournoi());
 			ps.setString(2, tournoi.getNomTournoi());
 			ps.setString(3, tournoi.getNotoriete().getLibelle());
-			ps.setInt(4, tournoi.getDateDebut());
-			ps.setInt(5, tournoi.getDateFin());
+			ps.setLong(4, tournoi.getDateDebut());
+			ps.setLong(5, tournoi.getDateFin());
 			ps.setBoolean(6, tournoi.isEstCloture());
 			ps.setString(7, tournoi.getIdentifiant());
 			ps.setString(8, tournoi.getMotDePasse());
@@ -126,8 +142,8 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 			ps.setString(1, tournoi.getNomTournoi());
 			//je sais pas comment set Notoriete ici
 			ps.setString(2, tournoi.getNotoriete().getLibelle());
-			ps.setInt(3, tournoi.getDateDebut());
-			ps.setInt(4, tournoi.getDateFin());
+			ps.setLong(3, tournoi.getDateDebut());
+			ps.setLong(4, tournoi.getDateFin());
 			ps.setBoolean(5, tournoi.isEstCloture());
 			ps.setString(6, tournoi.getIdentifiant());
 			ps.setString(7, tournoi.getMotDePasse());
@@ -166,7 +182,7 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 	/**
 	 * @return le prochain identifiant unique de tournoi
 	 */
-	public int getNextValId() {
+	private int getNextValId() {
         int nextVal = 0;
         try {
             PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idTournoi");
@@ -202,7 +218,9 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
     			rs.getInt("dateFin"),
     			rs.getBoolean("estCloture"),
     			rs.getString("identifiant"),
-    			rs.getString("motDePasse")
+    			rs.getString("motDePasse"),
+				ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
+				ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
             );
 		}
 		

@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JScrollPane;
@@ -71,8 +72,8 @@ public class VueSaisieTournoi extends JFrameTheme {
 	private UtilDateModel modelDateDebut;
 	private UtilDateModel modelDateFin;
 
-	public VueSaisieTournoi() {
-		ControleurSaisieTournoi controleur = new ControleurSaisieTournoi(this);
+	public VueSaisieTournoi(VueTournois vueTournois) {
+		ControleurSaisieTournoi controleur = new ControleurSaisieTournoi(this, vueTournois);
 		
 		this.listModelEquipes = new DefaultListModel<>();
 		this.listModelArbitres = new DefaultListModel<>();
@@ -431,22 +432,25 @@ public class VueSaisieTournoi extends JFrameTheme {
 
 	public long getDateTimeDebut() {
 	    // Récupérer la date du modèle
-	    Date dateDebut = this.modelDateDebut.getValue();
+	    Date dateFin = this.modelDateDebut.getValue();
 	    
 	    // Récupérer l'heure depuis les spinners
 	    int heure = (int) spinner.getValue();
 	    int minute = (int) spinner_1.getValue();
 	    
 	    // Combiner la date et l'heure pour former un objet Calendar
-	    Calendar calendar = Calendar.getInstance();
-	    calendar.setTime(dateDebut);
+	    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
+	    calendar.setTime(dateFin);
 	    calendar.set(Calendar.HOUR_OF_DAY, heure);
-	    calendar.set(Calendar.MINUTE, minute);
+		calendar.set(Calendar.MINUTE, minute);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
 	    
-	    // Obtenir le timestamp en millisecondes
+	    // Obtenir le timestamp en secondes
 	    long timestamp = calendar.getTimeInMillis() / 1000;
 	    
-	    // Retourner le timestamp correspondant à la date et l'heure de début en secondes
+		// Retourner le timestamp correspondant à la date et l'heure de début en secondes
+		System.out.println(timestamp);
 	    return timestamp;
 	}
 
@@ -459,12 +463,14 @@ public class VueSaisieTournoi extends JFrameTheme {
 	    int minute = (int) spinner_1.getValue();
 	    
 	    // Combiner la date et l'heure pour former un objet Calendar
-	    Calendar calendar = Calendar.getInstance();
+	    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
 	    calendar.setTime(dateFin);
 	    calendar.set(Calendar.HOUR_OF_DAY, heure);
-	    calendar.set(Calendar.MINUTE, minute);
+		calendar.set(Calendar.MINUTE, minute);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
 	    
-	    // Obtenir le timestamp en millisecondes
+	    // Obtenir le timestamp en secondes
 	    long timestamp = calendar.getTimeInMillis() / 1000;
 	    
 	    // Retourner le timestamp correspondant à la date et l'heure de début en secondes
