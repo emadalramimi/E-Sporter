@@ -89,7 +89,7 @@ public class ControleurConnexion extends KeyAdapter implements ActionListener {
 		if(vue.getIdentifiant() == null || vue.getMotDePasse() == null) {
 			vue.afficherPopupErreur("Veuillez remplir tous les champs.");
 		} else {
-			// Sinon, on connecte l'administrateur
+			// Sinon, on connecte l'administrateur/arbitre
 			try {
 				modele.connecter(vue.getIdentifiant(), vue.getMotDePasse());
 				
