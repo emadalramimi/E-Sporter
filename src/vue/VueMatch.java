@@ -3,7 +3,6 @@ package vue;
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.GridLayout;
 import java.util.List;
 import java.util.Vector;
 
@@ -11,23 +10,17 @@ import vue.theme.JFrameTheme;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
-import controleur.ControleurTournois;
 import modele.metier.Equipe;
 import modele.metier.Rencontre;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
-import vue.theme.TableButtonsCellEditor;
-import vue.theme.TableButtonsPanel;
 
 import javax.swing.JLabel;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import javax.swing.JTable;
-import javax.swing.UIManager;
 import javax.swing.JScrollPane;
 import java.awt.Insets;
 import javax.swing.JButton;
@@ -38,7 +31,6 @@ public class VueMatch extends JFrameTheme {
 	private JPanel contentPane;
 	private JPanel panelLblMatchs;
 	private JLabel lblMatchs;
-	private JScrollPaneTheme scrollPaneMatchs;
 	private DefaultTableModel model;
 	private JTableTheme tableMatchs;
 	private JPanel panelTableau;
