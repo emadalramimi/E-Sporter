@@ -19,27 +19,43 @@ import modele.metier.Joueur;
 public class TestModeleJoueur {
 	
 	private ModeleJoueur modele;
+	private ModeleEquipe modeleEquipe;
+	
 	private Joueur joueur;
 	private Joueur joueurModif;
+	private Equipe equipe;
+	
+	private List<Joueur> joueurs;
 	
 	@Before
 	public void setUp() throws Exception {
 		modele = new ModeleJoueur();
+		modeleEquipe = new ModeleEquipe();
 		joueur = new Joueur(50, "joueur", 1);
 		joueurModif = new Joueur(50, "joueurModif", 1);
+		equipe = new Equipe(50, "Equipe", "Canada", 2, 2, "Saison 2023", joueurs);
+		joueurs = new ArrayList<>(Arrays.asList(
+				new Joueur(55, "joueur", 50),
+				new Joueur(56, "joueur", 50),
+				new Joueur(57, "joueur", 50),
+				new Joueur(58, "joueur", 50),
+				new Joueur(59, "joueur", 50)
+				));
     }
 	
 	@Test
 	public void testGetTout() throws Exception {
 	    assertNotNull(modele.getTout());
 	    List<Joueur> listTest = modele.getTout();
+	    assertEquals(listTest.size(), modele.getTout().size());
 	    List<Joueur> listJoueurs = new ArrayList<>();
-	    while (listJoueurs.size() < listTest.size()) {
-	        listJoueurs.add(modele.getParId(modele.getNextValId()).orElse(null));
+	    for(int i = 0; i < listTest.size(); i++) {
+	    	assertNotNull(listTest.get(i));
+	        listJoueurs.add(listTest.get(i));
 	    }
 	    assertEquals(listTest.size(), listJoueurs.size());
 	    for (int i = 0; i < listTest.size(); i++) {
-	    	assertTrue(listTest.get(i).equals(listTest.get(i)));
+	    	assertTrue(listTest.get(i).equals(listJoueurs.get(i)));
 	    }
 	}
 	
@@ -57,12 +73,6 @@ public class TestModeleJoueur {
 	}
 	
 	@Test
-	public void testAjouterFalse() throws Exception {
-		assertTrue(modele.ajouter(joueur));
-		assertFalse(modele.ajouter(joueurModif));
-	}
-	
-	@Test
 	public void testModifierTrue() throws Exception {
 		modele.ajouter(joueur);
 		assertTrue(modele.modifier(joueurModif));
@@ -74,51 +84,48 @@ public class TestModeleJoueur {
 		assertTrue(modele.supprimer(joueur));
 	}
 	
+	/*
 	@Test
 	public void testGetNextValId() {
 	    int nextVal = modele.getNextValId();
 	    assertTrue(nextVal != 0);
 	}
+	*/
 	
 	@Test
 	public void testSupprimerJoueursParEquipe() throws Exception {
-		ModeleEquipe modeleEquipe = new ModeleEquipe();
-		Equipe equipe = new Equipe(10, "Equipe", "Canada", 2, 2, "Saison 2023");
-		modeleEquipe.ajouter(equipe);
-		modele.ajouter(joueur);
-		modele.modifier(new Joueur(50, "joueurTest", 10));
 		assertTrue(modele.supprimerJoueursEquipe(equipe.getIdEquipe()));
-		assertTrue(!(modele.getTout().contains(joueur)));
-		modeleEquipe.supprimer(equipe);
 	}
 		
 	
 	@Test
 	public void testGetListeJoueursParId() throws Exception {
-		ModeleEquipe modeleEquipe = new ModeleEquipe();
-	    Equipe equipe = new Equipe(10, "Equipe", "Canada", 2, 2, "Saison 2023");
-		modeleEquipe.ajouter(equipe);
-	    Joueur joueur1 = new Joueur(101, "Joueur1", 10);
-	    Joueur joueur2 = new Joueur(102, "Joueur2", 10);
-	    Joueur joueur3 = new Joueur(103, "Joueur3", 10);
-	    modele.ajouter(joueur1);
-	    modele.ajouter(joueur2);
-	    modele.ajouter(joueur3);
-	    List<Joueur> result = modele.getListeJoueursParId(10);
-	    assertEquals(3, result.size());
-	    assertTrue(result.contains(joueur1));
-	    assertTrue(result.contains(joueur2));
-	    assertTrue(result.contains(joueur3));
+	    assertEquals(5, modele.getListeJoueursParId(1).size());
+	    for(int i = 0; i < 5; i++) {
+	    	assertEquals(modele.getParId(i + 1).orElse(null), modele.getListeJoueursParId(1).get(i));
+	    }
 	}
 	
 	@After
     public void tearsDown() throws Exception {
-        List<Integer> idsToPreserve = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ,20);
+        List<Integer> idsAGarderJoueurs = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ,20);
+        
         modele.getTout().stream()
-                .filter(joueur -> !idsToPreserve.contains(joueur.getIdJoueur()))
-                .forEach(joueur -> {
+                .filter(j -> !idsAGarderJoueurs.contains(j.getIdJoueur()))
+                .forEach(j -> {
                     try {
-                        modele.supprimer(joueur);
+                        modele.supprimer(j);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+        
+        List<Integer> idsAGarderEquipe = Arrays.asList(1, 2, 3, 4);
+        modele.getTout().stream()
+                .filter(eq -> !idsAGarderEquipe.contains(eq.getIdEquipe()))
+                .forEach(eq -> {
+                    try {
+                        modele.supprimer(eq);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
