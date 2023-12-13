@@ -10,6 +10,7 @@ import vue.theme.JOptionPaneTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
 import vue.theme.JTextFieldTheme;
+import vue.theme.StatutCellRenderer;
 import vue.theme.TableButtonsCellEditor;
 import vue.theme.TableButtonsPanel;
 import vue.theme.JButtonTheme.Types;
@@ -23,9 +24,12 @@ import javax.swing.JOptionPane;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 import java.util.Vector;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -137,7 +141,7 @@ public class VueTournois extends JFrameTheme {
 		// Création du modèle du tableau avec désactivation de l'édition
 		this.model = new DefaultTableModel(
 			new Object[][] {}, 
-			new String[] {"Statut", "Nom", "Niveau", "Date debut", "Date fin", "Poule", "Actions"}
+			new String[] {"ID","Statut", "Nom", "Niveau", "Date debut", "Date fin", "Poule", "Actions"}
 		) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -151,6 +155,7 @@ public class VueTournois extends JFrameTheme {
 		// Tableau de tournois
 		table = new JTableTheme();
 		table.setModel(model);
+		table.getColumnModel().getColumn(1).setCellRenderer(new StatutCellRenderer());
 		
 		// Ajouter buttons dans la derniere colonne
 		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
@@ -241,25 +246,32 @@ public class VueTournois extends JFrameTheme {
 	 * @param equipes : liste des équipes à mettre dans le tableau
 	 */
 	public void remplirTableau(List<Tournoi> tournois) {
-		// Vider le tableau
-		this.model.setRowCount(0);
-		
-		// Remplir avec les données d'équipes
-		for(Tournoi tournoi : tournois) {
-		    Vector<Object> rowData = new Vector<>();
-		    rowData.add(tournoi.getIdTournoi());
-		    rowData.add(tournoi.getNomTournoi());
-		    rowData.add(tournoi.getNomTournoi());
-		    rowData.add(tournoi.getNomTournoi());
-		    rowData.add(tournoi.getNomTournoi());
-		    rowData.add(tournoi.getNomTournoi());
-		    rowData.add(tournoi.getNomTournoi());
-		    
-		    this.model.addRow(rowData);
-		}
-		
-		// Mise à jour du tableau
-		this.table.setModel(this.model);
+	    // Vider le tableau
+	    this.model.setRowCount(0);
+
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	    sdf.setTimeZone(TimeZone.getTimeZone("CET")); 
+
+	    // Remplir avec les données de tournois
+	    for (Tournoi tournoi : tournois) {
+	        Vector<Object> rowData = new Vector<>();
+	        rowData.add(tournoi.getIdTournoi());
+	        rowData.add("Ouvert");
+	        rowData.add(tournoi.getNomTournoi());
+	        rowData.add(tournoi.getNotoriete().getLibelle());
+
+	        String dateTimeDebutStr = sdf.format(new Date(tournoi.getDateDebut() * 1000L));
+	        String dateTimeFinStr = sdf.format(new Date(tournoi.getDateFin() * 1000L));
+
+	        rowData.add(dateTimeDebutStr);
+	        rowData.add(dateTimeFinStr);
+	        rowData.add(tournoi.getPoules());
+
+	        this.model.addRow(rowData);
+	    }
+
+	    // Mise à jour du tableau
+	    this.table.setModel(this.model);
 	}
 	
 }
