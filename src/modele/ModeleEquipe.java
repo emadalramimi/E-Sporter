@@ -303,7 +303,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 		}
 	}
 	
-	private boolean estEquipeInscriteUnTournoi(Equipe equipe) {
+	public boolean estEquipeInscriteUnTournoi(Equipe equipe) {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from participer where idEquipe = ?");
 			ps.setInt(1, equipe.getIdEquipe());
