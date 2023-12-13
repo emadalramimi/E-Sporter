@@ -244,5 +244,23 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 		ps.close();
 		return Optional.ofNullable(tournoi);
 	}
+	
+	public List<Tournoi> getParNom(String nom) throws Exception {
+        return this.getTout().stream()
+                .filter(t -> t.getNomTournoi().toLowerCase().contains(nom.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Tournoi> getParNotoriete(Notoriete notoriete) throws Exception {
+        return this.getTout().stream()
+                .filter(t -> t.getNotoriete() == notoriete)
+                .collect(Collectors.toList());
+    }
+
+    public List<Tournoi> getParEstCloture(boolean cloture) throws Exception {
+        return this.getTout().stream()
+                .filter(t -> t.isEstCloture() == cloture)
+                .collect(Collectors.toList());
+    }
 
 }
