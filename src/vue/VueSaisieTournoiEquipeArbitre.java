@@ -25,32 +25,30 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	private JPanel contentPane;
 	private JComboBox<?> comboBox;
 	private Type type;
-	private VueSaisieTournoi vueSaisieTournoi;
 	private Equipe[] equipes;
 	private Arbitre[] arbitres;
+	private ControleurSaisieTournoiEquipeArbitre controleur;
 	
 	public enum Type {
 		EQUIPE,
 		ARBITRE
 	}
 
-	public VueSaisieTournoiEquipeArbitre(Type type, VueSaisieTournoi vueSaisieTournoi, Equipe[] equipes) {
+	public VueSaisieTournoiEquipeArbitre(Type type, VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi, Equipe[] equipes) {
 		this.type = type;
-		this.vueSaisieTournoi = vueSaisieTournoi;
+		this.controleur = new ControleurSaisieTournoiEquipeArbitre(this, vueInscriptionEquipesTournoi);
 		this.equipes = equipes;
 		this.afficher();
 	}
 	
 	public VueSaisieTournoiEquipeArbitre(Type type, VueSaisieTournoi vueSaisieTournoi, Arbitre[] arbitres) {
 		this.type = type;
-		this.vueSaisieTournoi = vueSaisieTournoi;
+		this.controleur = new ControleurSaisieTournoiEquipeArbitre(this, vueSaisieTournoi);
 		this.arbitres = arbitres;
 		this.afficher();
 	}
 	
 	private void afficher() {
-		ControleurSaisieTournoiEquipeArbitre controleur = new ControleurSaisieTournoiEquipeArbitre(this, this.vueSaisieTournoi);
-		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 242, 138);
 
