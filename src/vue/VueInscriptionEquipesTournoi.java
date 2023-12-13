@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import vue.theme.JFrameTheme;
+
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JScrollBar;
@@ -15,10 +18,10 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-public class VueInscriptionEquipesTournoi extends JFrame {
+public class VueInscriptionEquipesTournoi extends JFrameTheme {
 
 	private JPanel contentPane;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -57,16 +60,16 @@ public class VueInscriptionEquipesTournoi extends JFrame {
 		JList listEquipes = new JList();
 		scrollPane.setViewportView(listEquipes);
 		
-		JPanel panelTitre = new JPanel();
-		contentPane.add(panelTitre, BorderLayout.NORTH);
-		panelTitre.setLayout(new BorderLayout(0, 0));
+		JPanel panelHeader = new JPanel();
+		contentPane.add(panelHeader, BorderLayout.NORTH);
+		panelHeader.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panellbls = new JPanel();
-		panelTitre.add(panellbls, BorderLayout.WEST);
-		GridBagLayout gbl_panellbls = new GridBagLayout();
-		gbl_panellbls.columnWeights = new double[]{0.0};
-		gbl_panellbls.rowWeights = new double[]{0.0, 0.0};
-		panellbls.setLayout(gbl_panellbls);
+		JPanel panelTitre = new JPanel();
+		panelHeader.add(panelTitre, BorderLayout.WEST);
+		GridBagLayout gbl_panelTitre = new GridBagLayout();
+		gbl_panelTitre.columnWeights = new double[]{0.0};
+		gbl_panelTitre.rowWeights = new double[]{0.0, 0.0};
+		panelTitre.setLayout(gbl_panelTitre);
 		
 		JLabel lblTitre = new JLabel("Equipes inscrites");
 		GridBagConstraints gbc_lblTitre = new GridBagConstraints();
@@ -74,18 +77,20 @@ public class VueInscriptionEquipesTournoi extends JFrame {
 		gbc_lblTitre.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTitre.gridx = 0;
 		gbc_lblTitre.gridy = 0;
-		panellbls.add(lblTitre, gbc_lblTitre);
+		panelTitre.add(lblTitre, gbc_lblTitre);
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_1.anchor = GridBagConstraints.NORTHWEST;
-		gbc_lblNewLabel_1.gridx = 0;
-		gbc_lblNewLabel_1.gridy = 1;
-		panellbls.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		JLabel lblTournoi = new JLabel("New label");
+		GridBagConstraints gbc_lblTournoi = new GridBagConstraints();
+		gbc_lblTournoi.insets = new Insets(0, 0, 0, 5);
+		gbc_lblTournoi.anchor = GridBagConstraints.NORTHWEST;
+		gbc_lblTournoi.gridx = 0;
+		gbc_lblTournoi.gridy = 1;
+		panelTitre.add(lblTournoi, gbc_lblTournoi);
 		
 		JButton btnInscrireEquipe = new JButton("Inscrire équipe");
-		panelTitre.add(btnInscrireEquipe, BorderLayout.EAST);
+		panelHeader.add(btnInscrireEquipe, BorderLayout.EAST);
 	}
+	
+
 
 }
