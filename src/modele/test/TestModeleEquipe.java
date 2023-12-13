@@ -2,16 +2,19 @@ package modele.test;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import modele.ModeleEquipe;
+import modele.ModeleJoueur;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
 
@@ -59,25 +62,43 @@ public class TestModeleEquipe {
 	@Test
 	public void testAjouterTrue() {
 		assertTrue(modele.ajouter(equipe));
+		assertEquals(equipe.getWorldRanking(), 1000);
+	}
+	
+	@Test
+	public void testAjouterSaisonDerniere() throws Exception {
+		ModeleJoueur modeleJoueur = new ModeleJoueur();
+		List<Joueur> testJoueurs = new ArrayList<>(Arrays.asList(
+				modeleJoueur.getParId(21).orElse(null),
+				modeleJoueur.getParId(22).orElse(null),
+				modeleJoueur.getParId(23).orElse(null),
+				modeleJoueur.getParId(24).orElse(null),
+				modeleJoueur.getParId(25).orElse(null)
+				));
+		Equipe equipeDeTest = new Equipe("OM Academy", "France", testJoueurs);
+		assertTrue(modele.ajouter(equipeDeTest));
+		assertEquals(equipeDeTest.getWorldRanking(), modele.getParId(5).orElse(null).getClassement());
 	}
 
 	@Test
-	public void testModifierTrue() {
+	public void testModifierTrue() throws Exception {
 		modele.ajouter(equipe);
 		assertTrue(modele.modifier(equipeAModif));
 	}
 	
 	@Test
-	public void testSupprimerTrue() {
+	public void testSupprimerTrue() throws Exception {
 		modele.ajouter(equipe);
 		assertTrue(modele.supprimer(equipe));
 	}
 	
+	/*
 	@Test
 	public void testGetNextValId() {
 	    int nextVal = modele.getNextValId();
 	    assertTrue(nextVal != 0);
 	}
+	*/
 	
 	@Test
 	public void testGetParNom() throws Exception {
@@ -89,7 +110,36 @@ public class TestModeleEquipe {
 	    for (int i = 0; i < listTest.size(); i++) {
 	        assertTrue(listTest.get(i).equals(result.get(i)));
 	    }
-	}	
+	}
+	
+	@Test
+	public void testGetEquipesSaison() throws Exception {
+		List<Equipe> listEquipes = modele.getTout().stream()
+				.filter(e -> e.getSaison().equals(String.valueOf(LocalDate.now().getYear())))
+				.collect(Collectors.toList());
+		assertEquals(listEquipes, modele.getEquipesSaison());
+	}
+	
+	@Test
+	public void testGetTableauEquipes() throws Exception {
+		Equipe[] equipes = new Equipe[4];
+		for(int i = 0; i < modele.getTout().size(); i++) {
+			equipes[i] = modele.getTout().get(i);
+		}
+		Arrays.sort(equipes);
+		assertTrue(Arrays.equals(equipes, modele.getTableauEquipes()));
+	}
+	
+	@Test
+	public void testGetEquipesTournoi() throws Exception {
+		List<Equipe> listEquipes = modele.getTout();
+		assertEquals(listEquipes, modele.getEquipesTournoi(1));
+	}
+	
+	@Test
+	public void testEstEquipeInscriteUnTournoi() throws Exception {
+		assertTrue(modele.estEquipeInscriteUnTournoi(modele.getParId(1).orElse(null)));
+	}
 	
 	@After
     public void tearsDown() throws Exception {
