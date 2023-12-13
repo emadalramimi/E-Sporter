@@ -502,7 +502,7 @@ public class BDD {
 					+ "'Taïwan',"
 					+ "3,"
 					+ "414,"
-					+ "'Saison 2023'"
+					+ "'2023'"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO equipe VALUES ("
@@ -511,7 +511,7 @@ public class BDD {
 					+ "'Taïwan',"
 					+ "1,"
 					+ "362,"
-					+ "'Saison 2023'"
+					+ "'2023'"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO equipe VALUES ("
@@ -520,7 +520,7 @@ public class BDD {
 					+ "'Taïwan',"
 					+ "4,"
 					+ "275,"
-					+ "'Saison 2023'"
+					+ "'2023'"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO equipe VALUES ("
@@ -529,7 +529,16 @@ public class BDD {
 					+ "'Taïwan',"
 					+ "2,"
 					+ "237,"
-					+ "'Saison 2023'"
+					+ "'2023'"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO equipe VALUES ("
+					+ "NEXT VALUE FOR idEquipe,"
+					+ "'OM Academy',"
+					+ "'France',"
+					+ "5,"
+					+ "632,"
+					+ "'2022'"
 					+ ")");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table equipe");
@@ -656,6 +665,30 @@ public class BDD {
 					+ "NEXT VALUE FOR idJoueur,"
 					+ "'Adizai',"
 					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Zidane',"
+					+ "5"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'SCH',"
+					+ "5"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Asus',"
+					+ "5"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Jul',"
+					+ "5"
 					+ ")");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table joueur");
@@ -883,7 +916,8 @@ public class BDD {
 		
 		try {
 			st.executeUpdate("INSERT INTO participer VALUES ("
-					+ "1,1,"
+					+ "1,"
+					+ "1,"
 					+ "3)"
 			);
 			st.executeUpdate(
