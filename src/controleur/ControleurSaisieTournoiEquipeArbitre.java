@@ -5,17 +5,19 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import vue.VueInscriptionEquipesTournoi;
 import vue.VueSaisieTournoi;
 import vue.VueSaisieTournoiEquipeArbitre;
+import vue.theme.JFrameTheme;
 
 public class ControleurSaisieTournoiEquipeArbitre implements ActionListener {
 
-	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipe;
-	private VueSaisieTournoi vueSaisieTournoi;
+	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipeArbitre;
+	private JFrameTheme vue;
 	
-	public ControleurSaisieTournoiEquipeArbitre(VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipe, VueSaisieTournoi vueSaisieTournoi) {
-		this.vueSaisieTournoiEquipe = vueSaisieTournoiEquipe;
-		this.vueSaisieTournoi = vueSaisieTournoi;
+	public ControleurSaisieTournoiEquipeArbitre(VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipeArbitre, JFrameTheme vue) {
+		this.vueSaisieTournoiEquipeArbitre = vueSaisieTournoiEquipeArbitre;
+		this.vue = vue;
 	}
 
 	@Override
@@ -24,15 +26,17 @@ public class ControleurSaisieTournoiEquipeArbitre implements ActionListener {
 		
 		switch(bouton.getText()) {
 		case "Ajouter l'équipe":
-			this.vueSaisieTournoi.ajouterEquipe(this.vueSaisieTournoiEquipe.getEquipe());
-			this.vueSaisieTournoiEquipe.fermerFenetre();
+			VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi = (VueInscriptionEquipesTournoi) this.vue;
+			vueInscriptionEquipesTournoi.ajouterEquipe(this.vueSaisieTournoiEquipeArbitre.getEquipe());
+			this.vueSaisieTournoiEquipeArbitre.fermerFenetre();
 			break;
 		case "Ajouter l'arbitre":
-			this.vueSaisieTournoi.ajouterArbitre(this.vueSaisieTournoiEquipe.getArbitre());
-			this.vueSaisieTournoiEquipe.fermerFenetre();
+			VueSaisieTournoi vueSaisieTournoi = (VueSaisieTournoi) this.vue;
+			vueSaisieTournoi.ajouterArbitre(this.vueSaisieTournoiEquipeArbitre.getArbitre());
+			this.vueSaisieTournoiEquipeArbitre.fermerFenetre();
 			break;
 		case "Annuler":
-			this.vueSaisieTournoiEquipe.fermerFenetre();
+			this.vueSaisieTournoiEquipeArbitre.fermerFenetre();
 			break;
 		}
 	}

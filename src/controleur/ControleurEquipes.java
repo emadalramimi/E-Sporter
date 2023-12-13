@@ -61,6 +61,16 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 				this.vue.afficherVueJoueurs(this.modeleJoueur.getListeJoueursParId(idEquipe));
 				break;
 			case MODIFIER:
+				// Si équipe n'est pas trouvée
+				if (equipeOptionnel.orElse(null) == null) {
+					this.vue.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
+					throw new RuntimeException("Equipe est inexistant");
+				}
+				// Si l'équipe est déjà inscrite dans un tournoi, impossible de la supprimer
+				if (this.modeleEquipe.estEquipeInscriteUnTournoi(equipeOptionnel.get())) {
+					this.vue.afficherPopupErreur("Impossible de modifier l'équipe : elle est inscrite à un tournoi.");
+					throw new RuntimeException("Equipe inscrite dans un tournoi");
+				}
 				// Afficher une page de saisie d'équipe vierge
 				this.vue.afficherVueSaisieEquipe(equipeOptionnel);
 				break;
@@ -68,9 +78,14 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 				// Suppression d'une équipe
 				Equipe equipe = equipeOptionnel.orElse(null);
 				// Si équipe n'est pas trouvée
-				if(equipe == null) {
+				if (equipe == null) {
 					this.vue.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
 					throw new RuntimeException("Equipe est inexistant");
+				}
+				// Si l'équipe est déjà inscrite dans un tournoi, impossible de la supprimer
+				if (this.modeleEquipe.estEquipeInscriteUnTournoi(equipe)) {
+					this.vue.afficherPopupErreur("Impossible de supprimer l'équipe : elle est inscrite à un tournoi.");
+					throw new RuntimeException("Equipe inscrite dans un tournoi");
 				}
 				// Affiche une demande de confirmation de suppression
 				if(this.vue.afficherConfirmationSuppression()) {

@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import modele.ModeleTournoi;
 import modele.metier.Tournoi;
 import vue.VueTournois;
+import vue.theme.JButtonTable;
 
 public class ControleurTournois extends KeyAdapter implements ActionListener {
 
@@ -24,8 +25,46 @@ public class ControleurTournois extends KeyAdapter implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// faire traitement btns tableau ici
-		if (e.getSource() instanceof JButton) {
+		// Clic sur un bouton du tableau (voir, modifier, supprimer)
+		if(e.getSource() instanceof JButtonTable) {
+			JButtonTable bouton = (JButtonTable) e.getSource();
+			
+			// Récupération de l'ID de l'équipe sélectionné
+			int idTournoi = bouton.getIdElement();
+			Optional<Tournoi> tournoiOptionnel;
+			try {
+				tournoiOptionnel = this.modeleTournoi.getParId(idTournoi);
+			} catch(Exception err) {
+				this.vue.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
+				throw new RuntimeException("Equipe inexistante");
+			}
+			
+			// Si équipe n'est pas trouvée
+			if (tournoiOptionnel.orElse(null) == null) {
+				this.vue.afficherPopupErreur("Une erreur est survenue : tournoi inexistant.");
+				throw new RuntimeException("Tournoi est inexistant");
+			}
+
+			Tournoi tournoi = tournoiOptionnel.get();
+
+			// Traitement différent en fonction du bouton
+			switch (bouton.getType()) {
+				case VOIR:
+					if(tournoi.getDateFin() < System.currentTimeMillis() / 1000 && tournoi.getEstCloture() == true) {
+						// Afficher la vue inscription
+						System.out.println("Afficher la vue inscription");
+					} else if(tournoi.getEstCloture() == true) {
+						// Afficher msg tournoi cloturé
+					} else {
+						// Afficher la vue matchs
+					}
+					break;
+				case MODIFIER:
+					break;
+				case SUPPRIMER:
+					break;
+			}
+		} else if(e.getSource() instanceof JButton) {
 			JButton bouton = (JButton) e.getSource();
 			
 			// Si il s'agit du bouton ajouter
@@ -34,12 +73,12 @@ public class ControleurTournois extends KeyAdapter implements ActionListener {
 				this.vue.afficherVueSaisieTournoi(Optional.empty());
 			}
 			// Si il s'agit du bouton de recherche
-//			else if(this.vue.estBoutonRecherche(bouton)) {
-//				String requeteRecherche = this.vue.getRequeteRecherche();
-//				if(requeteRecherche != null) {
-//					this.rechercher(this.vue.getRequeteRecherche());
-//				}
-//			}
+	//			else if(this.vue.estBoutonRecherche(bouton)) {
+	//				String requeteRecherche = this.vue.getRequeteRecherche();
+	//				if(requeteRecherche != null) {
+	//					this.rechercher(this.vue.getRequeteRecherche());
+	//				}
+	//			}
 		}
 	}
 
