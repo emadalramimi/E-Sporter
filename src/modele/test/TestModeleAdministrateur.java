@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.sql.SQLException;
 
 import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 
 import modele.ModeleAdministrateur;
@@ -12,7 +13,7 @@ import modele.ModeleUtilisateur;
 import modele.exception.IdentifiantOuMdpIncorrectsException;
 import modele.metier.Administrateur;
 
-public class TestUtilisateur {
+public class TestModeleAdministrateur {
 
 	private ModeleUtilisateur modeleUtilisateur;
 	private ModeleAdministrateur modeleAdministrateur;
@@ -31,17 +32,25 @@ public class TestUtilisateur {
     @Test
     public void testAjouterTrue() throws Exception {
     	Administrateur admini = new Administrateur(7, "John", "Doe", "john.doe", "password");
-    	modeleAdministrateur.supprimer(admini);
     	assertTrue(modeleAdministrateur.ajouter(admini));
+    }
+    
+    /*
+     * Test si la methode supprimer renvoie true
+     */
+    @Test
+    public void testSupprimerTrue() throws Exception {
+    	 Administrateur adminToAdd = new Administrateur(7, "John", "Doe", "john.doe", "password");
+    	 assertTrue(modeleAdministrateur.supprimer(adminToAdd));
     }
     
     /*
      * Test si la methode ajouter renvoie false lorsqu'il y a une erreur
      */
-    @Test
+    @Test(expected = RuntimeException.class)
     public void testAjouterFalse() throws Exception, SQLException {
     	Administrateur adminToAdd = new Administrateur(1, "John", "Doe", "john.doe", "password");
-    	assertFalse(modeleAdministrateur.ajouter(adminToAdd));
+    	modeleAdministrateur.ajouter(adminToAdd);
     }
     
     /*
@@ -51,18 +60,7 @@ public class TestUtilisateur {
     public void testModifierAdministrateur() throws Exception {
     	Administrateur adminToAdd = new Administrateur(7, "John", "Doe", "john.doe", "password");
     	modeleAdministrateur.ajouter(adminToAdd);
-   	 	assertTrue(modeleAdministrateur.modifier(new Administrateur(2, "Admin", "Admin", "admin", "mdpadmin")));
-   	 	modeleAdministrateur.supprimer(new Administrateur(2, "Admin", "Admin", "admin", "mdpadmin"));
-    }
-    
-    /*
-     * Test si la methode supprimer renvoie true
-     */
-    @Test
-    public void testSupprimerTrue() throws Exception {
-    	 Administrateur adminToAdd = new Administrateur(7, "John", "Doe", "john.doe", "password");
-    	 modeleAdministrateur.ajouter(adminToAdd);
-    	 assertTrue(modeleAdministrateur.supprimer(adminToAdd));
+   	 	assertTrue(modeleAdministrateur.modifier(new Administrateur(7, "John", "Doe", "john.doe", "password")));
     }
     
     /*
@@ -123,5 +121,11 @@ public class TestUtilisateur {
     @Test
     public void testGetCompteCourant() {
     	assertEquals(ModeleUtilisateur.getCompteCourant(), null);
+    }
+    
+    @After
+    public void tearDown() throws Exception {
+    	Administrateur adminToAdd = new Administrateur(7, "John", "Doe", "john.doe", "password");
+    	modeleAdministrateur.supprimer(adminToAdd);
     }
 }
