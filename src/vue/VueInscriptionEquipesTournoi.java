@@ -1,7 +1,5 @@
 package vue;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,7 +8,6 @@ import vue.theme.JFrameTheme;
 
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JButton;
@@ -21,26 +18,7 @@ import java.awt.Insets;
 public class VueInscriptionEquipesTournoi extends JFrameTheme {
 
 	private JPanel contentPane;
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VueInscriptionEquipesTournoi frame = new VueInscriptionEquipesTournoi();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the frame.
-	 */
 	public VueInscriptionEquipesTournoi() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 602, 384);
