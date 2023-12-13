@@ -1,5 +1,6 @@
 package modele.metier;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -165,12 +166,9 @@ public class Equipe implements Comparable<Equipe> {
 	        return false;
 	    }
 	    Equipe equipe = (Equipe) o;
-	    return this.idEquipe == equipe.idEquipe
-	            && this.nom.equals(equipe.nom)
+	    return this.nom.equals(equipe.nom)
 	            && this.pays.equals(equipe.pays)
-	            && this.classement == equipe.classement
-	            && this.worldRanking == equipe.worldRanking
-	            && this.saison.equals(equipe.saison);
+	            && Arrays.equals(joueurs.stream().toArray(), equipe.joueurs.stream().toArray());
 	}
 
 	@Override
