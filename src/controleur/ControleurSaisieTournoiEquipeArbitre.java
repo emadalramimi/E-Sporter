@@ -5,19 +5,17 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import vue.VueInscriptionEquipesTournoi;
 import vue.VueSaisieTournoi;
 import vue.VueSaisieTournoiEquipeArbitre;
-import vue.theme.JFrameTheme;
 
 public class ControleurSaisieTournoiEquipeArbitre implements ActionListener {
 
 	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipeArbitre;
-	private JFrameTheme vue;
+	private VueSaisieTournoi vueSaisieTournoi;
 	
-	public ControleurSaisieTournoiEquipeArbitre(VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipeArbitre, JFrameTheme vue) {
+	public ControleurSaisieTournoiEquipeArbitre(VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipeArbitre, VueSaisieTournoi vueSaisieTournoi) {
 		this.vueSaisieTournoiEquipeArbitre = vueSaisieTournoiEquipeArbitre;
-		this.vue = vue;
+		this.vueSaisieTournoi = vueSaisieTournoi;
 	}
 
 	@Override
@@ -25,16 +23,8 @@ public class ControleurSaisieTournoiEquipeArbitre implements ActionListener {
 		JButton bouton = (JButton) e.getSource();
 		
 		switch(bouton.getText()) {
-		case "Ajouter l'équipe":
-			VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi = (VueInscriptionEquipesTournoi) this.vue;
-			vueInscriptionEquipesTournoi.ajouterEquipe(this.vueSaisieTournoiEquipeArbitre.getEquipe());
-			this.vueSaisieTournoiEquipeArbitre.fermerFenetre();
-			break;
 		case "Ajouter l'arbitre":
-			VueSaisieTournoi vueSaisieTournoi = (VueSaisieTournoi) this.vue;
-			vueSaisieTournoi.ajouterArbitre(this.vueSaisieTournoiEquipeArbitre.getArbitre());
-			this.vueSaisieTournoiEquipeArbitre.fermerFenetre();
-			break;
+			this.vueSaisieTournoi.ajouterArbitre(this.vueSaisieTournoiEquipeArbitre.getArbitre());
 		case "Annuler":
 			this.vueSaisieTournoiEquipeArbitre.fermerFenetre();
 			break;

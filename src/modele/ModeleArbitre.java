@@ -15,7 +15,7 @@ import java.util.stream.StreamSupport;
 
 import modele.metier.Arbitre;
 
-public class ModeleArbitre implements DAO<Arbitre, Integer> {
+public class ModeleArbitre extends DAO<Arbitre, Integer> {
 
 	@Override
 	public List<Arbitre> getTout() throws Exception {

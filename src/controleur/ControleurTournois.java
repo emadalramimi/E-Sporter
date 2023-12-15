@@ -50,13 +50,15 @@ public class ControleurTournois extends KeyAdapter implements ActionListener {
 			// Traitement différent en fonction du bouton
 			switch (bouton.getType()) {
 				case VOIR:
-					if(tournoi.getDateFin() < System.currentTimeMillis() / 1000 && tournoi.getEstCloture() == true) {
-						// Afficher la vue inscription
-						System.out.println("Afficher la vue inscription");
+					if(System.currentTimeMillis() / 1000 < tournoi.getDateFin() && tournoi.getEstCloture() == true) {
+						// Le tournoi n'a pas encore commencé : affichage de la vue d'inscription des équipes
+						this.vue.afficherVueInscriptionEquipes(tournoi);
 					} else if(tournoi.getEstCloture() == true) {
 						// Afficher msg tournoi cloturé
+						System.out.println("Afficher msg tournoi cloture");
 					} else {
 						// Afficher la vue matchs
+						System.out.println("afficher vue matchs");
 					}
 					break;
 				case MODIFIER:

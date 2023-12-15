@@ -74,7 +74,7 @@ public class TestEquipe {
 		equipeAvecJoueurs.setPays("Espagne");
 		assertEquals(equipeSansJoueurs.getPays(), "Allemagne");
 		assertEquals(equipeAvecJoueurs.getPays(), "Espagne");
-			assertNotEquals(equipeAvecJoueurs.getPays(), equipeSansJoueurs.getPays());
+		assertNotEquals(equipeAvecJoueurs.getPays(), equipeSansJoueurs.getPays());
 	}
 	
 	@Test
@@ -127,11 +127,11 @@ public class TestEquipe {
 	@Test
 	public void testSetJoueurs() {
 		List<Joueur> listJoueurs2 = new ArrayList<Joueur>(Arrays.asList(
-			    new Joueur(1, "Joueur6", 2),
-			    new Joueur(2, "Joueur7", 2),
-			    new Joueur(3, "Joueur8", 2),
-			    new Joueur(4, "Joueur9", 2),
-			    new Joueur(5, "Joueur10", 2)
+		    new Joueur(1, "Joueur6", 2),
+		    new Joueur(2, "Joueur7", 2),
+		    new Joueur(3, "Joueur8", 2),
+		    new Joueur(4, "Joueur9", 2),
+		    new Joueur(5, "Joueur10", 2)
 			));
 		equipeAvecJoueurs.setJoueurs(listJoueurs2);
 		assertEquals(equipeAvecJoueurs.getJoueurs(), listJoueurs2);

@@ -18,7 +18,9 @@ public class CharteGraphique {
 	public final static Color FOND_BTN_TITLEBAR = new Color(55,57,97);
 	public final static Color PRIMAIRE = new Color(0,104,249);
 	public final static Color BORDURE = new Color(30,45,98);
-	public final static Color BORDURE_FENETRE = new Color(32,35,44);
+	public final static Color BORDURE_FENETRE = new Color(32, 35, 44);
+	public final static Color TOURNOI_OUVERT = new Color(111, 227, 96);
+	public final static Color TOURNOI_CLOTURE = new Color(255, 0, 0);
 	
 	/**
 	 * @param taille

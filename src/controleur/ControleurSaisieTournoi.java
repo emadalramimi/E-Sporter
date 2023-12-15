@@ -76,7 +76,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 			List<Arbitre> arbitres = this.vueSaisieTournoi.getArbitres();
 			
 			if(bouton.getText() == "Valider") {
-				Tournoi tournoi = new Tournoi(nomTournoi, notoriete, dateTimeDebut, dateTimeFin, false, identifiant, motDePasse, null, arbitres);
+				Tournoi tournoi = new Tournoi(nomTournoi, notoriete, dateTimeDebut, dateTimeFin, identifiant, motDePasse, arbitres);
 				
 				try {
 					modeleTournoi.ajouter(tournoi);

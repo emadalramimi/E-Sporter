@@ -5,6 +5,7 @@ import javax.swing.ListCellRenderer;
 
 import modele.metier.Arbitre;
 import modele.metier.Equipe;
+import modele.metier.Tournoi;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JComboBoxTheme;
@@ -16,9 +17,11 @@ import java.awt.GridBagLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
+import java.awt.event.ActionListener;
 
+import javax.swing.SwingConstants;
+
+import controleur.ControleurInscriptionEquipesTournoiPopup;
 import controleur.ControleurSaisieTournoiEquipeArbitre;
 
 public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
@@ -28,22 +31,23 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	private Type type;
 	private Equipe[] equipes;
 	private Arbitre[] arbitres;
-	private ControleurSaisieTournoiEquipeArbitre controleur;
+	private Tournoi tournoi;
+	private ActionListener controleur;
 	
 	public enum Type {
 		EQUIPE,
 		ARBITRE
 	}
 
-	public VueSaisieTournoiEquipeArbitre(Type type, VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi, Equipe[] equipes) {
-		this.type = type;
-		this.controleur = new ControleurSaisieTournoiEquipeArbitre(this, vueInscriptionEquipesTournoi);
+	public VueSaisieTournoiEquipeArbitre(VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi, Equipe[] equipes, Tournoi tournoi) {
+		this.type = VueSaisieTournoiEquipeArbitre.Type.EQUIPE;
+		this.controleur = new ControleurInscriptionEquipesTournoiPopup(this, vueInscriptionEquipesTournoi, tournoi);
 		this.equipes = equipes;
 		this.afficher();
 	}
 	
-	public VueSaisieTournoiEquipeArbitre(Type type, VueSaisieTournoi vueSaisieTournoi, Arbitre[] arbitres) {
-		this.type = type;
+	public VueSaisieTournoiEquipeArbitre(VueSaisieTournoi vueSaisieTournoi, Arbitre[] arbitres) {
+		this.type = VueSaisieTournoiEquipeArbitre.Type.ARBITRE;
 		this.controleur = new ControleurSaisieTournoiEquipeArbitre(this, vueSaisieTournoi);
 		this.arbitres = arbitres;
 		this.afficher();

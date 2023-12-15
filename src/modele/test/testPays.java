@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import modele.metier.Pays;
 
-public class testPays {
+public class TestPays {
 
 	Pays pays;
 	
@@ -18,7 +18,7 @@ public class testPays {
 	
 	@Test
 	public void testGetNomPays() {
-		assertEquals(pays.getNomPays(),"France");
+		assertEquals(pays.getNomPays(), "France");
 	}
 	
 	@Test
@@ -33,7 +33,7 @@ public class testPays {
 	
 	@Test
 	public void testGetTout() {
-		String[] paysGetTout = pays.getTout();
+		String[] paysGetTout = Pays.getTout();
 		Pays[] toutPays = Pays.values();
 		for (int i = 0; i < toutPays.length; i++) {
             assertEquals(toutPays[i].getNomPays(), paysGetTout[i]);
@@ -42,11 +42,11 @@ public class testPays {
 	
 	@Test
 	public void testValueOfNom() {
-		assertEquals(pays.valueOfNom("Algérie"),Pays.ALGERIE);
+		assertEquals(Pays.valueOfNom("Algérie"),Pays.ALGERIE);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testValueOfNomInexistant() {
-		pays.valueOfNom("Disneyland");
+		Pays.valueOfNom("Disneyland");
 	}
 }

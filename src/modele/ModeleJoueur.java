@@ -16,7 +16,7 @@ import java.util.stream.StreamSupport;
 
 import modele.metier.Joueur;
 
-public class ModeleJoueur implements DAO<Joueur, Integer> {
+public class ModeleJoueur extends DAO<Joueur, Integer> {
 
 	/**
 	 * @return Liste de tous les équipes

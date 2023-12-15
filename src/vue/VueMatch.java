@@ -23,19 +23,23 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JScrollPane;
 import java.awt.Insets;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class VueMatch extends JFrameTheme {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JPanel panelLblMatchs;
-	private JLabel lblMatchs;
+	private JPanel panelLblPoule;
+	private JLabel lblPoule;
 	private DefaultTableModel model;
 	private JTableTheme tableMatchs;
 	private JPanel panelTableau;
 	private JScrollPane scrollPane;
 	private JPanel panelBtn;
+	private JButton btnEquipe1;
+	private JButton btnEquipe2;
 	private JButton btnQuitter;
 	private JButton btnValider;
 
@@ -63,14 +67,14 @@ public class VueMatch extends JFrameTheme {
 		
 		contentPane.setBorder(new EmptyBorder(15,15,15,15));
 		
-		panelLblMatchs = new JPanel();
-		panelLblMatchs.setBackground(CharteGraphique.FOND);
-		contentPane.add(panelLblMatchs, BorderLayout.NORTH);
+		panelLblPoule = new JPanel();
+		panelLblPoule.setBackground(CharteGraphique.FOND);
+		contentPane.add(panelLblPoule, BorderLayout.NORTH);
 		
-		lblMatchs = new JLabel("Matchs");
-		lblMatchs.setFont(CharteGraphique.getPolice(30, true));
-		lblMatchs.setForeground(CharteGraphique.TEXTE);
-		panelLblMatchs.add(lblMatchs);	
+		lblPoule = new JLabel("Poule");
+		lblPoule.setFont(CharteGraphique.getPolice(30, true));
+		lblPoule.setForeground(CharteGraphique.TEXTE);
+		panelLblPoule.add(lblPoule);	
 		
 		panelTableau = new JPanel();
 		panelTableau.setBackground(CharteGraphique.FOND);
@@ -95,16 +99,9 @@ public class VueMatch extends JFrameTheme {
 			new Object[][] {
 			},
 			new String[] {
-				"Equipe 1", "Equipe 2", "Début","Fin","Actions"
+				"Equipe 1", "Equipe 2"
 			}
 		));
-		
-		/* Ajouter buttons dans la derniere colonne
-		TableColumn buttonColumn = tableMatchs.getColumnModel().getColumn(tableMatchs.getColumnCount() - 1);
-		
-			!!! A FINIR !!!
-		
-		*/
 				
 		scrollPane.setViewportView(tableMatchs);
 		
@@ -120,7 +117,7 @@ public class VueMatch extends JFrameTheme {
 		btnQuitter = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Quitter");
 		panelBtn.add(btnQuitter);
 		
-		btnValider = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Valider");
+		btnValider = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Cloturer");
 		panelBtn.add(btnValider);
 	}
 	
@@ -132,11 +129,13 @@ public class VueMatch extends JFrameTheme {
 		for(Rencontre rencontre : rencontres) {
 		    Vector<Object> rowData = new Vector<>();
 		    Equipe[] equipes = rencontre.getEquipes();
-		    rowData.add(equipes[0]);
-		    rowData.add(equipes[1]);
-	        
-		    rowData.add(rencontre.getDateHeureDebut());
-		    rowData.add(rencontre.getDateHeureFin());
+		    btnEquipe1.setText(equipes[0].getNom());
+		    btnEquipe1.setIcon(new ImageIcon(VueMatch.class.getResource("/images/match/trophe.png")));
+		    btnEquipe2.setText(equipes[1].getNom());
+		    btnEquipe2.setIcon(new ImageIcon(VueMatch.class.getResource("/images/match/trophe.png")));
+		    rowData.add(btnEquipe1);
+		    rowData.add(btnEquipe2);
+		    
 		    this.model.addRow(rowData);
 		}
 	}

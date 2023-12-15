@@ -13,10 +13,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import modele.metier.Equipe;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
-public class ModeleTournoi implements DAO<Tournoi, Integer> {
+public class ModeleTournoi extends DAO<Tournoi, Integer> {
 
 	private ModeleArbitre modeleArbitre;
 	private ModeleEquipe modeleEquipes;
@@ -63,7 +64,7 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-			});
+			}).sorted();
 		
 		return stream.collect(Collectors.toList());
 	}
@@ -109,6 +110,7 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 		try {
 			int idTournoi = this.getNextValId();
 			tournoi.setIdTournoi(idTournoi);
+			tournoi.setEstCloture(true);
 
 			// Chiffrement du mot de passe
 			tournoi.setMotDePasse(ModeleUtilisateur.chiffrerMotDePasse(tournoi.getMotDePasse()));
@@ -124,16 +126,6 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 			ps.setString(8, tournoi.getMotDePasse());
 			ps.execute();
 			ps.close();
-
-			// TODO : Ajouter dans participer FAIRE DANS INSCRIRE EQUIPE
-//			for (Equipe equipe : tournoi.getEquipes()) {
-//				ps = BDD.getConnexion().prepareStatement("insert into participer values (?, ?, ?)");
-//				ps.setInt(1, tournoi.getIdTournoi());
-//				ps.setInt(2, equipe.getIdEquipe());
-//				ps.setInt(3, 1);
-//				ps.execute();
-//				ps.close();
-//			}
 
 			BDD.getConnexion().commit();
 			return true;
@@ -207,23 +199,23 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 	 * @return le prochain identifiant unique de tournoi
 	 */
 	private int getNextValId() {
-        int nextVal = 0;
-        try {
-            PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idTournoi");
+		int nextVal = 0;
+		try {
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idTournoi");
 
-            ResultSet rs = ps.executeQuery();
-            
-            if (rs.next()) {
-                nextVal = rs.getInt(1);
-            }
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return nextVal;
-    }
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				nextVal = rs.getInt(1);
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return nextVal;
+	}
 	
 	public Optional<Tournoi> getParIdentifiant(String identifiant) throws SQLException {
 		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from tournoi where identifiant = ?");

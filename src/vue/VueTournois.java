@@ -12,19 +12,16 @@ import vue.theme.JTableTheme;
 import vue.theme.JTextFieldTheme;
 import vue.theme.TableButtonsCellEditor;
 import vue.theme.TableButtonsPanel;
+import vue.theme.ThemeTableCellRenderer;
 import vue.theme.JButtonTheme.Types;
 import vue.theme.JComboBoxTheme;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -44,7 +41,6 @@ import java.awt.GridBagLayout;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -67,6 +63,8 @@ public class VueTournois extends JFrameTheme {
 	private JScrollPaneTheme scrollPaneEquipes;
 	private ControleurTournois controleur;
 	private VueSaisieTournoi vueSaisieTournoi;
+	// Temp : gérer fen enfant
+	private VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi;
 	private VueBase vueBase;
 	private JComboBoxTheme<String> cboxNotoriete;
 	private JComboBoxTheme<String> cboxStatuts;
@@ -173,7 +171,7 @@ public class VueTournois extends JFrameTheme {
 		// Création du modèle du tableau avec désactivation de l'édition
 		this.model = new DefaultTableModel(
 			new Object[][] {}, 
-			new String[] {"ID","Statut", "Nom", "Niveau", "Date debut", "Date fin", "Poule", "Actions"}
+			new String[] {"ID","Statut", "Nom", "Niveau", "Date de début", "Date de fin", "Actions"}
 		) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -206,59 +204,53 @@ public class VueTournois extends JFrameTheme {
 		scrollPaneEquipes.setViewportView(table);
 	}
 	
-	private class StatutCellRenderer extends DefaultTableCellRenderer {
-	    @Override
-	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-	    	super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+	private class StatutCellRenderer extends ThemeTableCellRenderer {
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-			// Centrer les textes dans toutes les cellules
-			this.setHorizontalAlignment(CENTER);
-			this.setVerticalAlignment(CENTER);
-			
-			// Définir la hauteur de la rangée de titre
-			this.setPreferredSize(new Dimension(this.getWidth(), 50));
-			
 			// Couleur du texte
-			if ("Ouvert".equals(value)) {
-				// Couleur verte
-	            setForeground(new Color(111, 227, 96));
-	        } else {
-	            setForeground(Color.RED);
-	        }
-			
-			// Couleur de fond des cellules alternantes
-			if(row % 2 == 0) {
-				this.setBackground(CharteGraphique.FOND_SECONDAIRE);
-			} else {
-				this.setBackground(CharteGraphique.FOND);
+			if (column == 1) {
+				switch ((String) value) {
+					case "En création":
+						this.setForeground(CharteGraphique.PRIMAIRE);
+						break;
+					case "Ouvert":
+						this.setForeground(CharteGraphique.TOURNOI_OUVERT);
+						break;
+					case "Clôturé":
+						this.setForeground(CharteGraphique.TOURNOI_CLOTURE);
+						break;
+				}
 			}
-			
-			// Changement de la couleur et de l'aspect des bordures
-			this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, CharteGraphique.BORDURE));
-			
-			// Changement de la police (en gras pour les titres)
-			if(row == -1) {
-				this.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, CharteGraphique.BORDURE));
-				this.setFont(CharteGraphique.getPolice(16, true));
-			} else {
-				this.setFont(CharteGraphique.getPolice(16, false));
-			}
-	 
-	        return this;
-	    }
+
+			return this;
+		}
 	}
 	
 	public void afficherVueSaisieTournoi(Optional<Tournoi> tournoi) {
 		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
-        if (this.vueSaisieTournoi == null || !this.vueSaisieTournoi.isVisible()) {
-        	this.vueSaisieTournoi = new VueSaisieTournoi(this);
-        	this.vueBase.ajouterFenetreEnfant(this.vueSaisieTournoi);
-        	this.vueSaisieTournoi.setLocationRelativeTo(this);
-        	this.vueSaisieTournoi.setVisible(true);
-        } else {
-        	this.vueSaisieTournoi.toFront();
-        }
-    }
+		if (this.vueSaisieTournoi == null || !this.vueSaisieTournoi.isVisible()) {
+			this.vueSaisieTournoi = new VueSaisieTournoi(this);
+			this.vueBase.ajouterFenetreEnfant(this.vueSaisieTournoi);
+			this.vueSaisieTournoi.setLocationRelativeTo(this);
+			this.vueSaisieTournoi.setVisible(true);
+		} else {
+			this.vueSaisieTournoi.toFront();
+		}
+	}
+
+	public void afficherVueInscriptionEquipes(Tournoi tournoi) {
+		// Une seule fenêtre d'inscription à la fois, si déjà ouverte elle est mise au premier plan
+		if (this.vueInscriptionEquipesTournoi == null || !this.vueInscriptionEquipesTournoi.isVisible()) {
+			this.vueInscriptionEquipesTournoi = new VueInscriptionEquipesTournoi(this, tournoi);
+			this.vueBase.ajouterFenetreEnfant(this.vueInscriptionEquipesTournoi);
+			this.vueInscriptionEquipesTournoi.setLocationRelativeTo(this);
+			this.vueInscriptionEquipesTournoi.setVisible(true);
+		} else {
+			this.vueInscriptionEquipesTournoi.toFront();
+		}
+	}
 	
 	/**
 	 * Retire une fenêtre enfant de la liste des fenêtres enfant dans VueBase
@@ -323,23 +315,30 @@ public class VueTournois extends JFrameTheme {
 	    // Vider le tableau
 	    this.model.setRowCount(0);
 
-	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-	    sdf.setTimeZone(TimeZone.getTimeZone("CET")); 
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy à HH:mm");
+	    sdf.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
 
 	    // Remplir avec les données de tournois
 	    for (Tournoi tournoi : tournois) {
 	        Vector<Object> rowData = new Vector<>();
-	        rowData.add(tournoi.getIdTournoi());
-	        rowData.add("Ouvert");
+			rowData.add(tournoi.getIdTournoi());
+			
+			if (System.currentTimeMillis() / 1000 < tournoi.getDateFin() && tournoi.getEstCloture() == true) {
+				rowData.add("En création");
+			} else if (tournoi.getEstCloture() == true) {
+				rowData.add("Clôturé");
+			} else {
+				rowData.add("Ouvert");
+			}
+
 	        rowData.add(tournoi.getNomTournoi());
 	        rowData.add(tournoi.getNotoriete().getLibelle());
 
-	        String dateTimeDebutStr = sdf.format(new Date(tournoi.getDateDebut() * 1000L));
-	        String dateTimeFinStr = sdf.format(new Date(tournoi.getDateFin() * 1000L));
+	        String dateTimeDebut = sdf.format(new Date(tournoi.getDateDebut() * 1000L));
+	        String dateTimeFin = sdf.format(new Date(tournoi.getDateFin() * 1000L));
 
-	        rowData.add(dateTimeDebutStr);
-	        rowData.add(dateTimeFinStr);
-	        rowData.add(tournoi.getPoules());
+	        rowData.add(dateTimeDebut);
+	        rowData.add(dateTimeFin);
 
 	        this.model.addRow(rowData);
 	    }

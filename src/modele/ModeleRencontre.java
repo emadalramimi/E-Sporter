@@ -15,12 +15,9 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import modele.metier.Equipe;
-import modele.metier.Joueur;
 import modele.metier.Rencontre;
-import modele.metier.Tournoi;
-import modele.metier.Tournoi.Notoriete;
 
-public class ModeleRencontre implements DAO<Rencontre, Integer> {
+public class ModeleRencontre extends DAO<Rencontre, Integer> {
 
 	private ModeleJoueur modeleJoueur;
 
@@ -46,7 +43,7 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 	                    	rs.getInt("dateHeureDebut"),
 	                    	rs.getInt("dateHeureFin"),
 	                    	rs.getInt("idPoule"),
-							// TODO ICI
+	                    	getEquipesRencontre(rs.getInt("idRencontre"))
 	                    ));
 	                    return true;
 	                } catch (SQLException e) {
@@ -70,25 +67,20 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 	@Override
 	public Optional<Rencontre> getParId(Integer... idRencontre) throws Exception {
 		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from rencontre where idRencontre = ?");
-		PreparedStatement ps2 = BDD.getConnexion().prepareStatement("select * from joueur where idRencontre = ?");
 		
 		ps.setInt(1, idRencontre[0]);
-		ps2.setInt(1, idRencontre[0]);
 		
 		ResultSet rs = ps.executeQuery();
-		ResultSet rs2 = ps2.executeQuery();
 		
 		// Création de joueur si il existe
 		Rencontre rencontre = null;
-		if(rs.next() && rs2.next()) {		
-			ModeleJoueur modeleJoueur = new ModeleJoueur();
-			Equipe[] equipes = { modeleJoueur.getParId(rs.getInt("idEquipe")).orElse(null) , modeleJoueur.getParId(rs2.getInt("idEquipe")).orElse };
+		if(rs.next()) {		
 			rencontre = new Rencontre(
 				rs.getInt("idRencontre"),
 				rs.getInt("dateHeureDebut"),
 				rs.getInt("dateHeureFin"),
 				rs.getInt("idPoule"),
-				equipes
+				getEquipesRencontre(rs.getInt("idRencontre"))
             );
 		}
 		
