@@ -31,7 +31,6 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	private Type type;
 	private Equipe[] equipes;
 	private Arbitre[] arbitres;
-	private Tournoi tournoi;
 	private ActionListener controleur;
 	
 	public enum Type {
