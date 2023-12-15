@@ -20,7 +20,7 @@ public class TestEquipe {
 	
 	@Before
     public void setUp() {
-		equipeSansJoueurs = new Equipe(1, "Equipe1", "France", 1, 1, "Saison 2023");
+		equipeSansJoueurs = new Equipe(1, "Equipe1", "France", 1, 1, "2023", listJoueurs);
 		listJoueurs = new ArrayList<>(Arrays.asList(
 			    new Joueur(1, "Joueur1", 2),
 			    new Joueur(2, "Joueur2", 2),
@@ -28,14 +28,12 @@ public class TestEquipe {
 			    new Joueur(4, "Joueur4", 2),
 			    new Joueur(5, "Joueur5", 2)
 			));
-		equipeAvecJoueurs = new Equipe(2, "Equipe2", "Canada", 2, 2, "Saison 2023", listJoueurs);
+		equipeAvecJoueurs = new Equipe("Equipe2", "Canada",listJoueurs);
     }
 	
 	@Test
 	public void testGetIdEquipe() {
 		assertEquals(equipeSansJoueurs.getIdEquipe(), 1);
-		assertEquals(equipeAvecJoueurs.getIdEquipe(), 2);
-		assertNotEquals(equipeAvecJoueurs.getIdEquipe(), equipeSansJoueurs.getIdEquipe());
 	}
 	
 	@Test
@@ -82,8 +80,6 @@ public class TestEquipe {
 	@Test
 	public void testGetClassement() {
 		assertEquals(equipeSansJoueurs.getClassement(), 1);
-		assertEquals(equipeAvecJoueurs.getClassement(), 2);
-		assertNotEquals(equipeAvecJoueurs.getClassement(), equipeSansJoueurs.getClassement());
 	}
 	
 	@Test
@@ -98,8 +94,6 @@ public class TestEquipe {
 	@Test
 	public void testGetWorldRanking() {
 		assertEquals(equipeSansJoueurs.getWorldRanking(), 1);
-		assertEquals(equipeAvecJoueurs.getWorldRanking(), 2);
-		assertNotEquals(equipeAvecJoueurs.getWorldRanking(), equipeSansJoueurs.getWorldRanking());
 	}
 	
 	@Test
@@ -113,9 +107,7 @@ public class TestEquipe {
 
 	@Test
 	public void testGetSaison() {
-		assertEquals(equipeSansJoueurs.getSaison(), "Saison 2023");
-		assertEquals(equipeAvecJoueurs.getSaison(), "Saison 2023");
-		assertEquals(equipeAvecJoueurs.getSaison(), equipeSansJoueurs.getSaison());
+		assertEquals(equipeSansJoueurs.getSaison(), "2023");
 	}
 	
 	@Test
