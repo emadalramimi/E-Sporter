@@ -114,19 +114,26 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 			tournoi.setMotDePasse(ModeleUtilisateur.chiffrerMotDePasse(tournoi.getMotDePasse()));
 			
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into tournoi values (?, ?, ?, ?, ?, ?, ?, ?)");
-			System.out.println(tournoi.getIdTournoi());
 			ps.setInt(1, tournoi.getIdTournoi());
 			ps.setString(2, tournoi.getNomTournoi());
 			ps.setString(3, tournoi.getNotoriete().getLibelle());
 			ps.setLong(4, tournoi.getDateDebut());
 			ps.setLong(5, tournoi.getDateFin());
-			ps.setBoolean(6, tournoi.isEstCloture());
+			ps.setBoolean(6, tournoi.getEstCloture());
 			ps.setString(7, tournoi.getIdentifiant());
 			ps.setString(8, tournoi.getMotDePasse());
 			ps.execute();
 			ps.close();
 
-			// TODO : Ajouter dans participer
+			// TODO : Ajouter dans participer FAIRE DANS INSCRIRE EQUIPE
+//			for (Equipe equipe : tournoi.getEquipes()) {
+//				ps = BDD.getConnexion().prepareStatement("insert into participer values (?, ?, ?)");
+//				ps.setInt(1, tournoi.getIdTournoi());
+//				ps.setInt(2, equipe.getIdEquipe());
+//				ps.setInt(3, 1);
+//				ps.execute();
+//				ps.close();
+//			}
 
 			BDD.getConnexion().commit();
 			return true;
@@ -153,7 +160,7 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 			ps.setString(2, tournoi.getNotoriete().getLibelle());
 			ps.setLong(3, tournoi.getDateDebut());
 			ps.setLong(4, tournoi.getDateFin());
-			ps.setBoolean(5, tournoi.isEstCloture());
+			ps.setBoolean(5, tournoi.getEstCloture());
 			// ps.setString(6, tournoi.getIdentifiant());
 			// ps.setString(7, tournoi.getMotDePasse());
 			ps.setInt(8, tournoi.getIdTournoi());
@@ -259,7 +266,7 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 
     public List<Tournoi> getParEstCloture(boolean cloture) throws Exception {
         return this.getTout().stream()
-                .filter(t -> t.isEstCloture() == cloture)
+                .filter(t -> t.getEstCloture() == cloture)
                 .collect(Collectors.toList());
     }
 

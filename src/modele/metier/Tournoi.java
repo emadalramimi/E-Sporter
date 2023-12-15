@@ -163,7 +163,7 @@ public class Tournoi implements Utilisateur {
 	/**
 	 * @return EstCloturee
 	 */
-	public boolean isEstCloture() {
+	public boolean getEstCloture() {
 		return estCloture;
 	}
 
@@ -263,7 +263,7 @@ public class Tournoi implements Utilisateur {
 	 	    && this.notoriete.equals(tournoi.getNotoriete())
 	 	    && this.identifiant.equals(tournoi.getIdentifiant())
 	 	    && this.motDePasse.equals(tournoi.getMotDePasse())
-	 	    && this.estCloture == tournoi.isEstCloture()
+	 	    && this.estCloture == tournoi.getEstCloture()
 	 	    && this.equipes.equals(tournoi.getEquipes())
 	 	    && this.arbitres.equals(tournoi.getArbitres());
 	}

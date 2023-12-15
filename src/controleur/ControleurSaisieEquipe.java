@@ -9,7 +9,6 @@ import java.util.Optional;
 import javax.swing.JButton;
 
 import modele.ModeleEquipe;
-import modele.ModeleJoueur;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
 import vue.VueEquipes;
@@ -23,7 +22,6 @@ public class ControleurSaisieEquipe implements ActionListener {
 	private VueSaisieEquipe vueSaisieEquipe;
 	private VueEquipes vueEquipes;
 	private ModeleEquipe modeleEquipe;
-	private ModeleJoueur modeleJoueur;
 	private Optional<Equipe> equipeOptionnel;
 	
 	/**
@@ -38,7 +36,6 @@ public class ControleurSaisieEquipe implements ActionListener {
 		this.vueEquipes = vueEquipes;
 		this.equipeOptionnel = equipeOptionnel;
 		this.modeleEquipe = new ModeleEquipe();
-		this.modeleJoueur = new ModeleJoueur();
 	}
 
 	/**

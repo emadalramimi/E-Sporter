@@ -10,7 +10,6 @@ import org.jdatepicker.impl.UtilDateModel;
 
 import controleur.ControleurSaisieTournoi;
 import modele.metier.Arbitre;
-import modele.metier.Equipe;
 import modele.metier.Tournoi.Notoriete;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
@@ -52,13 +51,9 @@ public class VueSaisieTournoi extends JFrameTheme {
 
 	private JPanel contentPane;
 	
-	private JList<Equipe> listeEquipes;
 	private JList<Arbitre> listeArbitres;
 	
-	private DefaultListModel<Equipe> listModelEquipes;
 	private DefaultListModel<Arbitre> listModelArbitres;
-	
-	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipe;
 	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiArbitre;
 	private JTextFieldTheme txtNom;
 	private JTextFieldTheme txtIdentifiantArbitres;
@@ -75,7 +70,6 @@ public class VueSaisieTournoi extends JFrameTheme {
 	public VueSaisieTournoi(VueTournois vueTournois) {
 		ControleurSaisieTournoi controleur = new ControleurSaisieTournoi(this, vueTournois);
 		
-		this.listModelEquipes = new DefaultListModel<>();
 		this.listModelArbitres = new DefaultListModel<>();
 
         Properties properties = new Properties();
@@ -318,23 +312,6 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelBtn.setBackground(CharteGraphique.FOND);
 		panelEquipes.add(panelBtn, BorderLayout.SOUTH);
 		
-		JButtonTheme btnAjouterEquipe = new JButtonTheme(JButtonTheme.Types.PRIMAIRE,"Ajouter une équipe");
-		btnAjouterEquipe.addActionListener(controleur);
-		panelBtn.add(btnAjouterEquipe);
-		
-		JScrollPane scrollPaneListeEquipes = new JScrollPane();
-		scrollPaneListeEquipes.setBorder(null);
-		scrollPaneListeEquipes.setBackground(CharteGraphique.FOND_SECONDAIRE);
-		panelEquipes.add(scrollPaneListeEquipes, BorderLayout.CENTER);
-		
-		listeEquipes = new JList<>(listModelEquipes);
-		listeEquipes.setCellRenderer(new ListCellRenderer());
-		listeEquipes.addListSelectionListener(controleur);
-		listeEquipes.setBackground(CharteGraphique.FOND_SECONDAIRE);
-		listeEquipes.setForeground(CharteGraphique.TEXTE);
-		listeEquipes.setFont(CharteGraphique.getPolice(16, false));
-		scrollPaneListeEquipes.setViewportView(listeEquipes);
-		
 		JPanel panelArbitres = new JPanel();
 		panelArbitres.setBorder(new EmptyBorder(5, 0, 0, 0));
 		panelArbitres.setBackground(CharteGraphique.FOND);
@@ -363,7 +340,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		listeArbitres.setBackground(CharteGraphique.FOND_SECONDAIRE);
 		listeArbitres.setForeground(CharteGraphique.TEXTE);
 		listeArbitres.setFont(CharteGraphique.getPolice(16, false));
-		listeArbitres.setCellRenderer(new ListCellRenderer());
+		listeArbitres.setCellRenderer(new ArbitreListCellRenderer());
 		listeArbitres.addListSelectionListener(controleur);
 		scrollPaneListeArbitre.setViewportView(listeArbitres);
 		
@@ -391,13 +368,11 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelTitre.add(lblTitre);
 	}
 	
-	private class ListCellRenderer extends DefaultListCellRenderer {
+	private class ArbitreListCellRenderer extends DefaultListCellRenderer {
 	    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 	        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-	        if(value instanceof Equipe) {
-	        	this.setText(((Equipe) value).getNom());
-	        } else if(value instanceof Arbitre) {
+	        if(value instanceof Arbitre) {
 	        	Arbitre arbitre = (Arbitre) value;
 	        	this.setText(arbitre.getNom() + " " + arbitre.getPrenom());
 	        }
@@ -450,7 +425,6 @@ public class VueSaisieTournoi extends JFrameTheme {
 	    long timestamp = calendar.getTimeInMillis() / 1000;
 	    
 		// Retourner le timestamp correspondant à la date et l'heure de début en secondes
-		System.out.println(timestamp);
 	    return timestamp;
 	}
 
@@ -489,18 +463,6 @@ public class VueSaisieTournoi extends JFrameTheme {
 		return Notoriete.valueOfLibelle((String) this.cboxNotoriete.getSelectedItem());
 	}
 	
-	public void afficherVueSaisieTournoiEquipe(Equipe[] equipes) {
-		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
-        if (this.vueSaisieTournoiEquipe == null || !this.vueSaisieTournoiEquipe.isVisible()) {
-        	this.vueSaisieTournoiEquipe = new VueSaisieTournoiEquipeArbitre(VueSaisieTournoiEquipeArbitre.Type.EQUIPE, this, equipes);
-        	this.ajouterFenetreEnfant(this.vueSaisieTournoiEquipe);
-        	this.vueSaisieTournoiEquipe.setLocationRelativeTo(this);
-        	this.vueSaisieTournoiEquipe.setVisible(true);
-        } else {
-        	this.vueSaisieTournoiEquipe.toFront();
-        }
-	}
-	
 	public void afficherVueSaisieTournoiArbitre(Arbitre[] arbitres) {
 		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
         if (this.vueSaisieTournoiArbitre == null || !this.vueSaisieTournoiArbitre.isVisible()) {
@@ -513,16 +475,6 @@ public class VueSaisieTournoi extends JFrameTheme {
         }
 	}
 	
-	public void ajouterEquipe(Equipe equipe) {
-		if(!this.listModelEquipes.contains(equipe)) {
-			this.listModelEquipes.addElement(equipe);
-		}
-	}
-	
-	public void supprimerEquipe(Equipe equipe) {
-		this.listModelEquipes.removeElement(equipe);
-	}
-	
 	public void ajouterArbitre(Arbitre arbitre) {
 		if(!this.listModelArbitres.contains(arbitre)) {
 			this.listModelArbitres.addElement(arbitre);
@@ -533,20 +485,10 @@ public class VueSaisieTournoi extends JFrameTheme {
 		this.listModelArbitres.removeElement(arbitre);
 	}
 	
-	public boolean estListeEquipes(JList<?> liste) {
-		return liste.equals(this.listeEquipes);
-	}
+	
 	
 	public boolean estListeArbitres(JList<?> liste) {
 		return liste.equals(this.listeArbitres);
-	}
-	
-	public List<Equipe> getEquipes() {
-	    List<Equipe> equipes = new ArrayList<>();
-	    for (int i = 0; i < listModelEquipes.size(); i++) {
-	        equipes.add(listModelEquipes.getElementAt(i));
-	    }
-	    return equipes;
 	}
 	
 	public List<Arbitre> getArbitres() {

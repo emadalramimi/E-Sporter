@@ -4,25 +4,45 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controleur.ControleurInscriptionEquipesTournoi;
+import modele.metier.Equipe;
+import vue.theme.CharteGraphique;
 import vue.theme.JFrameTheme;
+import vue.theme.JOptionPaneTheme;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VueInscriptionEquipesTournoi extends JFrameTheme {
 
 	private JPanel contentPane;
+	
+	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipe;
+	
+	private DefaultListModel<Equipe> listModelEquipes;
+	private JList<Equipe> listeEquipes;
 
-	public VueInscriptionEquipesTournoi() {
+	public VueInscriptionEquipesTournoi(VueTournois vueTournois) {
+		ControleurInscriptionEquipesTournoi controleur = new ControleurInscriptionEquipesTournoi(this, vueTournois);
+		this.listModelEquipes = new DefaultListModel<>();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 602, 384);
-		contentPane = new JPanel();
+		
+		contentPane = super.getContentPane();
 		contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
 
 		setContentPane(contentPane);
@@ -35,8 +55,13 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		JScrollPane scrollPane = new JScrollPane();
 		panelListe.add(scrollPane, BorderLayout.CENTER);
 		
-		JList listEquipes = new JList();
-		scrollPane.setViewportView(listEquipes);
+		listeEquipes = new JList<>();
+		listeEquipes.setCellRenderer(new EquipeListCellRenderer());
+		listeEquipes.addListSelectionListener(controleur);
+		listeEquipes.setBackground(CharteGraphique.FOND_SECONDAIRE);
+		listeEquipes.setForeground(CharteGraphique.TEXTE);
+		listeEquipes.setFont(CharteGraphique.getPolice(16, false));
+		scrollPane.setViewportView(listeEquipes);
 		
 		JPanel panelHeader = new JPanel();
 		contentPane.add(panelHeader, BorderLayout.NORTH);
@@ -69,6 +94,66 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		panelHeader.add(btnInscrireEquipe, BorderLayout.EAST);
 	}
 	
+	private class EquipeListCellRenderer extends DefaultListCellRenderer {
+	    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
+	        if(value instanceof Equipe) {
+	        	this.setText(((Equipe) value).getNom());
+	        }
+
+	        return this;
+	    }
+	}
+	
+	public boolean estListeEquipes(JList<?> liste) {
+		return liste.equals(this.listeEquipes);
+	}
+	
+	public void ajouterEquipe(Equipe equipe) {
+		if(!this.listModelEquipes.contains(equipe)) {
+			this.listModelEquipes.addElement(equipe);
+		}
+	}
+	
+	public void supprimerEquipe(Equipe equipe) {
+		this.listModelEquipes.removeElement(equipe);
+	}
+	
+	public List<Equipe> getEquipes() {
+	    List<Equipe> equipes = new ArrayList<>();
+	    for (int i = 0; i < listModelEquipes.size(); i++) {
+	        equipes.add(listModelEquipes.getElementAt(i));
+	    }
+	    return equipes;
+	}
+	
+	public boolean afficherConfirmationSuppression(String message) {
+		Object[] options = {"Oui", "Annuler"};
+        int choix = JOptionPaneTheme.showOptionDialog(
+	    	null,
+	    	message,
+	    	"Confirmation",
+	        JOptionPane.DEFAULT_OPTION,
+	        JOptionPane.QUESTION_MESSAGE,
+	        null,
+	        options,
+	        options[0]
+        );
+        
+        return choix == 0;
+    }
+	
+	public void afficherVueSaisieTournoiEquipe(Equipe[] equipes) {
+		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
+        if (this.vueSaisieTournoiEquipe == null || !this.vueSaisieTournoiEquipe.isVisible()) {
+        	this.vueSaisieTournoiEquipe = new VueSaisieTournoiEquipeArbitre(VueSaisieTournoiEquipeArbitre.Type.EQUIPE, this, equipes);
+        	this.ajouterFenetreEnfant(this.vueSaisieTournoiEquipe);
+        	this.vueSaisieTournoiEquipe.setLocationRelativeTo(this);
+        	this.vueSaisieTournoiEquipe.setVisible(true);
+        } else {
+        	this.vueSaisieTournoiEquipe.toFront();
+        }
+	}
 
 }

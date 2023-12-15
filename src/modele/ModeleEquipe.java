@@ -158,7 +158,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 		
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set nom = ?, pays = ?, worldRanking = ? where idEquipe = ?");
-			// On ne peut pas modify the classement and the saison of an equipe
+			// On ne peut pas modifier le classement et la saison d'une équipe
 			ps.setString(1, equipe.getNom());
 			ps.setString(2, equipe.getPays());
 			ps.setInt(3, equipe.getWorldRanking());
