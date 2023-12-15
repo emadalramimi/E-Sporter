@@ -17,7 +17,7 @@ import java.util.stream.StreamSupport;
 import modele.metier.Equipe;
 import modele.metier.Rencontre;
 
-public class ModeleRencontre implements DAO<Rencontre, Integer> {
+public class ModeleRencontre extends DAO<Rencontre, Integer> {
 
 	private ModeleJoueur modeleJoueur;
 

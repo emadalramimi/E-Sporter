@@ -15,7 +15,7 @@ import java.util.stream.StreamSupport;
 
 import modele.metier.Administrateur;
 
-public class ModeleAdministrateur implements DAO<Administrateur, Integer> {
+public class ModeleAdministrateur extends DAO<Administrateur, Integer> {
 
 	/**
 	 * @return Liste de tous les administrateurs

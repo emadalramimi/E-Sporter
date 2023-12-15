@@ -433,8 +433,8 @@ public class VueSaisieTournoi extends JFrameTheme {
 	    Date dateFin = this.modelDateFin.getValue();
 	    
 	    // Récupérer l'heure depuis les spinners
-	    int heure = (int) spinner.getValue();
-	    int minute = (int) spinner_1.getValue();
+	    int heure = (int) spinner1.getValue();
+	    int minute = (int) spinner_11.getValue();
 	    
 	    // Combiner la date et l'heure pour former un objet Calendar
 	    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
@@ -466,7 +466,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 	public void afficherVueSaisieTournoiArbitre(Arbitre[] arbitres) {
 		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
         if (this.vueSaisieTournoiArbitre == null || !this.vueSaisieTournoiArbitre.isVisible()) {
-        	this.vueSaisieTournoiArbitre = new VueSaisieTournoiEquipeArbitre(VueSaisieTournoiEquipeArbitre.Type.ARBITRE, this, arbitres);
+        	this.vueSaisieTournoiArbitre = new VueSaisieTournoiEquipeArbitre(this, arbitres);
         	this.ajouterFenetreEnfant(this.vueSaisieTournoiArbitre);
         	this.vueSaisieTournoiArbitre.setLocationRelativeTo(this);
         	this.vueSaisieTournoiArbitre.setVisible(true);
@@ -484,8 +484,6 @@ public class VueSaisieTournoi extends JFrameTheme {
 	public void supprimerArbitre(Arbitre arbitre) {
 		this.listModelArbitres.removeElement(arbitre);
 	}
-	
-	
 	
 	public boolean estListeArbitres(JList<?> liste) {
 		return liste.equals(this.listeArbitres);
