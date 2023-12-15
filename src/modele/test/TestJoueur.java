@@ -12,11 +12,13 @@ public class TestJoueur {
 	
 	private Joueur joueur1;
 	private Joueur joueur2;
+	private Joueur joueur3;
 	
 	@Before
     public void setUp() {
 		joueur1 = new Joueur(1, "joueur1", 2);
 		joueur2 = new Joueur(2, "joueur2", 2);
+		joueur3 = new Joueur("joueur3");
 	}
 	
 	@Test
