@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Modèle métier Tournoi
  */
-public class Tournoi implements Utilisateur {
+public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	
 	//TODO ajouter une méthode à l'énum permettant de get le multiplicateur de pts
 	public enum Notoriete {
@@ -54,7 +54,6 @@ public class Tournoi implements Utilisateur {
 	 * @param notoriete
 	 * @param dateDebut
 	 * @param dateFin
-	 * @param estCloture
 	 * @param identifiant
 	 * @param motDePasse
 	 * @param equipes
@@ -73,15 +72,13 @@ public class Tournoi implements Utilisateur {
 		this.arbitres = arbitres;
 	}
 	
-	public Tournoi(String nomTournoi, Notoriete notoriete, long dateDebut, long dateFin, boolean estCloture, String identifiant, String motDePasse, List<Equipe> equipes, List<Arbitre> arbitres) {
+	public Tournoi(String nomTournoi, Notoriete notoriete, long dateDebut, long dateFin, String identifiant, String motDePasse, List<Arbitre> arbitres) {
 		this.nomTournoi = nomTournoi;
 		this.notoriete = notoriete;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
-		this.estCloture = estCloture;
 		this.identifiant = identifiant;
 		this.motDePasse = motDePasse;
-		this.equipes = equipes;
 		this.arbitres = arbitres;
 	}
 
@@ -274,6 +271,42 @@ public class Tournoi implements Utilisateur {
 				+ ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", estCloture=" + estCloture + ", identifiant="
 				+ identifiant + ", motDePasse=" + motDePasse + ", poules=" + poules + ", equipes=" + equipes
 				+ ", arbitres=" + arbitres + "]";
+	}
+
+	@Override
+	public int compareTo(Tournoi tournoi) {
+		// Vérifie si le tournoi actuel est clos et que la date de fin est passée
+		boolean thisClosEtTermine = System.currentTimeMillis() / 1000 < this.getDateFin() && this.getEstCloture();
+
+		// Vérifie si le tournoi fourni est clos et terminé
+		boolean autreClosEtTermine = System.currentTimeMillis() / 1000 < tournoi.getDateFin() && tournoi.getEstCloture();
+
+		// Tout d'abord, comparaison basée sur le statut clos et terminé des tournois
+		if (thisClosEtTermine && autreClosEtTermine) {
+			// Si les deux tournois sont clos et terminés, comparer par date de début et nom
+			if (this.getDateDebut() < tournoi.getDateDebut()) {
+				return -1;
+			} else if (this.getDateDebut() == tournoi.getDateDebut()) {
+				return this.getNomTournoi().compareTo(tournoi.getNomTournoi());
+			} else {
+				return 1;
+			}
+		} else if (thisClosEtTermine) {
+			// Si seul le tournoi actuel est clos et terminé, il devrait venir en premier
+			return -1;
+		} else if (autreClosEtTermine) {
+			// Si seul le tournoi fourni est clos et terminé, il devrait venir en premier
+			return 1;
+		} else {
+			// Si aucun des tournois n'est clos et terminé, comparer par date de début et nom
+			if (this.getDateDebut() < tournoi.getDateDebut()) {
+				return -1;
+			} else if (this.getDateDebut() == tournoi.getDateDebut()) {
+				return this.getNomTournoi().compareTo(tournoi.getNomTournoi());
+			} else {
+				return 1;
+			}
+		}
 	}
 	
 }
