@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
     TestEquipe.class,
     TestJoueur.class,
-    TestUtilisateur.class,
+    TestModeleAdministrateur.class,
+    TestModeleUtilisateur.class,
     TestModeleEquipe.class,
     TestModeleJoueur.class
 })

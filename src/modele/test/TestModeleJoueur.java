@@ -11,7 +11,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import modele.ModeleEquipe;
 import modele.ModeleJoueur;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
@@ -19,7 +18,6 @@ import modele.metier.Joueur;
 public class TestModeleJoueur {
 	
 	private ModeleJoueur modele;
-	private ModeleEquipe modeleEquipe;
 	
 	private Joueur joueur;
 	private Joueur joueurModif;
@@ -30,7 +28,6 @@ public class TestModeleJoueur {
 	@Before
 	public void setUp() throws Exception {
 		modele = new ModeleJoueur();
-		modeleEquipe = new ModeleEquipe();
 		joueur = new Joueur(50, "joueur", 1);
 		joueurModif = new Joueur(50, "joueurModif", 1);
 		equipe = new Equipe(50, "Equipe", "Canada", 2, 2, "Saison 2023", joueurs);
@@ -108,7 +105,7 @@ public class TestModeleJoueur {
 	
 	@After
     public void tearsDown() throws Exception {
-        List<Integer> idsAGarderJoueurs = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ,20);
+        List<Integer> idsAGarderJoueurs = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
         
         modele.getTout().stream()
                 .filter(j -> !idsAGarderJoueurs.contains(j.getIdJoueur()))
