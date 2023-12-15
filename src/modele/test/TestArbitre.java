@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import modele.metier.Arbitre;
 
-public class testArbitre {
+public class TestArbitre {
 
 	private Arbitre arbitre;
 	
