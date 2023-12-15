@@ -65,6 +65,7 @@ public class TestModeleEquipe {
 		assertEquals(equipe.getWorldRanking(), 1000);
 	}
 	
+	//TODO Liam fait ça stp
 	@Test
 	public void testAjouterSaisonDerniere() throws Exception {
 		ModeleJoueur modeleJoueur = new ModeleJoueur();
