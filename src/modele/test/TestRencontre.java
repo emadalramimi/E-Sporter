@@ -1,22 +1,39 @@
 package modele.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertArrayEquals;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import modele.metier.Equipe;
+import modele.metier.Joueur;
 import modele.metier.Rencontre;
 
 public class TestRencontre {
 
     private Rencontre rencontre1;
     private Rencontre rencontre2;
+    private List<Joueur> listJoueurs;
 
     @Before
     public void setUp() {
-        Equipe equipeA = new Equipe(1, "Equipe1", "Canada", 2, 2, "Saison 2023");
-        Equipe equipeB = new Equipe(2, "Equipe2", "Canada", 2, 2, "Saison 2023");
+    	listJoueurs = new ArrayList<>(Arrays.asList(
+			    new Joueur(1, "Joueur1", 2),
+			    new Joueur(2, "Joueur2", 2),
+			    new Joueur(3, "Joueur3", 2),
+			    new Joueur(4, "Joueur4", 2),
+			    new Joueur(5, "Joueur5", 2)
+			));
+    	
+        Equipe equipeA = new Equipe("Equipe1", "Canada", listJoueurs);
+        Equipe equipeB = new Equipe("Equipe2", "France", listJoueurs);
         Equipe[] equipes1 = {equipeA, equipeB};
 
         rencontre1 = new Rencontre(1, 100, 200, 10, equipes1);
@@ -97,8 +114,8 @@ public class TestRencontre {
 
     @Test
     public void testSetEquipes() {
-        Equipe equipeC = new Equipe(3, "Equipe1", "Canada", 2, 2, "Saison 2023");
-        Equipe equipeD = new Equipe(4, "Equipe1", "Canada", 2, 2, "Saison 2023");
+        Equipe equipeC = new Equipe(3, "Equipe1", "Canada", 2, 2, "Saison 2023",listJoueurs);
+        Equipe equipeD = new Equipe(4, "Equipe1", "Canada", 2, 2, "Saison 2023",listJoueurs);
         Equipe[] equipes2 = {equipeC, equipeD};
         rencontre1.setEquipes(equipes2);
         assertArrayEquals(rencontre1.getEquipes(), equipes2);
