@@ -1,18 +1,18 @@
 package vue;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
 import modele.metier.Arbitre;
 import modele.metier.Equipe;
 import modele.metier.Tournoi;
+import vue.theme.CharteGraphique;
+import vue.theme.JButtonTheme;
+import vue.theme.JComboBoxTheme;
 import vue.theme.JFrameTheme;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
 import java.awt.GridBagLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -27,11 +27,10 @@ import controleur.ControleurSaisieTournoiEquipeArbitre;
 public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 
 	private JPanel contentPane;
-	private JComboBox<?> comboBox;
+	private JComboBoxTheme<?> comboBox;
 	private Type type;
 	private Equipe[] equipes;
 	private Arbitre[] arbitres;
-	private Tournoi tournoi;
 	private ActionListener controleur;
 	
 	public enum Type {
@@ -54,39 +53,42 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	}
 	
 	private void afficher() {
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrameTheme.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 242, 138);
 
 		contentPane = super.getContentPane();
+		// TODO Border interne
 		
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0};
 		contentPane.setLayout(gbl_contentPane);
 
-		JLabel lblNewLabel = null;
+		JLabel lblTitre = null;
 		switch(this.type) {
 		case EQUIPE:
-			lblNewLabel = new JLabel("Sélectionner une équipe");
+			lblTitre = new JLabel("Sélectionner une équipe");
 			break;
 		case ARBITRE:
-			lblNewLabel = new JLabel("Sélectionner un arbitre");
+			lblTitre = new JLabel("Sélectionner un arbitre");
 			break;
 		}
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.gridwidth = 2;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 10, 0);
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 0;
-		contentPane.add(lblNewLabel, gbc_lblNewLabel);
+		lblTitre.setForeground(CharteGraphique.TEXTE);
+		lblTitre.setFont(CharteGraphique.getPolice(19, true));
+		lblTitre.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbc_titre = new GridBagConstraints();
+		gbc_titre.gridwidth = 2;
+		gbc_titre.insets = new Insets(0, 0, 10, 0);
+		gbc_titre.gridx = 0;
+		gbc_titre.gridy = 0;
+		contentPane.add(lblTitre, gbc_titre);
 		
 		switch(this.type) {
 		case EQUIPE:
-			comboBox = new JComboBox<Equipe>(equipes);
+			comboBox = new JComboBoxTheme<Equipe>(equipes);
 			break;
 		case ARBITRE:
-			comboBox = new JComboBox<Arbitre>(arbitres);
+			comboBox = new JComboBoxTheme<Arbitre>(arbitres);
 			break;
 		}
 		comboBox.setRenderer(new EquipeArbitreComboBoxRenderer());
@@ -97,28 +99,28 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 		gbc_comboBox.gridy = 1;
 		contentPane.add(comboBox, gbc_comboBox);
 		
-		JButton btnNewButton_1 = new JButton("Annuler");
-		btnNewButton_1.addActionListener(controleur);
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton_1.gridx = 0;
-		gbc_btnNewButton_1.gridy = 2;
-		contentPane.add(btnNewButton_1, gbc_btnNewButton_1);
+		JButtonTheme btnAnnuler = new JButtonTheme(JButtonTheme.Types.SECONDAIRE,"Annuler");
+		btnAnnuler.addActionListener(controleur);
+		GridBagConstraints gbc_buttonAnnuler = new GridBagConstraints();
+		gbc_buttonAnnuler.insets = new Insets(0, 0, 0, 5);
+		gbc_buttonAnnuler.gridx = 0;
+		gbc_buttonAnnuler.gridy = 2;
+		contentPane.add(btnAnnuler, gbc_buttonAnnuler);
 		
-		JButton btnNewButton = null;
+		JButtonTheme btnAjouter = null;
 		switch(this.type) {
 		case EQUIPE:
-			btnNewButton = new JButton("Ajouter l'équipe");
+			btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter l'équipe");
 			break;
 		case ARBITRE:
-			btnNewButton = new JButton("Ajouter l'arbitre");
+			btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE,"Ajouter l'arbitre");
 			break;
 		}
-		btnNewButton.addActionListener(controleur);
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 2;
-		contentPane.add(btnNewButton, gbc_btnNewButton);
+		btnAjouter.addActionListener(controleur);
+		GridBagConstraints gbc_btnAjouter = new GridBagConstraints();
+		gbc_btnAjouter.gridx = 1;
+		gbc_btnAjouter.gridy = 2;
+		contentPane.add(btnAjouter, gbc_btnAjouter);
 	}
 	
 	private class EquipeArbitreComboBoxRenderer extends JLabel implements ListCellRenderer<Object> {

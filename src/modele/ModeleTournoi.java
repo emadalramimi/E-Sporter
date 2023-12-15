@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import modele.metier.Equipe;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
