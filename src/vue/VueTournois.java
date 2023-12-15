@@ -13,6 +13,7 @@ import vue.theme.JTextFieldTheme;
 import vue.theme.TableButtonsCellEditor;
 import vue.theme.TableButtonsPanel;
 import vue.theme.JButtonTheme.Types;
+import vue.theme.JComboBoxTheme;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -20,11 +21,14 @@ import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.TimeZone;
@@ -46,6 +50,7 @@ import javax.swing.table.TableColumn;
 
 import controleur.ControleurTournois;
 import modele.metier.Tournoi;
+import modele.metier.Tournoi.Notoriete;
 
 public class VueTournois extends JFrameTheme {
 	
@@ -60,10 +65,11 @@ public class VueTournois extends JFrameTheme {
     private JTextFieldTheme txtRecherche;
     private JButtonTheme btnRecherche;
 	private JScrollPaneTheme scrollPaneEquipes;
-
 	private ControleurTournois controleur;
 	private VueSaisieTournoi vueSaisieTournoi;
 	private VueBase vueBase;
+	private JComboBoxTheme<String> cboxNotoriete;
+	private JComboBoxTheme<String> cboxStatuts;
 	
 	public void afficherVueTournois(JPanel contentPane, VueBase vueBase) {
 		this.controleur = new ControleurTournois(this);
@@ -124,15 +130,37 @@ public class VueTournois extends JFrameTheme {
 		panelTableauFiltres.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		
 		// Champ de recherche
+		JPanel panelRecherche = new JPanel();
+		panelRecherche.setBackground(CharteGraphique.PRIMAIRE);
+		panelRecherche.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		txtRecherche = new JTextFieldTheme(20);
 		txtRecherche.addKeyListener(controleur);
 		txtRecherche.setColumns(20);
-		panelTableauFiltres.add(txtRecherche);
-		
+		panelRecherche.add(txtRecherche);
+
 		// Bouton de recherche
 		btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/actions/rechercher.png")));
 		btnRecherche.addActionListener(controleur);
-		panelTableauFiltres.add(btnRecherche);
+		panelRecherche.add(btnRecherche);
+		panelTableauFiltres.add(panelRecherche);
+		
+		List<String> notorietes = new ArrayList<>();
+		for (Notoriete notoriete : Notoriete.values()) {
+			notorietes.add(notoriete.getLibelle());
+		}
+		
+		// Ajouter comboBox filtre pour choisir une notoriete
+		cboxNotoriete = new JComboBoxTheme<>(notorietes.toArray(new String[0]));
+		cboxNotoriete.setPreferredSize(new Dimension(200, 45));
+
+		// Ajouter comboBox filtre pour choisir un statut
+		String[] items = {"En création", "Clôturé", "fermé"};
+		cboxStatuts = new JComboBoxTheme<>(items);
+		cboxStatuts.setPreferredSize(new Dimension(200, 45));
+
+		// Ajouter des filtres
+		panelTableauFiltres.add(cboxNotoriete);
+		panelTableauFiltres.add(cboxStatuts);
 		
 		// ScrollPane englobant le tableau
 		scrollPaneEquipes = new JScrollPaneTheme();
@@ -318,6 +346,14 @@ public class VueTournois extends JFrameTheme {
 
 	    // Mise à jour du tableau
 	    this.table.setModel(this.model);
+	}
+
+	public String getSelectedNotoriete() {
+		return (String) cboxNotoriete.getSelectedItem();
+	}
+	
+	public String getSelectedStatut() {
+		return (String) cboxStatuts.getSelectedItem();
 	}
 	
 }
