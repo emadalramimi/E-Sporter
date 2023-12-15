@@ -16,8 +16,9 @@ import java.util.stream.StreamSupport;
 
 import modele.metier.Equipe;
 import modele.metier.Joueur;
+import modele.metier.Tournoi;
 
-public class ModeleEquipe implements DAO<Equipe, Integer> {
+public class ModeleEquipe extends DAO<Equipe, Integer> {
 	
 	private ModeleJoueur modeleJoueur;
 	
@@ -317,6 +318,53 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+
+	public void inscrireEquipe(Equipe equipe, Tournoi tournoi) throws Exception {
+		if (this.getEquipesTournoi(tournoi.getIdTournoi()).contains(equipe)) {
+			throw new IllegalStateException("Cette équipe est déjà inscrite à ce tournoi");
+		}
+		
+		try {
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into participer values (?, ?, ?)");
+			ps.setInt(1, tournoi.getIdTournoi());
+			ps.setInt(2, equipe.getIdEquipe());
+			ps.setInt(3, 1000); // Classement
+			ps.execute();
+			ps.close();
+
+			BDD.getConnexion().commit();
+		} catch (SQLException e) {
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public void desinscrireEquipe(Equipe equipe, Tournoi tournoi) throws Exception {
+		if (!this.getEquipesTournoi(tournoi.getIdTournoi()).contains(equipe)) {
+			throw new IllegalStateException("Cette équipe n'est pas inscrite à ce tournoi");
+		}
+
+		try {
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from participer where idTournoi = ? and idEquipe = ?");
+			ps.setInt(1, tournoi.getIdTournoi());
+			ps.setInt(2, equipe.getIdEquipe());
+			ps.execute();
+			ps.close();
+
+			BDD.getConnexion().commit();
+		} catch (SQLException e) {
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
 	}
 	
