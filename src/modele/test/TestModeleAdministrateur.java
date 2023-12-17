@@ -80,12 +80,23 @@ public class TestModeleAdministrateur {
 	@Test
 	public void testGetParId() throws Exception {
 		modeleAdministrateur.ajouter(adminToAdd);
-	    Optional<Administrateur> retrievedJoueur = modeleAdministrateur.getParId(adminToAdd.getIdAdministrateur());
-	    assertEquals(adminToAdd.getIdAdministrateur(),((retrievedJoueur).get().getIdAdministrateur()));
-	    assertEquals(adminToAdd.getIdentifiant(),((retrievedJoueur).get().getIdentifiant()));
-	    assertEquals(adminToAdd.getNom(),((retrievedJoueur).get().getNom()));
-	    assertEquals(adminToAdd.getPrenom(),((retrievedJoueur).get().getPrenom()));
-	    assertEquals(adminToAdd.getRole(),((retrievedJoueur).get().getRole()));
+	    Administrateur retrievedAdmin= modeleAdministrateur.getParId(adminToAdd.getIdAdministrateur()).get();
+	    assertEquals(adminToAdd.getIdAdministrateur(),retrievedAdmin.getIdAdministrateur());
+	    assertEquals(adminToAdd.getIdentifiant(),retrievedAdmin.getIdentifiant());
+	    assertEquals(adminToAdd.getNom(),retrievedAdmin.getNom());
+	    assertEquals(adminToAdd.getPrenom(),retrievedAdmin.getPrenom());
+	    assertEquals(adminToAdd.getRole(),retrievedAdmin.getRole());
+	}
+	
+	@Test
+	public void testGetParIdentifiant() throws Exception {
+		modeleAdministrateur.ajouter(adminToAdd);
+	    Administrateur retrievedAdmin= modeleAdministrateur.getParIdentifiant(adminToAdd.getIdentifiant()).get();
+	    assertEquals(adminToAdd.getIdAdministrateur(),retrievedAdmin.getIdAdministrateur());
+	    assertEquals(adminToAdd.getIdentifiant(),retrievedAdmin.getIdentifiant());
+	    assertEquals(adminToAdd.getNom(),retrievedAdmin.getNom());
+	    assertEquals(adminToAdd.getPrenom(),retrievedAdmin.getPrenom());
+	    assertEquals(adminToAdd.getRole(),retrievedAdmin.getRole());
 	}
     
     @After
