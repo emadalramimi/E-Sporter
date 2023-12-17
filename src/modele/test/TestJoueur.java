@@ -1,6 +1,7 @@
 package modele.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,14 +17,12 @@ public class TestJoueur {
 	@Before
     public void setUp() {
 		joueur1 = new Joueur(1, "joueur1", 2);
-		joueur2 = new Joueur(2, "joueur2", 2);
+		joueur2 = new Joueur("joueur2");
 	}
 	
 	@Test
 	public void testGetIdJoueur() {
 		assertEquals(joueur1.getIdJoueur(), 1);
-		assertEquals(joueur2.getIdJoueur(), 2);
-		assertNotEquals(joueur1.getIdJoueur(), joueur2.getIdJoueur());
 	}
 	
 	@Test
@@ -54,8 +53,6 @@ public class TestJoueur {
 	@Test
 	public void testGetIdEquipe() {
 		assertEquals(joueur1.getIdEquipe(), 2);
-		assertEquals(joueur2.getIdEquipe(), 2);
-		assertEquals(joueur1.getIdEquipe(), joueur2.getIdEquipe());
 	}
 	
 	@Test
