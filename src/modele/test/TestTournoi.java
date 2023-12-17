@@ -53,7 +53,7 @@ public class TestTournoi {
 				new Poule(11, false, true, 10)
 			));
 		tournoi1.setPoules(poules);
-		tournoi2 = new Tournoi("Tournoi2", Notoriete.INTERNATIONAL, 101, 1001, false, "id", "mdp", equipes, arbitres);
+		tournoi2 = new Tournoi("Tournoi2", Notoriete.INTERNATIONAL, 101, 1001, "id", "mdp", arbitres);
     }
 	
 	@Test
