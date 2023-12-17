@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import modele.metier.Administrateur;
+import modele.metier.Utilisateur.Role;
 
 public class TestAdmin {
 	
@@ -27,18 +28,26 @@ public class TestAdmin {
 		assertEquals(admin.getIdentifiant(), "KNL");
 	}
 	
+	@Test
 	public void testSetMotDePasse() {
 		admin.setMotDePasse("0000");
 		assertEquals(admin.getMotDePasse(), "0000");
 	}
 	
+	@Test
 	public void testSetNom() {
 		admin.setNom("LeBlanc");
 		assertEquals(admin.getNom(), "LeBlanc");
 	}
 	
+	@Test
 	public void testSetPrenom() {
 		admin.setPrenom("Max");
 		assertEquals(admin.getPrenom(),"Max");
+	}
+	
+	@Test
+	public void testGetRole() {
+		assertEquals(admin.getRole(), Role.ADMINISTRATEUR);
 	}
 }
