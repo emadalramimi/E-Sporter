@@ -12,12 +12,15 @@ import javax.swing.JTextField;
 
 import modele.ModeleEquipe;
 import modele.ModeleJoueur;
+import modele.ModeleUtilisateur;
 import modele.metier.Equipe;
+import modele.metier.Utilisateur;
 import vue.VueEquipes;
 import vue.theme.JButtonTable;
 
 /**
- * Controleur de VueEquipes
+ * Contrôleur de la vue des équipes
+ * @see VueEquipes
  */
 public class ControleurEquipes extends KeyAdapter implements ActionListener {
 
@@ -61,6 +64,11 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 				this.vue.afficherVueJoueurs(this.modeleJoueur.getListeJoueursParId(idEquipe));
 				break;
 			case MODIFIER:
+				// Seul un administrateur peut modifier une équipe
+				if(ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ADMINISTRATEUR) {
+					this.vue.afficherPopupErreur("Seul un administrateur peut modifier une équipe.");
+					throw new RuntimeException("Droits insuffisants");
+				}
 				// Si équipe n'est pas trouvée
 				if (equipeOptionnel.orElse(null) == null) {
 					this.vue.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
@@ -75,6 +83,11 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 				this.vue.afficherVueSaisieEquipe(equipeOptionnel);
 				break;
 			case SUPPRIMER:
+				// Seul un administrateur peut supprimer une équipe
+				if(ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ADMINISTRATEUR) {
+					this.vue.afficherPopupErreur("Seul un administrateur peut supprimer une équipe.");
+					throw new RuntimeException("Droits insuffisants");
+				}
 				// Suppression d'une équipe
 				Equipe equipe = equipeOptionnel.orElse(null);
 				// Si équipe n'est pas trouvée
@@ -111,6 +124,12 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 			
 			// Si il s'agit du bouton ajouter
 			if(bouton.getText() == "Ajouter") {
+				// Seul un administrateur peut ajouter une équipe
+				if(ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ADMINISTRATEUR) {
+					this.vue.afficherPopupErreur("Seul un administrateur peut ajouter une équipe.");
+					throw new RuntimeException("Droits insuffisants");
+				}
+
 				// Ouverture de la fenêtre d'ajout d'équipe
 				this.vue.afficherVueSaisieEquipe(Optional.empty());
 			}
@@ -141,10 +160,12 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 			}
 			// Lorsqu'on supprime tous les caractères dans le champ de recherche, sortir de la recherche
 			else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-				if (requeteRecherche != null
-						&& requeteRecherche.length() == 1
-						|| txtRecherche.getSelectedText() != null
-								&& txtRecherche.getSelectedText().equals(requeteRecherche)) {
+				if (
+					requeteRecherche != null
+					&& requeteRecherche.length() == 1
+					|| txtRecherche.getSelectedText() != null
+					&& txtRecherche.getSelectedText().equals(requeteRecherche)
+				) {
 					this.rechercher("");
 				}
 			}
