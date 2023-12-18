@@ -126,11 +126,7 @@ public class Administrateur implements Utilisateur {
 			return false;
 		}
 		Administrateur admin = (Administrateur) o;
-		return this.idAdministrateur == admin.idAdministrateur 
-				&& this.nom == admin.nom
-				&& this.prenom == admin.prenom
-				&& this.identifiant == admin.identifiant
-				&& this.motDePasse == admin.motDePasse;
+		return this.idAdministrateur == admin.getIdAdministrateur();
 	}
 	
 	@Override
