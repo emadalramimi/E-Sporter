@@ -54,7 +54,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	
 	private void afficher() {
 		setDefaultCloseOperation(JFrameTheme.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 242, 138);
+		setBounds(100, 100, 300, 180);
 
 		contentPane = super.getContentPane();
 		// TODO Border interne

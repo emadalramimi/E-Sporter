@@ -64,28 +64,28 @@ public class ModelePoule extends DAO<Poule, Integer> {
 	/**
 	 * @return Retourne une poule depuis la BDD par sa clé primaire
 	 */
-	@Override
-	public Optional<Poule> getParId(Integer... idPoule) throws Exception {
-		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from poule where idPoule = ?");
-		ps.setInt(1, idPoule[0]);
-		
-		ResultSet rs = ps.executeQuery();
-		
-		// Création de poule si il existe
-		Poule poule = null;
-		if(rs.next()) {
-			poule = new Poule(
-				rs.getInt("idPoule"),
-				rs.getBoolean("estCloturee"),
-				rs.getBoolean("estFinale"),
-				rs.getInt("idTournoi"),
-				ModelePoule.this.modeleRencontre.getRencontresPoules(rs.getInt("idPoule"))
-            );
-		}	
-		rs.close();
-		ps.close();
-		return Optional.ofNullable(poule);
-	}
+//	@Override
+//	public Optional<Poule> getParId(Integer... idPoule) throws Exception {
+//		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from poule where idPoule = ?");
+//		ps.setInt(1, idPoule[0]);
+//		
+//		ResultSet rs = ps.executeQuery();
+//		
+//		// Création de poule si il existe
+//		Poule poule = null;
+//		if(rs.next()) {
+//			poule = new Poule(
+//				rs.getInt("idPoule"),
+//				rs.getBoolean("estCloturee"),
+//				rs.getBoolean("estFinale"),
+//				rs.getInt("idTournoi"),
+//				ModelePoule.this.modeleRencontre.getRencontresPoules(rs.getInt("idPoule"))
+//            );
+//		}	
+//		rs.close();
+//		ps.close();
+//		return Optional.ofNullable(poule);
+//	}
 
 	/**
 	 * Ajoute la poule dans la BDD
@@ -116,31 +116,11 @@ public class ModelePoule extends DAO<Poule, Integer> {
 			return false;
 		}
 	}
-
-	// /**
-	//  * Supprime la poule dans la BDD
-	//  * @return true si l'opération s'est bien déroulée, false sinon
-	//  */
-	// @Override
-	// public boolean supprimer(Poule poule) throws Exception {
-	// 	try {
-	// 		PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from poule where idPoule = ?");
-	// 		ps.setInt(1, poule.getIdPoule());
-	// 		ps.execute();
-			
-	// 		ps.close();
-	// 		BDD.getConnexion().commit();
-	// 		return true;
-	// 	} catch(SQLException e) {
-	// 		e.printStackTrace();
-	// 		return false;
-	// 	}
-	// }
 	
 	/**
 	 * @return le prochain identifiant unique de poule
 	 */
-	public int getNextValId() {
+	private int getNextValId() {
 		int nextVal = 0;
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idPoule");

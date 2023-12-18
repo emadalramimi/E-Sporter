@@ -66,29 +66,29 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 	/**
 	 * @return Retourne une rencontre depuis la BDD par sa clé primaire
 	 */
-	@Override
-	public Optional<Rencontre> getParId(Integer... idRencontre) throws Exception {
-		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from rencontre where idRencontre = ?");
-		
-		ps.setInt(1, idRencontre[0]);
-		
-		ResultSet rs = ps.executeQuery();
-		
-		// Création de rencontre si elle existe
-		Rencontre rencontre = null;
-		if(rs.next()) {		
-			rencontre = new Rencontre(
-				rs.getInt("idRencontre"),
-				rs.getInt("idPoule"),
-				rs.getInt("idEquipeGagnante"),
-				getEquipesRencontre(rs.getInt("idRencontre"))
-            );
-		}
-		
-		rs.close();
-		ps.close();
-		return Optional.ofNullable(rencontre);
-	}
+//	@Override
+//	public Optional<Rencontre> getParId(Integer... idRencontre) throws Exception {
+//		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from rencontre where idRencontre = ?");
+//		
+//		ps.setInt(1, idRencontre[0]);
+//		
+//		ResultSet rs = ps.executeQuery();
+//		
+//		// Création de rencontre si elle existe
+//		Rencontre rencontre = null;
+//		if(rs.next()) {		
+//			rencontre = new Rencontre(
+//				rs.getInt("idRencontre"),
+//				rs.getInt("idPoule"),
+//				rs.getInt("idEquipeGagnante"),
+//				getEquipesRencontre(rs.getInt("idRencontre"))
+//            );
+//		}
+//		
+//		rs.close();
+//		ps.close();
+//		return Optional.ofNullable(rencontre);
+//	}
 
 	/**
 	 * Ajoute la rencontre dans la BDD
@@ -145,6 +145,28 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 	// 		return false;
 	// 	}
 	// }
+	
+	/**
+	 * @return le prochain identifiant unique de rencontre
+	 */
+	private int getNextValId() {
+        int nextVal = 0;
+        try {
+            PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idRencontre");
+
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                nextVal = rs.getInt(1);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return nextVal;
+    }
 
 	/**
 	 * @param idPoule : identifiant de la poule
@@ -174,28 +196,6 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 			return null;
 		}
 	}
-	
-	/**
-	 * @return le prochain identifiant unique de rencontre
-	 */
-	private int getNextValId() {
-        int nextVal = 0;
-        try {
-            PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idRencontre");
-
-            ResultSet rs = ps.executeQuery();
-            
-            if (rs.next()) {
-                nextVal = rs.getInt(1);
-            }
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return nextVal;
-    }
 	
 	public Equipe[] getEquipesRencontre(int idRencontre) {
 		try {

@@ -135,35 +135,34 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
 	/**
-	 * Supprime le joueur dans la BDD
-	 * @return true si l'opération s'est bien déroulée, false sinon
+	 * @return le prochain identifiant unique de joueur
 	 */
-	@Override
-	public boolean supprimer(Joueur joueur) throws Exception {
-		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from joueur where idJoueur = ?");
-			ps.setInt(1, joueur.getIdJoueur());
-			ps.execute();
-			
-			ps.close();
-			BDD.getConnexion().commit();
-			return true;
-		} catch(SQLException e) {
-			try {
-				BDD.getConnexion().rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			throw new RuntimeException(e);
-		}
-	}
+	private int getNextValId() {
+        int nextVal = 0;
+        try {
+            PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idJoueur");
+
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                nextVal = rs.getInt(1);
+            }
+            
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return nextVal;
+    }
 	
 	/**
 	 * Supprime tous les joueurs d'une équipe idEquipe
 	 * @param idEquipe : identifiant de l'équipe
-	 * @return tru si l'opération s'est bien déroulée, false sinon
+	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	public boolean supprimerJoueursEquipe(int idEquipe) throws Exception {
 		try {
@@ -209,28 +208,5 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
 		
 		return joueurs;
 	}
-	
-	/**
-	 * @return le prochain identifiant unique de joueur
-	 */
-	private int getNextValId() {
-        int nextVal = 0;
-        try {
-            PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idJoueur");
-
-            ResultSet rs = ps.executeQuery();
-            
-            if (rs.next()) {
-                nextVal = rs.getInt(1);
-            }
-            
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return nextVal;
-    }
 	
 }
