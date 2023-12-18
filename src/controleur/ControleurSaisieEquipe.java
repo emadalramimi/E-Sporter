@@ -15,7 +15,8 @@ import vue.VueEquipes;
 import vue.VueSaisieEquipe;
 
 /**
- * Controleur de VueSaisieEquipe
+ * Contrôleur de la vue de saisie d'une équipe
+ * @see VueSaisieEquipe
  */
 public class ControleurSaisieEquipe implements ActionListener {
 
@@ -62,7 +63,6 @@ public class ControleurSaisieEquipe implements ActionListener {
 			// Création de l'équipe au clic de valider
 			if(bouton.getText() == "Valider") {
 				
-				
 				// Créer des instances de Joueur pour chaque pseudo de joueur renseigné
 				List<Joueur> joueurs = new ArrayList<>();
 				for (String nomJoueur : nomsJoueurs) {
@@ -71,7 +71,12 @@ public class ControleurSaisieEquipe implements ActionListener {
 				Equipe equipe = new Equipe(nom, pays, joueurs);
 				
 				// Ajout de l'équipe dans la base de données
-				modeleEquipe.ajouter(equipe);
+				try {
+					modeleEquipe.ajouter(equipe);
+				} catch (Exception ex) {
+					this.vueSaisieEquipe.afficherPopupErreur("Une erreur est survenue lors de l'ajout de l'équipe.");
+					throw new RuntimeException("Erreur dans l'ajout de l'équipe", ex);
+				}
 				
 				// Message de confirmation et mise à jour du tableau
 				this.vueSaisieEquipe.afficherPopupMessage("L'équipe a bien été ajoutée.");
@@ -113,6 +118,8 @@ public class ControleurSaisieEquipe implements ActionListener {
 				}
 				
 				this.vueSaisieEquipe.afficherPopupMessage("L'équipe a bien été modifiée.");
+				
+				// Mise à jour du tableau
 				try {
 					this.vueEquipes.remplirTableau(this.modeleEquipe.getEquipesSaison());
 				} catch (Exception err) {

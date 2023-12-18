@@ -11,7 +11,8 @@ import vue.VueConnexion;
 import vue.theme.JButtonMenu;
 
 /**
- * Controleur de VueBase
+ * Contrôleur de la vue de base
+ * @see VueBase
  */
 public class ControleurBase extends MouseAdapter {
 
@@ -56,15 +57,16 @@ public class ControleurBase extends MouseAdapter {
 	}
 
 	/**
-	 * Ajoute un bouton à la liste des boutons du menu
-	 * @param bouton
+	 * Ajoute un bouton au menu
+	 * @param bouton : bouton à ajouter
 	 */
 	public void ajouterBoutonMenu(JButtonMenu bouton) {
 		this.boutonsMenu.add(bouton);
 	}
 	
 	/**
-	 * @return L'unique bouton activé (hors survol) du menu
+	 * Retourne la liste des boutons du menu
+	 * @return Liste des boutons du menu
 	 */
 	public JButtonMenu getBoutonActif() {
 		return this.boutonActif;
