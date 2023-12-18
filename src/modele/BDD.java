@@ -361,13 +361,11 @@ public class BDD {
 		try {
 		    st.executeUpdate("CREATE TABLE rencontre("
 		            + "idRencontre INTEGER, "
-		            + "dateHeureDebut INT, "
-		            + "dateHeureFin INT, "
 		            + "idPoule INT NOT NULL, "
-		            + "idEquipe INT, "
+		            + "idEquipeGagnante INT, "
 		            + "PRIMARY KEY(idRencontre), "
 		            + "FOREIGN KEY(idPoule) REFERENCES poule(idPoule), "
-		            + "FOREIGN KEY(idEquipe) REFERENCES equipe(idEquipe)"
+		            + "FOREIGN KEY(idEquipeGagnante) REFERENCES equipe(idEquipe)"
 		            + ")");
 		} catch (SQLException e) {
 		    System.err.println("Erreur de création de la table rencontre");
@@ -690,6 +688,12 @@ public class BDD {
 					+ "'Jul',"
 					+ "5"
 					+ ")");
+			st.executeUpdate(
+					"INSERT INTO joueur VALUES ("
+					+ "NEXT VALUE FOR idJoueur,"
+					+ "'Liam',"
+					+ "5"
+					+ ")");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table joueur");
 		    e.printStackTrace();
@@ -856,56 +860,42 @@ public class BDD {
 			st.executeUpdate(
 					"INSERT INTO rencontre VALUES ("
 					+ "NEXT VALUE FOR idRencontre,"
-					+ "1692764100,"
-					+ "1692768720,"
 					+ "1,"
 					+ "4"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO rencontre VALUES ("
 					+ "NEXT VALUE FOR idRencontre,"
-					+ "1692768720,"
-					+ "1692772320,"
 					+ "1,"
 					+ "1"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO rencontre VALUES ("
 					+ "NEXT VALUE FOR idRencontre,"
-					+ "1692772320,"
-					+ "1692775920,"
 					+ "1,"
 					+ "4"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO rencontre VALUES ("
 					+ "NEXT VALUE FOR idRencontre,"
-					+ "1692775920,"
-					+ "1692779520,"
 					+ "1,"
 					+ "1"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO rencontre VALUES ("
 					+ "NEXT VALUE FOR idRencontre,"
-					+ "1692779520,"
-					+ "1692786720,"
 					+ "1,"
 					+ "1"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO rencontre VALUES ("
 					+ "NEXT VALUE FOR idRencontre,"
-					+ "1692786720,"
-					+ "1692790320,"
 					+ "1,"
 					+ "3"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO rencontre VALUES ("
 					+ "NEXT VALUE FOR idRencontre,"
-					+ "1692790320,"
-					+ "1692797520,"
 					+ "1,"
 					+ "1"
 					+ ")");
