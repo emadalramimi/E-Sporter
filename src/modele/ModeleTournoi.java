@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Spliterator;
@@ -13,6 +15,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import modele.metier.Arbitre;
+import modele.metier.Equipe;
+import modele.metier.Poule;
+import modele.metier.Rencontre;
+import modele.metier.StatistiquesEquipe;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
@@ -20,10 +27,12 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 
 	private ModeleArbitre modeleArbitre;
 	private ModeleEquipe modeleEquipes;
+	private ModelePoule modelePoule;
 
 	public ModeleTournoi() {
 		this.modeleArbitre = new ModeleArbitre();
 		this.modeleEquipes = new ModeleEquipe();
+		this.modelePoule = new ModelePoule();
 	}
 
 	@Override
@@ -49,6 +58,7 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
                 			rs.getBoolean("estCloture"),
                 			rs.getString("identifiant"),
 							rs.getString("motDePasse"),
+							ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
 							ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
                 			ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
                         ));
@@ -90,6 +100,7 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 				rs.getBoolean("estCloture"),
 				rs.getString("identifiant"),
 				rs.getString("motDePasse"),
+				ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
 				ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
 				ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
             );
@@ -118,13 +129,21 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 			ps.setInt(1, tournoi.getIdTournoi());
 			ps.setString(2, tournoi.getNomTournoi());
 			ps.setString(3, tournoi.getNotoriete().getLibelle());
-			ps.setLong(4, tournoi.getDateDebut());
-			ps.setLong(5, tournoi.getDateFin());
+			ps.setLong(4, tournoi.getDateTimeDebut());
+			ps.setLong(5, tournoi.getDateTimeFin());
 			ps.setBoolean(6, tournoi.getEstCloture());
 			ps.setString(7, tournoi.getIdentifiant());
 			ps.setString(8, tournoi.getMotDePasse());
 			ps.execute();
 			ps.close();
+
+			for (Arbitre arbitre : tournoi.getArbitres()) {
+				ps = BDD.getConnexion().prepareStatement("insert into arbitrer values (?, ?)");
+				ps.setInt(1, tournoi.getIdTournoi());
+				ps.setInt(2, arbitre.getIdArbitre());
+				ps.execute();
+				ps.close();
+			}
 
 			BDD.getConnexion().commit();
 			return true;
@@ -144,20 +163,24 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	 */
 	@Override
 	public boolean modifier(Tournoi tournoi) throws Exception {
+		if (System.currentTimeMillis() / 1000 >= tournoi.getDateTimeFin() || tournoi.getEstCloture() == false) {
+			throw new IllegalArgumentException("Le tournoi est cloturé");
+		}
+
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("update tournoi set nomTournoi = ?, notoriete = ?, dateDebut = ?, dateFin = ?, estCloture = ?, identifiant = ?, motDePasse = ? where idTournoi = ?");
+			tournoi.setMotDePasse(ModeleUtilisateur.chiffrerMotDePasse(tournoi.getMotDePasse()));
+
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("update tournoi set nomTournoi = ?, notoriete = ?, dateDebut = ?, dateFin = ?, identifiant = ?, motDePasse = ? where idTournoi = ?");
 			ps.setString(1, tournoi.getNomTournoi());
-			//je sais pas comment set Notoriete ici
 			ps.setString(2, tournoi.getNotoriete().getLibelle());
-			ps.setLong(3, tournoi.getDateDebut());
-			ps.setLong(4, tournoi.getDateFin());
-			ps.setBoolean(5, tournoi.getEstCloture());
-			// ps.setString(6, tournoi.getIdentifiant());
-			// ps.setString(7, tournoi.getMotDePasse());
-			ps.setInt(8, tournoi.getIdTournoi());
+			ps.setLong(3, tournoi.getDateTimeDebut());
+			ps.setLong(4, tournoi.getDateTimeFin());
+			ps.setString(5, tournoi.getIdentifiant());
+			ps.setString(6, tournoi.getMotDePasse());
+			ps.setInt(7, tournoi.getIdTournoi());
 			ps.execute();
-			
 			ps.close();
+
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
@@ -176,8 +199,22 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	 */
 	@Override
 	public boolean supprimer(Tournoi tournoi) throws Exception {
+		if (System.currentTimeMillis() / 1000 >= tournoi.getDateTimeFin() || tournoi.getEstCloture() == false) {
+			throw new IllegalArgumentException("Le tournoi est cloturé");
+		}
+
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from tournoi where idTournoi = ?");
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from arbitrer where idTournoi = ?");
+			ps.setInt(1, tournoi.getIdTournoi());
+			ps.execute();
+			ps.close();
+
+			ps = BDD.getConnexion().prepareStatement("delete from participer where idTournoi = ?");
+			ps.setInt(1, tournoi.getIdTournoi());
+			ps.execute();
+			ps.close();
+
+			ps = BDD.getConnexion().prepareStatement("delete from tournoi where idTournoi = ?");
 			ps.setInt(1, tournoi.getIdTournoi());
 			ps.execute();
 			
@@ -215,6 +252,43 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 
 		return nextVal;
 	}
+
+	public void ouvrirTournoi(Tournoi tournoi) throws Exception {
+		// TODO TRY CATCH AVEC ROLLBACK
+		int nbEquipes = modeleEquipes.getEquipesTournoi(tournoi.getIdTournoi()).size();
+		if (nbEquipes < 4 || nbEquipes > 8) {
+			throw new IllegalArgumentException("Le nombre d'équipes inscrites doit être compris entre 4 et 8 équipes");
+		}
+		if (tournoi.getDateTimeFin() <= System.currentTimeMillis() / 1000) {
+			throw new IllegalArgumentException("La date de fin du tournoi est passée");
+		}
+		if(tournoi.getDateTimeFin() <= System.currentTimeMillis() / 1000 && tournoi.getEstCloture()) {
+			throw new IllegalArgumentException("Le tournoi est cloturé");
+		}
+		if(this.getTout().stream().anyMatch(t -> t.getEstCloture() == false)) {
+			throw new IllegalArgumentException("Il ne peut y avoir qu'un seul tournoi ouvert à la fois");
+		}
+	
+		PreparedStatement ps = BDD.getConnexion().prepareStatement("update tournoi set estCloture = false where idTournoi = ?");
+		ps.setInt(1, tournoi.getIdTournoi());
+		ps.execute();
+		ps.close();
+
+		List<Rencontre> rencontres = new LinkedList<>();
+		List<Equipe> equipes = tournoi.getEquipes();
+		for (int i = 0; i < equipes.size(); i++) {
+			for (int j = i + 1; j < equipes.size(); j++) {
+				rencontres.add(new Rencontre(new Equipe[] { equipes.get(i), equipes.get(j) }));
+			}
+		}
+		Collections.shuffle(rencontres);
+
+		ModelePoule modelePoule = new ModelePoule();
+		Poule poule = new Poule(false, false, tournoi.getIdTournoi(), rencontres);
+		modelePoule.ajouter(poule);
+
+		BDD.getConnexion().commit();
+	}
 	
 	public Optional<Tournoi> getParIdentifiant(String identifiant) throws SQLException {
 		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from tournoi where identifiant = ?");
@@ -234,6 +308,7 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 					rs.getBoolean("estCloture"),
 					rs.getString("identifiant"),
 					rs.getString("motDePasse"),
+					ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
 					ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
 					ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi")));
 		}
@@ -241,6 +316,48 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 		rs.close();
 		ps.close();
 		return Optional.ofNullable(tournoi);
+	}
+
+	public Optional<Tournoi> getTournoiRencontre(int idRencontre) {
+		PreparedStatement ps;
+		try {
+			ps = BDD.getConnexion().prepareStatement("select * from tournoi, poule, rencontre where rencontre.idPoule = poule.idPoule and poule.idTournoi = tournoi.idTournoi and rencontre.idRencontre = ?");
+			ps.setInt(1, idRencontre);
+			ResultSet rs = ps.executeQuery();
+
+			// Création de tournoi s'il existe
+			Tournoi tournoi = null;
+			if (rs.next()) {
+				tournoi = new Tournoi(
+					rs.getInt("idTournoi"),
+					rs.getString("nomTournoi"),
+					Notoriete.valueOfLibelle(rs.getString("notoriete")),
+					rs.getInt("dateDebut"),
+					rs.getInt("dateFin"),
+					rs.getBoolean("estCloture"),
+					rs.getString("identifiant"),
+					rs.getString("motDePasse"),
+					ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
+					ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
+					ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
+				);
+			}
+
+			rs.close();
+			ps.close();
+			return Optional.ofNullable(tournoi);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Optional.empty();
+	}
+
+	public List<StatistiquesEquipe> getResultatsTournoi(Tournoi tournoi) {
+		List<StatistiquesEquipe> statistiques = new LinkedList<>();
+		for (Equipe equipe : tournoi.getEquipes()) {
+			statistiques.add(new StatistiquesEquipe(equipe, tournoi.getNbMatchsJoues(equipe), tournoi.getNbMatchsGagnes(equipe)));
+		}
+		return statistiques.stream().sorted().collect(Collectors.toList());
 	}
 	
 	public List<Tournoi> getParNom(String nom) throws Exception {
@@ -251,13 +368,25 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 
     public List<Tournoi> getParNotoriete(Notoriete notoriete) throws Exception {
         return this.getTout().stream()
-                .filter(t -> t.getNotoriete() == notoriete)
+                .filter(t -> t.getNotoriete().equals(notoriete))
                 .collect(Collectors.toList());
     }
 
-    public List<Tournoi> getParEstCloture(boolean cloture) throws Exception {
+    public List<Tournoi> getParPhaseInscription() throws Exception {
         return this.getTout().stream()
-                .filter(t -> t.getEstCloture() == cloture)
+                .filter(t -> t.getEstCloture() == true && System.currentTimeMillis() / 1000 < t.getDateTimeFin())
+                .collect(Collectors.toList());
+    }
+
+	public List<Tournoi> getParOuvert() throws Exception {
+		return this.getTout().stream()
+				.filter(t -> t.getEstCloture() == false)
+				.collect(Collectors.toList());
+	}
+	
+    public List<Tournoi> getParCloture() throws Exception {
+        return this.getTout().stream()
+                .filter(t -> t.getEstCloture() == true && System.currentTimeMillis() / 1000 > t.getDateTimeFin())
                 .collect(Collectors.toList());
     }
 
