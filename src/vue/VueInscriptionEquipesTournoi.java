@@ -31,6 +31,8 @@ import java.util.List;
 public class VueInscriptionEquipesTournoi extends JFrameTheme {
 
 	private JPanel contentPane;
+	private JButtonTheme btnInscrireEquipe;
+	private JLabel lblTitre;
 	
 	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipe;
 	private Tournoi tournoi;
@@ -47,7 +49,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		setBounds(100, 100, 602, 384);
 		
 		contentPane = super.getContentPane();
-		contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
+		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		contentPane.setLayout(new BorderLayout(0, 20));
 		
@@ -64,15 +66,15 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		gbl_panelTitre.rowWeights = new double[]{0.0, 0.0};
 		panelTitre.setLayout(gbl_panelTitre);
 		
-		JLabel lblTitre = new JLabel("Equipes inscrites");
-		lblTitre.setFont(CharteGraphique.getPolice(19, true));
-		lblTitre.setForeground(CharteGraphique.TEXTE);
+		this.lblTitre = new JLabel();
+		this.lblTitre.setFont(CharteGraphique.getPolice(19, true));
+		this.lblTitre.setForeground(CharteGraphique.TEXTE);
 		GridBagConstraints gbc_lblTitre = new GridBagConstraints();
 		gbc_lblTitre.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblTitre.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTitre.gridx = 0;
 		gbc_lblTitre.gridy = 0;
-		panelTitre.add(lblTitre, gbc_lblTitre);
+		panelTitre.add(this.lblTitre, gbc_lblTitre);
 		
 		JLabel lblTournoi = new JLabel(tournoi.getNomTournoi());
 		lblTournoi.setFont(CharteGraphique.getPolice(16, false));
@@ -84,14 +86,14 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		gbc_lblTournoi.gridy = 1;
 		panelTitre.add(lblTournoi, gbc_lblTournoi);
 		
-		JButtonTheme btnInscrireEquipe = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Inscrire une équipe");
-		btnInscrireEquipe.addActionListener(controleur);
-		btnInscrireEquipe.setFont(CharteGraphique.getPolice(19, false));
+		this.btnInscrireEquipe = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Inscrire une équipe");
+		this.btnInscrireEquipe.addActionListener(controleur);
+		this.btnInscrireEquipe.setFont(CharteGraphique.getPolice(17, false));
 
 		JPanel panelBtnInscrireEquipe = new JPanel();
 		panelBtnInscrireEquipe.setBackground(CharteGraphique.FOND);
 		panelBtnInscrireEquipe.setLayout(new BorderLayout());
-		panelBtnInscrireEquipe.add(btnInscrireEquipe, BorderLayout.NORTH);
+		panelBtnInscrireEquipe.add(this.btnInscrireEquipe, BorderLayout.NORTH);
 
 		panelHeader.add(panelBtnInscrireEquipe, BorderLayout.EAST);
 
@@ -119,13 +121,19 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 			this.listModelEquipes.addElement(equipe);
 		}
 
+		this.lblTitre.setText("Equipes inscrites (" + this.listModelEquipes.size() + ")");
+		
+		if(this.listModelEquipes.size() >= 8 || controleur.getEquipesEligibles().length == 0) {
+			this.btnInscrireEquipe.setEnabled(false);
+		}
+
 		// Création des boutons
 		JButtonTheme btnFermer = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Fermer");
-		btnFermer.setFont(CharteGraphique.getPolice(19, false));
+		btnFermer.setFont(CharteGraphique.getPolice(17, false));
 		btnFermer.addActionListener(controleur);
 
 		JButtonTheme btnOuvrirTournoi = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ouvrir le tournoi");
-		btnOuvrirTournoi.setFont(CharteGraphique.getPolice(19, false));
+		btnOuvrirTournoi.setFont(CharteGraphique.getPolice(17, false));
 		btnOuvrirTournoi.addActionListener(controleur);
 
 		// Création du panel pour les boutons
@@ -162,11 +170,17 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 	public void ajouterEquipe(Equipe equipe) {
 		if(!this.listModelEquipes.contains(equipe)) {
 			this.listModelEquipes.addElement(equipe);
+			this.majTitre();
 		}
 	}
 	
 	public void supprimerEquipe(Equipe equipe) {
 		this.listModelEquipes.removeElement(equipe);
+		this.majTitre();
+	}
+
+	private void majTitre() {
+		this.lblTitre.setText("Equipes inscrites (" + this.listModelEquipes.size() + ")");
 	}
 	
 	public List<Equipe> getEquipes() {
@@ -195,14 +209,18 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 	
 	public void afficherVueSaisieTournoiEquipe(Equipe[] equipes) {
 		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
-        if (this.vueSaisieTournoiEquipe == null || !this.vueSaisieTournoiEquipe.isVisible()) {
-        	this.vueSaisieTournoiEquipe = new VueSaisieTournoiEquipeArbitre(this, equipes, this.tournoi);
-        	this.ajouterFenetreEnfant(this.vueSaisieTournoiEquipe);
-        	this.vueSaisieTournoiEquipe.setLocationRelativeTo(this);
-        	this.vueSaisieTournoiEquipe.setVisible(true);
-        } else {
-        	this.vueSaisieTournoiEquipe.toFront();
-        }
+		if (this.vueSaisieTournoiEquipe == null || !this.vueSaisieTournoiEquipe.isVisible()) {
+			this.vueSaisieTournoiEquipe = new VueSaisieTournoiEquipeArbitre(this, equipes, this.tournoi);
+			this.ajouterFenetreEnfant(this.vueSaisieTournoiEquipe);
+			this.vueSaisieTournoiEquipe.setLocationRelativeTo(this);
+			this.vueSaisieTournoiEquipe.setVisible(true);
+		} else {
+			this.vueSaisieTournoiEquipe.toFront();
+		}
+	}
+	
+	public void setBtnInscrireEquipeActif(boolean actif) {
+		this.btnInscrireEquipe.setEnabled(actif);
 	}
 
 }

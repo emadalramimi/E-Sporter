@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 import javax.swing.SwingConstants;
 
 import controleur.ControleurInscriptionEquipesTournoiPopup;
-import controleur.ControleurSaisieTournoiEquipeArbitre;
+import controleur.ControleurSaisieTournoiArbitre;
 
 public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 
@@ -47,7 +47,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	
 	public VueSaisieTournoiEquipeArbitre(VueSaisieTournoi vueSaisieTournoi, Arbitre[] arbitres) {
 		this.type = VueSaisieTournoiEquipeArbitre.Type.ARBITRE;
-		this.controleur = new ControleurSaisieTournoiEquipeArbitre(this, vueSaisieTournoi);
+		this.controleur = new ControleurSaisieTournoiArbitre(this, vueSaisieTournoi);
 		this.arbitres = arbitres;
 		this.afficher();
 	}

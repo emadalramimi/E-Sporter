@@ -10,6 +10,7 @@ import org.jdatepicker.impl.UtilDateModel;
 
 import controleur.ControleurSaisieTournoi;
 import modele.metier.Arbitre;
+import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
@@ -38,6 +39,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.TimeZone;
+import java.util.Optional;
 
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JScrollPane;
@@ -52,7 +54,6 @@ public class VueSaisieTournoi extends JFrameTheme {
 	private JPanel contentPane;
 	
 	private JList<Arbitre> listeArbitres;
-	
 	private DefaultListModel<Arbitre> listModelArbitres;
 	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiArbitre;
 	private JTextFieldTheme txtNom;
@@ -63,12 +64,16 @@ public class VueSaisieTournoi extends JFrameTheme {
 	private JSpinner spinner_1;
 	private JSpinner spinner1;
 	private JSpinner spinner_11;
+	private JButtonTheme btnAjouterArbitre;
 	
 	private UtilDateModel modelDateDebut;
 	private UtilDateModel modelDateFin;
 
-	public VueSaisieTournoi(VueTournois vueTournois) {
-		ControleurSaisieTournoi controleur = new ControleurSaisieTournoi(this, vueTournois);
+	public VueSaisieTournoi(VueTournois vueTournois, Optional<Tournoi> tournoiOptionnel) {
+		ControleurSaisieTournoi controleur = new ControleurSaisieTournoi(this, vueTournois, tournoiOptionnel);
+
+		// Récupère le tournoi fourni, sinon null
+		Tournoi tournoi = tournoiOptionnel.orElse(null);
 		
 		this.listModelArbitres = new DefaultListModel<>();
 
@@ -327,9 +332,13 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelBtnAjouterArbitre.setBackground(CharteGraphique.FOND);
 		panelArbitres.add(panelBtnAjouterArbitre, BorderLayout.SOUTH);
 		
-		JButtonTheme btnAjouterArbitre = new JButtonTheme(JButtonTheme.Types.PRIMAIRE,"Ajouter un arbitre");
-		btnAjouterArbitre.addActionListener(controleur);
-		panelBtnAjouterArbitre.add(btnAjouterArbitre);
+		this.btnAjouterArbitre = new JButtonTheme(JButtonTheme.Types.PRIMAIRE,"Ajouter un arbitre");
+		this.btnAjouterArbitre.addActionListener(controleur);
+		panelBtnAjouterArbitre.add(this.btnAjouterArbitre);
+
+		if (controleur.getArbitresEligibles().length == 0) {
+			this.btnAjouterArbitre.setEnabled(false);
+		}
 		
 		JScrollPane scrollPaneListeArbitre = new JScrollPane();
 		scrollPaneListeArbitre.setBackground(CharteGraphique.FOND_SECONDAIRE);
@@ -353,7 +362,12 @@ public class VueSaisieTournoi extends JFrameTheme {
 		btnAnnuler.addActionListener(controleur);
 		panelBtnCreer.add(btnAnnuler);
 		
-		JButtonTheme btnValider = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Valider");
+		JButtonTheme btnValider;
+		if (tournoi == null) {
+			btnValider = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Valider");
+		} else {
+			btnValider = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Modifier");
+		}
 		btnValider.addActionListener(controleur);
 		btnValider.setMargin(new Insets(5, 10, 5, 10)); 
 		panelBtnCreer.add(btnValider);
@@ -362,10 +376,28 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelTitre.setBackground(CharteGraphique.FOND);
 		contentPane.add(panelTitre, BorderLayout.NORTH);
 		
-		JLabel lblTitre = new JLabel("Ajouter un tournoi");
+		JLabel lblTitre;
+		if (tournoi == null) {
+			lblTitre = new JLabel("Création d'un tournoi");
+		} else {
+			lblTitre = new JLabel("Modification d'un tournoi");
+		}
 		lblTitre.setFont(CharteGraphique.getPolice(30, true));
 		lblTitre.setForeground(CharteGraphique.TEXTE);
 		panelTitre.add(lblTitre);
+
+		// Remplissage des champs du formulaire si un tournoi est renseigné pour modification
+		if (tournoi != null) {
+			this.txtNom.setText(tournoi.getNomTournoi());
+			this.txtIdentifiantArbitres.setText(tournoi.getIdentifiant());
+			this.modelDateDebut.setValue(new Date(tournoi.getDateTimeDebut() * 1000));
+			this.modelDateFin.setValue(new Date(tournoi.getDateTimeFin() * 1000));
+			this.cboxNotoriete.setSelectedItem(tournoi.getNotoriete().getLibelle());
+			System.out.println(tournoi.getArbitres());
+			for (Arbitre arbitre : tournoi.getArbitres()) {
+				this.listModelArbitres.addElement(arbitre);
+			}
+		}
 	}
 	
 	private class ArbitreListCellRenderer extends DefaultListCellRenderer {
@@ -405,50 +437,42 @@ public class VueSaisieTournoi extends JFrameTheme {
         return this.txtNom.getText().trim();
     }
 
-	public long getDateTimeDebut() {
-	    // Récupérer la date du modèle
-	    Date dateFin = this.modelDateDebut.getValue();
-	    
-	    // Récupérer l'heure depuis les spinners
-	    int heure = (int) spinner.getValue();
-	    int minute = (int) spinner_1.getValue();
-	    
-	    // Combiner la date et l'heure pour former un objet Calendar
-	    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-	    calendar.setTime(dateFin);
-	    calendar.set(Calendar.HOUR_OF_DAY, heure);
+	private long getDateTime(Date date, int heure, int minute) {
+		// Combiner la date et l'heure pour former un objet Calendar
+		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR_OF_DAY, heure);
 		calendar.set(Calendar.MINUTE, minute);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
-	    
-	    // Obtenir le timestamp en secondes
-	    long timestamp = calendar.getTimeInMillis() / 1000;
-	    
-		// Retourner le timestamp correspondant à la date et l'heure de début en secondes
-	    return timestamp;
+	
+		// Obtenir le timestamp en secondes
+		long timestamp = calendar.getTimeInMillis() / 1000;
+	
+		// Retourner le timestamp correspondant à la date et l'heure en secondes
+		return timestamp;
 	}
-
+	
+	public long getDateTimeDebut() {
+		// Récupérer la date du modèle
+		Date dateDebut = this.modelDateDebut.getValue();
+	
+		// Récupérer l'heure depuis les spinners
+		int heure = (int) spinner.getValue();
+		int minute = (int) spinner_1.getValue();
+	
+		return getDateTime(dateDebut, heure, minute);
+	}
+	
 	public long getDateTimeFin() {
-	    // Récupérer la date du modèle
-	    Date dateFin = this.modelDateFin.getValue();
-	    
-	    // Récupérer l'heure depuis les spinners
-	    int heure = (int) spinner1.getValue();
-	    int minute = (int) spinner_11.getValue();
-	    
-	    // Combiner la date et l'heure pour former un objet Calendar
-	    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-	    calendar.setTime(dateFin);
-	    calendar.set(Calendar.HOUR_OF_DAY, heure);
-		calendar.set(Calendar.MINUTE, minute);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-	    
-	    // Obtenir le timestamp en secondes
-	    long timestamp = calendar.getTimeInMillis() / 1000;
-	    
-	    // Retourner le timestamp correspondant à la date et l'heure de début en secondes
-	    return timestamp;
+		// Récupérer la date du modèle
+		Date dateFin = this.modelDateFin.getValue();
+	
+		// Récupérer l'heure depuis les spinners
+		int heure = (int) spinner1.getValue();
+		int minute = (int) spinner_11.getValue();
+	
+		return getDateTime(dateFin, heure, minute);
 	}
 
     public String getIdentifiant() {
@@ -514,11 +538,15 @@ public class VueSaisieTournoi extends JFrameTheme {
     }
 	
 	public boolean tousChampsRemplis() {
-	    return !this.getNomTournoi().isEmpty()
-	    		&& !this.getIdentifiant().isEmpty()
-	    		&& !this.getMotDePasse().isEmpty()
-	    		&& modelDateDebut.getValue() != null
-		        && modelDateFin.getValue() != null;
+		return !this.getNomTournoi().isEmpty()
+			&& !this.getIdentifiant().isEmpty()
+			&& !this.getMotDePasse().isEmpty()
+			&& modelDateDebut.getValue() != null
+			&& modelDateFin.getValue() != null;
+	}
+	
+	public void setBtnAjouterArbitreActif(boolean actif) {
+		this.btnAjouterArbitre.setEnabled(actif);
 	}
 
 }

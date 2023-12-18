@@ -50,6 +50,7 @@ import modele.metier.Tournoi.Notoriete;
 
 public class VueTournois extends JFrameTheme {
 	
+	// TODO ENLEVER TOUS LES TRUCS INUTILES ICI IDEM EQUIPE
 	private JTable table;
 	private DefaultTableModel model;
 	private JButtonTheme btnAjouter;
@@ -57,7 +58,6 @@ public class VueTournois extends JFrameTheme {
 	private JPanel panelLabelEquipe;
 	private JLabel lblTournois;
 	private JPanel panelAjouter;
-	private JPanel panelTableauFiltres;
     private JTextFieldTheme txtRecherche;
     private JButtonTheme btnRecherche;
 	private JScrollPaneTheme scrollPaneEquipes;
@@ -65,6 +65,7 @@ public class VueTournois extends JFrameTheme {
 	private VueSaisieTournoi vueSaisieTournoi;
 	// Temp : gérer fen enfant
 	private VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi;
+	private VuePoule vuePoule;
 	private VueBase vueBase;
 	private JComboBoxTheme<String> cboxNotoriete;
 	private JComboBoxTheme<String> cboxStatuts;
@@ -117,7 +118,7 @@ public class VueTournois extends JFrameTheme {
 		btnAjouter.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelAjouter.add(btnAjouter);
 		
-		panelTableauFiltres = new JPanel();
+		JPanel panelTableauFiltres = new JPanel();
 		panelTableauFiltres.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelRecherche = new GridBagConstraints();
 		gbc_panelRecherche.insets = new Insets(0, 0, 20, 0);
@@ -141,24 +142,31 @@ public class VueTournois extends JFrameTheme {
 		btnRecherche.addActionListener(controleur);
 		panelRecherche.add(btnRecherche);
 		panelTableauFiltres.add(panelRecherche);
-		
+
+		// Create a new panel with a FlowLayout that has a horizontal gap of 15 pixels
+		JPanel panelChoixFiltres = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
+		panelChoixFiltres.setBackground(CharteGraphique.FOND);
+
+		// Ajouter comboBox filtre pour choisir un statut
+		String[] items = {"Tous statuts", "Phase d'inscriptions", "Ouvert", "Clôturé"};
+		cboxStatuts = new JComboBoxTheme<>(items);
+		cboxStatuts.addItemListener(controleur);
+		cboxStatuts.setPreferredSize(new Dimension(200, 45));
+		panelChoixFiltres.add(cboxStatuts);
+
+		// Ajouter comboBox filtre pour choisir une notoriete
 		List<String> notorietes = new ArrayList<>();
+		notorietes.add("Toutes notoriétés");
 		for (Notoriete notoriete : Notoriete.values()) {
 			notorietes.add(notoriete.getLibelle());
 		}
-		
-		// Ajouter comboBox filtre pour choisir une notoriete
 		cboxNotoriete = new JComboBoxTheme<>(notorietes.toArray(new String[0]));
+		cboxNotoriete.addItemListener(controleur);
 		cboxNotoriete.setPreferredSize(new Dimension(200, 45));
+		panelChoixFiltres.add(cboxNotoriete);
 
-		// Ajouter comboBox filtre pour choisir un statut
-		String[] items = {"En création", "Clôturé", "fermé"};
-		cboxStatuts = new JComboBoxTheme<>(items);
-		cboxStatuts.setPreferredSize(new Dimension(200, 45));
-
-		// Ajouter des filtres
-		panelTableauFiltres.add(cboxNotoriete);
-		panelTableauFiltres.add(cboxStatuts);
+		// Ajouter les filtres
+		panelTableauFiltres.add(panelChoixFiltres);
 		
 		// ScrollPane englobant le tableau
 		scrollPaneEquipes = new JScrollPaneTheme();
@@ -171,7 +179,7 @@ public class VueTournois extends JFrameTheme {
 		// Création du modèle du tableau avec désactivation de l'édition
 		this.model = new DefaultTableModel(
 			new Object[][] {}, 
-			new String[] {"ID","Statut", "Nom", "Niveau", "Date de début", "Date de fin", "Actions"}
+			new String[] {"ID", "Statut", "Nom", "Niveau", "Date de début", "Date de fin", "Actions"}
 		) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -212,7 +220,7 @@ public class VueTournois extends JFrameTheme {
 			// Couleur du texte
 			if (column == 1) {
 				switch ((String) value) {
-					case "En création":
+					case "Phase d'inscriptions":
 						this.setForeground(CharteGraphique.PRIMAIRE);
 						break;
 					case "Ouvert":
@@ -231,7 +239,7 @@ public class VueTournois extends JFrameTheme {
 	public void afficherVueSaisieTournoi(Optional<Tournoi> tournoi) {
 		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
 		if (this.vueSaisieTournoi == null || !this.vueSaisieTournoi.isVisible()) {
-			this.vueSaisieTournoi = new VueSaisieTournoi(this);
+			this.vueSaisieTournoi = new VueSaisieTournoi(this, tournoi);
 			this.vueBase.ajouterFenetreEnfant(this.vueSaisieTournoi);
 			this.vueSaisieTournoi.setLocationRelativeTo(this);
 			this.vueSaisieTournoi.setVisible(true);
@@ -251,6 +259,18 @@ public class VueTournois extends JFrameTheme {
 			this.vueInscriptionEquipesTournoi.toFront();
 		}
 	}
+
+	public void afficherVuePoule(Tournoi tournoi) {
+		// Une seule fenêtre de poule à la fois, si déjà ouverte elle est mise au premier plan
+		if (this.vuePoule == null || !this.vuePoule.isVisible()) {
+			this.vuePoule = new VuePoule(this, tournoi, tournoi.getPouleActuelle());
+			this.vueBase.ajouterFenetreEnfant(this.vuePoule);
+			this.vuePoule.setLocationRelativeTo(this);
+			this.vuePoule.setVisible(true);
+		} else {
+			this.vuePoule.toFront();
+		}
+	}
 	
 	/**
 	 * Retire une fenêtre enfant de la liste des fenêtres enfant dans VueBase
@@ -268,7 +288,7 @@ public class VueTournois extends JFrameTheme {
 		Object[] options = {"Oui", "Annuler"};
         int choix = JOptionPaneTheme.showOptionDialog(
 	    	null,
-	    	"Êtes-vous sûr de vouloir supprimer cette équipe ?",
+	    	"Êtes-vous sûr de vouloir supprimer ce tournoi ?",
 	    	"Confirmation",
 	        JOptionPane.DEFAULT_OPTION,
 	        JOptionPane.QUESTION_MESSAGE,
@@ -312,47 +332,47 @@ public class VueTournois extends JFrameTheme {
 	 * @param equipes : liste des équipes à mettre dans le tableau
 	 */
 	public void remplirTableau(List<Tournoi> tournois) {
-	    // Vider le tableau
-	    this.model.setRowCount(0);
+		// Vider le tableau
+		this.model.setRowCount(0);
 
-	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy à HH:mm");
-	    sdf.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy à HH:mm");
+		sdf.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
 
-	    // Remplir avec les données de tournois
-	    for (Tournoi tournoi : tournois) {
-	        Vector<Object> rowData = new Vector<>();
+		// Remplir avec les données de tournois
+		for (Tournoi tournoi : tournois) {
+			Vector<Object> rowData = new Vector<>();
 			rowData.add(tournoi.getIdTournoi());
-			
-			if (System.currentTimeMillis() / 1000 < tournoi.getDateFin() && tournoi.getEstCloture() == true) {
-				rowData.add("En création");
+
+			if (System.currentTimeMillis() / 1000 < tournoi.getDateTimeFin() && tournoi.getEstCloture() == true) {
+				rowData.add("Phase d'inscriptions");
 			} else if (tournoi.getEstCloture() == true) {
 				rowData.add("Clôturé");
 			} else {
 				rowData.add("Ouvert");
 			}
 
-	        rowData.add(tournoi.getNomTournoi());
-	        rowData.add(tournoi.getNotoriete().getLibelle());
+			rowData.add(tournoi.getNomTournoi());
+			rowData.add(tournoi.getNotoriete().getLibelle());
 
-	        String dateTimeDebut = sdf.format(new Date(tournoi.getDateDebut() * 1000L));
-	        String dateTimeFin = sdf.format(new Date(tournoi.getDateFin() * 1000L));
+			String dateTimeDebut = sdf.format(new Date(tournoi.getDateTimeDebut() * 1000L));
+			String dateTimeFin = sdf.format(new Date(tournoi.getDateTimeFin() * 1000L));
 
-	        rowData.add(dateTimeDebut);
-	        rowData.add(dateTimeFin);
+			rowData.add(dateTimeDebut);
+			rowData.add(dateTimeFin);
 
-	        this.model.addRow(rowData);
-	    }
+			this.model.addRow(rowData);
+		}
 
-	    // Mise à jour du tableau
-	    this.table.setModel(this.model);
+		// Mise à jour du tableau
+		this.table.setModel(this.model);
 	}
 
-	public String getSelectedNotoriete() {
-		return (String) cboxNotoriete.getSelectedItem();
+	public boolean estCboxNotoriete(JComboBoxTheme<?> comboBox) {
+		return comboBox.equals(this.cboxNotoriete);
 	}
 	
-	public String getSelectedStatut() {
-		return (String) cboxStatuts.getSelectedItem();
+	public boolean estCboxStatuts(JComboBoxTheme<?> comboBox) {
+		return comboBox.equals(this.cboxStatuts);
 	}
 	
 }
