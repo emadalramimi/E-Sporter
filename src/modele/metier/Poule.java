@@ -31,16 +31,16 @@ public class Poule {
 	
 	/**
 	 * Construit une poule
-	 * @param idPoule
 	 * @param estCloturee
 	 * @param estFinale
 	 * @param idTournoi
+	 * @param rencontres
 	 */
-	public Poule(int idPoule, boolean estCloturee, boolean estFinale, int idTournoi) {
-		this.idPoule = idPoule;
+	public Poule(boolean estCloturee, boolean estFinale, int idTournoi, List<Rencontre> rencontres) {
 		this.estCloturee = estCloturee;
 		this.estFinale = estFinale;
 		this.idTournoi = idTournoi;
+		this.rencontres = rencontres;
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class Poule {
 	/**
 	 * @return EstCloturee
 	 */
-	public boolean isEstCloturee() {
+	public boolean getEstCloturee() {
 		return estCloturee;
 	}
 
@@ -76,7 +76,7 @@ public class Poule {
 	/**
 	 * @return EstFinale
 	 */
-	public boolean isEstFinale() {
+	public boolean getEstFinale() {
 		return estFinale;
 	}
 
@@ -132,8 +132,8 @@ public class Poule {
 	    Poule poule = (Poule) o;
 	    return this.idPoule == poule.getIdPoule()
 	            && this.idTournoi == poule.getIdTournoi()
-	            && this.estCloturee == poule.isEstCloturee()
-	            && this.estFinale == poule.isEstFinale()
+	            && this.estCloturee == poule.getEstCloturee()
+	            && this.estFinale == poule.getEstFinale()
 	     	    && this.rencontres == poule.getRencontres();
 	}
 	

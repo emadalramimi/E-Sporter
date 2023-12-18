@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import modele.metier.Poule;
+import modele.metier.Rencontre;
 
 public class ModelePoule extends DAO<Poule, Integer> {
 	
@@ -42,7 +43,7 @@ public class ModelePoule extends DAO<Poule, Integer> {
                 			rs.getBoolean("estCloturee"),
                 			rs.getBoolean("estFinale"),
                 			rs.getInt("idTournoi"),
-                			ModelePoule.this.modeleRencontre.getListeRencontresParId(rs.getInt("idPoule"))
+                			ModelePoule.this.modeleRencontre.getRencontresPoules(rs.getInt("idPoule"))
                         ));
                         return true;
                     } catch (Exception e) {
@@ -78,7 +79,7 @@ public class ModelePoule extends DAO<Poule, Integer> {
 				rs.getBoolean("estCloturee"),
 				rs.getBoolean("estFinale"),
 				rs.getInt("idTournoi"),
-				ModelePoule.this.modeleRencontre.getListeRencontresParId(rs.getInt("idPoule"))
+				ModelePoule.this.modeleRencontre.getRencontresPoules(rs.getInt("idPoule"))
             );
 		}	
 		rs.close();
@@ -93,15 +94,22 @@ public class ModelePoule extends DAO<Poule, Integer> {
 	@Override
 	public boolean ajouter(Poule poule) throws Exception {
 		try {
+			int idPoule = this.getNextValId();
+			poule.setIdPoule(idPoule);
+
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into poule values (?, ?, ?, ?)");
 			ps.setInt(1, poule.getIdPoule());
-			ps.setBoolean(2, poule.isEstCloturee());
-			ps.setBoolean(3, poule.isEstFinale());
+			ps.setBoolean(2, poule.getEstCloturee());
+			ps.setBoolean(3, poule.getEstFinale());
 			ps.setInt(4, poule.getIdTournoi());
 			ps.execute();
-			
 			ps.close();
-			BDD.getConnexion().commit();
+
+			for (Rencontre rencontre : poule.getRencontres()) {
+				rencontre.setIdPoule(idPoule);
+				this.modeleRencontre.ajouter(rencontre);
+			}
+			
 			return true;
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -109,46 +117,58 @@ public class ModelePoule extends DAO<Poule, Integer> {
 		}
 	}
 
-	/**
-	 * Supprime la poule dans la BDD
-	 * @return true si l'opération s'est bien déroulée, false sinon
-	 */
-	@Override
-	public boolean supprimer(Poule poule) throws Exception {
-		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from poule where idPoule = ?");
-			ps.setInt(1, poule.getIdPoule());
-			ps.execute();
+	// /**
+	//  * Supprime la poule dans la BDD
+	//  * @return true si l'opération s'est bien déroulée, false sinon
+	//  */
+	// @Override
+	// public boolean supprimer(Poule poule) throws Exception {
+	// 	try {
+	// 		PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from poule where idPoule = ?");
+	// 		ps.setInt(1, poule.getIdPoule());
+	// 		ps.execute();
 			
-			ps.close();
-			BDD.getConnexion().commit();
-			return true;
-		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+	// 		ps.close();
+	// 		BDD.getConnexion().commit();
+	// 		return true;
+	// 	} catch(SQLException e) {
+	// 		e.printStackTrace();
+	// 		return false;
+	// 	}
+	// }
 	
 	/**
 	 * @return le prochain identifiant unique de poule
 	 */
 	public int getNextValId() {
-        int nextVal = 0;
-        try {
-            PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idPoule");
+		int nextVal = 0;
+		try {
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idPoule");
 
-            ResultSet rs = ps.executeQuery();
-            
-            if (rs.next()) {
-                nextVal = rs.getInt(1);
-            }
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return nextVal;
-    }
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				nextVal = rs.getInt(1);
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return nextVal;
+	}
+
+	public List<Poule> getPoulesTournoi(int idTournoi) {
+		try {
+			List<Poule> poules = this.getTout().stream()
+				.filter(poule -> poule.getIdTournoi() == idTournoi)
+				.collect(Collectors.toList());
+			return poules;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 }
