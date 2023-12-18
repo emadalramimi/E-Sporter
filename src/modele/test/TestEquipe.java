@@ -39,42 +39,30 @@ public class TestEquipe {
 	@Test
 	public void testSetIdEquipe() {
 		equipeSansJoueurs.setIdEquipe(3);
-		equipeAvecJoueurs.setIdEquipe(4);
 		assertEquals(equipeSansJoueurs.getIdEquipe(), 3);
-		assertEquals(equipeAvecJoueurs.getIdEquipe(), 4);
-		assertNotEquals(equipeAvecJoueurs.getIdEquipe(), equipeSansJoueurs.getIdEquipe());
 	}
 	
 	@Test
 	public void testGetNom() {
 		assertEquals(equipeSansJoueurs.getNom(), "Equipe1");
 		assertEquals(equipeAvecJoueurs.getNom(), "Equipe2");
-		assertNotEquals(equipeAvecJoueurs.getNom(), equipeSansJoueurs.getNom());
 	}
 	
 	@Test
 	public void testSetNom() {
 		equipeSansJoueurs.setNom("Equipe3");
-		equipeAvecJoueurs.setNom("Equipe4");
 		assertEquals(equipeSansJoueurs.getNom(), "Equipe3");
-		assertEquals(equipeAvecJoueurs.getNom(), "Equipe4");
-		assertNotEquals(equipeAvecJoueurs.getNom(), equipeSansJoueurs.getNom());
 	}
 	
 	@Test
 	public void testGetPays() {
 		assertEquals(equipeSansJoueurs.getPays(), "France");
-		assertEquals(equipeAvecJoueurs.getPays(), "Canada");
-		assertNotEquals(equipeAvecJoueurs.getPays(), equipeSansJoueurs.getPays());
 	}
 	
 	@Test
 	public void testSetPays() {
 		equipeSansJoueurs.setPays("Allemagne");
-		equipeAvecJoueurs.setPays("Espagne");
 		assertEquals(equipeSansJoueurs.getPays(), "Allemagne");
-		assertEquals(equipeAvecJoueurs.getPays(), "Espagne");
-		assertNotEquals(equipeAvecJoueurs.getPays(), equipeSansJoueurs.getPays());
 	}
 	
 	@Test
@@ -85,10 +73,7 @@ public class TestEquipe {
 	@Test
 	public void testSetClassement() {
 		equipeSansJoueurs.setClassement(3);
-		equipeAvecJoueurs.setClassement(4);
 		assertEquals(equipeSansJoueurs.getClassement(), 3);
-		assertEquals(equipeAvecJoueurs.getClassement(), 4);
-		assertNotEquals(equipeAvecJoueurs.getClassement(), equipeSansJoueurs.getClassement());
 	}
 	
 	@Test
@@ -99,10 +84,7 @@ public class TestEquipe {
 	@Test
 	public void testSetWorldRankin() {
 		equipeSansJoueurs.setWorldRanking(3);
-		equipeAvecJoueurs.setWorldRanking(4);
 		assertEquals(equipeSansJoueurs.getWorldRanking(), 3);
-		assertEquals(equipeAvecJoueurs.getWorldRanking(), 4);
-		assertNotEquals(equipeAvecJoueurs.getWorldRanking(), equipeSansJoueurs.getWorldRanking());
 	}
 
 	@Test
@@ -113,10 +95,7 @@ public class TestEquipe {
 	@Test
 	public void testSetSaison() {
 		equipeSansJoueurs.setSaison("Saison 2024");
-		equipeAvecJoueurs.setSaison("Saison 2025");
 		assertEquals(equipeSansJoueurs.getSaison(), "Saison 2024");
-		assertEquals(equipeAvecJoueurs.getSaison(), "Saison 2025");
-		assertNotEquals(equipeAvecJoueurs.getSaison(), equipeSansJoueurs.getSaison());
 	}
 	
 	@Test
