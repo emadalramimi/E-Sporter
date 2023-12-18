@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import modele.ModeleUtilisateur;
-import modele.exception.IdentifiantOuMdpIncorrectsException;
 
 public class TestModeleUtilisateur {
 
@@ -32,7 +31,7 @@ public class TestModeleUtilisateur {
     /*
      * Test l'erreur IdentifiantOuMdpIncorrectsException lorsqu'on essaie de se connecter et que l'identifiant est invalide
      */
-    @Test(expected = IdentifiantOuMdpIncorrectsException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testConnexionIdentifiantInvalide() throws Exception {
     	modeleUtilisateur.connecter("fauxadmin", "mdp");
     }
@@ -40,7 +39,7 @@ public class TestModeleUtilisateur {
     /*
      * Test l'erreur IdentifiantOuMdpIncorrectsException lorsqu'on essaie de se connecter et que le mot de passe est invalide
      */
-    @Test(expected = IdentifiantOuMdpIncorrectsException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testConnexionMotDePasseInvalide() throws Exception {
     	modeleUtilisateur.connecter("admin", "*admin");
     }

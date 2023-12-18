@@ -27,7 +27,7 @@ public class TestSatistiquesEquipe {
 			    new Joueur(5, "Joueur5", 2)
 			));
 		equipe = new Equipe("Equipe1", "Canada",listJoueurs);
-		statEquipe = new StatistiquesEquipe(equipe, 4, 3);
+		statEquipe = new StatistiquesEquipe(equipe, 3, 1);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -68,16 +68,16 @@ public class TestSatistiquesEquipe {
 
 	@Test
 	public void testGetNbMatchsJoues() {
-		assertEquals(statEquipe.getNbMatchsJoues(), 4);
+		assertEquals(statEquipe.getNbMatchsJoues(), 3);
 	}
 	
 	@Test
 	public void testGetNbMatchsGagnes() {
-		assertEquals(statEquipe.getNbMatchsGagnes(), 3);
+		assertEquals(statEquipe.getNbMatchsGagnes(), 1);
 	}
 	
 	@Test
 	public void testGetRatioPourcentage() {
-		assertEquals(statEquipe.getRatioPourcentage(), "75.00 %");
+		assertEquals(statEquipe.getRatioPourcentage(), "33.33 %");
 	}
 }
