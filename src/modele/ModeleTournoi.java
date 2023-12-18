@@ -81,35 +81,35 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	/**
 	 * @return Retourne un tournoi depuis la BDD par sa clé primaire
 	 */
-	@Override
-	public Optional<Tournoi> getParId(Integer... idTournoi) throws Exception {
-		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from tournoi where idTournoi = ?");
-		ps.setInt(1, idTournoi[0]);
-		
-		ResultSet rs = ps.executeQuery();
-		
-		// Création de joueur si il existe
-		Tournoi tournoi = null;
-		if(rs.next()) {
-			tournoi = new Tournoi(
-				rs.getInt("idTournoi"),
-				rs.getString("nomTournoi"),
-				Notoriete.valueOfLibelle(rs.getString("notoriete")),
-				rs.getInt("dateDebut"),
-				rs.getInt("dateFin"),
-				rs.getBoolean("estCloture"),
-				rs.getString("identifiant"),
-				rs.getString("motDePasse"),
-				ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
-				ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
-				ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
-            );
-		}
-		
-		rs.close();
-		ps.close();
-		return Optional.ofNullable(tournoi);
-	}
+//	@Override
+//	public Optional<Tournoi> getParId(Integer... idTournoi) throws Exception {
+//		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from tournoi where idTournoi = ?");
+//		ps.setInt(1, idTournoi[0]);
+//		
+//		ResultSet rs = ps.executeQuery();
+//		
+//		// Création de joueur si il existe
+//		Tournoi tournoi = null;
+//		if(rs.next()) {
+//			tournoi = new Tournoi(
+//				rs.getInt("idTournoi"),
+//				rs.getString("nomTournoi"),
+//				Notoriete.valueOfLibelle(rs.getString("notoriete")),
+//				rs.getInt("dateDebut"),
+//				rs.getInt("dateFin"),
+//				rs.getBoolean("estCloture"),
+//				rs.getString("identifiant"),
+//				rs.getString("motDePasse"),
+//				ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
+//				ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
+//				ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
+//            );
+//		}
+//		
+//		rs.close();
+//		ps.close();
+//		return Optional.ofNullable(tournoi);
+//	}
 
 	/**
 	 * Ajoute le tournoi dans la BDD

@@ -51,112 +51,6 @@ public class ModeleArbitre extends DAO<Arbitre, Integer> {
 		
 		return stream.collect(Collectors.toList());
 	}
-
-	// /**
-	//  * @return Retourne un arbitre depuis la BDD par sa clé primaire
-	//  */
-	// @Override
-	// public Optional<Arbitre> getParId(Integer... idArbitre) throws Exception {
-	// 	PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from arbitre where idArbitre = ?");
-	// 	ps.setInt(1, idArbitre[0]);
-		
-	// 	ResultSet rs = ps.executeQuery();
-		
-	// 	// Création de joueur si il existe
-	// 	Arbitre arbitre = null;
-	// 	if(rs.next()) {
-	// 		arbitre = new Arbitre(
-	// 			rs.getInt("idArbitre"),
-	// 			rs.getString("nom"),
-	// 			rs.getString("prenom")
-	// 		);
-	// 	}
-		
-	// 	rs.close();
-	// 	ps.close();
-	// 	return Optional.ofNullable(arbitre);
-	// }
-
-	// /**
-	//  * Ajoute le arbitre dans la BDD
-	//  * @return true si l'opération s'est bien déroulée, false sinon
-	//  */
-	// @Override
-	// public boolean ajouter(Arbitre arbitre) throws Exception {
-	// 	try {
-	// 		PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into arbitre values (?, ?, ?)");
-	// 		ps.setInt(1, arbitre.getIdArbitre());
-	// 		ps.setString(2, arbitre.getNom());
-	// 		ps.setString(3, arbitre.getPrenom());
-	// 		ps.execute();
-			
-	// 		ps.close();
-	// 		BDD.getConnexion().commit();
-	// 		return true;
-	// 	} catch(SQLException e) {
-	// 		try {
-	// 			BDD.getConnexion().rollback();
-	// 		} catch (SQLException e1) {
-	// 			e1.printStackTrace();
-	// 		}
-	// 		throw new RuntimeException(e);
-	// 	}
-	// }
-
-	// /**
-	//  * Modifie le arbitre dans la BDD
-	//  * @return true si l'opération s'est bien déroulée, false sinon
-	//  */
-	// @Override
-	// public boolean modifier(Arbitre arbitre) throws Exception {
-	// 	try {
-	// 		PreparedStatement ps = BDD.getConnexion().prepareStatement("update arbitre set nomArbitre = ?, notoriete = ?, dateDebut = ?, dateFin = ?, estCloture = ?, identifiant = ?, motDePasse = ? where idArbitre = ?");
-	// 		ps.setString(1, arbitre.getNom());
-	// 		ps.setString(2, arbitre.getPrenom());
-	// 		ps.setInt(3, arbitre.getIdArbitre());
-			
-	// 		ps.close();
-	// 		BDD.getConnexion().commit();
-	// 		return true;
-	// 	} catch(SQLException e) {
-	// 		try {
-	// 			BDD.getConnexion().rollback();
-	// 		} catch (SQLException e1) {
-	// 			e1.printStackTrace();
-	// 		}
-	// 		throw new RuntimeException(e);
-	// 	}
-	// }
-
-	// /**
-	//  * Supprime le arbitre dans la BDD
-	//  * @return true si l'opération s'est bien déroulée, false sinon
-	//  */
-	// @Override
-	// public boolean supprimer(Arbitre arbitre) throws Exception {
-	// 	try {
-	// 		PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from arbitre where idArbitre = ?");
-	// 		ps.setInt(1, arbitre.getIdArbitre());
-	// 		ps.execute();
-			
-	// 		ps.close();
-	// 		BDD.getConnexion().commit();
-	// 		return true;
-	// 	} catch(SQLException e) {
-	// 		try {
-	// 			BDD.getConnexion().rollback();
-	// 		} catch (SQLException e1) {
-	// 			e1.printStackTrace();
-	// 		}
-	// 		throw new RuntimeException(e);
-	// 	}
-	// }
-
-	public Arbitre[] getTableauArbitres(List<Arbitre> arbitresNonEligibles) throws Exception {
-		return this.getTout().stream()
-				.filter(e -> !arbitresNonEligibles.contains(e))
-				.toArray(Arbitre[]::new);
-	}
 	
 	public List<Arbitre> getArbitresTournoi(int idTournoi) {
 		try {
@@ -197,6 +91,12 @@ public class ModeleArbitre extends DAO<Arbitre, Integer> {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public Arbitre[] getTableauArbitres(List<Arbitre> arbitresNonEligibles) throws Exception {
+		return this.getTout().stream()
+				.filter(e -> !arbitresNonEligibles.contains(e))
+				.toArray(Arbitre[]::new);
 	}
 	
 }

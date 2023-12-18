@@ -235,30 +235,6 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
         
         return nextVal;
     }
-	
-	/**
-	 * @param nom : contenu dans le nom d'une équipe
-	 * @return la liste des équipes contenant la variable nom dans leur nom d'équipe
-	 * @throws Exception
-	 */
-	public List<Equipe> getParNom(String nom) throws Exception {
-		return this.getTout().stream()
-				.filter(e -> e.getNom().toLowerCase().contains(nom.toLowerCase()))
-				.collect(Collectors.toList());
-	}
-	
-	public List<Equipe> getEquipesSaison() throws Exception {
-		return this.getTout().stream()
-				.filter(e -> e.getSaison().equals(String.valueOf(LocalDate.now().getYear())))
-				.collect(Collectors.toList());
-	}
-	
-	public Equipe[] getTableauEquipes(List<Equipe> equipesNonEligibles) throws Exception {
-		return this.getTout().stream()
-				.filter(e -> !equipesNonEligibles.contains(e) && e.getSaison().equals(String.valueOf(LocalDate.now().getYear())))
-				.sorted()
-				.toArray(Equipe[]::new);
-	}
 
 	public List<Equipe> getEquipesTournoi(int idTournoi) {
 		try {
@@ -370,6 +346,30 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 			}
 			throw new RuntimeException(e);
 		}
+	}
+	
+	/**
+	 * @param nom : contenu dans le nom d'une équipe
+	 * @return la liste des équipes contenant la variable nom dans leur nom d'équipe
+	 * @throws Exception
+	 */
+	public List<Equipe> getParNom(String nom) throws Exception {
+		return this.getTout().stream()
+				.filter(e -> e.getNom().toLowerCase().contains(nom.toLowerCase()))
+				.collect(Collectors.toList());
+	}
+	
+	public List<Equipe> getEquipesSaison() throws Exception {
+		return this.getTout().stream()
+				.filter(e -> e.getSaison().equals(String.valueOf(LocalDate.now().getYear())))
+				.collect(Collectors.toList());
+	}
+	
+	public Equipe[] getTableauEquipes(List<Equipe> equipesNonEligibles) throws Exception {
+		return this.getTout().stream()
+				.filter(e -> !equipesNonEligibles.contains(e) && e.getSaison().equals(String.valueOf(LocalDate.now().getYear())))
+				.sorted()
+				.toArray(Equipe[]::new);
 	}
 	
 }
