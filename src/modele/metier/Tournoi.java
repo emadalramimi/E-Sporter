@@ -1,5 +1,6 @@
 package modele.metier;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  */
 public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	
-	//TODO ajouter une méthode à l'énum permettant de get le multiplicateur de pts
+	// TODO ajouter une méthode à l'énum permettant de get le multiplicateur de pts
 	public enum Notoriete {
         LOCAL("Local"),
         REGIONAL("Régional"),
@@ -38,8 +39,8 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	private int idTournoi;
 	private String nomTournoi;
 	private Notoriete notoriete;
-	private long dateDebut;
-	private long dateFin;
+	private long dateTimeDebut;
+	private long dateTimeFin;
 	private boolean estCloture;
 	private String identifiant;
 	private String motDePasse;
@@ -52,31 +53,34 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	 * @param idTournoi
 	 * @param nomTournoi
 	 * @param notoriete
-	 * @param dateDebut
-	 * @param dateFin
+	 * @param dateTimeDebut
+	 * @param dateTimeFin
 	 * @param identifiant
 	 * @param motDePasse
+	 * @param poules
 	 * @param equipes
 	 * @param arbitres
 	 */
-	public Tournoi(int idTournoi, String nomTournoi, Notoriete notoriete, long dateDebut, long dateFin, boolean estCloture, String identifiant, String motDePasse, List<Equipe> equipes, List<Arbitre> arbitres) {
+	public Tournoi(int idTournoi, String nomTournoi, Notoriete notoriete, long dateTimeDebut, long dateTimeFin, boolean estCloture, String identifiant, String motDePasse, List<Poule> poules, List<Equipe> equipes, List<Arbitre> arbitres) {
 		this.idTournoi = idTournoi;
 		this.nomTournoi = nomTournoi;
 		this.notoriete = notoriete;
-		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
+		this.dateTimeDebut = dateTimeDebut;
+		this.dateTimeFin = dateTimeFin;
 		this.estCloture = estCloture;
 		this.identifiant = identifiant;
 		this.motDePasse = motDePasse;
+		this.poules = poules;
 		this.equipes = equipes;
 		this.arbitres = arbitres;
 	}
 	
-	public Tournoi(String nomTournoi, Notoriete notoriete, long dateDebut, long dateFin, String identifiant, String motDePasse, List<Arbitre> arbitres) {
+	// Pas d'équipe et poule car inscription
+	public Tournoi(String nomTournoi, Notoriete notoriete, long dateTimeDebut, long dateTimeFin, String identifiant, String motDePasse, List<Arbitre> arbitres) {
 		this.nomTournoi = nomTournoi;
 		this.notoriete = notoriete;
-		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
+		this.dateTimeDebut = dateTimeDebut;
+		this.dateTimeFin = dateTimeFin;
 		this.identifiant = identifiant;
 		this.motDePasse = motDePasse;
 		this.arbitres = arbitres;
@@ -128,33 +132,33 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	}
 
 	/**
-	 * @return DateDebut
+	 * @return dateTimeDebut
 	 */
-	public long getDateDebut() {
-		return dateDebut;
+	public long getDateTimeDebut() {
+		return dateTimeDebut;
 	}
 
 	/**
 	 * Modifie la date de début
-	 * @param dateDebut
+	 * @param dateTimeDebut
 	 */
-	public void setDateDebut(long dateDebut) {
-		this.dateDebut = dateDebut;
+	public void setDateTimeDebut(long dateTimeDebut) {
+		this.dateTimeDebut = dateTimeDebut;
 	}
 
 	/**
-	 * @return DateFin
+	 * @return dateTimeFin
 	 */
-	public long getDateFin() {
-		return dateFin;
+	public long getDateTimeFin() {
+		return dateTimeFin;
 	}
 
 	/**
 	 * Modifie la date de fin
-	 * @param dateFin
+	 * @param dateTimeFin
 	 */
-	public void setDateFin(long dateFin) {
-		this.dateFin = dateFin;
+	public void setDateTimeFin(long dateTimeFin) {
+		this.dateTimeFin = dateTimeFin;
 	}
 
 	/**
@@ -224,6 +228,15 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	public void setPoules(List<Poule> poules) {
 		this.poules = poules;
 	}
+
+	public Poule getPouleActuelle() {
+		for (Poule poule : this.poules) {
+			if (poule.getEstCloturee() == false) {
+				return poule;
+			}
+		}
+		return null;
+	}
 	
 	public List<Equipe> getEquipes() {
 		return this.equipes;
@@ -232,6 +245,14 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	public void setEquipes(List<Equipe> equipes) {
 		this.equipes = equipes;
 	}
+
+	public void addEquipe(Equipe equipe) {
+		this.equipes.add(equipe);
+	}
+
+	public void removeEquipe(Equipe equipe) {
+		this.equipes.remove(equipe);
+	}
 	
 	public List<Arbitre> getArbitres() {
 		return this.arbitres;
@@ -239,6 +260,31 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	
 	public void setArbitres(List<Arbitre> arbitres) {
 		this.arbitres = arbitres;
+	}
+
+	public int getNbMatchsJoues(Equipe equipe) {
+		int nbMatchsJoues = 0;
+		for(Poule poule : this.poules) {
+			for(Rencontre rencontre : poule.getRencontres()) {
+				// 0 => valeur nulle
+				if(Arrays.asList(rencontre.getEquipes()).contains(equipe) && rencontre.getIdEquipeGagnante() != 0) {
+					nbMatchsJoues++;
+				}
+			}
+		}
+		return nbMatchsJoues;
+	}
+
+	public int getNbMatchsGagnes(Equipe equipe) {
+		int nbMatchsGagnes = 0;
+		for(Poule poule : this.poules) {
+			for(Rencontre rencontre : poule.getRencontres()) {
+				if(Arrays.asList(rencontre.getEquipes()).contains(equipe) && rencontre.getIdEquipeGagnante() == equipe.getIdEquipe()) {
+					nbMatchsGagnes++;
+				}
+			}
+		}
+		return nbMatchsGagnes;
 	}
 	
 	/**
@@ -253,58 +299,40 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	        return false;
 	    }
 	    Tournoi tournoi = (Tournoi) o;
-	    return this.idTournoi == tournoi.getIdTournoi()
-	        && this.dateDebut == tournoi.getDateDebut()
-	        && this.dateFin == tournoi.getDateFin()
-	        && this.nomTournoi.equals(tournoi.getNomTournoi())
-	 	    && this.notoriete.equals(tournoi.getNotoriete())
-	 	    && this.identifiant.equals(tournoi.getIdentifiant())
-	 	    && this.motDePasse.equals(tournoi.getMotDePasse())
-	 	    && this.estCloture == tournoi.getEstCloture()
-	 	    && this.equipes.equals(tournoi.getEquipes())
-	 	    && this.arbitres.equals(tournoi.getArbitres());
+	    return this.idTournoi == tournoi.getIdTournoi();
 	}
 
 	@Override
 	public String toString() {
 		return "Tournoi [idTournoi=" + idTournoi + ", nomTournoi=" + nomTournoi + ", notoriete=" + notoriete
-				+ ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", estCloture=" + estCloture + ", identifiant="
+				+ ", dateTimeDebut=" + dateTimeDebut + ", dateTimeFin=" + dateTimeFin + ", estCloture=" + estCloture + ", identifiant="
 				+ identifiant + ", motDePasse=" + motDePasse + ", poules=" + poules + ", equipes=" + equipes
 				+ ", arbitres=" + arbitres + "]";
 	}
 
 	@Override
 	public int compareTo(Tournoi tournoi) {
-		// Vérifie si le tournoi actuel est clos et que la date de fin est passée
-		boolean thisClosEtTermine = System.currentTimeMillis() / 1000 < this.getDateFin() && this.getEstCloture();
+		// Vérifie si le tournoi actuel est clos, ouvert ou en cours de création
+		int thisStatus = this.getEstCloture() ? (System.currentTimeMillis() / 1000 < this.getDateTimeFin() ? 1 : 2) : 0;
 
-		// Vérifie si le tournoi fourni est clos et terminé
-		boolean autreClosEtTermine = System.currentTimeMillis() / 1000 < tournoi.getDateFin() && tournoi.getEstCloture();
+		// Vérifie si le tournoi fourni est clos, ouvert ou en cours de création
+		int tournoiStatus = tournoi.getEstCloture() ? (System.currentTimeMillis() / 1000 < tournoi.getDateTimeFin() ? 1 : 2) : 0;
 
-		// Tout d'abord, comparaison basée sur le statut clos et terminé des tournois
-		if (thisClosEtTermine && autreClosEtTermine) {
-			// Si les deux tournois sont clos et terminés, comparer par date de début et nom
-			if (this.getDateDebut() < tournoi.getDateDebut()) {
-				return -1;
-			} else if (this.getDateDebut() == tournoi.getDateDebut()) {
-				return this.getNomTournoi().compareTo(tournoi.getNomTournoi());
-			} else {
-				return 1;
-			}
-		} else if (thisClosEtTermine) {
-			// Si seul le tournoi actuel est clos et terminé, il devrait venir en premier
+		// D'abord, comparaison basée sur le statut des tournois
+		if (thisStatus < tournoiStatus) {
+			// Si le statut du tournoi actuel est inférieur à celui du tournoi fourni, le tournoi actuel vient en premier
 			return -1;
-		} else if (autreClosEtTermine) {
-			// Si seul le tournoi fourni est clos et terminé, il devrait venir en premier
+		} else if (thisStatus > tournoiStatus) {
+			// Si le statut du tournoi actuel est supérieur à celui du tournoi fourni, le tournoi fourni vient en premier
 			return 1;
 		} else {
-			// Si aucun des tournois n'est clos et terminé, comparer par date de début et nom
-			if (this.getDateDebut() < tournoi.getDateDebut()) {
-				return -1;
-			} else if (this.getDateDebut() == tournoi.getDateDebut()) {
-				return this.getNomTournoi().compareTo(tournoi.getNomTournoi());
+			// Si les deux tournois ont le même statut, comparer par date de début et nom
+			if (this.getDateTimeDebut() < tournoi.getDateTimeDebut()) {
+				return -1; // Le tournoi actuel commence plus tôt, donc il vient en premier
+			} else if (this.getDateTimeDebut() == tournoi.getDateTimeDebut()) {
+				return this.getNomTournoi().compareTo(tournoi.getNomTournoi()); // Les tournois commencent en même temps, donc on les compare par nom
 			} else {
-				return 1;
+				return 1; // Le tournoi fourni commence plus tôt, donc il vient en premier
 			}
 		}
 	}
