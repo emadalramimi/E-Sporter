@@ -6,40 +6,30 @@ package modele.metier;
 public class Rencontre {
 
 	private int idRencontre;
-	private int dateHeureDebut;
-	private int dateHeureFin;
 	private int idPoule;
+	private int idEquipeGagnante;
 	private Equipe[] equipes;
-	
-	/**
-	 * Construit une équipe
-	 * @param idRencontre
-	 * @param dateHeureDebut
-	 * @param dateHeureFin
-	 * @param idPoule
-	 * @param equipes
-	 */
-	public Rencontre(int idRencontre, int dateHeureDebut, int dateHeureFin, int idPoule, Equipe[] equipes) {
-		this.idRencontre = idRencontre;
-		this.dateHeureDebut = dateHeureDebut;
-		this.dateHeureFin = dateHeureFin;
-		this.idPoule = idPoule;
-		this.equipes = equipes;
-	}
 	
 	/**
 	 * Construit une rencontre
 	 * @param idRencontre
-	 * @param dateHeureDebut
-	 * @param dateHeureFin
+	 * @param idPoule
+	 * @param equipes
+	 */
+	public Rencontre(int idRencontre, int idPoule, int idEquipeGagnante, Equipe[] equipes) {
+		this.idRencontre = idRencontre;
+		this.idPoule = idPoule;
+		this.idEquipeGagnante = idEquipeGagnante;
+		this.equipes = equipes;
+	}
+	
+	/**
+	 * Construit une rencontre (pour l'insertion en BDD)
+	 * @param idRencontre
 	 * @param idPoule
 	 */
-	public Rencontre(int idRencontre, int dateHeureDebut, int dateHeureFin, int idPoule) {
-		this.idRencontre = idRencontre;
-		this.dateHeureDebut = dateHeureDebut;
-		this.dateHeureFin = dateHeureFin;
-		this.idPoule = idPoule;
-		equipes = new Equipe[2];
+	public Rencontre(Equipe[] equipes) {
+		this.equipes = equipes;
 	}
 	
 	/**
@@ -56,36 +46,6 @@ public class Rencontre {
 	public void setIdRencontre(int idRencontre) {
 		this.idRencontre = idRencontre;
 	}
-	
-	/**
-	 * @return DateHeureDebut
-	 */
-	public int getDateHeureDebut() {
-		return dateHeureDebut;
-	}
-
-	/**
-	 * Modifie la date de début
-	 * @param dateHeureDebut
-	 */
-	public void setDateHeureDebut(int dateHeureDebut) {
-		this.dateHeureDebut = dateHeureDebut;
-	}
-
-	/**
-	 * @return DateHeureFin
-	 */
-	public int getDateHeureFin() {
-		return dateHeureFin;
-	}
-
-	/**
-	 * Modifie la date de fin
-	 * @param dateHeureFin
-	 */
-	public void setDateHeureFin(int dateHeureFin) {
-		this.dateHeureFin = dateHeureFin;
-	}
 
 	/**
 	 * @return Clé étrangère poule
@@ -100,6 +60,21 @@ public class Rencontre {
 	 */
 	public void setIdPoule(int idPoule) {
 		this.idPoule = idPoule;
+	}
+
+	/**
+	 * @return Clé étrangère équipe gagnante
+	 */
+	public int getIdEquipeGagnante() {
+		return idEquipeGagnante;
+	}
+
+	/**
+	 * Modifie la clé étrangère équipe gagnante
+	 * @param idEquipeGagnante
+	 */
+	public void setIdEquipeGagnante(int idEquipeGagnante) {
+		this.idEquipeGagnante = idEquipeGagnante;
 	}
 
 	/**
@@ -130,8 +105,6 @@ public class Rencontre {
 	    }
 	    Rencontre rencontre = (Rencontre) o;
 	    return this.idRencontre == rencontre.getIdPoule()
-	            && this.dateHeureDebut == rencontre.getDateHeureDebut()
-	            && this.dateHeureFin == rencontre.getDateHeureFin()
 	            && this.idPoule == rencontre.getIdPoule()
 	     	    && this.equipes == rencontre.getEquipes();
 	}
@@ -139,8 +112,6 @@ public class Rencontre {
 	@Override
 	public String toString() {
 		return "Rencontre [idRencontre=" + idRencontre
-				+ ", dateHeureDebut=" + dateHeureDebut 
-				+ ", dateHeureFin=" + dateHeureFin 
 				+ ", idPoule=" + idPoule + "]";
 	}
 	
