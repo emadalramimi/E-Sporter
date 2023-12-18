@@ -68,5 +68,21 @@ public class Arbitre {
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
+	@Override
+	public String toString() {
+		return "Arbitre [idArbitre=" + idArbitre + ", nom=" + nom + ", prenom=" + prenom + "]";
+	}
+
+	@Override
+	public boolean equals(Object o) {
+	    if (o == null) {
+	        return false;
+	    }
+	    if (!(o instanceof Arbitre)) {
+	        return false;
+	    }
+	    Arbitre arbitre = (Arbitre) o;
+	    return arbitre.getIdArbitre() == this.getIdArbitre();
+	}
 	
 }
