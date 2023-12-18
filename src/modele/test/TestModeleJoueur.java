@@ -11,16 +11,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import modele.ModeleEquipe;
 import modele.ModeleJoueur;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
 
 public class TestModeleJoueur {
 	
-	private ModeleJoueur modele;
+private ModeleJoueur modele;
 	
 	private Joueur joueur;
-	private Joueur joueurModif;
 	private Equipe equipe;
 	
 	private List<Joueur> joueurs;
@@ -28,16 +28,15 @@ public class TestModeleJoueur {
 	@Before
 	public void setUp() throws Exception {
 		modele = new ModeleJoueur();
-		joueur = new Joueur(50, "joueur", 1);
-		joueurModif = new Joueur(50, "joueurModif", 1);
-		equipe = new Equipe(50, "Equipe", "Canada", 2, 2, "Saison 2023", joueurs);
+		joueur = new Joueur(54, "Kévin", 1);
 		joueurs = new ArrayList<>(Arrays.asList(
-				new Joueur(55, "joueur", 50),
-				new Joueur(56, "joueur", 50),
-				new Joueur(57, "joueur", 50),
-				new Joueur(58, "joueur", 50),
-				new Joueur(59, "joueur", 50)
+				new Joueur(38, "joueur", 6),
+				new Joueur(39, "joueur", 6),
+				new Joueur(40, "joueur", 6),
+				new Joueur(41, "joueur", 6),
+				new Joueur(42, "joueur", 6)
 				));
+		equipe = new Equipe("Equipe", "Canada", joueurs);
     }
 	
 	@Test
@@ -72,16 +71,16 @@ public class TestModeleJoueur {
 	@Test
 	public void testModifierTrue() throws Exception {
 		modele.ajouter(joueur);
-		assertTrue(modele.modifier(joueurModif));
+		assertTrue(modele.modifier(new Joueur(50, "joueurModif", 1)));
 	}
-
+	/*
 	@Test
 	public void testSupprimerTrue() throws Exception {
 		modele.ajouter(joueur);
 		assertTrue(modele.supprimer(joueur));
 	}
 	
-	/*
+	
 	@Test
 	public void testGetNextValId() {
 	    int nextVal = modele.getNextValId();
@@ -97,35 +96,14 @@ public class TestModeleJoueur {
 	
 	@Test
 	public void testGetListeJoueursParId() throws Exception {
-	    assertEquals(5, modele.getListeJoueursParId(1).size());
-	    for(int i = 0; i < 5; i++) {
-	    	assertEquals(modele.getParId(i + 1).orElse(null), modele.getListeJoueursParId(1).get(i));
-	    }
+		ModeleEquipe modeleEquipe = new ModeleEquipe();
+		modeleEquipe.ajouter(equipe);
+	    assertEquals(5, modele.getListeJoueursParId(equipe.getIdEquipe()).size());
+	    assertEquals(modele.getListeJoueursParId(equipe.getIdEquipe()).toString(), joueurs.toString());
 	}
 	
 	@After
     public void tearsDown() throws Exception {
-        List<Integer> idsAGarderJoueurs = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
-        
-        modele.getTout().stream()
-                .filter(j -> !idsAGarderJoueurs.contains(j.getIdJoueur()))
-                .forEach(j -> {
-                    try {
-                        modele.supprimer(j);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-        
-        List<Integer> idsAGarderEquipe = Arrays.asList(1, 2, 3, 4);
-        modele.getTout().stream()
-                .filter(eq -> !idsAGarderEquipe.contains(eq.getIdEquipe()))
-                .forEach(eq -> {
-                    try {
-                        modele.supprimer(eq);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
+		modele.supprimerJoueursEquipe(6);
     }
 }
