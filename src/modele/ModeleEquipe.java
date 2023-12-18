@@ -102,7 +102,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
 	@Override
-	public boolean ajouter(Equipe equipe) {
+	public boolean ajouter(Equipe equipe) throws Exception {
 		try {
 			int idEquipe = this.getNextValId();
 			equipe.setIdEquipe(idEquipe);
@@ -253,8 +253,9 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 				.collect(Collectors.toList());
 	}
 	
-	public Equipe[] getTableauEquipes() throws Exception {
+	public Equipe[] getTableauEquipes(List<Equipe> equipesNonEligibles) throws Exception {
 		return this.getTout().stream()
+				.filter(e -> !equipesNonEligibles.contains(e) && e.getSaison().equals(String.valueOf(LocalDate.now().getYear())))
 				.sorted()
 				.toArray(Equipe[]::new);
 	}
@@ -324,6 +325,9 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	public void inscrireEquipe(Equipe equipe, Tournoi tournoi) throws Exception {
 		if (this.getEquipesTournoi(tournoi.getIdTournoi()).contains(equipe)) {
 			throw new IllegalStateException("Cette équipe est déjà inscrite à ce tournoi");
+		}
+		if (!equipe.getSaison().equals(String.valueOf(LocalDate.now().getYear()))) {
+			throw new IllegalStateException("Cette équipe n'est pas de la saison courante");
 		}
 		
 		try {
