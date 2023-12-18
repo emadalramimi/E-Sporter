@@ -112,10 +112,11 @@ public class ControleurTournois extends KeyAdapter implements ActionListener, It
 						throw new RuntimeException("Droits insuffisants");
 					}
 
-					// Si le tournoi est en cours ou cloturé, impossible de le supprimer
-					if (!this.estTournoiCloture(tournoi)) {
-						this.vue.afficherPopupErreur("Le tournoi est en cours ou cloturé, impossible de le supprimer.");
-						throw new RuntimeException("Tournoi en cours ou cloturé, impossible de le supprimer");
+					// Si le tournoi est cloturé, impossible de le supprimer
+					// Important : on peut supprimer un tournoi ouvert ou en phase d'inscription
+					if (System.currentTimeMillis() / 1000 >= tournoi.getDateTimeDebut() && tournoi.getEstCloture()) {
+						this.vue.afficherPopupErreur("Le tournoi est cloturé, impossible de le supprimer.");
+						throw new RuntimeException("Tournoi est cloturé, impossible de le supprimer");
 					}
 
 					// Affiche une demande de confirmation de suppression

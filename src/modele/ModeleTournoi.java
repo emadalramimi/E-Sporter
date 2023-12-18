@@ -199,7 +199,7 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	 */
 	@Override
 	public boolean supprimer(Tournoi tournoi) throws Exception {
-		if (System.currentTimeMillis() / 1000 >= tournoi.getDateTimeFin() || tournoi.getEstCloture() == false) {
+		if (System.currentTimeMillis() / 1000 >= tournoi.getDateTimeFin() && tournoi.getEstCloture() == false) {
 			throw new IllegalArgumentException("Le tournoi est cloturé");
 		}
 
@@ -213,12 +213,17 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 			ps.setInt(1, tournoi.getIdTournoi());
 			ps.execute();
 			ps.close();
+			
+			// Supprimer les poules
+			for (Poule poule : tournoi.getPoules()) {
+				this.modelePoule.supprimer(poule);
+			}
 
 			ps = BDD.getConnexion().prepareStatement("delete from tournoi where idTournoi = ?");
 			ps.setInt(1, tournoi.getIdTournoi());
 			ps.execute();
-			
 			ps.close();
+
 			BDD.getConnexion().commit();
 			return true;
 		} catch(SQLException e) {
@@ -254,40 +259,48 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	}
 
 	public void ouvrirTournoi(Tournoi tournoi) throws Exception {
-		// TODO TRY CATCH AVEC ROLLBACK
-		int nbEquipes = modeleEquipes.getEquipesTournoi(tournoi.getIdTournoi()).size();
-		if (nbEquipes < 4 || nbEquipes > 8) {
-			throw new IllegalArgumentException("Le nombre d'équipes inscrites doit être compris entre 4 et 8 équipes");
-		}
-		if (tournoi.getDateTimeFin() <= System.currentTimeMillis() / 1000) {
-			throw new IllegalArgumentException("La date de fin du tournoi est passée");
-		}
-		if(tournoi.getDateTimeFin() <= System.currentTimeMillis() / 1000 && tournoi.getEstCloture()) {
-			throw new IllegalArgumentException("Le tournoi est cloturé");
-		}
-		if(this.getTout().stream().anyMatch(t -> t.getEstCloture() == false)) {
-			throw new IllegalArgumentException("Il ne peut y avoir qu'un seul tournoi ouvert à la fois");
-		}
-	
-		PreparedStatement ps = BDD.getConnexion().prepareStatement("update tournoi set estCloture = false where idTournoi = ?");
-		ps.setInt(1, tournoi.getIdTournoi());
-		ps.execute();
-		ps.close();
-
-		List<Rencontre> rencontres = new LinkedList<>();
-		List<Equipe> equipes = tournoi.getEquipes();
-		for (int i = 0; i < equipes.size(); i++) {
-			for (int j = i + 1; j < equipes.size(); j++) {
-				rencontres.add(new Rencontre(new Equipe[] { equipes.get(i), equipes.get(j) }));
+		try {
+			int nbEquipes = modeleEquipes.getEquipesTournoi(tournoi.getIdTournoi()).size();
+			if (nbEquipes < 4 || nbEquipes > 8) {
+				throw new IllegalArgumentException("Le nombre d'équipes inscrites doit être compris entre 4 et 8 équipes");
 			}
+			if (tournoi.getDateTimeFin() <= System.currentTimeMillis() / 1000) {
+				throw new IllegalArgumentException("La date de fin du tournoi est passée");
+			}
+			if(tournoi.getDateTimeFin() <= System.currentTimeMillis() / 1000 && tournoi.getEstCloture()) {
+				throw new IllegalArgumentException("Le tournoi est cloturé");
+			}
+			if(this.getTout().stream().anyMatch(t -> t.getEstCloture() == false)) {
+				throw new IllegalArgumentException("Il ne peut y avoir qu'un seul tournoi ouvert à la fois");
+			}
+		
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("update tournoi set estCloture = false where idTournoi = ?");
+			ps.setInt(1, tournoi.getIdTournoi());
+			ps.execute();
+			ps.close();
+
+			List<Rencontre> rencontres = new LinkedList<>();
+			List<Equipe> equipes = tournoi.getEquipes();
+			for (int i = 0; i < equipes.size(); i++) {
+				for (int j = i + 1; j < equipes.size(); j++) {
+					rencontres.add(new Rencontre(new Equipe[] { equipes.get(i), equipes.get(j) }));
+				}
+			}
+			Collections.shuffle(rencontres);
+
+			ModelePoule modelePoule = new ModelePoule();
+			Poule poule = new Poule(false, false, tournoi.getIdTournoi(), rencontres);
+			modelePoule.ajouter(poule);
+
+			BDD.getConnexion().commit();
+		} catch (SQLException e) {
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
-		Collections.shuffle(rencontres);
-
-		ModelePoule modelePoule = new ModelePoule();
-		Poule poule = new Poule(false, false, tournoi.getIdTournoi(), rencontres);
-		modelePoule.ajouter(poule);
-
-		BDD.getConnexion().commit();
 	}
 	
 	public Optional<Tournoi> getParIdentifiant(String identifiant) throws SQLException {
