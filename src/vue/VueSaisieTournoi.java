@@ -65,14 +65,13 @@ public class VueSaisieTournoi extends JFrameTheme {
 	private JTextFieldTheme txtIdentifiantArbitres;
 	private JPasswordFieldTheme motDePasseArbitres;
 	private JComboBoxTheme<String> cboxNotoriete;
+	private UtilDateModel modelDateDebut;
+	private UtilDateModel modelDateFin;
 	private JSpinner spinnerHeuresDebut;
 	private JSpinner spinnerMinutesDebut;
 	private JSpinner spinnerHeuresFin;
 	private JSpinner spinnerMinutesFin;
 	private JButtonTheme btnAjouterArbitre;
-	
-	private UtilDateModel modelDateDebut;
-	private UtilDateModel modelDateFin;
 
 	public VueSaisieTournoi(VueTournois vueTournois, Optional<Tournoi> tournoiOptionnel) {
 		ControleurSaisieTournoi controleur = new ControleurSaisieTournoi(this, vueTournois, tournoiOptionnel);
@@ -361,7 +360,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		fillerPanel.setOpaque(false);  
 		panelTitleAndButton.add(fillerPanel, gbc);
 
-		JButtonTheme btnAjouterArbitre = new JButtonTheme(JButtonTheme.Types.PRIMAIRE,"Ajouter un arbitre");
+		btnAjouterArbitre = new JButtonTheme(JButtonTheme.Types.PRIMAIRE,"Ajouter un arbitre");
 		btnAjouterArbitre.addActionListener(controleur);
 		btnAjouterArbitre.setBorder(new EmptyBorder(8,8,8,8));
 		gbc.gridx = 2; 
