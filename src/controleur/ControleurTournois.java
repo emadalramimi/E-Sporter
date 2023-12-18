@@ -53,9 +53,11 @@ public class ControleurTournois extends KeyAdapter implements ActionListener, It
 			Optional<Tournoi> tournoiOptionnel;
 			try {
 				tournoiOptionnel = this.modeleTournoi.getParId(idTournoi);
+				System.out.println(idTournoi);
+				System.out.println(tournoiOptionnel);
 			} catch(Exception err) {
-				this.vue.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
-				throw new RuntimeException("Equipe inexistante");
+				this.vue.afficherPopupErreur("Une erreur est survenue lors de la récupération du tournoi");
+				throw new RuntimeException("Une erreur est survenue lors de la récupération du tournoi");
 			}
 			
 			// Si tournoi n'est pas trouvé

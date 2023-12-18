@@ -112,8 +112,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 				try {
 					this.modeleEquipe.modifier(equipe);
 				} catch (Exception err) {
-					this.vueSaisieEquipe
-							.afficherPopupErreur("Une erreur est survenue lors de la modification de l'équipe.");
+					this.vueSaisieEquipe.afficherPopupErreur("Une erreur est survenue lors de la modification de l'équipe.");
 					throw new RuntimeException("Erreur dans la modification de l'équipe", err);
 				}
 				

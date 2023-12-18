@@ -59,65 +59,83 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 			
 			// Traitement différent en fonction du bouton
 			switch(bouton.getType()) {
-			case VOIR:
-				// Afficher la liste des joueurs
-				this.vue.afficherVueJoueurs(this.modeleJoueur.getListeJoueursParId(idEquipe));
-				break;
-			case MODIFIER:
-				// Seul un administrateur peut modifier une équipe
-				if(ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ADMINISTRATEUR) {
-					this.vue.afficherPopupErreur("Seul un administrateur peut modifier une équipe.");
-					throw new RuntimeException("Droits insuffisants");
-				}
-				// Si équipe n'est pas trouvée
-				if (equipeOptionnel.orElse(null) == null) {
-					this.vue.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
-					throw new RuntimeException("Equipe est inexistant");
-				}
-				// Si l'équipe est déjà inscrite dans un tournoi, impossible de la supprimer
-				if (this.modeleEquipe.estEquipeInscriteUnTournoi(equipeOptionnel.get())) {
-					this.vue.afficherPopupErreur("Impossible de modifier l'équipe : elle est inscrite à un tournoi.");
-					throw new RuntimeException("Equipe inscrite dans un tournoi");
-				}
-				// Afficher une page de saisie d'équipe vierge
-				this.vue.afficherVueSaisieEquipe(equipeOptionnel);
-				break;
-			case SUPPRIMER:
-				// Seul un administrateur peut supprimer une équipe
-				if(ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ADMINISTRATEUR) {
-					this.vue.afficherPopupErreur("Seul un administrateur peut supprimer une équipe.");
-					throw new RuntimeException("Droits insuffisants");
-				}
-				// Suppression d'une équipe
-				Equipe equipe = equipeOptionnel.orElse(null);
-				// Si équipe n'est pas trouvée
-				if (equipe == null) {
-					this.vue.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
-					throw new RuntimeException("Equipe est inexistant");
-				}
-				// Si l'équipe est déjà inscrite dans un tournoi, impossible de la supprimer
-				if (this.modeleEquipe.estEquipeInscriteUnTournoi(equipe)) {
-					this.vue.afficherPopupErreur("Impossible de supprimer l'équipe : elle est inscrite à un tournoi.");
-					throw new RuntimeException("Equipe inscrite dans un tournoi");
-				}
-				// Affiche une demande de confirmation de suppression
-				if(this.vue.afficherConfirmationSuppression()) {
-					// Supprime l'équipe, affiche un message d'équipe supprimée et met à jour le tableau sur VueEquipes
-					try {
-						this.modeleEquipe.supprimer(equipe);
-					} catch (Exception err) {
-						this.vue.afficherPopupErreur("Une erreur est survenue dans la suppression de l'équipe.");
-						throw new RuntimeException("Erreur dans la suppression de l'équipe");
+				case VOIR:
+					// Afficher la liste des joueurs
+					this.vue.afficherVueJoueurs(this.modeleJoueur.getListeJoueursParId(idEquipe));
+
+					break;
+				case MODIFIER:
+					// Seul un administrateur peut modifier une équipe
+					if(ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ADMINISTRATEUR) {
+						this.vue.afficherPopupErreur("Seul un administrateur peut modifier une équipe.");
+						throw new RuntimeException("Droits insuffisants");
 					}
-					this.vue.afficherPopupMessage("L'équipe a bien été supprimée");
-					try {
-						this.vue.remplirTableau(this.modeleEquipe.getEquipesSaison());
-					} catch (Exception err) {
-						this.vue.afficherPopupErreur("Impossible de récupérer les équipes");
-						throw new RuntimeException("Impossible de récupérer les équipes");
+
+					// Si équipe n'est pas trouvée
+					if (equipeOptionnel.orElse(null) == null) {
+						this.vue.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
+						throw new RuntimeException("Equipe est inexistant");
 					}
-				}
-				break;
+
+					// Si l'équipe est déjà inscrite dans un tournoi ouvert, impossible de la supprimer
+					try {
+						if (this.modeleEquipe.estEquipeInscriteUnTournoiOuvert(equipeOptionnel.get())) {
+							this.vue.afficherPopupErreur("Impossible de modifier l'équipe : elle est inscrite à un tournoi actuellement ouvert.");
+							throw new RuntimeException("Equipe inscrite dans un tournoi actuellement ouvert");
+						}
+					} catch (Exception ex) {
+						throw new RuntimeException("Erreur dans la vérification de l'inscription de l'équipe dans un tournoi");
+					}
+
+					// Afficher une page de saisie d'équipe vierge
+					this.vue.afficherVueSaisieEquipe(equipeOptionnel);
+
+					break;
+				case SUPPRIMER:
+					// Seul un administrateur peut supprimer une équipe
+					if(ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ADMINISTRATEUR) {
+						this.vue.afficherPopupErreur("Seul un administrateur peut supprimer une équipe.");
+						throw new RuntimeException("Droits insuffisants");
+					}
+
+					// Suppression d'une équipe
+					Equipe equipe = equipeOptionnel.orElse(null);
+
+					// Si équipe n'est pas trouvée
+					if (equipe == null) {
+						this.vue.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
+						throw new RuntimeException("Equipe est inexistant");
+					}
+
+					// Si l'équipe est déjà inscrite dans un tournoi, impossible de la supprimer
+					try {
+						if (this.modeleEquipe.estEquipeInscriteUnTournoi(equipe)) {
+							this.vue.afficherPopupErreur("Impossible de supprimer l'équipe : elle est ou a été inscrite à un tournoi en cours ou clôturé.");
+							throw new RuntimeException("Equipe inscrite dans un tournoi");
+						}
+					} catch (Exception ex) {
+						throw new RuntimeException("Erreur dans la vérification de l'inscription de l'équipe dans un tournoi");
+					}
+
+					// Affiche une demande de confirmation de suppression
+					if(this.vue.afficherConfirmationSuppression()) {
+						// Supprime l'équipe, affiche un message d'équipe supprimée et met à jour le tableau sur VueEquipes
+						try {
+							this.modeleEquipe.supprimer(equipe);
+						} catch (Exception err) {
+							this.vue.afficherPopupErreur("Une erreur est survenue dans la suppression de l'équipe.");
+							throw new RuntimeException("Erreur dans la suppression de l'équipe");
+						}
+						this.vue.afficherPopupMessage("L'équipe a bien été supprimée");
+						try {
+							this.vue.remplirTableau(this.modeleEquipe.getEquipesSaison());
+						} catch (Exception err) {
+							this.vue.afficherPopupErreur("Impossible de récupérer les équipes");
+							throw new RuntimeException("Impossible de récupérer les équipes");
+						}
+					}
+
+					break;
 			}
 		} else if(e.getSource() instanceof JButton) {
 			JButton bouton = (JButton) e.getSource();
@@ -133,6 +151,7 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 				// Ouverture de la fenêtre d'ajout d'équipe
 				this.vue.afficherVueSaisieEquipe(Optional.empty());
 			}
+			
 			// Si il s'agit du bouton de recherche
 			else if(this.vue.estBoutonRecherche(bouton)) {
 				String requeteRecherche = this.vue.getRequeteRecherche();
@@ -154,10 +173,12 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 		if (this.vue.estChampRecherche(txtRecherche)) {
 			// Récupère la requête de recherche
 			String requeteRecherche = this.vue.getRequeteRecherche();
+
 			// Effectuer la recherche à l'appui de la touche entrée
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				this.rechercher(requeteRecherche);
 			}
+			
 			// Lorsqu'on supprime tous les caractères dans le champ de recherche, sortir de la recherche
 			else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
 				if (

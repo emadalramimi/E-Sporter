@@ -153,8 +153,8 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	 */
 	@Override
 	public boolean modifier(Equipe equipe) throws Exception {
-		if (this.estEquipeInscriteUnTournoi(equipe)) {
-			throw new RuntimeException("L'équipe est inscrite à un tournoi.");
+		if (this.estEquipeInscriteUnTournoiOuvert(equipe)) {
+			throw new RuntimeException("Cette équipe est inscrite à un tournoi actuellement ouvert.");
 		}
 		
 		try {
@@ -191,7 +191,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	@Override
 	public boolean supprimer(Equipe equipe) throws Exception {
 		if (this.estEquipeInscriteUnTournoi(equipe)) {
-			throw new RuntimeException("L'équipe est inscrite à un tournoi");
+			throw new RuntimeException("L'équipe est ou a été inscrite à un tournoi en cours ou clôturé.");
 		}
 
 		try {
@@ -281,21 +281,28 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 		}
 	}
 	
-	public boolean estEquipeInscriteUnTournoi(Equipe equipe) {
-		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from participer where idEquipe = ?");
-			ps.setInt(1, equipe.getIdEquipe());
+	public boolean estEquipeInscriteUnTournoi(Equipe equipe) throws Exception {
+		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from participer where participer.idEquipe = ?");
+		ps.setInt(1, equipe.getIdEquipe());
 
-			ResultSet rs = ps.executeQuery();
+		ResultSet rs = ps.executeQuery();
 
-			if (rs.next()) {
-				return true;
-			}
-			return false;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+		if (rs.next()) {
+			return true;
 		}
+		return false;
+	}
+	
+	public boolean estEquipeInscriteUnTournoiOuvert(Equipe equipe) throws Exception {
+		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from participer, tournoi where participer.idEquipe = ? and participer.idTournoi = tournoi.idTournoi and tournoi.estCloture = false");
+		ps.setInt(1, equipe.getIdEquipe());
+
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			return true;
+		}
+		return false;
 	}
 
 	public void inscrireEquipe(Equipe equipe, Tournoi tournoi) throws Exception {

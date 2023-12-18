@@ -111,25 +111,17 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 				this.vueSaisieTournoi.afficherPopupErreur("L'identifiant ne peut contenir que des caractères, chiffres, tirets et underscores.");
 				throw new IllegalArgumentException("L'identifiant ne peut contenir que des caractères, chiffres, tirets et underscores.");
 			}
-			// Vérification de l'unicité de l'identifiant
-			try {
-				if (this.modeleTournoi.getParIdentifiant(identifiant).isPresent() || this.modeleAdministrateur.getParIdentifiant(identifiant).isPresent()) {
-					this.vueSaisieTournoi.afficherPopupErreur("Cet identifiant est déjà utilisé par un autre utilisateur.");
-					throw new IllegalArgumentException("Cet identifiant est déjà utilisé par un autre utilisateur.");
-				}
-			} catch (SQLException ex) {
-				this.vueSaisieTournoi.afficherPopupErreur("Une erreur est survenue lors de la vérification de l'identifiant.");
-				throw new RuntimeException("Une erreur est survenue lors de la vérification de l'identifiant.", ex);
-			}
 			// Vérification de la longueur du mot de passe
 			if (motDePasse.length() < 3) {
 				this.vueSaisieTournoi.afficherPopupErreur("Le mot de passe doit contenir au moins 3 caractères.");
 				throw new IllegalArgumentException("Le mot de passe doit contenir au moins 3 caractères.");
 			}
 			
-			
 			// Création du tournoi au clic de valider
 			if(bouton.getText() == "Valider") {
+				// Vérification de l'unicité de l'identifiant
+				this.verifierUniciteIdentifiant(identifiant);
+
 				// Création du tournoi
 				Tournoi tournoi = new Tournoi(nomTournoi, notoriete, dateTimeDebut, dateTimeFin, identifiant, motDePasse, arbitres);
 				
@@ -163,6 +155,11 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 					throw new RuntimeException("Tournoi inexistant");
 				}
 
+				// Vérification de l'unicité de l'identifiant en cas de modification
+				if (!identifiant.equals(tournoi.getIdentifiant())) {
+					this.verifierUniciteIdentifiant(identifiant);
+				}
+
 				// Modification des champs
 				tournoi.setNomTournoi(nomTournoi);
 				tournoi.setIdentifiant(identifiant);
@@ -176,8 +173,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 				try {
 					this.modeleTournoi.modifier(tournoi);
 				} catch (Exception err) {
-					this.vueSaisieTournoi
-							.afficherPopupErreur("Une erreur est survenue lors de la modification du tournoi.");
+					this.vueSaisieTournoi.afficherPopupErreur("Une erreur est survenue lors de la modification du tournoi.");
 					throw new RuntimeException("Erreur dans la modification du tournoi", err);
 				}
 				this.vueSaisieTournoi.afficherPopupMessage("Le tournoi a bien été modifié.");
@@ -226,6 +222,27 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 		} catch (Exception e) {
 			this.vueSaisieTournoi.afficherPopupErreur("Impossible de récupérer les arbitres");
 			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Vérifie l'unicité d'un identifiant
+	 * @param identifiant Identifiant à vérifier
+	 * @throws IllegalArgumentException Si l'identifiant n'est pas unique
+	 */
+	private void verifierUniciteIdentifiant(String identifiant) throws IllegalArgumentException {
+		// Vérification si l'identifiant est déjà utilisé par un arbitre ou un administrateur
+		try {
+			if (
+				this.modeleTournoi.getParIdentifiant(identifiant).isPresent()
+				|| this.modeleAdministrateur.getParIdentifiant(identifiant).isPresent()
+			) {
+				this.vueSaisieTournoi.afficherPopupErreur("Cet identifiant est déjà utilisé par un autre utilisateur.");
+				throw new IllegalArgumentException("Cet identifiant est déjà utilisé par un autre utilisateur.");
+			}
+		} catch (SQLException ex) {
+			this.vueSaisieTournoi.afficherPopupErreur("Une erreur est survenue lors de la vérification de l'identifiant.");
+			throw new RuntimeException("Une erreur est survenue lors de la vérification de l'identifiant.", ex);
 		}
 	}
 
