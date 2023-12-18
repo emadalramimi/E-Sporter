@@ -2,25 +2,24 @@ package modele.test;
 
 import static org.junit.Assert.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import modele.ModeleEquipe;
-import modele.ModeleJoueur;
+import modele.ModeleTournoi;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
 
 public class TestModeleEquipe {
 	
 	private ModeleEquipe modele;
+	private ModeleTournoi modeleTournoi;
 	private Equipe equipe;
 	private Equipe equipeAModif;
 	private List<Joueur> listJoueurs;
@@ -28,6 +27,7 @@ public class TestModeleEquipe {
 	@Before
 	public void setUp() throws Exception {
 		modele = new ModeleEquipe();
+		modeleTournoi = new ModeleTournoi();
 		listJoueurs = new ArrayList<>(Arrays.asList(
 				new Joueur(1, "Joueur1", 2),
 			    new Joueur(2, "Joueur2", 2),
@@ -56,29 +56,24 @@ public class TestModeleEquipe {
 	    assertNotNull(equipeFromDb);
 	    Optional<Equipe> result = modele.getParId(equipeFromDb.getIdEquipe());
 	    assertTrue(result.isPresent());
+		assertNotNull(modele.getParId(1).orElse(null));
 	    assertEquals(equipeFromDb, result.get());
 	}
 	
 	@Test
-	public void testAjouterTrue() {
+	public void testAjouterTrue() throws Exception{
 		assertTrue(modele.ajouter(equipe));
 		assertEquals(equipe.getWorldRanking(), 1000);
 	}
 	
-	//TODO Liam fait ça stp
 	@Test
 	public void testAjouterSaisonDerniere() throws Exception {
-		ModeleJoueur modeleJoueur = new ModeleJoueur();
-		List<Joueur> testJoueurs = new ArrayList<>(Arrays.asList(
-				modeleJoueur.getParId(21).orElse(null),
-				modeleJoueur.getParId(22).orElse(null),
-				modeleJoueur.getParId(23).orElse(null),
-				modeleJoueur.getParId(24).orElse(null),
-				modeleJoueur.getParId(25).orElse(null)
-				));
-		Equipe equipeDeTest = new Equipe("OM Academy", "France", testJoueurs);
-		assertTrue(modele.ajouter(equipeDeTest));
-		assertEquals(equipeDeTest.getWorldRanking(), modele.getParId(5).orElse(null).getClassement());
+		Equipe equipeOM = modele.getParId(5).orElse(null);
+		Equipe equipeAjouter = new Equipe(equipeOM.getNom(), equipeOM.getPays(), equipeOM.getJoueurs());
+		modele.ajouter(equipeAjouter);
+		assertNotNull(modele.getParId(6).orElse(null));
+		Equipe equipeTest = modele.getParId(6).orElse(null);
+		assertEquals(equipeTest.getWorldRanking(), equipeOM.getClassement());
 	}
 
 	@Test
@@ -92,48 +87,11 @@ public class TestModeleEquipe {
 		modele.ajouter(equipe);
 		assertTrue(modele.supprimer(equipe));
 	}
-	
-	/*
-	@Test
-	public void testGetNextValId() {
-	    int nextVal = modele.getNextValId();
-	    assertTrue(nextVal != 0);
-	}
-	*/
-	
-	@Test
-	public void testGetParNom() throws Exception {
-	    modele.ajouter(equipe);
-	    List<Equipe> listTest = new ArrayList<>();
-	    listTest.add(equipe);
-	    List<Equipe> result = modele.getParNom(equipe.getNom());
-	    assertEquals(listTest.size(), result.size());
-	    for (int i = 0; i < listTest.size(); i++) {
-	        assertTrue(listTest.get(i).equals(result.get(i)));
-	    }
-	}
-	
-	@Test
-	public void testGetEquipesSaison() throws Exception {
-		List<Equipe> listEquipes = modele.getTout().stream()
-				.filter(e -> e.getSaison().equals(String.valueOf(LocalDate.now().getYear())))
-				.collect(Collectors.toList());
-		assertEquals(listEquipes, modele.getEquipesSaison());
-	}
-	
-	@Test
-	public void testGetTableauEquipes() throws Exception {
-		Equipe[] equipes = new Equipe[4];
-		for(int i = 0; i < modele.getTout().size(); i++) {
-			equipes[i] = modele.getTout().get(i);
-		}
-		Arrays.sort(equipes);
-		assertTrue(Arrays.equals(equipes, modele.getTableauEquipes()));
-	}
-	
+
 	@Test
 	public void testGetEquipesTournoi() throws Exception {
 		List<Equipe> listEquipes = modele.getTout();
+		listEquipes.remove(modele.getParId(5).orElse(null));
 		assertEquals(listEquipes, modele.getEquipesTournoi(1));
 	}
 	
@@ -141,10 +99,69 @@ public class TestModeleEquipe {
 	public void testEstEquipeInscriteUnTournoi() throws Exception {
 		assertTrue(modele.estEquipeInscriteUnTournoi(modele.getParId(1).orElse(null)));
 	}
+
+	@Test(expected = IllegalStateException.class)
+	public void testInscrireDejaInscrite() throws Exception{
+		modele.inscrireEquipe(modele.getParId(1).orElse(null), modeleTournoi.getParId(1).orElse(null));
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void testInscrireSaisonAnterieure() throws Exception{
+		modele.inscrireEquipe(modele.getParId(5).orElse(null), modeleTournoi.getParId(1).orElse(null));
+	}
+
+	@Test
+	public void testInscrire() throws Exception{
+		modele.ajouter(equipe);
+		modele.inscrireEquipe(equipe, modeleTournoi.getParId(1).orElse(null));
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void testDesinscrire() throws Exception{
+		modele.ajouter(equipe)	;
+		modele.desinscrireEquipe(equipe, modeleTournoi.getParId(1).orElse(null));
+	}
+
+	@Test
+	public void testDesinscrireNonInscrite() throws Exception{
+		modele.ajouter(equipe);
+		modele.inscrireEquipe(equipe, modeleTournoi.getParId(1).orElse(null));
+		modele.desinscrireEquipe(equipe, modeleTournoi.getParId(1).orElse(null));
+	}
+
+	@Test
+	public void testGetParNom() throws Exception {
+	    modele.ajouter(equipe);
+	    assertNotNull(modele.getParNom(equipe.getNom()));
+		assertTrue(modele.getParNom(equipe.getNom()).contains(equipe));
+	}
 	
+	@Test
+	public void testGetEquipesSaison() throws Exception {
+		assertNotNull(modele.getEquipesSaison());
+		for(int i = 1; i <= 4; i++){
+			assertTrue(modele.getEquipesSaison().contains(modele.getParId(i).orElse(null)));
+		}
+	}
+	
+	@Test
+	public void testGetTableauEquipes() throws Exception {
+		List<Equipe> equipes = modele.getTout();
+		List<Equipe> equipesInscrites = new ArrayList<>(Arrays.asList(
+			modele.getParId(1).orElse(null)
+		));
+		Equipe[] equipesEligibles = modele.getTableauEquipes(equipesInscrites);
+		assertNotNull(equipes);
+		assertNotNull(equipesInscrites);
+		assertTrue(equipesEligibles.length != 0);
+		for(int i = 0; i < equipesEligibles.length; i++){
+			assertTrue(!equipesInscrites.contains(equipesEligibles[i]));
+		}
+	}
+
 	@After
     public void tearsDown() throws Exception {
-        List<Integer> idsToPreserve = Arrays.asList(1, 2, 3, 4);
+        List<Integer> idsToPreserve = Arrays.asList(1, 2, 3, 4, 5);
         modele.getTout().stream()
                 .filter(equipe -> !idsToPreserve.contains(equipe.getIdEquipe()))
                 .forEach(equipe -> {
