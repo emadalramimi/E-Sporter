@@ -58,6 +58,9 @@ public class VueSaisieEquipe extends JFrameTheme {
 	public VueSaisieEquipe(VueEquipes vueEquipes, ControleurEquipes controleurEquipes, Optional<Equipe> equipeOptionnel) {
 		ControleurSaisieEquipe controleur = new ControleurSaisieEquipe(this, vueEquipes, equipeOptionnel);
 		this.vueEquipes = vueEquipes;
+
+		// Récupère l'équipe fournie, sinon null
+		Equipe equipe = equipeOptionnel.orElse(null);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 812, 526);
@@ -236,9 +239,6 @@ public class VueSaisieEquipe extends JFrameTheme {
 		gbc_panelAjouter.gridx = 1;
 		gbc_panelAjouter.gridy = 1;
 		panelCentre.add(panelValider, gbc_panelAjouter);
-
-		// Récupère l'équipe fournie, sinon null
-		Equipe equipe = equipeOptionnel.orElse(null);
 		
 		// Si aucune équipe est renseignée afficher le bouton valider, sinon afficher le bouton modifier
 		if(equipe == null) {
@@ -250,16 +250,16 @@ public class VueSaisieEquipe extends JFrameTheme {
 		panelValider.add(btnValider);
 		
 		// Remplissage des champs du formulaire si une équipe est renseignée pour modification
-		if(equipe != null) {
+		if (equipe != null) {
 			this.txtNom.setText(equipe.getNom());
 			this.cboxPays.setSelectedItem(equipe.getPays());
-			
+
 			List<Joueur> joueurs = equipe.getJoueurs();
-            this.txtJoueur1.setText(joueurs.get(0).getPseudo());
-            this.txtJoueur2.setText(joueurs.get(1).getPseudo());
-            this.txtJoueur3.setText(joueurs.get(2).getPseudo());
-            this.txtJoueur4.setText(joueurs.get(3).getPseudo());
-            this.txtJoueur5.setText(joueurs.get(4).getPseudo());
+			this.txtJoueur1.setText(joueurs.get(0).getPseudo());
+			this.txtJoueur2.setText(joueurs.get(1).getPseudo());
+			this.txtJoueur3.setText(joueurs.get(2).getPseudo());
+			this.txtJoueur4.setText(joueurs.get(3).getPseudo());
+			this.txtJoueur5.setText(joueurs.get(4).getPseudo());
 		}
 	}
 	
