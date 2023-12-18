@@ -15,6 +15,10 @@ import modele.metier.Tournoi;
 import vue.VueInscriptionEquipesTournoi;
 import vue.VueTournois;
 
+/**
+ * Contrôleur de la vue d'inscription des équipes à un tournoi
+ * @see VueInscriptionEquipesTournoi
+ */
 public class ControleurInscriptionEquipesTournoi implements ActionListener, ListSelectionListener {
 
 	private VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi;
@@ -23,6 +27,12 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 	private ModeleEquipe modeleEquipe;
 	private ModeleTournoi modeleTournoi;
 	
+	/**
+	 * Constructeur du contrôleur de la vue d'inscription des équipes à un tournoi
+	 * @param vueInscriptionEquipesTournoi Vue d'inscription des équipes à un tournoi
+	 * @param vueTournois Vue des tournois
+	 * @param tournoi Tournoi
+	 */
 	public ControleurInscriptionEquipesTournoi(VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi, VueTournois vueTournois, Tournoi tournoi) {
 		this.vueInscriptionEquipesTournoi = vueInscriptionEquipesTournoi;
 		this.vueTournois = vueTournois;
@@ -31,39 +41,114 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 		this.modeleTournoi = new ModeleTournoi();
 	}
 	
+	/**
+	 * Effectue un traitement au clic d'un élément de la fenêtre
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton bouton = (JButton) e.getSource();
-		
+
+		// Récupération du nombre d'équipes inscrites
+		int nbEquipes = this.vueInscriptionEquipesTournoi.getEquipes().size();
+
+		// Traitement différent en fonction du bouton
 		switch (bouton.getText()) {
 			case "Inscrire une équipe":
+				// On récupère les équipes éligibles (non inscrites au tournoi)
+				Equipe[] equipes;
 				try {
-					this.vueInscriptionEquipesTournoi.afficherVueSaisieTournoiEquipe(modeleEquipe.getTableauEquipes());
+					equipes = this.getEquipesEligibles();
+				} catch (Exception e1) {
+					this.vueInscriptionEquipesTournoi.afficherPopupErreur("Impossible de récupérer les équipes");
+					throw new RuntimeException(e1);
+				}
+
+				// On vérifie qu'il reste des équipes éligibles et qu'on n'a pas atteint le nombre maximal d'équipes inscrites
+				if (equipes.length == 0) {
+					this.vueInscriptionEquipesTournoi.afficherPopupErreur("Plus aucune équipe disponible");
+					throw new RuntimeException("Plus aucune équipe disponible");
+				}
+				if (nbEquipes >= 8) {
+					this.vueInscriptionEquipesTournoi
+							.afficherPopupErreur("Le nombre maximal d'équipes inscrites a été atteint");
+					throw new RuntimeException("Le nombre maximal d'équipes inscrites a été atteint");
+				}
+
+				// On affiche la vue de saisie d'une équipe
+				try {
+					this.vueInscriptionEquipesTournoi.afficherVueSaisieTournoiEquipe(equipes);
 				} catch (Exception err) {
 					this.vueInscriptionEquipesTournoi.afficherPopupErreur("Impossible de récupérer les équipes");
 					err.printStackTrace();
 				}
 				break;
+			case "Ouvrir le tournoi":
+				// On ouvre le tournoi
+				try {
+					this.modeleTournoi.ouvrirTournoi(this.tournoi);
+					this.vueTournois.afficherPopupMessage("Le tournoi a été ouvert avec succès");
+					// On met à jour le tableau des tournois
+					this.vueTournois.remplirTableau(this.modeleTournoi.getTout());
+					this.vueInscriptionEquipesTournoi.fermerFenetre();
+				} catch (IllegalArgumentException err) {
+					// Récupération des erreurs IllegalArgumentException et affichage de leur message
+					this.vueInscriptionEquipesTournoi.afficherPopupErreur(err.getMessage());
+					err.printStackTrace();
+				} catch (Exception err) {
+					// Pour le reste, on affiche un message générique
+					this.vueInscriptionEquipesTournoi.afficherPopupErreur("Impossible d'ouvrir le tournoi");
+					err.printStackTrace();
+				}
+				break;
+			case "Fermer":
+				this.vueInscriptionEquipesTournoi.fermerFenetre();
+				break;
+
 		}
 	}
 	
+	/**
+	 * Effectue un traitement lors de la sélection d'un élément de la fenêtre
+	 */
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		if (!e.getValueIsAdjusting() && e.getSource() instanceof JList) { // Pour éviter les événements redondants
+		// Pour éviter les événements redondants
+		if (!e.getValueIsAdjusting() && e.getSource() instanceof JList) {
 			JList<?> liste = (JList<?>) e.getSource();
 
+			// Si la liste est celle des équipes inscrites
 			if (this.vueInscriptionEquipesTournoi.estListeEquipes(liste)) {
+				// On vérifie que l'équipe sélectionnée n'est pas null et on affiche une demande de confirmation de désinscription
 				if (liste.getSelectedValue() != null && this.vueInscriptionEquipesTournoi.afficherConfirmationSuppression("Êtes-vous sûr de vouloir désinscrire cette équipe ?")) {
 					try {
-						this.modeleEquipe.desinscrireEquipe((Equipe) liste.getSelectedValue(), this.tournoi);
-						this.vueInscriptionEquipesTournoi.supprimerEquipe((Equipe) liste.getSelectedValue());
+						// On désinscrit l'équipe, on la supprime de la liste des équipes inscrites et on la supprime du tournoi
+						Equipe equipe = (Equipe) liste.getSelectedValue();
+						this.modeleEquipe.desinscrireEquipe(equipe, this.tournoi);
+						this.tournoi.removeEquipe(equipe);
+						this.vueInscriptionEquipesTournoi.supprimerEquipe(equipe);
 						liste.clearSelection();
+
+						// On réactive le bouton d'inscription d'équipe car le nombre maximal d'équipes inscrites n'est pas atteint
+						this.vueInscriptionEquipesTournoi.setBtnInscrireEquipeActif(true);
 					} catch (Exception err) {
 						this.vueInscriptionEquipesTournoi.afficherPopupErreur("Impossible de désinscrire l'équipe");
 						err.printStackTrace();
 					}
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Récupère les équipes éligibles (non inscrites au tournoi)
+	 * @return Tableau des équipes éligibles
+	 */
+	public Equipe[] getEquipesEligibles() {
+		try {
+			return this.modeleEquipe.getTableauEquipes(this.vueInscriptionEquipesTournoi.getEquipes());
+		} catch (Exception e) {
+			this.vueInscriptionEquipesTournoi.afficherPopupErreur("Impossible de récupérer les équipes");
+			throw new RuntimeException(e);
 		}
 	}
 
