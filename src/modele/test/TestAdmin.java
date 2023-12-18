@@ -17,9 +17,19 @@ public class TestAdmin {
     }
 	
 	@Test
+	public void testGetIdAdministrateur() {
+		assertEquals(admin.getIdAdministrateur(), 50);
+	}
+	
+	@Test
 	public void testSetIdAdministrateur() {
 		admin.setIdAdministrateur(51);
 		assertEquals(admin.getIdAdministrateur(), 51);
+	}
+	
+	@Test
+	public void testGetIdentifiant() {
+		assertEquals(admin.getIdentifiant(), "LNK");
 	}
 	
 	@Test
@@ -29,15 +39,30 @@ public class TestAdmin {
 	}
 	
 	@Test
+	public void testGetMotDePasse() {
+		assertEquals(admin.getMotDePasse(), "1234");
+	}
+	
+	@Test
 	public void testSetMotDePasse() {
 		admin.setMotDePasse("0000");
 		assertEquals(admin.getMotDePasse(), "0000");
 	}
 	
 	@Test
+	public void testGetNom() {
+		assertEquals(admin.getNom(), "LeNoir");
+	}
+	
+	@Test
 	public void testSetNom() {
 		admin.setNom("LeBlanc");
 		assertEquals(admin.getNom(), "LeBlanc");
+	}
+	
+	@Test
+	public void testGetPrenom() {
+		assertEquals(admin.getPrenom(),"Kévin");
 	}
 	
 	@Test

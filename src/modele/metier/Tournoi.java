@@ -61,7 +61,10 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	 * @param equipes
 	 * @param arbitres
 	 */
-	public Tournoi(int idTournoi, String nomTournoi, Notoriete notoriete, long dateTimeDebut, long dateTimeFin, boolean estCloture, String identifiant, String motDePasse, List<Poule> poules, List<Equipe> equipes, List<Arbitre> arbitres) {
+	public Tournoi(int idTournoi, String nomTournoi, Notoriete notoriete,
+			long dateTimeDebut, long dateTimeFin, boolean estCloture,
+			String identifiant, String motDePasse, List<Poule> poules,
+			List<Equipe> equipes, List<Arbitre> arbitres) {
 		this.idTournoi = idTournoi;
 		this.nomTournoi = nomTournoi;
 		this.notoriete = notoriete;
@@ -76,7 +79,9 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	}
 	
 	// Pas d'équipe et poule car inscription
-	public Tournoi(String nomTournoi, Notoriete notoriete, long dateTimeDebut, long dateTimeFin, String identifiant, String motDePasse, List<Arbitre> arbitres) {
+	public Tournoi(String nomTournoi, Notoriete notoriete, long dateTimeDebut,
+			long dateTimeFin, String identifiant, String motDePasse,
+			List<Arbitre> arbitres) {
 		this.nomTournoi = nomTournoi;
 		this.notoriete = notoriete;
 		this.dateTimeDebut = dateTimeDebut;

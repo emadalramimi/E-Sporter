@@ -7,7 +7,6 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
@@ -120,31 +119,43 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 			}
 			
 			return true;
-		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
+		} catch (SQLException e) {
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
 	}
 
-	// /**
-	//  * Supprime la rencontre dans la BDD
-	//  * @return true si l'opération s'est bien déroulée, false sinon
-	//  */
-	// @Override
-	// public boolean supprimer(Rencontre tournoi) throws Exception {
-	// 	try {
-	// 		PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from rencontre where idRencontre = ?");
-	// 		ps.setInt(1, tournoi.getIdRencontre());
-	// 		ps.execute();
+	/**
+	 * Supprime la rencontre dans la BDD
+	 * @return true si l'opération s'est bien déroulée, false sinon
+	 */
+	@Override
+	public boolean supprimer(Rencontre tournoi) throws Exception {
+		try {
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from jouer where idRencontre = ?");
+			ps.setInt(1, tournoi.getIdRencontre());
+			ps.execute();
+			ps.close();
+
+			ps = BDD.getConnexion().prepareStatement("delete from rencontre where idRencontre = ?");
+			ps.setInt(1, tournoi.getIdRencontre());
+			ps.execute();
+			ps.close();
 			
-	// 		ps.close();
-	// 		BDD.getConnexion().commit();
-	// 		return true;
-	// 	} catch(SQLException e) {
-	// 		e.printStackTrace();
-	// 		return false;
-	// 	}
-	// }
+			return true;
+		} catch (SQLException e) {
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
+		}
+	}
 	
 	/**
 	 * @return le prochain identifiant unique de rencontre
@@ -278,7 +289,12 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 
 			BDD.getConnexion().commit();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
 	}
 
