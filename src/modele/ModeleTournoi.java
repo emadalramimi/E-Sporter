@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -259,6 +260,13 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	}
 
 	public void ouvrirTournoi(Tournoi tournoi) throws Exception {
+		if (tournoi.getEstCloture() == false) {
+			throw new IllegalArgumentException("Le tournoi est déjà ouvert");
+		}
+		if (tournoi.getDateTimeFin() <= System.currentTimeMillis() / 1000) {
+			throw new IllegalArgumentException("La date de fin du tournoi est passée");
+		}
+
 		try {
 			int nbEquipes = modeleEquipes.getEquipesTournoi(tournoi.getIdTournoi()).size();
 			if (nbEquipes < 4 || nbEquipes > 8) {
@@ -332,9 +340,8 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	}
 
 	public Optional<Tournoi> getTournoiRencontre(int idRencontre) {
-		PreparedStatement ps;
 		try {
-			ps = BDD.getConnexion().prepareStatement("select * from tournoi, poule, rencontre where rencontre.idPoule = poule.idPoule and poule.idTournoi = tournoi.idTournoi and rencontre.idRencontre = ?");
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from tournoi, poule, rencontre where rencontre.idPoule = poule.idPoule and poule.idTournoi = tournoi.idTournoi and rencontre.idRencontre = ?");
 			ps.setInt(1, idRencontre);
 			ResultSet rs = ps.executeQuery();
 
@@ -368,8 +375,24 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	public List<StatistiquesEquipe> getResultatsTournoi(Tournoi tournoi) {
 		List<StatistiquesEquipe> statistiques = new LinkedList<>();
 		for (Equipe equipe : tournoi.getEquipes()) {
-			statistiques.add(new StatistiquesEquipe(equipe, tournoi.getNbMatchsJoues(equipe), tournoi.getNbMatchsGagnes(equipe)));
+			int nbMatchsJoues = 0;
+			int nbMatchsGagnes = 0;
+
+			for(Poule poule : this.modelePoule.getPoulesTournoi(tournoi.getIdTournoi())) {
+				for(Rencontre rencontre : poule.getRencontres()) {
+					// 0 => valeur nulle
+					if(Arrays.asList(rencontre.getEquipes()).contains(equipe) && rencontre.getIdEquipeGagnante() != 0) {
+						nbMatchsJoues++;
+					}
+					if(Arrays.asList(rencontre.getEquipes()).contains(equipe) && rencontre.getIdEquipeGagnante() == equipe.getIdEquipe()) {
+						nbMatchsGagnes++;
+					}
+				}
+			}
+
+			statistiques.add(new StatistiquesEquipe(equipe, nbMatchsJoues, nbMatchsGagnes));
 		}
+
 		return statistiques.stream().sorted().collect(Collectors.toList());
 	}
 	

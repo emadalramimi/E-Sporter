@@ -63,33 +63,6 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 	}
 
 	/**
-	 * @return Retourne une rencontre depuis la BDD par sa clé primaire
-	 */
-//	@Override
-//	public Optional<Rencontre> getParId(Integer... idRencontre) throws Exception {
-//		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from rencontre where idRencontre = ?");
-//		
-//		ps.setInt(1, idRencontre[0]);
-//		
-//		ResultSet rs = ps.executeQuery();
-//		
-//		// Création de rencontre si elle existe
-//		Rencontre rencontre = null;
-//		if(rs.next()) {		
-//			rencontre = new Rencontre(
-//				rs.getInt("idRencontre"),
-//				rs.getInt("idPoule"),
-//				rs.getInt("idEquipeGagnante"),
-//				getEquipesRencontre(rs.getInt("idRencontre"))
-//            );
-//		}
-//		
-//		rs.close();
-//		ps.close();
-//		return Optional.ofNullable(rencontre);
-//	}
-
-	/**
 	 * Ajoute la rencontre dans la BDD
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 */
@@ -260,7 +233,12 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 			throw new IllegalArgumentException("Le tournoi est clôturé");
 		}
 
-		if(ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ARBITRE) {
+		/**
+		 * Seuls les arbitres peuvent affecter le résultat d'une rencontre
+		 * PS : Il n'y a pas besoin de vérifier que l'arbitre est bien assigné au tournoi
+		 * car seuls les arbitres assignés à un unique tournoi ouvert peuvent se connecter
+		 */
+		if (ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ARBITRE) {
 			throw new IllegalArgumentException("Seuls les arbitres peut affecter le résultat d'une rencontre");
 		}
 

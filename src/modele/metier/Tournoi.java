@@ -1,6 +1,5 @@
 package modele.metier;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -265,31 +264,6 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	
 	public void setArbitres(List<Arbitre> arbitres) {
 		this.arbitres = arbitres;
-	}
-
-	public int getNbMatchsJoues(Equipe equipe) {
-		int nbMatchsJoues = 0;
-		for(Poule poule : this.poules) {
-			for(Rencontre rencontre : poule.getRencontres()) {
-				// 0 => valeur nulle
-				if(Arrays.asList(rencontre.getEquipes()).contains(equipe) && rencontre.getIdEquipeGagnante() != 0) {
-					nbMatchsJoues++;
-				}
-			}
-		}
-		return nbMatchsJoues;
-	}
-
-	public int getNbMatchsGagnes(Equipe equipe) {
-		int nbMatchsGagnes = 0;
-		for(Poule poule : this.poules) {
-			for(Rencontre rencontre : poule.getRencontres()) {
-				if(Arrays.asList(rencontre.getEquipes()).contains(equipe) && rencontre.getIdEquipeGagnante() == equipe.getIdEquipe()) {
-					nbMatchsGagnes++;
-				}
-			}
-		}
-		return nbMatchsGagnes;
 	}
 	
 	/**
