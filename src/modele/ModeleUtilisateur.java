@@ -2,7 +2,7 @@ package modele;
 
 import java.sql.SQLException;
 
-import modele.exception.IdentifiantOuMdpIncorrectsException;
+import modele.metier.Tournoi;
 import modele.metier.Utilisateur;
 
 public class ModeleUtilisateur {
@@ -31,10 +31,13 @@ public class ModeleUtilisateur {
 	 * @param identifiant
 	 * @param motDePasse
 	 * @throws IdentifiantOuMdpIncorrectsException
+	 * @throws IdentificationTournoiClotureException
 	 * @throws RuntimeException
 	 */
-	public void connecter(String identifiant, String motDePasse) throws IdentifiantOuMdpIncorrectsException, IllegalStateException {
-	    verifierUtilisateurDejaConnecte();
+	public void connecter(String identifiant, String motDePasse) throws IllegalArgumentException, IllegalStateException {
+	    if (compteCourant != null) {
+            throw new IllegalStateException("Un utilisateur est déjà connecté");
+        }
 
 	    Utilisateur utilisateur = null;
 	    try {
@@ -69,25 +72,21 @@ public class ModeleUtilisateur {
         // Vérification du mot de passe fourni par l'utilisateur avec le mot de passe chiffré enregistré
         return BCrypt.checkpw(motDePasse, motDePasseChiffre);
     }
-    
-    private void verifierUtilisateurDejaConnecte() {
-        if (compteCourant != null) {
-            throw new IllegalStateException("Un utilisateur est déjà connecté");
-        }
-    }
 
     private Utilisateur chercherUtilisateur(String identifiant) throws SQLException {
-        Utilisateur utilisateur = modeleAdministrateur.getParIdentifiant(identifiant).orElse(null);
+        Utilisateur utilisateur = this.modeleAdministrateur.getParIdentifiant(identifiant).orElse(null);
         if (utilisateur == null) {
             utilisateur = modeleTournoi.getParIdentifiant(identifiant).orElse(null);
         }
         return utilisateur;
     }
 
-	private void validerUtilisateur(Utilisateur utilisateur, String motDePasse)
-			throws IdentifiantOuMdpIncorrectsException {
+	private void validerUtilisateur(Utilisateur utilisateur, String motDePasse) throws IllegalArgumentException {
 		if (utilisateur == null || !this.verifierMotDePasse(motDePasse, utilisateur.getMotDePasse())) {
-			throw new IdentifiantOuMdpIncorrectsException("Identifiant ou mot de passe incorrects");
+			throw new IllegalArgumentException("Identifiant et/ou mot de passe incorrects.");
+		}
+		if (utilisateur.getRole() == Utilisateur.Role.ARBITRE && ((Tournoi) utilisateur).getEstCloture() == true) {
+			throw new IllegalArgumentException("Vous ne pouvez pas vous connecter sur un tournoi clôturé.");
 		}
 	}
 	
