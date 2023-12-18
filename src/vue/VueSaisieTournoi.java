@@ -15,7 +15,6 @@ import modele.metier.Tournoi.Notoriete;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JComboBoxTheme;
-import vue.theme.JDatePickerImplTheme;
 import vue.theme.JFrameTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.JPasswordFieldTheme;
@@ -257,7 +256,7 @@ public class VueSaisieTournoi extends JFrameTheme {
         modelDateDebut = new UtilDateModel();
         JDatePanelImpl dateDebutPanel = new JDatePanelImpl(modelDateDebut, properties);
         dateDebutPanel.setBackground(CharteGraphique.FOND_SECONDAIRE);
-        JDatePickerImplTheme dateDebutPicker = new JDatePickerImplTheme(dateDebutPanel, new DateLabelFormatter());
+        JDatePickerImpl dateDebutPicker = new JDatePickerImpl(dateDebutPanel, new DateLabelFormatter());
         dateDebutPicker.setBackground(CharteGraphique.FOND_SECONDAIRE);
         GridBagConstraints gbc_dateDebutPicker = new GridBagConstraints();
         gbc_dateDebutPicker.anchor = GridBagConstraints.NORTH;
@@ -317,7 +316,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		// Champ date fin
         modelDateFin = new UtilDateModel();
         JDatePanelImpl dateFinPanel = new JDatePanelImpl(modelDateFin, properties);
-        JDatePickerImplTheme dateFinPicker = new JDatePickerImplTheme(dateFinPanel, new DateLabelFormatter());
+        JDatePickerImpl dateFinPicker = new JDatePickerImpl(dateFinPanel, new DateLabelFormatter());
         GridBagConstraints gbc_dateFinPicker = new GridBagConstraints();
         gbc_dateFinPicker.fill = GridBagConstraints.HORIZONTAL;
         gbc_dateFinPicker.gridx = 0;
