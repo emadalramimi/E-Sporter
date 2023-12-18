@@ -27,7 +27,10 @@ import java.util.Vector;
 public class VueEtatResultatsTournoi extends JFrameTheme {
 
 	private JTableTheme table;
-
+	/**
+     * Constructeur de l'IHM pour l'état des résultats d'un tournoi
+	 * @param tournoi : le tournoi dont on veut afficher les résultats
+     */
 	public VueEtatResultatsTournoi(Tournoi tournoi) {
         ControleurEtatResultatsTournoi controleur = new ControleurEtatResultatsTournoi(this);
 
@@ -38,12 +41,14 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		contentPane.setLayout(new BorderLayout(0, 20));
-
+		
+		// Panel header
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(CharteGraphique.FOND);
 		contentPane.add(panelHeader, BorderLayout.NORTH);
 		panelHeader.setLayout(new BorderLayout(0, 0));
-
+		
+		// Panel titre
 		JPanel panelTitre = new JPanel();
 		panelTitre.setBackground(CharteGraphique.FOND);
 		panelHeader.add(panelTitre, BorderLayout.WEST);
@@ -52,6 +57,7 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		gbl_panelTitre.rowWeights = new double[] { 0.0, 0.0 };
 		panelTitre.setLayout(gbl_panelTitre);
 
+		// Label titre
 		JLabel lblTitre = new JLabel("État des résultats du tournoi");
 		lblTitre.setFont(CharteGraphique.getPolice(19, true));
 		lblTitre.setForeground(CharteGraphique.TEXTE);
@@ -62,6 +68,7 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		gbc_lblTitre.gridy = 0;
 		panelTitre.add(lblTitre, gbc_lblTitre);
 
+		// Label tournoi
 		JLabel lblTournoi = new JLabel(tournoi.getNomTournoi());
 		lblTournoi.setFont(CharteGraphique.getPolice(16, false));
 		lblTournoi.setForeground(CharteGraphique.TEXTE);
@@ -72,6 +79,7 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		gbc_lblTournoi.gridy = 1;
 		panelTitre.add(lblTournoi, gbc_lblTournoi);
 
+		// Panel tableau
 		JPanel panelTableau = new JPanel();
 		panelTableau.setBackground(CharteGraphique.FOND);
 		contentPane.add(panelTableau, BorderLayout.CENTER);
@@ -85,6 +93,7 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		this.table.setBackground(CharteGraphique.FOND);
 		this.table.setFont(CharteGraphique.getPolice(16, false));
 
+		// Création du modèle de la table
 		DefaultTableModel model = new DefaultTableModel(
 			new Object[][] {}, 
 			new String[] { "Équipe", "Matchs joués", "Matchs gagnés", "Ratio" }

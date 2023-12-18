@@ -49,21 +49,13 @@ import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
 public class VueTournois extends JFrameTheme {
-	
-	// TODO ENLEVER TOUS LES TRUCS INUTILES ICI IDEM EQUIPE
+
 	private JTable table;
 	private DefaultTableModel model;
-	private JButtonTheme btnAjouter;
-	private JPanel panel;
-	private JPanel panelLabelEquipe;
 	private JLabel lblTournois;
-	private JPanel panelAjouter;
     private JTextFieldTheme txtRecherche;
-    private JButtonTheme btnRecherche;
-	private JScrollPaneTheme scrollPaneEquipes;
 	private ControleurTournois controleur;
 	private VueSaisieTournoi vueSaisieTournoi;
-	// Temp : gérer fen enfant
 	private VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi;
 	private VuePoule vuePoule;
 	private VueBase vueBase;
@@ -75,7 +67,7 @@ public class VueTournois extends JFrameTheme {
 		this.vueBase = vueBase;
 		
 		// panel contient tous les éléments de la page
-		panel = new JPanel();
+		JPanel panel = new JPanel();
 		panel.setBackground(CharteGraphique.FOND);
 		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
 		contentPane.add(panel, BorderLayout.CENTER);
@@ -86,7 +78,7 @@ public class VueTournois extends JFrameTheme {
 		panel.setLayout(gbl_panel);
 		
 		// panelLabelEquipe, le panel contenant le label lblEquipes
-		panelLabelEquipe = new JPanel();
+		JPanel panelLabelEquipe = new JPanel();
 		GridBagConstraints gbc_panelLabelEquipe = new GridBagConstraints();
 		gbc_panelLabelEquipe.anchor = GridBagConstraints.NORTH;
 		gbc_panelLabelEquipe.fill = GridBagConstraints.HORIZONTAL;
@@ -104,7 +96,7 @@ public class VueTournois extends JFrameTheme {
 		panelLabelEquipe.add(lblTournois);
 		
 		// panelAjouter, le panel contenant le bouton btnAjouter
-		panelAjouter = new JPanel();
+		JPanel panelAjouter = new JPanel();
 		panelAjouter.setBackground(CharteGraphique.FOND);
 		FlowLayout flowLayout = (FlowLayout) panelAjouter.getLayout();
 		flowLayout.setVgap(0);
@@ -113,11 +105,12 @@ public class VueTournois extends JFrameTheme {
 		panelLabelEquipe.add(panelAjouter);
 		
 		// btnAjouter, un bouton pour permettre l'ajout d'une équipe
-		btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
+		JButtonTheme btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
 		btnAjouter.addActionListener(controleur);
 		btnAjouter.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelAjouter.add(btnAjouter);
 		
+		// panelTableauFiltres, le panel contenant le champ de recherche et les filtres
 		JPanel panelTableauFiltres = new JPanel();
 		panelTableauFiltres.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelRecherche = new GridBagConstraints();
@@ -138,7 +131,7 @@ public class VueTournois extends JFrameTheme {
 		panelRecherche.add(txtRecherche);
 
 		// Bouton de recherche
-		btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/actions/rechercher.png")));
+		JButtonTheme btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/actions/rechercher.png")));
 		btnRecherche.addActionListener(controleur);
 		panelRecherche.add(btnRecherche);
 		panelTableauFiltres.add(panelRecherche);
@@ -169,7 +162,7 @@ public class VueTournois extends JFrameTheme {
 		panelTableauFiltres.add(panelChoixFiltres);
 		
 		// ScrollPane englobant le tableau
-		scrollPaneEquipes = new JScrollPaneTheme();
+		JScrollPaneTheme scrollPaneEquipes = new JScrollPaneTheme();
 		GridBagConstraints gbc_scrollPaneEquipes = new GridBagConstraints();
 		gbc_scrollPaneEquipes.fill = GridBagConstraints.BOTH;
 		gbc_scrollPaneEquipes.gridx = 0;
@@ -213,6 +206,9 @@ public class VueTournois extends JFrameTheme {
 	}
 	
 	private class StatutCellRenderer extends ThemeTableCellRenderer {
+		/**
+		 * Méthode pour afficher le statut d'un tournoi dans le tableau
+		 */
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -367,10 +363,20 @@ public class VueTournois extends JFrameTheme {
 		this.table.setModel(this.model);
 	}
 
+	/**
+	 * Méthode pour vérifier si la comboBox est la comboBox de notoriété
+	 * @param comboBox : la comboBox à vérifier
+	 * @return true si la comboBox est la comboBox de notoriété, false sinon
+	 */
 	public boolean estCboxNotoriete(JComboBoxTheme<?> comboBox) {
 		return comboBox.equals(this.cboxNotoriete);
 	}
 	
+	/**
+	 * Méthode pour vérifier si la comboBox est la comboBox de statuts
+	 * @param comboBox : la comboBox à vérifier
+	 * @return true si la comboBox est la comboBox de statuts, false sinon
+	 */
 	public boolean estCboxStatuts(JComboBoxTheme<?> comboBox) {
 		return comboBox.equals(this.cboxStatuts);
 	}

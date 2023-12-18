@@ -40,7 +40,13 @@ public class VuePoule extends JFrameTheme {
 	
 	// private VueTournois vueTournois; sera utilisé plus tard pour rafraîchir la liste des tournois à la cloture
 	private VueEtatResultatsTournoi vueEtatResultatsTournoi;
-
+	
+	/*
+     * Constructeur de l'IHM pour la saisie d'un poule
+     * @param vueTournois La vue principale des tournois
+     * @param tournoi Le tournoi en cours
+	 * @param poule La poule en cours
+     */
 	public VuePoule(VueTournois vueTournois, Tournoi tournoi, Poule poule) {
 		ControleurPoule controleur = new ControleurPoule(this, tournoi);
 
@@ -49,14 +55,15 @@ public class VuePoule extends JFrameTheme {
 
 		JPanel contentPane = super.getContentPane();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-
 		contentPane.setLayout(new BorderLayout(0, 20));
 
+		// Panel du header
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(CharteGraphique.FOND);
 		contentPane.add(panelHeader, BorderLayout.NORTH);
 		panelHeader.setLayout(new BorderLayout(0, 0));
 
+		// Panel du titre
 		JPanel panelTitre = new JPanel();
 		panelTitre.setBackground(CharteGraphique.FOND);
 		panelHeader.add(panelTitre, BorderLayout.WEST);
@@ -65,7 +72,9 @@ public class VuePoule extends JFrameTheme {
 		gbl_panelTitre.rowWeights = new double[] { 0.0, 0.0 };
 		panelTitre.setLayout(gbl_panelTitre);
 
+		// Label du titre 
 		JLabel lblTitre;
+		// Si la poule n'est pas une finale on affiche "Poule de qualifications" sinon on affiche "Poule finale"
 		if (!poule.getEstFinale()) {
 			lblTitre = new JLabel("Poule de qualifications");
 		} else {
@@ -80,6 +89,7 @@ public class VuePoule extends JFrameTheme {
 		gbc_lblTitre.gridy = 0;
 		panelTitre.add(lblTitre, gbc_lblTitre);
 
+		// Label nom tournoi
 		JLabel lblTournoi = new JLabel(tournoi.getNomTournoi());
 		lblTournoi.setFont(CharteGraphique.getPolice(16, false));
 		lblTournoi.setForeground(CharteGraphique.TEXTE);
@@ -90,9 +100,11 @@ public class VuePoule extends JFrameTheme {
 		gbc_lblTournoi.gridy = 1;
 		panelTitre.add(lblTournoi, gbc_lblTournoi);
 
+		// Bouton de clôture de la poule
 		JButtonTheme btnCloturerPoule = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Clôturer la poule");
 		btnCloturerPoule.setFont(CharteGraphique.getPolice(17, false));
 
+		// Panel du bouton de clôture de la poule
 		JPanel panelBtnCloturerPoule = new JPanel();
 		panelBtnCloturerPoule.setBackground(CharteGraphique.FOND);
 		panelBtnCloturerPoule.setLayout(new BorderLayout());
@@ -100,6 +112,7 @@ public class VuePoule extends JFrameTheme {
 
 		panelHeader.add(panelBtnCloturerPoule, BorderLayout.EAST);
 
+		// Panel du tableau
 		JPanel panelTableau = new JPanel();
 		panelTableau.setBackground(CharteGraphique.FOND);
 		contentPane.add(panelTableau, BorderLayout.CENTER);
@@ -114,6 +127,7 @@ public class VuePoule extends JFrameTheme {
 		this.table.setBackground(CharteGraphique.FOND);
 		this.table.setFont(CharteGraphique.getPolice(16, false));
 
+		// Création du model de la table
 		DefaultTableModel model = new DefaultTableModel(
 			new Object[][] {}, 
 			new String[] { "ID", "Match", "Équipe 1", "Équipe 2" }
@@ -218,10 +232,19 @@ public class VuePoule extends JFrameTheme {
 		contentPane.add(panelBoutons, BorderLayout.SOUTH);
 	}
 
+	/*
+	 * Méthode permettant de vérifier si la source de l'événement est le tableau des rencontres
+	 * @param source La source de l'événement
+	 * @return true si la source est le tableau des rencontres, false sinon
+	 */
 	public boolean estTableauRencontres(Object source) {
 		return this.table.equals(source);
 	}
 
+	/*
+	 * Méthode permettant de récupérer la ligne de la rencontre cliquée
+	 * @return La ligne de la rencontre cliquée
+	 */
 	public void toggleGagnant(int ligne, int col) {
 		// Active la cellule cliquée
 		isActif[ligne][col] = true;
@@ -238,6 +261,7 @@ public class VuePoule extends JFrameTheme {
 
 	/**
 	 * Ouvre la fenêtre d'état des résultats du tournoi
+	 * @param tournoi le tournoi dont on veut afficher les résultats
 	 */
 	public void afficherVueEtatResultatsTournoi(Tournoi tournoi) {
 		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan

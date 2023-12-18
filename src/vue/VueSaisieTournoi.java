@@ -52,6 +52,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import java.awt.FlowLayout;
+
 import javax.swing.SpinnerNumberModel;
 
 public class VueSaisieTournoi extends JFrameTheme {
@@ -73,7 +74,13 @@ public class VueSaisieTournoi extends JFrameTheme {
 	private JSpinner spinnerMinutesFin;
 	private JButtonTheme btnAjouterArbitre;
 
+	/**
+     * Constructeur de l'IHM pour la saisie d'un tournoi
+     * @param vueTournois La vue principale des tournois
+     * @param tournoiOptionnel Un tournoi optionnel pour initialiser le formulaire (pour modification)
+     */
 	public VueSaisieTournoi(VueTournois vueTournois, Optional<Tournoi> tournoiOptionnel) {
+		// Initialisation du contrôleur avec les paramètres nécessaires
 		ControleurSaisieTournoi controleur = new ControleurSaisieTournoi(this, vueTournois, tournoiOptionnel);
 
 		// Récupère le tournoi fourni, sinon null
@@ -91,21 +98,12 @@ public class VueSaisieTournoi extends JFrameTheme {
 		contentPane = super.getContentPane();
 		contentPane.setBorder(new EmptyBorder(25, 25, 25, 25));
 		
-		JPanel panelCentre = new JPanel(); 
-		panelCentre.setBackground(CharteGraphique.FOND);
-		contentPane.add(panelCentre, BorderLayout.CENTER);
-		GridBagLayout gbl_panelCentre = new GridBagLayout();
-		gbl_panelCentre.columnWidths = new int[]{0, 0};
-		gbl_panelCentre.rowHeights = new int[]{0, 0, 0};
-		gbl_panelCentre.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panelCentre.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		panelCentre.setLayout(gbl_panelCentre);
-		
-
+		// Panel Titre
 		JPanel panelTitre = new JPanel();
 		panelTitre.setBackground(CharteGraphique.FOND);
 		contentPane.add(panelTitre, BorderLayout.NORTH);
 		
+		// Label Titre
 		JLabel lblTitre;
 		if (tournoi == null) {
 			lblTitre = new JLabel("Création d'un tournoi");
@@ -116,6 +114,18 @@ public class VueSaisieTournoi extends JFrameTheme {
 		lblTitre.setForeground(CharteGraphique.TEXTE);
 		panelTitre.add(lblTitre);
 
+		// Panel centre
+		JPanel panelCentre = new JPanel(); 
+		panelCentre.setBackground(CharteGraphique.FOND);
+		contentPane.add(panelCentre, BorderLayout.CENTER);
+		GridBagLayout gbl_panelCentre = new GridBagLayout();
+		gbl_panelCentre.columnWidths = new int[]{0, 0};
+		gbl_panelCentre.rowHeights = new int[]{0, 0, 0};
+		gbl_panelCentre.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_panelCentre.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		panelCentre.setLayout(gbl_panelCentre);
+		
+		// Panel saisie
 		JPanel panelSaisie = new JPanel();
 		panelSaisie.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelSaisie = new GridBagConstraints();
@@ -126,6 +136,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelCentre.add(panelSaisie, gbc_panelSaisie);
 		panelSaisie.setLayout(new GridLayout(1, 0, 0, 0));
 		
+		// Panel Info
 		JPanel panelInfo2 = new JPanel();
 		panelInfo2.setBackground(CharteGraphique.FOND);
 		panelSaisie.add(panelInfo2);
@@ -133,7 +144,64 @@ public class VueSaisieTournoi extends JFrameTheme {
 		gbl_panelInfo2.columnWeights = new double[]{1.0};
 		gbl_panelInfo2.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		panelInfo2.setLayout(gbl_panelInfo2);
+
+		// Label tournoi
+		JLabel lblNom = new JLabel("Nom du tournoi");
+		lblNom.setForeground(CharteGraphique.TEXTE);
+		lblNom.setFont(CharteGraphique.getPolice(19, true));
+		GridBagConstraints gbc_lblNom = new GridBagConstraints();
+		gbc_lblNom.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNom.gridx = 0;
+		gbc_lblNom.gridy = 0;
+		panelInfo2.add(lblNom, gbc_lblNom);
 		
+		// Champ nom du tournoi
+		txtNom = new JTextFieldTheme(20);
+		txtNom.setColumns(10);
+		GridBagConstraints gbc_txtNom = new GridBagConstraints();
+		gbc_txtNom.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtNom.insets = new Insets(0, 0, 5, 0);
+		gbc_txtNom.gridx = 0;
+		gbc_txtNom.gridy = 1;
+		panelInfo2.add(txtNom, gbc_txtNom);
+
+		// Panel saisie info
+		JPanel panelInfo = new JPanel();
+		panelInfo.setBackground(CharteGraphique.FOND);
+        panelSaisie.add(panelInfo);
+        GridBagLayout gbl_panelInfo = new GridBagLayout();
+        gbl_panelInfo.columnWeights = new double[]{1.0};
+        gbl_panelInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        panelInfo.setLayout(gbl_panelInfo);
+		panelInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		// Label Notoriété
+		JLabel lblNotoriete = new JLabel("Notoriété");
+		lblNotoriete.setForeground(CharteGraphique.TEXTE);
+		lblNotoriete.setFont(CharteGraphique.getPolice(19, true));
+		GridBagConstraints gbc_lblNotoriete = new GridBagConstraints();
+		gbc_lblNotoriete.insets = new Insets(0, 0, 3, 0);
+		gbc_lblNotoriete.gridx = 0;
+		gbc_lblNotoriete.gridy = 0;
+		panelInfo.add(lblNotoriete, gbc_lblNotoriete);
+		
+		// Liste Notoriétés
+		List<String> notorietes = new ArrayList<>();
+		for (Notoriete notoriete : Notoriete.values()) {
+			notorietes.add(notoriete.getLibelle());
+		}
+		cboxNotoriete = new JComboBoxTheme<String>(notorietes.toArray(new String[0]));
+		Dimension d = cboxNotoriete.getPreferredSize();
+		d.height = 45;
+		cboxNotoriete.setPreferredSize(d);	
+		GridBagConstraints gbc_cboxNotoriete = new GridBagConstraints();
+		gbc_cboxNotoriete.insets = new Insets(0, 0, 5, 0);
+		gbc_cboxNotoriete.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cboxNotoriete.gridx = 0;
+		gbc_cboxNotoriete.gridy = 1;
+		panelInfo.add(cboxNotoriete, gbc_cboxNotoriete);
+		
+		// Label identifiant de les arbitres
 		JLabel lblIdentifiant = new JLabel("Identifiant arbitres");
 		lblIdentifiant.setForeground(CharteGraphique.TEXTE);
 		lblIdentifiant.setFont(CharteGraphique.getPolice(19, true));
@@ -143,6 +211,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		gbc_lblIdentifiant.gridy = 2;
 		panelInfo2.add(lblIdentifiant, gbc_lblIdentifiant);
 		
+		// Champ identifiant de les arbitres
 		txtIdentifiantArbitres = new JTextFieldTheme(20);
 		txtIdentifiantArbitres.setColumns(10);
 		GridBagConstraints gbc_txtIdentifiantArbitres = new GridBagConstraints();
@@ -153,15 +222,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelInfo2.add(txtIdentifiantArbitres, gbc_txtIdentifiantArbitres);
 		panelInfo2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
-		JPanel panelInfo = new JPanel();
-		panelInfo.setBackground(CharteGraphique.FOND);
-        panelSaisie.add(panelInfo);
-        GridBagLayout gbl_panelInfo = new GridBagLayout();
-        gbl_panelInfo.columnWeights = new double[]{1.0};
-        gbl_panelInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-        panelInfo.setLayout(gbl_panelInfo);
-		panelInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		
+		// Label Mot de passe de les arbitres
 		JLabel lblMDP = new JLabel("Mot de passe arbitres");
 		lblMDP.setForeground(CharteGraphique.TEXTE);
 		lblMDP.setFont(CharteGraphique.getPolice(19, true));
@@ -171,6 +232,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		gbc_lblMDP.gridy = 2;
 		panelInfo.add(lblMDP, gbc_lblMDP);
 		
+		// Champ Mot de passe de les arbitres
 		motDePasseArbitres = new JPasswordFieldTheme(20);
 		motDePasseArbitres.setPreferredSize(new Dimension(motDePasseArbitres.getPreferredSize().width, 45));
 		GridBagConstraints gbc_motDePasseArbitres = new GridBagConstraints();
@@ -179,50 +241,8 @@ public class VueSaisieTournoi extends JFrameTheme {
 		gbc_motDePasseArbitres.gridx = 0;
 		gbc_motDePasseArbitres.gridy = 3;
 		panelInfo.add(motDePasseArbitres, gbc_motDePasseArbitres);
-		
-		JLabel lblNotoriete = new JLabel("Notoriété");
-		lblNotoriete.setForeground(CharteGraphique.TEXTE);
-		lblNotoriete.setFont(CharteGraphique.getPolice(19, true));
-		GridBagConstraints gbc_lblNotoriete = new GridBagConstraints();
-		gbc_lblNotoriete.insets = new Insets(0, 0, 3, 0);
-		gbc_lblNotoriete.gridx = 0;
-		gbc_lblNotoriete.gridy = 0;
-		panelInfo.add(lblNotoriete, gbc_lblNotoriete);
-		
-		List<String> notorietes = new ArrayList<>();
-		for (Notoriete notoriete : Notoriete.values()) {
-			notorietes.add(notoriete.getLibelle());
-		}
-		cboxNotoriete = new JComboBoxTheme<String>(notorietes.toArray(new String[0]));
-		Dimension d = cboxNotoriete.getPreferredSize();
-		d.height = 45;
-		cboxNotoriete.setPreferredSize(d);
-				
-		GridBagConstraints gbc_cboxNotoriete = new GridBagConstraints();
-		gbc_cboxNotoriete.insets = new Insets(0, 0, 5, 0);
-		gbc_cboxNotoriete.fill = GridBagConstraints.HORIZONTAL;
-		gbc_cboxNotoriete.gridx = 0;
-		gbc_cboxNotoriete.gridy = 1;
-		panelInfo.add(cboxNotoriete, gbc_cboxNotoriete);
-		
-		JLabel lblNom = new JLabel("Nom du tournoi");
-		lblNom.setForeground(CharteGraphique.TEXTE);
-		lblNom.setFont(CharteGraphique.getPolice(19, true));
-		GridBagConstraints gbc_lblNom = new GridBagConstraints();
-		gbc_lblNom.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNom.gridx = 0;
-		gbc_lblNom.gridy = 0;
-		panelInfo2.add(lblNom, gbc_lblNom);
-		
-		txtNom = new JTextFieldTheme(20);
-		txtNom.setColumns(10);
-		GridBagConstraints gbc_txtNom = new GridBagConstraints();
-		gbc_txtNom.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtNom.insets = new Insets(0, 0, 5, 0);
-		gbc_txtNom.gridx = 0;
-		gbc_txtNom.gridy = 1;
-		panelInfo2.add(txtNom, gbc_txtNom);
 
+		// Label date debut
         JLabel lblDateDebut = new JLabel("Date début");
         lblDateDebut.setForeground(CharteGraphique.TEXTE);
         lblDateDebut.setFont(CharteGraphique.getPolice(19, true));
@@ -231,7 +251,8 @@ public class VueSaisieTournoi extends JFrameTheme {
         gbc_lblDateDebut.gridx = 0;
         gbc_lblDateDebut.gridy = 4;
         panelInfo2.add(lblDateDebut, gbc_lblDateDebut);
-
+		
+		// Champ date debut
         modelDateDebut = new UtilDateModel();
         JDatePanelImpl dateDebutPanel = new JDatePanelImpl(modelDateDebut, properties);
         dateDebutPanel.setBackground(CharteGraphique.FOND_SECONDAIRE);
@@ -245,6 +266,7 @@ public class VueSaisieTournoi extends JFrameTheme {
         gbc_dateDebutPicker.gridy = 5;
         panelInfo2.add(dateDebutPicker, gbc_dateDebutPicker);
 
+		// Panel heure debut
         JPanel panelHeureDebut = new JPanel();
         panelHeureDebut.setBackground(CharteGraphique.FOND);
         FlowLayout flowLayout_1 = new FlowLayout();
@@ -257,26 +279,31 @@ public class VueSaisieTournoi extends JFrameTheme {
         gbc_panelHeureDebut.gridy = 6;
         panelInfo2.add(panelHeureDebut, gbc_panelHeureDebut);
 
+		// Label heure debut (heures)
         JLabel lblHeure = new JLabel("Heure : ");
         lblHeure.setForeground(CharteGraphique.TEXTE);
         lblHeure.setFont(CharteGraphique.getPolice(14, true));
         panelHeureDebut.add(lblHeure);
 
+		// Spinner heure debut (heures)
         spinnerHeuresDebut = new JSpinner();
         spinnerHeuresDebut.setBackground(CharteGraphique.FOND_SECONDAIRE);
         spinnerHeuresDebut.setForeground(CharteGraphique.TEXTE); 
         spinnerHeuresDebut.setModel(new SpinnerNumberModel(0, 0, 23, 1));
         panelHeureDebut.add(spinnerHeuresDebut);
 
+		// Label heure debut (minutes)
         JLabel lblHeurDebut = new JLabel("h");
         lblHeurDebut.setForeground(CharteGraphique.TEXTE);
         lblHeurDebut.setFont(CharteGraphique.getPolice(14, true));
         panelHeureDebut.add(lblHeurDebut);
 
+		// Spinner heure debut (minutes)
         spinnerMinutesDebut = new JSpinner();
         spinnerMinutesDebut.setModel(new SpinnerNumberModel(0, 0, 59, 1));
         panelHeureDebut.add(spinnerMinutesDebut);
 
+		// Label date fin
         JLabel lblDateFin = new JLabel("Date fin");
         lblDateFin.setForeground(CharteGraphique.TEXTE);
         lblDateFin.setFont(CharteGraphique.getPolice(19, true));
@@ -286,6 +313,7 @@ public class VueSaisieTournoi extends JFrameTheme {
         gbc_lblDateFin.gridy = 5;
         panelInfo.add(lblDateFin, gbc_lblDateFin);
 
+		// Champ date fin
         modelDateFin = new UtilDateModel();
         JDatePanelImpl dateFinPanel = new JDatePanelImpl(modelDateFin, properties);
         JDatePickerImpl dateFinPicker = new JDatePickerImpl(dateFinPanel, new DateLabelFormatter());
@@ -295,6 +323,7 @@ public class VueSaisieTournoi extends JFrameTheme {
         gbc_dateFinPicker.gridy = 6;
         panelInfo.add(dateFinPicker, gbc_dateFinPicker);
 
+		// Panel heure fin
         JPanel panelHeureFin = new JPanel();
         panelHeureFin.setBackground(CharteGraphique.FOND);
         FlowLayout flowLayout_11 = new FlowLayout();
@@ -307,25 +336,30 @@ public class VueSaisieTournoi extends JFrameTheme {
         gbc_panelHeureFin.gridy = 7;
         panelInfo.add(panelHeureFin, gbc_panelHeureFin);
 
+		// Label heure fin (heures)
         JLabel lblHeureFin = new JLabel("Heure : ");
         lblHeureFin.setForeground(CharteGraphique.TEXTE);
         lblHeureFin.setFont(CharteGraphique.getPolice(14, true));
         panelHeureFin.add(lblHeureFin);
 
+		// Spinner heure fin (heures)
         spinnerHeuresFin = new JSpinner();
         spinnerHeuresFin.setBackground(CharteGraphique.FOND);
         spinnerHeuresFin.setModel(new SpinnerNumberModel(0, 0, 23, 1));
         panelHeureFin.add(spinnerHeuresFin);
 
+		// Label heure fin (minutes)
         JLabel lblHeureFinh = new JLabel("h");
         lblHeureFinh.setForeground(CharteGraphique.TEXTE);
         lblHeureFinh.setFont(CharteGraphique.getPolice(14, true));
         panelHeureFin.add(lblHeureFinh);
         
+		// Spinner heure fin (minutes)
         spinnerMinutesFin = new JSpinner();
         spinnerMinutesFin.setModel(new SpinnerNumberModel(0, 0, 59, 1));
         panelHeureFin.add(spinnerMinutesFin);
 
+		// Panel ajouter arbitre
 		JPanel panelAjouter = new JPanel();
 		panelAjouter.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelAjouter = new GridBagConstraints();
@@ -335,6 +369,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelCentre.add(panelAjouter, gbc_panelAjouter);
 		panelAjouter.setLayout(new GridLayout(1, 0, 0, 0));
 		
+		// Panel arbitres
 		JPanel panelArbitres = new JPanel();
 		panelArbitres.setBorder(new EmptyBorder(5, 0, 0, 0));
 		panelArbitres.setBackground(CharteGraphique.FOND);
@@ -342,10 +377,12 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelArbitres.setLayout(new BorderLayout(0, 0));
 		panelArbitres.setBorder(BorderFactory.createEmptyBorder(0, 10, 20, 10));
 		
+		// Label arbitres
 		JLabel lblTitreArbitre = new JLabel("Arbitres désignés");
 		lblTitreArbitre.setForeground(CharteGraphique.TEXTE);
 		lblTitreArbitre.setFont(CharteGraphique.getPolice(19, true));
 		
+		// Panel titre et bouton
 		JPanel panelTitleAndButton = new JPanel(new GridBagLayout());
 		panelTitleAndButton.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -360,6 +397,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		fillerPanel.setOpaque(false);  
 		panelTitleAndButton.add(fillerPanel, gbc);
 
+		// Bouton ajouter arbitre
 		btnAjouterArbitre = new JButtonTheme(JButtonTheme.Types.PRIMAIRE,"Ajouter un arbitre");
 		btnAjouterArbitre.addActionListener(controleur);
 		btnAjouterArbitre.setBorder(new EmptyBorder(8,8,8,8));
@@ -370,15 +408,16 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelTitleAndButton.add(btnAjouterArbitre, gbc);
 		panelArbitres.add(panelTitleAndButton, BorderLayout.NORTH);
 
+		// Si aucun arbitre n'est éligible, le bouton est désactivé
 		if (controleur.getArbitresEligibles().length == 0) {
 			this.btnAjouterArbitre.setEnabled(false);
 		}
 		
+		// Liste arbitres
 		JScrollPane scrollPaneListeArbitre = new JScrollPane();
 		scrollPaneListeArbitre.setBackground(CharteGraphique.FOND_SECONDAIRE);
 		scrollPaneListeArbitre.setBorder(null);
 		panelArbitres.add(scrollPaneListeArbitre, BorderLayout.CENTER);
-		
 		listeArbitres = new JList<>(listModelArbitres);
 		listeArbitres.setBackground(CharteGraphique.FOND_SECONDAIRE);
 		listeArbitres.setForeground(CharteGraphique.TEXTE);
@@ -387,12 +426,14 @@ public class VueSaisieTournoi extends JFrameTheme {
 		listeArbitres.addListSelectionListener(controleur);
 		scrollPaneListeArbitre.setViewportView(listeArbitres);
 		
+		// Panel boutons valider/annuler
 		JPanel panelBtnValider = new JPanel();
 		panelBtnValider.setBackground(CharteGraphique.FOND);
 		panelBtnValider.setLayout(new BoxLayout(panelBtnValider, BoxLayout.X_AXIS));
 		contentPane.add(panelBtnValider, BorderLayout.SOUTH);
 		panelBtnValider.add(Box.createHorizontalGlue());
 
+		// Bouton annuler
 		JButtonTheme btnAnnuler = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Annuler");
 		btnAnnuler.setMargin(new Insets(5, 10, 5, 10)); 
 		btnAnnuler.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -400,7 +441,9 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelBtnValider.add(btnAnnuler);
 		panelBtnValider.add(Box.createRigidArea(new Dimension(10, 0)));
 		
+		// Bouton valider
 		JButtonTheme btnValider;
+		// Si aucun tournoi n'est renseigné, on affiche un bouton "Valider"
 		if (tournoi == null) {
 			btnValider = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Valider");
 		} else {
@@ -425,7 +468,10 @@ public class VueSaisieTournoi extends JFrameTheme {
 			}
 		}
 	}
-	
+
+	/*
+	 * Classe interne pour afficher les arbitres dans la liste
+	 */
 	private class ArbitreListCellRenderer extends DefaultListCellRenderer {
 	    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 	        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -439,6 +485,9 @@ public class VueSaisieTournoi extends JFrameTheme {
 	    }
 	}
 	
+	/*
+	 * Classe interne pour formatter les dates
+	 */
 	private class DateLabelFormatter extends AbstractFormatter {
 	    private String datePattern = "dd/MM/yyyy";
 	    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
@@ -459,10 +508,21 @@ public class VueSaisieTournoi extends JFrameTheme {
 	    }
 	}
 	
+	/*
+	 * Méthodes pour récupérer les valeurs des champs du formulaire
+	 * @return La valeur du champ
+	 */
 	public String getNomTournoi() {
         return this.txtNom.getText().trim();
     }
 
+	/*
+	 * Méthode pour récupérer la date et l'heure d'un champ
+	 * @param date La date
+	 * @param heure L'heure
+	 * @param minute Les minutes
+	 * @return Le timestamp correspondant à la date et l'heure en secondes
+	 */
 	private long getDateTime(Date date, int heure, int minute) {
 		// Combiner la date et l'heure pour former un objet Calendar
 		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
@@ -479,6 +539,10 @@ public class VueSaisieTournoi extends JFrameTheme {
 		return timestamp;
 	}
 	
+	/*
+	 * Méthodes pour récupérer les valeurs des champs du date et huere Debut
+	 * @return La valeur du champ
+	 */
 	public long getDateTimeDebut() {
 		// Récupérer la date du modèle
 		Date dateDebut = this.modelDateDebut.getValue();
@@ -489,7 +553,11 @@ public class VueSaisieTournoi extends JFrameTheme {
 	
 		return getDateTime(dateDebut, heure, minute);
 	}
-	
+
+	/*
+	 * Méthodes pour récupérer les valeurs des champs du date et heure Fin
+	 * @return La valeur du champ
+	 */
 	public long getDateTimeFin() {
 		// Récupérer la date du modèle
 		Date dateFin = this.modelDateFin.getValue();
@@ -501,18 +569,34 @@ public class VueSaisieTournoi extends JFrameTheme {
 		return getDateTime(dateFin, heure, minute);
 	}
 
+	/*
+	 * Méthodes pour récupérer l'indentifiant
+	 * @return La valeur du champ
+	 */
     public String getIdentifiant() {
         return txtIdentifiantArbitres.getText().trim();
     }
 
+	/*
+	 * Méthodes pour récupérer le mot de passe
+	 * @return La valeur du champ
+	 */
     public String getMotDePasse() {
         return new String(motDePasseArbitres.getPassword());
     }
     
+	/*
+	 * Méthodes pour récupérer la notoriété
+	 * @return La valeur du champ
+	 */
 	public Notoriete getNotoriete() {
 		return Notoriete.valueOfLibelle((String) this.cboxNotoriete.getSelectedItem());
 	}
 	
+	/*
+	 * afficher la vue de saisie d'un arbitre
+	 * @param arbitres La liste des arbitres
+	 */
 	public void afficherVueSaisieTournoiArbitre(Arbitre[] arbitres) {
 		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
         if (this.vueSaisieTournoiArbitre == null || !this.vueSaisieTournoiArbitre.isVisible()) {
@@ -525,20 +609,37 @@ public class VueSaisieTournoi extends JFrameTheme {
         }
 	}
 	
+	/*
+	 * Méthode pour ajouter un arbitre à la liste
+	 * @param arbitre L'arbitre à ajouter
+	 */
 	public void ajouterArbitre(Arbitre arbitre) {
 		if(!this.listModelArbitres.contains(arbitre)) {
 			this.listModelArbitres.addElement(arbitre);
 		}
 	}
 	
+	/*
+	 * Méthode pour supprimer un arbitre de la liste
+	 * @param arbitre L'arbitre à supprimer
+	 */
 	public void supprimerArbitre(Arbitre arbitre) {
 		this.listModelArbitres.removeElement(arbitre);
 	}
 	
+	/*
+	 * Méthode pour verifier si la liste est la liste des arbitres
+	 * @param liste La liste à vérifier
+	 * @return true si la liste est la liste des arbitres
+	 */
 	public boolean estListeArbitres(JList<?> liste) {
 		return liste.equals(this.listeArbitres);
 	}
 	
+	/*
+	 * Méthode pour récupérer la liste des arbitres
+	 * @return La liste des arbitres
+	 */
 	public List<Arbitre> getArbitres() {
 	    List<Arbitre> arbitres = new ArrayList<>();
 	    for (int i = 0; i < listModelArbitres.size(); i++) {
@@ -547,6 +648,10 @@ public class VueSaisieTournoi extends JFrameTheme {
 	    return arbitres;
 	}
 
+	/*
+	 * Méthode pour afficher un message d'erreur
+	 * @param message Le message à afficher
+	 */
 	public boolean afficherConfirmationSuppression(String message) {
 		Object[] options = {"Oui", "Annuler"};
         int choix = JOptionPaneTheme.showOptionDialog(
@@ -562,7 +667,11 @@ public class VueSaisieTournoi extends JFrameTheme {
         
         return choix == 0;
     }
-	
+
+	/*
+	 * Méthode pour verifier si tous les champs sont remplis
+	 * @return true si tous les champs sont remplis
+	 */
 	public boolean tousChampsRemplis() {
 		return !this.getNomTournoi().isEmpty()
 			&& !this.getIdentifiant().isEmpty()
@@ -571,6 +680,10 @@ public class VueSaisieTournoi extends JFrameTheme {
 			&& modelDateFin.getValue() != null;
 	}
 	
+	/*
+	 * Méthode pour activer ou désactiver le bouton d'ajout d'arbitre
+	 * @param actif true pour activer le bouton, false pour le désactiver
+	 */
 	public void setBtnAjouterArbitreActif(boolean actif) {
 		this.btnAjouterArbitre.setEnabled(actif);
 	}

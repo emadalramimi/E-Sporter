@@ -33,11 +33,17 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	private Arbitre[] arbitres;
 	private ActionListener controleur;
 	
+	// Enum pour savoir si on affiche une liste d'équipes ou d'arbitres
 	public enum Type {
 		EQUIPE,
 		ARBITRE
 	}
 
+	/**
+     * Constructeur de l'IHM pour la saisie d'un tournoi avec une liste d'équipes
+	 * @param equipes : la liste des équipes
+	 * @param tournoi : le tournoi en cours de création
+     */
 	public VueSaisieTournoiEquipeArbitre(VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi, Equipe[] equipes, Tournoi tournoi) {
 		this.type = VueSaisieTournoiEquipeArbitre.Type.EQUIPE;
 		this.controleur = new ControleurInscriptionEquipesTournoiPopup(this, vueInscriptionEquipesTournoi, tournoi);
@@ -45,6 +51,11 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 		this.afficher();
 	}
 	
+	/**
+     * Constructeur de l'IHM pour la saisie d'un tournoi avec une liste d'arbitres
+	 * @param arbitres : la liste des arbitres
+	 * @param tournoi : le tournoi en cours de création
+     */
 	public VueSaisieTournoiEquipeArbitre(VueSaisieTournoi vueSaisieTournoi, Arbitre[] arbitres) {
 		this.type = VueSaisieTournoiEquipeArbitre.Type.ARBITRE;
 		this.controleur = new ControleurSaisieTournoiArbitre(this, vueSaisieTournoi);
@@ -52,19 +63,23 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 		this.afficher();
 	}
 	
+	/**
+	 * Méthode pour afficher l'IHM
+	 */
 	private void afficher() {
 		setDefaultCloseOperation(JFrameTheme.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 300, 180);
 
 		contentPane = super.getContentPane();
-		// TODO Border interne
 		
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0};
 		contentPane.setLayout(gbl_contentPane);
 
+		// Label titre
 		JLabel lblTitre = null;
+		// Selon le type de la liste, on affiche un titre différent
 		switch(this.type) {
 		case EQUIPE:
 			lblTitre = new JLabel("Sélectionner une équipe");
@@ -82,7 +97,8 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 		gbc_titre.gridx = 0;
 		gbc_titre.gridy = 0;
 		contentPane.add(lblTitre, gbc_titre);
-		
+
+		// ComboBox pour sélectionner l'équipe ou l'arbitre
 		switch(this.type) {
 		case EQUIPE:
 			comboBox = new JComboBoxTheme<Equipe>(equipes);
@@ -99,6 +115,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 		gbc_comboBox.gridy = 1;
 		contentPane.add(comboBox, gbc_comboBox);
 		
+		// Boutons annuler et ajouter
 		JButtonTheme btnAnnuler = new JButtonTheme(JButtonTheme.Types.SECONDAIRE,"Annuler");
 		btnAnnuler.addActionListener(controleur);
 		GridBagConstraints gbc_buttonAnnuler = new GridBagConstraints();
@@ -107,6 +124,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 		gbc_buttonAnnuler.gridy = 2;
 		contentPane.add(btnAnnuler, gbc_buttonAnnuler);
 		
+		// Selon le type de la liste, on affiche un bouton différent
 		JButtonTheme btnAjouter = null;
 		switch(this.type) {
 		case EQUIPE:
@@ -123,14 +141,26 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 		contentPane.add(btnAjouter, gbc_btnAjouter);
 	}
 	
+	/*
+	 * Classe pour afficher le nom de l'équipe ou de l'arbitre dans la ComboBox
+	 */
 	private class EquipeArbitreComboBoxRenderer extends JLabel implements ListCellRenderer<Object> {
-
+		
 	    public EquipeArbitreComboBoxRenderer() {
 	        setOpaque(true);
 	        setHorizontalAlignment(LEFT);
 	        setVerticalAlignment(CENTER);
 	    }
 
+		/**
+		 * Méthode pour afficher le nom de l'équipe ou de l'arbitre dans la ComboBox
+		 * @param list : la liste
+		 * @param value : l'objet à afficher
+		 * @param index : l'index de l'objet
+		 * @param isSelected : si l'objet est sélectionné
+		 * @param cellHasFocus : si l'objet a le focus
+		 * @return this : le JLabel
+		 */
 	    @Override
 	    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 	        if (value instanceof Equipe) {
@@ -151,7 +181,12 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	        return this;
 	    }
 	}
-	
+
+	 /**
+	  * Méthode pour récupérer l'équipe sélectionnée
+	  * @return l'équipe sélectionnée
+	  * @throws IllegalArgumentException
+	  */
 	public Equipe getEquipe() throws IllegalArgumentException {
 		if(this.type != Type.EQUIPE) {
 			throw new IllegalArgumentException("Ce n'est pas une liste d'équipes");
@@ -159,6 +194,11 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 		return (Equipe) this.comboBox.getSelectedItem();
 	}
 	
+	/**
+	 * Méthode pour récupérer l'arbitre sélectionné
+	 * @return l'arbitre sélectionné
+	 * @throws IllegalArgumentException
+	 */
 	public Arbitre getArbitre() throws IllegalArgumentException {
 		if(this.type != Type.ARBITRE) {
 			throw new IllegalArgumentException("Ce n'est pas une liste d'arbitres");

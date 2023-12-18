@@ -40,6 +40,11 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 	private DefaultListModel<Equipe> listModelEquipes;
 	private JList<Equipe> listeEquipes;
 
+	/**
+     * Constructeur de l'IHM pour inscrire des équipes à un tournoi
+	 * @param vueTournois : la fenêtre parente
+	 * @param tournoi : le tournoi en cours d'inscription
+     */
 	public VueInscriptionEquipesTournoi(VueTournois vueTournois, Tournoi tournoi) {
 		ControleurInscriptionEquipesTournoi controleur = new ControleurInscriptionEquipesTournoi(this, vueTournois, tournoi);
 		this.tournoi = tournoi;
@@ -53,11 +58,13 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 
 		contentPane.setLayout(new BorderLayout(0, 20));
 		
+		// Panel header
 		JPanel panelHeader = new JPanel();
 		panelHeader.setBackground(CharteGraphique.FOND);
 		contentPane.add(panelHeader, BorderLayout.NORTH);
 		panelHeader.setLayout(new BorderLayout(0, 0));
 		
+		// Panel titre
 		JPanel panelTitre = new JPanel();
 		panelTitre.setBackground(CharteGraphique.FOND);
 		panelHeader.add(panelTitre, BorderLayout.WEST);
@@ -66,6 +73,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		gbl_panelTitre.rowWeights = new double[]{0.0, 0.0};
 		panelTitre.setLayout(gbl_panelTitre);
 		
+		// Label titre
 		this.lblTitre = new JLabel();
 		this.lblTitre.setFont(CharteGraphique.getPolice(19, true));
 		this.lblTitre.setForeground(CharteGraphique.TEXTE);
@@ -76,6 +84,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		gbc_lblTitre.gridy = 0;
 		panelTitre.add(this.lblTitre, gbc_lblTitre);
 		
+		// Label nom du tournoi
 		JLabel lblTournoi = new JLabel(tournoi.getNomTournoi());
 		lblTournoi.setFont(CharteGraphique.getPolice(16, false));
 		lblTournoi.setForeground(CharteGraphique.TEXTE);
@@ -86,10 +95,12 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		gbc_lblTournoi.gridy = 1;
 		panelTitre.add(lblTournoi, gbc_lblTournoi);
 		
+		// Bouton inscrire une équipe
 		this.btnInscrireEquipe = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Inscrire une équipe");
 		this.btnInscrireEquipe.addActionListener(controleur);
 		this.btnInscrireEquipe.setFont(CharteGraphique.getPolice(17, false));
 
+		// Panel bouton inscrire une équipe
 		JPanel panelBtnInscrireEquipe = new JPanel();
 		panelBtnInscrireEquipe.setBackground(CharteGraphique.FOND);
 		panelBtnInscrireEquipe.setLayout(new BorderLayout());
@@ -97,6 +108,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 
 		panelHeader.add(panelBtnInscrireEquipe, BorderLayout.EAST);
 
+		// Panel liste des équipes
 		JPanel panelListe = new JPanel();
 		panelListe.setBackground(CharteGraphique.FOND);
 		contentPane.add(panelListe, BorderLayout.CENTER);
@@ -105,6 +117,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		JScrollPaneTheme scrollPane = new JScrollPaneTheme();
 		panelListe.add(scrollPane, BorderLayout.CENTER);
 		
+		// Liste des équipes inscrites
 		listeEquipes = new JList<>();
 		listeEquipes.addListSelectionListener(controleur);
 		listeEquipes.setBackground(CharteGraphique.FOND);
@@ -123,6 +136,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 
 		this.lblTitre.setText("Equipes inscrites (" + this.listModelEquipes.size() + ")");
 		
+		// Si le nombre d'équipes inscrites est supérieur ou égal à 8, on désactive le bouton inscrire une équipe
 		if(this.listModelEquipes.size() >= 8 || controleur.getEquipesEligibles().length == 0) {
 			this.btnInscrireEquipe.setEnabled(false);
 		}
@@ -132,6 +146,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		btnFermer.setFont(CharteGraphique.getPolice(17, false));
 		btnFermer.addActionListener(controleur);
 
+		// Bouton ouvrir le tournoi
 		JButtonTheme btnOuvrirTournoi = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ouvrir le tournoi");
 		btnOuvrirTournoi.setFont(CharteGraphique.getPolice(17, false));
 		btnOuvrirTournoi.addActionListener(controleur);
@@ -150,8 +165,20 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		// Ajout du panel à contentPane
 		contentPane.add(panelBoutons, BorderLayout.SOUTH);
 	}
-	
+
+	/*
+	 * Classe interne pour afficher le nom de l'équipe dans la liste
+	 */
 	private class EquipeListCellRenderer extends DefaultListCellRenderer {
+		/**
+		 * Méthode pour afficher le nom de l'équipe dans la liste
+		 * @param list : la liste des équipes
+		 * @param value : l'équipe à afficher
+		 * @param index : l'index de l'équipe dans la liste
+		 * @param isSelected : si l'équipe est sélectionnée
+		 * @param cellHasFocus : si l'équipe a le focus
+		 * @return this : le JLabel
+		 */
 	    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 	        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
@@ -163,10 +190,19 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 	    }
 	}
 	
+	/**
+	 * Méthode pour savoir si la liste passée en paramètre est la liste des équipes
+	 * @param liste : la liste à tester
+	 * @return true si la liste est la liste des équipes, false sinon
+	 */
 	public boolean estListeEquipes(JList<?> liste) {
 		return liste.equals(this.listeEquipes);
 	}
 	
+	/**
+	 * Méthode pour ajouter une équipe à la liste des équipes
+	 * @param equipe : l'équipe à ajouter
+	 */
 	public void ajouterEquipe(Equipe equipe) {
 		if(!this.listModelEquipes.contains(equipe)) {
 			this.listModelEquipes.addElement(equipe);
@@ -174,15 +210,26 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		}
 	}
 	
+	/**
+	 * Méthode pour supprimer une équipe de la liste des équipes
+	 * @param equipe : l'équipe à supprimer
+	 */
 	public void supprimerEquipe(Equipe equipe) {
 		this.listModelEquipes.removeElement(equipe);
 		this.majTitre();
 	}
 
+	/**
+	 * Méthode pour mettre à jour le titre de la fenêtre
+	 */
 	private void majTitre() {
 		this.lblTitre.setText("Equipes inscrites (" + this.listModelEquipes.size() + ")");
 	}
 	
+	/**
+	 * Méthode pour récupérer la liste des équipes
+	 * @return la liste des équipes inscrites
+	 */
 	public List<Equipe> getEquipes() {
 	    List<Equipe> equipes = new ArrayList<>();
 	    for (int i = 0; i < listModelEquipes.size(); i++) {
@@ -191,6 +238,11 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 	    return equipes;
 	}
 	
+	/**
+	 * Méthode pour afficher une boîte de dialogue de confirmation
+	 * @param message : le message à afficher
+	 * @return true si l'utilisateur a cliqué sur Oui, false sinon
+	 */
 	public boolean afficherConfirmationSuppression(String message) {
 		Object[] options = {"Oui", "Annuler"};
         int choix = JOptionPaneTheme.showOptionDialog(
@@ -207,6 +259,10 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
         return choix == 0;
     }
 	
+	/**
+	 * Méthode pour afficher la fenêtre 
+	 * @param equipes : la liste des équipes inscrites
+	 */
 	public void afficherVueSaisieTournoiEquipe(Equipe[] equipes) {
 		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
 		if (this.vueSaisieTournoiEquipe == null || !this.vueSaisieTournoiEquipe.isVisible()) {
@@ -219,6 +275,10 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		}
 	}
 	
+	/**
+	 * Méthode pour désactiver le bouton inscrire une équipe
+	 * @param actif : true pour activer le bouton, false pour le désactiver
+	 */
 	public void setBtnInscrireEquipeActif(boolean actif) {
 		this.btnInscrireEquipe.setEnabled(actif);
 	}

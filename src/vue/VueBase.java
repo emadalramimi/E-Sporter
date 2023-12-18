@@ -312,6 +312,9 @@ public class VueBase extends JFrameTheme {
 	    this.contenu.repaint();
 	}
 	
+	/**
+	 * Ferme la fenêtre
+	 */
 	@Override
 	public void fermerFenetre() {
 		BDD.fermerConnexion();
