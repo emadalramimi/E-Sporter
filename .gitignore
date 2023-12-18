@@ -60,5 +60,7 @@ local.properties
 #.project
 
 # base de données
-/BDD
-.vscode/settings.json
+BDD
+
+# fichiers VS Code
+.vscode
