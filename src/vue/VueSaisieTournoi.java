@@ -22,10 +22,15 @@ import vue.theme.JTextFieldTheme;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 
@@ -60,10 +65,10 @@ public class VueSaisieTournoi extends JFrameTheme {
 	private JTextFieldTheme txtIdentifiantArbitres;
 	private JPasswordFieldTheme motDePasseArbitres;
 	private JComboBoxTheme<String> cboxNotoriete;
-	private JSpinner spinner;
-	private JSpinner spinner_1;
-	private JSpinner spinner1;
-	private JSpinner spinner_11;
+	private JSpinner spinnerHeuresDebut;
+	private JSpinner spinnerMinutesDebut;
+	private JSpinner spinnerHeuresFin;
+	private JSpinner spinnerMinutesFin;
 	private JButtonTheme btnAjouterArbitre;
 	
 	private UtilDateModel modelDateDebut;
@@ -83,7 +88,7 @@ public class VueSaisieTournoi extends JFrameTheme {
         properties.put("text.year", "Année");
         
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 812, 626);
+		setBounds(100, 100, 800, 670);
 		contentPane = super.getContentPane();
 		contentPane.setBorder(new EmptyBorder(25, 25, 25, 25));
 		
@@ -97,6 +102,21 @@ public class VueSaisieTournoi extends JFrameTheme {
 		gbl_panelCentre.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		panelCentre.setLayout(gbl_panelCentre);
 		
+
+		JPanel panelTitre = new JPanel();
+		panelTitre.setBackground(CharteGraphique.FOND);
+		contentPane.add(panelTitre, BorderLayout.NORTH);
+		
+		JLabel lblTitre;
+		if (tournoi == null) {
+			lblTitre = new JLabel("Création d'un tournoi");
+		} else {
+			lblTitre = new JLabel("Modification d'un tournoi");
+		}
+		lblTitre.setFont(CharteGraphique.getPolice(30, true));
+		lblTitre.setForeground(CharteGraphique.TEXTE);
+		panelTitre.add(lblTitre);
+
 		JPanel panelSaisie = new JPanel();
 		panelSaisie.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelSaisie = new GridBagConstraints();
@@ -107,22 +127,22 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelCentre.add(panelSaisie, gbc_panelSaisie);
 		panelSaisie.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JPanel panel_4_1 = new JPanel();
-		panel_4_1.setBackground(CharteGraphique.FOND);
-		panelSaisie.add(panel_4_1);
-		GridBagLayout gbl_panel_4_1 = new GridBagLayout();
-		gbl_panel_4_1.columnWeights = new double[]{1.0};
-		gbl_panel_4_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		panel_4_1.setLayout(gbl_panel_4_1);
+		JPanel panelInfo2 = new JPanel();
+		panelInfo2.setBackground(CharteGraphique.FOND);
+		panelSaisie.add(panelInfo2);
+		GridBagLayout gbl_panelInfo2 = new GridBagLayout();
+		gbl_panelInfo2.columnWeights = new double[]{1.0};
+		gbl_panelInfo2.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		panelInfo2.setLayout(gbl_panelInfo2);
 		
-		JLabel lblIdentifiant = new JLabel("Identifiant ");
+		JLabel lblIdentifiant = new JLabel("Identifiant arbitres");
 		lblIdentifiant.setForeground(CharteGraphique.TEXTE);
 		lblIdentifiant.setFont(CharteGraphique.getPolice(19, true));
 		GridBagConstraints gbc_lblIdentifiant = new GridBagConstraints();
 		gbc_lblIdentifiant.insets = new Insets(0, 0, 5, 0);
 		gbc_lblIdentifiant.gridx = 0;
 		gbc_lblIdentifiant.gridy = 2;
-		panel_4_1.add(lblIdentifiant, gbc_lblIdentifiant);
+		panelInfo2.add(lblIdentifiant, gbc_lblIdentifiant);
 		
 		txtIdentifiantArbitres = new JTextFieldTheme(20);
 		txtIdentifiantArbitres.setColumns(10);
@@ -131,46 +151,60 @@ public class VueSaisieTournoi extends JFrameTheme {
 		gbc_txtIdentifiantArbitres.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtIdentifiantArbitres.gridx = 0;
 		gbc_txtIdentifiantArbitres.gridy = 3;
-		panel_4_1.add(txtIdentifiantArbitres, gbc_txtIdentifiantArbitres);
+		panelInfo2.add(txtIdentifiantArbitres, gbc_txtIdentifiantArbitres);
+		panelInfo2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
-		JLabel lblMDP = new JLabel("Mot de passe");
+		JPanel panelInfo = new JPanel();
+		panelInfo.setBackground(CharteGraphique.FOND);
+        panelSaisie.add(panelInfo);
+        GridBagLayout gbl_panelInfo = new GridBagLayout();
+        gbl_panelInfo.columnWeights = new double[]{1.0};
+        gbl_panelInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        panelInfo.setLayout(gbl_panelInfo);
+		panelInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		
+		JLabel lblMDP = new JLabel("Mot de passe arbitres");
 		lblMDP.setForeground(CharteGraphique.TEXTE);
 		lblMDP.setFont(CharteGraphique.getPolice(19, true));
 		GridBagConstraints gbc_lblMDP = new GridBagConstraints();
 		gbc_lblMDP.insets = new Insets(0, 0, 5, 0);
 		gbc_lblMDP.gridx = 0;
-		gbc_lblMDP.gridy = 4;
-		panel_4_1.add(lblMDP, gbc_lblMDP);
+		gbc_lblMDP.gridy = 2;
+		panelInfo.add(lblMDP, gbc_lblMDP);
 		
 		motDePasseArbitres = new JPasswordFieldTheme(20);
+		motDePasseArbitres.setPreferredSize(new Dimension(motDePasseArbitres.getPreferredSize().width, 45));
 		GridBagConstraints gbc_motDePasseArbitres = new GridBagConstraints();
 		gbc_motDePasseArbitres.insets = new Insets(0, 0, 5, 0);
 		gbc_motDePasseArbitres.fill = GridBagConstraints.HORIZONTAL;
 		gbc_motDePasseArbitres.gridx = 0;
-		gbc_motDePasseArbitres.gridy = 5;
-		panel_4_1.add(motDePasseArbitres, gbc_motDePasseArbitres);
+		gbc_motDePasseArbitres.gridy = 3;
+		panelInfo.add(motDePasseArbitres, gbc_motDePasseArbitres);
 		
 		JLabel lblNotoriete = new JLabel("Notoriété");
 		lblNotoriete.setForeground(CharteGraphique.TEXTE);
 		lblNotoriete.setFont(CharteGraphique.getPolice(19, true));
 		GridBagConstraints gbc_lblNotoriete = new GridBagConstraints();
-		gbc_lblNotoriete.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNotoriete.insets = new Insets(0, 0, 3, 0);
 		gbc_lblNotoriete.gridx = 0;
-		gbc_lblNotoriete.gridy = 6;
-		panel_4_1.add(lblNotoriete, gbc_lblNotoriete);
+		gbc_lblNotoriete.gridy = 0;
+		panelInfo.add(lblNotoriete, gbc_lblNotoriete);
 		
 		List<String> notorietes = new ArrayList<>();
 		for (Notoriete notoriete : Notoriete.values()) {
 			notorietes.add(notoriete.getLibelle());
 		}
 		cboxNotoriete = new JComboBoxTheme<String>(notorietes.toArray(new String[0]));
-		
+		Dimension d = cboxNotoriete.getPreferredSize();
+		d.height = 45;
+		cboxNotoriete.setPreferredSize(d);
+				
 		GridBagConstraints gbc_cboxNotoriete = new GridBagConstraints();
 		gbc_cboxNotoriete.insets = new Insets(0, 0, 5, 0);
 		gbc_cboxNotoriete.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cboxNotoriete.gridx = 0;
-		gbc_cboxNotoriete.gridy = 7;
-		panel_4_1.add(cboxNotoriete, gbc_cboxNotoriete);
+		gbc_cboxNotoriete.gridy = 1;
+		panelInfo.add(cboxNotoriete, gbc_cboxNotoriete);
 		
 		JLabel lblNom = new JLabel("Nom du tournoi");
 		lblNom.setForeground(CharteGraphique.TEXTE);
@@ -179,21 +213,16 @@ public class VueSaisieTournoi extends JFrameTheme {
 		gbc_lblNom.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNom.gridx = 0;
 		gbc_lblNom.gridy = 0;
-		panel_4_1.add(lblNom, gbc_lblNom);
+		panelInfo2.add(lblNom, gbc_lblNom);
 		
 		txtNom = new JTextFieldTheme(20);
 		txtNom.setColumns(10);
 		GridBagConstraints gbc_txtNom = new GridBagConstraints();
 		gbc_txtNom.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtNom.insets = new Insets(0, 0, 5, 0);
 		gbc_txtNom.gridx = 0;
 		gbc_txtNom.gridy = 1;
-		panel_4_1.add(txtNom, gbc_txtNom);
-		
-		JPanel panelInfo = new JPanel();
-		panelInfo.setBackground(CharteGraphique.FOND);
-        panelSaisie.add(panelInfo);
-        GridBagLayout gbl_panelInfo = new GridBagLayout();
-        panelInfo.setLayout(gbl_panelInfo);
+		panelInfo2.add(txtNom, gbc_txtNom);
 
         JLabel lblDateDebut = new JLabel("Date début");
         lblDateDebut.setForeground(CharteGraphique.TEXTE);
@@ -201,49 +230,53 @@ public class VueSaisieTournoi extends JFrameTheme {
         GridBagConstraints gbc_lblDateDebut = new GridBagConstraints();
         gbc_lblDateDebut.insets = new Insets(0, 0, 5, 0);
         gbc_lblDateDebut.gridx = 0;
-        gbc_lblDateDebut.gridy = 0;
-        panelInfo.add(lblDateDebut, gbc_lblDateDebut);
+        gbc_lblDateDebut.gridy = 4;
+        panelInfo2.add(lblDateDebut, gbc_lblDateDebut);
 
         modelDateDebut = new UtilDateModel();
         JDatePanelImpl dateDebutPanel = new JDatePanelImpl(modelDateDebut, properties);
+        dateDebutPanel.setBackground(CharteGraphique.FOND_SECONDAIRE);
         JDatePickerImpl dateDebutPicker = new JDatePickerImpl(dateDebutPanel, new DateLabelFormatter());
+        dateDebutPicker.setBackground(CharteGraphique.FOND_SECONDAIRE);
         GridBagConstraints gbc_dateDebutPicker = new GridBagConstraints();
         gbc_dateDebutPicker.anchor = GridBagConstraints.NORTH;
         gbc_dateDebutPicker.insets = new Insets(0, 0, 5, 0);
         gbc_dateDebutPicker.fill = GridBagConstraints.HORIZONTAL;
         gbc_dateDebutPicker.gridx = 0;
-        gbc_dateDebutPicker.gridy = 1;
-        panelInfo.add(dateDebutPicker, gbc_dateDebutPicker);
+        gbc_dateDebutPicker.gridy = 5;
+        panelInfo2.add(dateDebutPicker, gbc_dateDebutPicker);
 
-        JPanel panel = new JPanel();
-        panel.setBackground(CharteGraphique.FOND);
+        JPanel panelHeureDebut = new JPanel();
+        panelHeureDebut.setBackground(CharteGraphique.FOND);
         FlowLayout flowLayout_1 = new FlowLayout();
         flowLayout_1.setVgap(0);
-        panel.setLayout(flowLayout_1);
-        GridBagConstraints gbc_panel = new GridBagConstraints();
-        gbc_panel.insets = new Insets(0, 0, 5, 0);
-        gbc_panel.fill = GridBagConstraints.BOTH;
-        gbc_panel.gridx = 0;
-        gbc_panel.gridy = 2;
-        panelInfo.add(panel, gbc_panel);
+        panelHeureDebut.setLayout(flowLayout_1);
+        GridBagConstraints gbc_panelHeureDebut = new GridBagConstraints();
+        gbc_panelHeureDebut.insets = new Insets(0, 0, 5, 0);
+        gbc_panelHeureDebut.fill = GridBagConstraints.BOTH;
+        gbc_panelHeureDebut.gridx = 0;
+        gbc_panelHeureDebut.gridy = 6;
+        panelInfo2.add(panelHeureDebut, gbc_panelHeureDebut);
 
         JLabel lblHeure = new JLabel("Heure : ");
         lblHeure.setForeground(CharteGraphique.TEXTE);
         lblHeure.setFont(CharteGraphique.getPolice(14, true));
-        panel.add(lblHeure);
+        panelHeureDebut.add(lblHeure);
 
-        spinner = new JSpinner();
-        spinner.setModel(new SpinnerNumberModel(0, 0, 23, 1));
-        panel.add(spinner);
+        spinnerHeuresDebut = new JSpinner();
+        spinnerHeuresDebut.setBackground(CharteGraphique.FOND_SECONDAIRE);
+        spinnerHeuresDebut.setForeground(CharteGraphique.TEXTE); 
+        spinnerHeuresDebut.setModel(new SpinnerNumberModel(0, 0, 23, 1));
+        panelHeureDebut.add(spinnerHeuresDebut);
 
         JLabel lblHeurDebut = new JLabel("h");
         lblHeurDebut.setForeground(CharteGraphique.TEXTE);
         lblHeurDebut.setFont(CharteGraphique.getPolice(14, true));
-        panel.add(lblHeurDebut);
+        panelHeureDebut.add(lblHeurDebut);
 
-        spinner_1 = new JSpinner();
-        spinner_1.setModel(new SpinnerNumberModel(0, 0, 59, 1));
-        panel.add(spinner_1);
+        spinnerMinutesDebut = new JSpinner();
+        spinnerMinutesDebut.setModel(new SpinnerNumberModel(0, 0, 59, 1));
+        panelHeureDebut.add(spinnerMinutesDebut);
 
         JLabel lblDateFin = new JLabel("Date fin");
         lblDateFin.setForeground(CharteGraphique.TEXTE);
@@ -251,7 +284,7 @@ public class VueSaisieTournoi extends JFrameTheme {
         GridBagConstraints gbc_lblDateFin = new GridBagConstraints();
         gbc_lblDateFin.insets = new Insets(0, 0, 5, 0);
         gbc_lblDateFin.gridx = 0;
-        gbc_lblDateFin.gridy = 3;
+        gbc_lblDateFin.gridy = 5;
         panelInfo.add(lblDateFin, gbc_lblDateFin);
 
         modelDateFin = new UtilDateModel();
@@ -260,39 +293,40 @@ public class VueSaisieTournoi extends JFrameTheme {
         GridBagConstraints gbc_dateFinPicker = new GridBagConstraints();
         gbc_dateFinPicker.fill = GridBagConstraints.HORIZONTAL;
         gbc_dateFinPicker.gridx = 0;
-        gbc_dateFinPicker.gridy = 4;
+        gbc_dateFinPicker.gridy = 6;
         panelInfo.add(dateFinPicker, gbc_dateFinPicker);
 
-        JPanel panel1 = new JPanel();
-        panel1.setBackground(CharteGraphique.FOND);
+        JPanel panelHeureFin = new JPanel();
+        panelHeureFin.setBackground(CharteGraphique.FOND);
         FlowLayout flowLayout_11 = new FlowLayout();
         flowLayout_11.setVgap(0);
-        panel1.setLayout(flowLayout_11);
-        GridBagConstraints gbc_panel1 = new GridBagConstraints();
-        gbc_panel1.insets = new Insets(0, 0, 5, 0);
-        gbc_panel1.fill = GridBagConstraints.BOTH;
-        gbc_panel1.gridx = 0;
-        gbc_panel1.gridy = 5; // Changer le grid y pour le placer à un emplacement différent
-        panelInfo.add(panel1, gbc_panel1);
+        panelHeureFin.setLayout(flowLayout_11);
+        GridBagConstraints gbc_panelHeureFin = new GridBagConstraints();
+        gbc_panelHeureFin.insets = new Insets(5, 0, 5, 0);
+        gbc_panelHeureFin.fill = GridBagConstraints.BOTH;
+        gbc_panelHeureFin.gridx = 0;
+        gbc_panelHeureFin.gridy = 7;
+        panelInfo.add(panelHeureFin, gbc_panelHeureFin);
 
         JLabel lblHeureFin = new JLabel("Heure : ");
         lblHeureFin.setForeground(CharteGraphique.TEXTE);
         lblHeureFin.setFont(CharteGraphique.getPolice(14, true));
-        panel1.add(lblHeureFin);
+        panelHeureFin.add(lblHeureFin);
 
-        spinner1 = new JSpinner();
-        spinner1.setModel(new SpinnerNumberModel(0, 0, 23, 1));
-        panel1.add(spinner1);
+        spinnerHeuresFin = new JSpinner();
+        spinnerHeuresFin.setBackground(CharteGraphique.FOND);
+        spinnerHeuresFin.setModel(new SpinnerNumberModel(0, 0, 23, 1));
+        panelHeureFin.add(spinnerHeuresFin);
 
         JLabel lblHeureFinh = new JLabel("h");
         lblHeureFinh.setForeground(CharteGraphique.TEXTE);
         lblHeureFinh.setFont(CharteGraphique.getPolice(14, true));
-        panel1.add(lblHeureFinh);
+        panelHeureFin.add(lblHeureFinh);
+        
+        spinnerMinutesFin = new JSpinner();
+        spinnerMinutesFin.setModel(new SpinnerNumberModel(0, 0, 59, 1));
+        panelHeureFin.add(spinnerMinutesFin);
 
-        spinner_11 = new JSpinner();
-        spinner_11.setModel(new SpinnerNumberModel(0, 0, 59, 1));
-        panel1.add(spinner_11);
-		
 		JPanel panelAjouter = new JPanel();
 		panelAjouter.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelAjouter = new GridBagConstraints();
@@ -302,39 +336,40 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelCentre.add(panelAjouter, gbc_panelAjouter);
 		panelAjouter.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JPanel panelEquipes = new JPanel();
-		panelEquipes.setBorder(new EmptyBorder(0, 0, 0, 5));
-		panelEquipes.setBackground(CharteGraphique.FOND);
-		panelAjouter.add(panelEquipes);
-		panelEquipes.setLayout(new BorderLayout(0, 0));
-		
-		JLabel lblTitreEquipes = new JLabel("Equipes inscrites");
-		lblTitreEquipes.setForeground(CharteGraphique.TEXTE);
-		lblTitreEquipes.setFont(CharteGraphique.getPolice(19, true));
-		panelEquipes.add(lblTitreEquipes, BorderLayout.NORTH);
-		
-		JPanel panelBtn = new JPanel();
-		panelBtn.setBackground(CharteGraphique.FOND);
-		panelEquipes.add(panelBtn, BorderLayout.SOUTH);
-		
 		JPanel panelArbitres = new JPanel();
 		panelArbitres.setBorder(new EmptyBorder(5, 0, 0, 0));
 		panelArbitres.setBackground(CharteGraphique.FOND);
 		panelAjouter.add(panelArbitres);
 		panelArbitres.setLayout(new BorderLayout(0, 0));
+		panelArbitres.setBorder(BorderFactory.createEmptyBorder(0, 10, 20, 10));
 		
 		JLabel lblTitreArbitre = new JLabel("Arbitres désignés");
 		lblTitreArbitre.setForeground(CharteGraphique.TEXTE);
 		lblTitreArbitre.setFont(CharteGraphique.getPolice(19, true));
-		panelArbitres.add(lblTitreArbitre, BorderLayout.NORTH);
 		
-		JPanel panelBtnAjouterArbitre = new JPanel();
-		panelBtnAjouterArbitre.setBackground(CharteGraphique.FOND);
-		panelArbitres.add(panelBtnAjouterArbitre, BorderLayout.SOUTH);
-		
-		this.btnAjouterArbitre = new JButtonTheme(JButtonTheme.Types.PRIMAIRE,"Ajouter un arbitre");
-		this.btnAjouterArbitre.addActionListener(controleur);
-		panelBtnAjouterArbitre.add(this.btnAjouterArbitre);
+		JPanel panelTitleAndButton = new JPanel(new GridBagLayout());
+		panelTitleAndButton.setBackground(CharteGraphique.FOND);
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 1;
+		gbc.anchor = GridBagConstraints.WEST; 
+		panelTitleAndButton.add(lblTitreArbitre, gbc);
+		gbc.gridx = 1;
+		gbc.weightx = 1; 
+		JPanel fillerPanel = new JPanel();
+		fillerPanel.setOpaque(false);  
+		panelTitleAndButton.add(fillerPanel, gbc);
+
+		JButtonTheme btnAjouterArbitre = new JButtonTheme(JButtonTheme.Types.PRIMAIRE,"Ajouter un arbitre");
+		btnAjouterArbitre.addActionListener(controleur);
+		btnAjouterArbitre.setBorder(new EmptyBorder(8,8,8,8));
+		gbc.gridx = 2; 
+		gbc.gridy = 0; 
+		gbc.anchor = GridBagConstraints.EAST; 
+		gbc.insets = new Insets(0, 0, 5, 0);
+		panelTitleAndButton.add(btnAjouterArbitre, gbc);
+		panelArbitres.add(panelTitleAndButton, BorderLayout.NORTH);
 
 		if (controleur.getArbitresEligibles().length == 0) {
 			this.btnAjouterArbitre.setEnabled(false);
@@ -353,14 +388,18 @@ public class VueSaisieTournoi extends JFrameTheme {
 		listeArbitres.addListSelectionListener(controleur);
 		scrollPaneListeArbitre.setViewportView(listeArbitres);
 		
-		JPanel panelBtnCreer = new JPanel();
-		panelBtnCreer.setBackground(CharteGraphique.FOND);
-		contentPane.add(panelBtnCreer, BorderLayout.SOUTH);
-		
+		JPanel panelBtnValider = new JPanel();
+		panelBtnValider.setBackground(CharteGraphique.FOND);
+		panelBtnValider.setLayout(new BoxLayout(panelBtnValider, BoxLayout.X_AXIS));
+		contentPane.add(panelBtnValider, BorderLayout.SOUTH);
+		panelBtnValider.add(Box.createHorizontalGlue());
+
 		JButtonTheme btnAnnuler = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Annuler");
 		btnAnnuler.setMargin(new Insets(5, 10, 5, 10)); 
+		btnAnnuler.setBorder(new EmptyBorder(10, 10, 10, 10));
 		btnAnnuler.addActionListener(controleur);
-		panelBtnCreer.add(btnAnnuler);
+		panelBtnValider.add(btnAnnuler);
+		panelBtnValider.add(Box.createRigidArea(new Dimension(10, 0)));
 		
 		JButtonTheme btnValider;
 		if (tournoi == null) {
@@ -370,22 +409,10 @@ public class VueSaisieTournoi extends JFrameTheme {
 		}
 		btnValider.addActionListener(controleur);
 		btnValider.setMargin(new Insets(5, 10, 5, 10)); 
-		panelBtnCreer.add(btnValider);
+		btnValider.setBorder(new EmptyBorder(10,10,10,10));
+		panelBtnValider.add(btnValider);
+		panelBtnValider.add(Box.createHorizontalGlue());
 		
-		JPanel panelTitre = new JPanel();
-		panelTitre.setBackground(CharteGraphique.FOND);
-		contentPane.add(panelTitre, BorderLayout.NORTH);
-		
-		JLabel lblTitre;
-		if (tournoi == null) {
-			lblTitre = new JLabel("Création d'un tournoi");
-		} else {
-			lblTitre = new JLabel("Modification d'un tournoi");
-		}
-		lblTitre.setFont(CharteGraphique.getPolice(30, true));
-		lblTitre.setForeground(CharteGraphique.TEXTE);
-		panelTitre.add(lblTitre);
-
 		// Remplissage des champs du formulaire si un tournoi est renseigné pour modification
 		if (tournoi != null) {
 			this.txtNom.setText(tournoi.getNomTournoi());
@@ -458,8 +485,8 @@ public class VueSaisieTournoi extends JFrameTheme {
 		Date dateDebut = this.modelDateDebut.getValue();
 	
 		// Récupérer l'heure depuis les spinners
-		int heure = (int) spinner.getValue();
-		int minute = (int) spinner_1.getValue();
+		int heure = (int) spinnerHeuresDebut.getValue();
+		int minute = (int) spinnerMinutesDebut.getValue();
 	
 		return getDateTime(dateDebut, heure, minute);
 	}
@@ -469,8 +496,8 @@ public class VueSaisieTournoi extends JFrameTheme {
 		Date dateFin = this.modelDateFin.getValue();
 	
 		// Récupérer l'heure depuis les spinners
-		int heure = (int) spinner1.getValue();
-		int minute = (int) spinner_11.getValue();
+		int heure = (int) spinnerHeuresFin.getValue();
+		int minute = (int) spinnerMinutesFin.getValue();
 	
 		return getDateTime(dateFin, heure, minute);
 	}
