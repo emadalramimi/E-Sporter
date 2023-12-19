@@ -78,6 +78,6 @@ public class TestSatistiquesEquipe {
 	
 	@Test
 	public void testGetRatioPourcentage() {
-		assertEquals(statEquipe.getRatioPourcentage(), "33.33 %");
+		assertEquals(statEquipe.getRatioPourcentage(), "33,33 %");
 	}
 }
