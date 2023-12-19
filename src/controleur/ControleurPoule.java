@@ -7,7 +7,9 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
+import modele.ModeleEquipe;
 import modele.ModeleRencontre;
+import modele.metier.Equipe;
 import modele.metier.Rencontre;
 import modele.metier.Tournoi;
 import vue.VuePoule;
@@ -22,6 +24,7 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
     private VuePoule vue;
     private Tournoi tournoi;
     private ModeleRencontre modele;
+    private ModeleEquipe modeleEquipe;
 
     /**
      * Constructeur du controleur de VuePoule
@@ -31,6 +34,7 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
         this.vue = vue;
         this.tournoi = tournoi;
         this.modele = new ModeleRencontre();
+        this.modeleEquipe = new ModeleEquipe();
     }
 
     /**
@@ -72,9 +76,17 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
                 }
 
                 try {
-                    // On met à jour la rencontre avec l'équipe gagnante
-                    this.modele.setEquipeGagnante(rencontre, nomEquipe);
-                    this.vue.toggleGagnant(ligne, col);
+                    // Si la rencontre cliquée est la même que la rencontre actuellement active
+                    Equipe equipeGagnante = this.modeleEquipe.getParId(rencontre.getIdEquipeGagnante()).orElse(null);
+
+                    // Si l'équipe sélectionnée est celle qui est déjà gagnante, on la retire, sinon, on l'ajoute
+                    if(equipeGagnante != null && equipeGagnante.getNom().equals(nomEquipe)) {
+                        this.modele.resetEquipeGagnante(rencontre);
+                        this.vue.resetGagnant(ligne, col);
+                    } else {
+                        this.modele.setEquipeGagnante(rencontre, nomEquipe);
+                        this.vue.toggleGagnant(ligne, col);
+                    }
                 } catch (IllegalArgumentException ex) {
                     // Affichage des messages d'erreur IllegalArgumentException
                     this.vue.afficherPopupErreur(ex.getMessage());

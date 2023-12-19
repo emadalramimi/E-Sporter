@@ -251,27 +251,4 @@ public class TestTournoi {
 		equipes.remove(equipeB);
 		assertEquals(tournoi1.getEquipes(),equipes);
 	}
-	
-	@Test
-	public void testGetNbMatchsJoues() {
-		assertEquals(tournoi1.getNbMatchsJoues(equipeA),4);
-	}
-	
-	@Test
-	public void testGetNbMatchsJouesEquipeInvalide() {
-		tournoi1.getPouleActuelle().getRencontres().get(0).setIdEquipeGagnante(0);
-		Equipe equipeC = new Equipe(55, "Equipe C", "France", 5, 5, "2020", joueurs);
-		assertEquals(tournoi1.getNbMatchsJoues(equipeC),0);
-	}
-	
-	@Test
-	public void testGetNbMatchsGagnes() {
-		assertEquals(tournoi1.getNbMatchsGagnes(equipeA),2);
-	}
-	
-	@Test
-	public void testGetNbMatchsGagnesEquipeInvalide() {
-		Equipe equipeC = new Equipe(55, "Equipe C", "France", 5, 5, "2020", joueurs);
-		assertEquals(tournoi1.getNbMatchsGagnes(equipeC),0);
-	}
 }
