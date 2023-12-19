@@ -9,12 +9,25 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+    TestAdmin.class,
+    TestArbitre.class,
     TestEquipe.class,
     TestJoueur.class,
+    TestPays.class,
+    TestPoule.class,
+    TestRencontre.class,
+    TestSatistiquesEquipe.class,
+    TestTournoi.class,
+    
     TestModeleAdministrateur.class,
-    TestModeleUtilisateur.class,
+    TestModeleArbitre.class,
     TestModeleEquipe.class,
-    TestModeleJoueur.class
+    TestModeleJoueur.class,
+    TestModelePoule.class,
+    TestModeleRenontre.class,
+    TestModeleTournoi.class,
+    TestModeleUtilisateur.class
+    
 })
 
 public class AllTests {
