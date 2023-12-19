@@ -260,6 +260,18 @@ public class VuePoule extends JFrameTheme {
 	}
 
 	/**
+	 * Désactive l'icone de la colonne col de la ligne ligne
+	 * @param ligne ligne de la rencontre
+	 * @param col colonne de l'équipe
+	 */
+	public void resetGagnant(int ligne, int col) {
+		// Désactive la cellule cliquée
+		isActif[ligne][col] = false;
+
+		table.repaint();
+	}
+
+	/**
 	 * Ouvre la fenêtre d'état des résultats du tournoi
 	 * @param tournoi le tournoi dont on veut afficher les résultats
 	 */
