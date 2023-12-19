@@ -15,7 +15,12 @@ public class ModeleUtilisateur {
 		this.modeleAdministrateur = new ModeleAdministrateur();
 		this.modeleTournoi = new ModeleTournoi();
 	}
-	
+
+	/**
+	 * Chiffre un mot de passe
+	 * @param motDePasse Mot de passe à chiffrer
+	 * @return Mot de passe chiffré
+	 */
 	public static String chiffrerMotDePasse(String motDePasse) {
         // Génération d'un sel aléatoire
         String salt = BCrypt.gensalt(12);
@@ -28,11 +33,10 @@ public class ModeleUtilisateur {
 	
 	/**
 	 * Connecte un utilisateur avec son couple identifiant/mot de passe s'il existe
-	 * @param identifiant
-	 * @param motDePasse
-	 * @throws IdentifiantOuMdpIncorrectsException
-	 * @throws IdentificationTournoiClotureException
-	 * @throws RuntimeException
+	 * @param identifiant Identifiant de l'utilisateur
+	 * @param motDePasse Mot de passe de l'utilisateur
+	 * @throws IllegalArgumentException si l'identifiant et/ou le mot de passe sont incorrects
+	 * @throws IllegalStateException si un utilisateur est déjà connecté
 	 */
 	public void connecter(String identifiant, String motDePasse) throws IllegalArgumentException, IllegalStateException {
 	    if (compteCourant != null) {
@@ -41,11 +45,13 @@ public class ModeleUtilisateur {
 
 	    Utilisateur utilisateur = null;
 	    try {
+			// Cherche l'utilisateur dans la base de données
 	        utilisateur = chercherUtilisateur(identifiant);
 	    } catch (SQLException e) {
 	        throw new IllegalStateException("Erreur lors de la connexion", e);
 	    }
 
+		// Vérifie que l'utilisateur existe et que le mot de passe est correct
 	    validerUtilisateur(utilisateur, motDePasse);
 	    compteCourant = utilisateur;
 	}
@@ -62,25 +68,45 @@ public class ModeleUtilisateur {
 	}
 	
 	/**
+	 * Récupère l'utilisateur actuellement connecté
 	 * @return l'utilisateur actuellement connecté
 	 */
 	public static Utilisateur getCompteCourant() {
 		return compteCourant;
 	}
 	
+	/**
+	 * Vérifie si le mot de passe fourni correspond au mot de passe chiffré
+	 * @param motDePasse Mot de passe à vérifier
+	 * @param motDePasseChiffre Mot de passe chiffré à comparer
+	 * @return true si le mot de passe correspond, false sinon
+	 */
     private boolean verifierMotDePasse(String motDePasse, String motDePasseChiffre) {
         // Vérification du mot de passe fourni par l'utilisateur avec le mot de passe chiffré enregistré
         return BCrypt.checkpw(motDePasse, motDePasseChiffre);
     }
 
+	/**
+	 * Cherche un utilisateur par son identifiant
+	 * @param identifiant Identifiant de l'utilisateur
+	 * @return Utilisateur trouvé
+	 * @throws SQLException Erreur SQL
+	 */
     private Utilisateur chercherUtilisateur(String identifiant) throws SQLException {
         Utilisateur utilisateur = this.modeleAdministrateur.getParIdentifiant(identifiant).orElse(null);
+		// Si l'utilisateur n'est pas un administrateur, on cherche dans les tournois
         if (utilisateur == null) {
             utilisateur = modeleTournoi.getParIdentifiant(identifiant).orElse(null);
         }
         return utilisateur;
     }
 
+	/**
+	 * Valide un utilisateur
+	 * @param utilisateur Utilisateur à valider
+	 * @param motDePasse Mot de passe de l'utilisateur
+	 * @throws IllegalArgumentException si l'utilisateur n'existe pas ou si le mot de passe est incorrect ou si l'utilisateur est un arbitre et que le tournoi est clôturé
+	 */
 	private void validerUtilisateur(Utilisateur utilisateur, String motDePasse) throws IllegalArgumentException {
 		if (utilisateur == null || !this.verifierMotDePasse(motDePasse, utilisateur.getMotDePasse())) {
 			throw new IllegalArgumentException("Identifiant et/ou mot de passe incorrects.");

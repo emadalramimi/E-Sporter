@@ -19,7 +19,9 @@ import modele.metier.Joueur;
 public class ModeleJoueur extends DAO<Joueur, Integer> {
 
 	/**
+	 * Récupère tous les joueurs
 	 * @return Liste de tous les équipes
+	 * @throws Exception Exception SQL
 	 */
 	@Override
 	public List<Joueur> getTout() throws Exception {
@@ -57,7 +59,10 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
 	}
 
 	/**
+	 * Récupère un joueur depuis la BDD par sa clé primaire
+	 * @param idJoueur : identifiant du joueur
 	 * @return Retourne une équipe depuis la BDD par sa clé primaire
+	 * @throws Exception Exception SQL
 	 */
 	@Override
 	public Optional<Joueur> getParId(Integer... idJoueur) throws Exception {
@@ -84,6 +89,7 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
 	/**
 	 * Ajoute le joueur dans la BDD
 	 * @return true si l'opération s'est bien déroulée, false sinon
+	 * @throws Exception Exception SQL
 	 */
 	@Override
 	public boolean ajouter(Joueur joueur) throws Exception {
@@ -113,6 +119,7 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
 	/**
 	 * Modifie le joueur dans la BDD
 	 * @return true si l'opération s'est bien déroulée, false sinon
+	 * @throws Exception Exception SQL
 	 */
 	@Override
 	public boolean modifier(Joueur joueur) throws Exception {
@@ -137,6 +144,7 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
 	}
 	
 	/**
+	 * Méthode privée pour récupérer le prochain identifiant unique de joueur
 	 * @return le prochain identifiant unique de joueur
 	 */
 	private int getNextValId() {
@@ -163,6 +171,7 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
 	 * Supprime tous les joueurs d'une équipe idEquipe
 	 * @param idEquipe : identifiant de l'équipe
 	 * @return true si l'opération s'est bien déroulée, false sinon
+	 * @throws Exception Exception SQL
 	 */
 	public boolean supprimerJoueursEquipe(int idEquipe) throws Exception {
 		try {
@@ -184,6 +193,7 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
 	}
 
 	/**
+	 * Récupère la liste des joueurs appartenant à l'équipe idEquipe
 	 * @param idEquipe : identifiant de l'équipe
 	 * @return la liste des joueurs appartenant à l'équipe idEquipe
 	 */

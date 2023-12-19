@@ -27,7 +27,9 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	}
 
 	/**
+	 * Récupère toutes les équipes
 	 * @return Liste de tous les équipes
+	 * @throws Exception Erreur SQL
 	 */
 	@Override
 	public List<Equipe> getTout() throws Exception {
@@ -70,6 +72,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 
 	/**
 	 * @return Retourne une équipe depuis la BDD par sa clé primaire
+	 * @throws Exception Erreur SQL
 	 */
 	@Override
 	public Optional<Equipe> getParId(Integer... idEquipe) throws Exception {
@@ -100,6 +103,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	/**
 	 * Ajoute l'équipe dans la BDD
 	 * @return true si l'opération s'est bien déroulée, false sinon
+	 * @throws Exception Erreur SQL
 	 */
 	@Override
 	public boolean ajouter(Equipe equipe) throws Exception {
@@ -109,11 +113,13 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 			equipe.setSaison(String.valueOf(LocalDate.now().getYear()));
 			equipe.setClassement(1000);
 			
+			// On récupère le classement de l'équipe de la saison dernière
 			Equipe equipeSaisonDerniere = this.getTout().stream()
 				.filter(e -> e.equals(equipe) && e.getSaison().equals(String.valueOf(LocalDate.now().getYear() - 1)))
 				.findFirst()
 				.orElse(null);
 			
+			// Si l'équipe n'a pas été trouvée, on lui attribue le classement 1000
 			if(equipeSaisonDerniere != null) {
 				equipe.setWorldRanking(equipeSaisonDerniere.getClassement());
 			} else {
@@ -129,6 +135,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 			ps.setString(6, equipe.getSaison());
 			ps.execute();
 			
+			// On ajoute les joueurs de l'équipe
 			for(Joueur joueur : equipe.getJoueurs()) {
 				joueur.setIdEquipe(idEquipe);
 				this.modeleJoueur.ajouter(joueur);
@@ -150,6 +157,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	/**
 	 * Modifie l'équipe dans la BDD
 	 * @return true si l'opération s'est bien déroulée, false sinon
+	 * @throws Exception Erreur SQL ou si l'équipe est inscrite à un tournoi ouvert
 	 */
 	@Override
 	public boolean modifier(Equipe equipe) throws Exception {
@@ -187,6 +195,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	/**
 	 * Supprime l'équipe dans la BDD
 	 * @return true si l'opération s'est bien déroulée, false sinon
+	 * @throws Exception Erreur SQL ou si l'équipe est inscrite à un tournoi
 	 */
 	@Override
 	public boolean supprimer(Equipe equipe) throws Exception {
@@ -214,7 +223,8 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	}
 	
 	/**
-	 * @return le prochain identifiant unique d'équipe
+	 * Récupère le prochain identifiant d'équipe
+	 * @return Identifiant d'équipe
 	 */
 	private int getNextValId() {
         int nextVal = 0;
@@ -236,6 +246,11 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
         return nextVal;
     }
 
+	/**
+	 * Récupère les équipes inscrites à un tournoi
+	 * @param idTournoi Identifiant du tournoi
+	 * @return Liste des équipes inscrites
+	 */
 	public List<Equipe> getEquipesTournoi(int idTournoi) {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement(
@@ -281,6 +296,12 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 		}
 	}
 	
+	/**
+	 * Méthode qui vérifie si une équipe est inscrite à un tournoi
+	 * @param equipe : l'équipe à vérifier
+	 * @return true si l'équipe est inscrite à un tournoi, false sinon
+	 * @throws Exception Erreur SQL
+	 */
 	public boolean estEquipeInscriteUnTournoi(Equipe equipe) throws Exception {
 		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from participer where participer.idEquipe = ?");
 		ps.setInt(1, equipe.getIdEquipe());
@@ -293,6 +314,12 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 		return false;
 	}
 	
+	/**
+	 * Méthode qui vérifie si une équipe est inscrite à un tournoi ouvert
+	 * @param equipe : l'équipe à vérifier
+	 * @return true si l'équipe est inscrite à un tournoi ouvert, false sinon
+	 * @throws Exception Erreur SQL
+	 */
 	public boolean estEquipeInscriteUnTournoiOuvert(Equipe equipe) throws Exception {
 		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from participer, tournoi where participer.idEquipe = ? and participer.idTournoi = tournoi.idTournoi and tournoi.estCloture = false");
 		ps.setInt(1, equipe.getIdEquipe());
@@ -305,6 +332,12 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 		return false;
 	}
 
+	/**
+	 * Méthode qui inscrit une équipe à un tournoi
+	 * @param equipe : l'équipe à inscrire
+	 * @param tournoi : le tournoi auquel inscrire l'équipe
+	 * @throws Exception : si l'équipe est déjà inscrite au tournoi ou si l'équipe n'est pas de la saison courante
+	 */
 	public void inscrireEquipe(Equipe equipe, Tournoi tournoi) throws Exception {
 		if (this.getEquipesTournoi(tournoi.getIdTournoi()).contains(equipe)) {
 			throw new IllegalStateException("Cette équipe est déjà inscrite à ce tournoi");
@@ -332,6 +365,12 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 		}
 	}
 	
+	/**
+	 * Méthode qui désinscrit une équipe d'un tournoi
+	 * @param equipe : l'équipe à désinscrire
+	 * @param tournoi : le tournoi duquel désinscrire l'équipe
+	 * @throws Exception : si l'équipe n'est pas inscrite au tournoi
+	 */
 	public void desinscrireEquipe(Equipe equipe, Tournoi tournoi) throws Exception {
 		if (!this.getEquipesTournoi(tournoi.getIdTournoi()).contains(equipe)) {
 			throw new IllegalStateException("Cette équipe n'est pas inscrite à ce tournoi");
@@ -358,7 +397,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	/**
 	 * @param nom : contenu dans le nom d'une équipe
 	 * @return la liste des équipes contenant la variable nom dans leur nom d'équipe
-	 * @throws Exception
+	 * @throws Exception Erreur SQL
 	 */
 	public List<Equipe> getParNom(String nom) throws Exception {
 		return this.getTout().stream()
@@ -366,12 +405,23 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 				.collect(Collectors.toList());
 	}
 	
+	/**
+	 * Méthode qui récupère les équipes de la saison courante
+	 * @return la liste des équipes de la saison courante
+	 * @throws Exception Erreur SQL
+	 */
 	public List<Equipe> getEquipesSaison() throws Exception {
 		return this.getTout().stream()
 				.filter(e -> e.getSaison().equals(String.valueOf(LocalDate.now().getYear())))
 				.collect(Collectors.toList());
 	}
-	
+
+	/**
+	 * Méthode qui récupère les équipes de la saison courante sauf celles passées en paramètre
+	 * @param equipesNonEligibles : les équipes qui ne doivent pas être récupérées
+	 * @return la liste des équipes de la saison courante
+	 * @throws Exception Erreur SQL
+	 */
 	public Equipe[] getTableauEquipes(List<Equipe> equipesNonEligibles) throws Exception {
 		return this.getTout().stream()
 				.filter(e -> !equipesNonEligibles.contains(e) && e.getSaison().equals(String.valueOf(LocalDate.now().getYear())))

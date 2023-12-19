@@ -27,11 +27,17 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 		this.modeleJoueur = new ModeleJoueur();
 	}
 	
+	/**
+	 * Récupère toutes les rencontres
+	 * @return Liste de toutes les rencontres
+	 * @throws Exception Exception SQL
+	 */
 	@Override
 	public List<Rencontre> getTout() throws Exception {
 		Statement st = BDD.getConnexion().createStatement();
 		ResultSet rs = st.executeQuery("select * from rencontre");
 		
+		// Parcourt les rencontres dans la base de données et les formate dans une liste
 		Stream<Rencontre> stream = StreamSupport.stream(
 			new Spliterators.AbstractSpliterator<Rencontre>(Long.MAX_VALUE, Spliterator.ORDERED) {
 				@Override
@@ -65,10 +71,12 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 	/**
 	 * Ajoute la rencontre dans la BDD
 	 * @return true si l'opération s'est bien déroulée, false sinon
+	 * @throws Exception Exception SQL et IllegalArgumentException si plus de 2 équipes
 	 */
 	@Override
 	public boolean ajouter(Rencontre rencontre) throws Exception {
 		Equipe[] equipes = rencontre.getEquipes();
+		// Vérifie qu'il n'y a pas plus de 2 équipes
 		if (equipes.length > 2) {
 			throw new IllegalArgumentException("Une rencontre ne peut pas avoir plus de 2 équipes");
 		}
@@ -104,7 +112,9 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 
 	/**
 	 * Supprime la rencontre dans la BDD
+	 * @param tournoi Rencontre à supprimer
 	 * @return true si l'opération s'est bien déroulée, false sinon
+	 * @throws Exception Exception SQL
 	 */
 	@Override
 	public boolean supprimer(Rencontre tournoi) throws Exception {
@@ -131,6 +141,7 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 	}
 	
 	/**
+	 * Méthode permettant de récupérer le prochain identifiant unique de rencontre
 	 * @return le prochain identifiant unique de rencontre
 	 */
 	private int getNextValId() {
@@ -153,6 +164,7 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
     }
 
 	/**
+	 * Récupère la rencontre par son identifiant
 	 * @param idPoule : identifiant de la poule
 	 * @return la liste des rencontres appartenant à la poule idPoule
 	 */
@@ -181,12 +193,18 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 		}
 	}
 	
+	/**
+	 * Récupère les équipes d'une rencontre
+	 * @param idRencontre Identifiant de la rencontre
+	 * @return Liste des équipes de la rencontre
+	 */
 	public Equipe[] getEquipesRencontre(int idRencontre) {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from equipe, jouer where jouer.idEquipe = equipe.idEquipe and jouer.idRencontre = ?");
 			ps.setInt(1, idRencontre);
 			ResultSet rs = ps.executeQuery();
 
+			// Parcourt les équipes dans la base de données et les formate dans une liste
 			Stream<Equipe> stream = StreamSupport.stream(
 					new Spliterators.AbstractSpliterator<Equipe>(Long.MAX_VALUE, Spliterator.ORDERED) {
 						@Override
@@ -224,6 +242,12 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 		}
 	}
 	
+	/**
+	 * Met l'équipe gagnante d'une rencontre
+	 * @param rencontre Rencontre à mettre à jour
+	 * @param nomEquipe Nom de l'équipe gagnante
+	 * @throws Exception Exception SQL et IllegalArgumentException si l'équipe n'existe pas
+	 */
 	public void setEquipeGagnante(Rencontre rencontre, String nomEquipe) throws Exception {
 		this.checkMiseAJourScore(rencontre);
 
@@ -261,6 +285,11 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 		}
 	}
 	
+	/**
+	 * Remet l'équipe gagnante d'une rencontre à null
+	 * @param rencontre Rencontre à mettre à jour
+	 * @throws Exception Exception SQL
+	 */
 	public void resetEquipeGagnante(Rencontre rencontre) throws Exception {
 		this.checkMiseAJourScore(rencontre);
 
@@ -284,6 +313,11 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 		}
 	}
 
+	/**
+	 * Vérifie que la rencontre peut être mise à jour
+	 * @param rencontre Rencontre à mettre à jour
+	 * @throws Exception Exception SQL et IllegalArgumentException si le tournoi est clôturé ou n'existe pas ou si l'utilisateur n'est pas un arbitre
+	 */
 	private void checkMiseAJourScore(Rencontre rencontre) throws Exception {
 		Tournoi tournoi = new ModeleTournoi().getTournoiRencontre(rencontre.getIdRencontre()).orElse(null);
 		if (tournoi == null) {

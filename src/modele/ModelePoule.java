@@ -18,11 +18,16 @@ import modele.metier.Rencontre;
 public class ModelePoule extends DAO<Poule, Integer> {
 	
 	private ModeleRencontre modeleRencontre;
-	
+
 	public ModelePoule() {
 		this.modeleRencontre = new ModeleRencontre();
 	}
-	
+
+	/**
+	 * Récupère toutes les poules
+	 * @return Liste de toutes les poules
+	 * @throws Exception Exception SQL
+	 */
 	@Override
 	public List<Poule> getTout() throws Exception {
 		Statement st = BDD.getConnexion().createStatement();
@@ -61,38 +66,15 @@ public class ModelePoule extends DAO<Poule, Integer> {
 	}
 
 	/**
-	 * @return Retourne une poule depuis la BDD par sa clé primaire
-	 */
-//	@Override
-//	public Optional<Poule> getParId(Integer... idPoule) throws Exception {
-//		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from poule where idPoule = ?");
-//		ps.setInt(1, idPoule[0]);
-//		
-//		ResultSet rs = ps.executeQuery();
-//		
-//		// Création de poule si il existe
-//		Poule poule = null;
-//		if(rs.next()) {
-//			poule = new Poule(
-//				rs.getInt("idPoule"),
-//				rs.getBoolean("estCloturee"),
-//				rs.getBoolean("estFinale"),
-//				rs.getInt("idTournoi"),
-//				ModelePoule.this.modeleRencontre.getRencontresPoules(rs.getInt("idPoule"))
-//            );
-//		}	
-//		rs.close();
-//		ps.close();
-//		return Optional.ofNullable(poule);
-//	}
-
-	/**
 	 * Supprime la poule dans la BDD
+	 * @param poule Poule à supprimer
 	 * @return true si l'opération s'est bien déroulée, false sinon
+	 * @throws Exception Exception SQL
 	 */
 	@Override
 	public boolean supprimer(Poule poule) throws Exception {
 		try {
+			// Supprime les rencontres de la poule
 			for (Rencontre rencontre : poule.getRencontres()) {
 				this.modeleRencontre.supprimer(rencontre);
 			}
@@ -115,7 +97,9 @@ public class ModelePoule extends DAO<Poule, Integer> {
 
 	/**
 	 * Ajoute la poule dans la BDD
+	 * @param poule Poule à ajouter
 	 * @return true si l'opération s'est bien déroulée, false sinon
+	 * @throws Exception Exception SQL
 	 */
 	@Override
 	public boolean ajouter(Poule poule) throws Exception {
@@ -148,7 +132,9 @@ public class ModelePoule extends DAO<Poule, Integer> {
 	}
 	
 	/**
+	 * Génère le prochain identifiant unique de poule
 	 * @return le prochain identifiant unique de poule
+	 * @throws Exception Exception SQL
 	 */
 	private int getNextValId() {
 		int nextVal = 0;
@@ -169,6 +155,12 @@ public class ModelePoule extends DAO<Poule, Integer> {
 		return nextVal;
 	}
 
+	/**
+	 * Getter de la liste des poules d'un tournoi
+	 * @param idTournoi Identifiant du tournoi
+	 * @return Liste des poules du tournoi
+	 * @throws Exception Exception SQL
+	 */
 	public List<Poule> getPoulesTournoi(int idTournoi) {
 		try {
 			List<Poule> poules = this.getTout().stream()

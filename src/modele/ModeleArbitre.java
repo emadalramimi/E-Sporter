@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-// import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
@@ -16,7 +15,10 @@ import java.util.stream.StreamSupport;
 import modele.metier.Arbitre;
 
 public class ModeleArbitre extends DAO<Arbitre, Integer> {
-
+	/**
+	 * Récupère tous les arbitres
+	 * @return Liste des arbitres
+	 */
 	@Override
 	public List<Arbitre> getTout() throws Exception {
 		Statement st = BDD.getConnexion().createStatement();
@@ -52,6 +54,11 @@ public class ModeleArbitre extends DAO<Arbitre, Integer> {
 		return stream.collect(Collectors.toList());
 	}
 	
+	/**
+	 * Récupère les arbitres affectés à un tournoi
+	 * @param idTournoi Identifiant du tournoi
+	 * @return Liste des arbitres affectés
+	 */
 	public List<Arbitre> getArbitresTournoi(int idTournoi) {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from arbitre, arbitrer where arbitre.idArbitre = arbitrer.idArbitre and arbitrer.idTournoi = ?");
@@ -93,6 +100,12 @@ public class ModeleArbitre extends DAO<Arbitre, Integer> {
 		}
 	}
 	
+	/**
+	 * Récupère les arbitres qui ne sont pas déjà affectés à un tournoi
+	 * @param arbitresNonEligibles Liste des arbitres déjà affectés
+	 * @return Liste des arbitres non affectés
+	 * @throws Exception Erreur SQL
+	 */
 	public Arbitre[] getTableauArbitres(List<Arbitre> arbitresNonEligibles) throws Exception {
 		return this.getTout().stream()
 				.filter(e -> !arbitresNonEligibles.contains(e))

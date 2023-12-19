@@ -8,7 +8,13 @@ import java.util.Optional;
 import modele.metier.Administrateur;
 
 public class ModeleAdministrateur {
-    
+	
+    /**
+	 * Récupère un administrateur par son identifiant
+	 * @param identifiant Identifiant de l'administrateur
+	 * @return Administrateur s'il existe
+	 * @throws SQLException Exception SQL
+	 */
     public Optional<Administrateur> getParIdentifiant(String identifiant) throws SQLException {
 		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from administrateur where identifiant = ?");
 		ps.setString(1, identifiant);
