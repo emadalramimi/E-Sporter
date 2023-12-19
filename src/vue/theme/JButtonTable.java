@@ -24,12 +24,12 @@ public class JButtonTable extends JButton {
 	 * @param type : type du bouton
 	 * @param idElement : identifiant dans la BDD de l'élément sélectionné
 	 */
-	public JButtonTable(Type type, int idElement) {
+	public JButtonTable(Type type) {
 		this.type = type;
-		this.idElement = idElement;
 	}
 
 	/**
+	 * Retourne le type du bouton
 	 * @return le type du bouton
 	 */
 	public Type getType() {
@@ -37,10 +37,19 @@ public class JButtonTable extends JButton {
 	}
 
 	/**
-	 * @return l'identifiant dand la BDD de l'élément sélectionné
+	 * Retourne l'identifiant dans la BDD de l'élément sélectionné
+	 * @return l'identifiant dans la BDD de l'élément sélectionné
 	 */
 	public int getIdElement() {
 		return this.idElement;
+	}
+
+	/**
+	 * Modifie l'identifiant dans la BDD de l'élément sélectionné
+	 * @param idElement : identifiant dans la BDD de l'élément sélectionné
+	 */
+	public void setIdElement(int idElement) {
+		this.idElement = idElement;
 	}
 	
 }
