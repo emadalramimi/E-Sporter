@@ -225,22 +225,7 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 	}
 	
 	public void setEquipeGagnante(Rencontre rencontre, String nomEquipe) throws Exception {
-		Tournoi tournoi = new ModeleTournoi().getTournoiRencontre(rencontre.getIdRencontre()).orElse(null);
-		if (tournoi == null) {
-			throw new IllegalArgumentException("Le tournoi n'existe pas");
-		}
-		if (tournoi.getEstCloture()) {
-			throw new IllegalArgumentException("Le tournoi est clôturé");
-		}
-
-		/**
-		 * Seuls les arbitres peuvent affecter le résultat d'une rencontre
-		 * PS : Il n'y a pas besoin de vérifier que l'arbitre est bien assigné au tournoi
-		 * car seuls les arbitres assignés à un unique tournoi ouvert peuvent se connecter
-		 */
-		if (ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ARBITRE) {
-			throw new IllegalArgumentException("Seuls les arbitres peut affecter le résultat d'une rencontre");
-		}
+		this.checkMiseAJourScore(rencontre);
 
 		try {
 			int idEquipeGagnante;
@@ -269,10 +254,52 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 		} catch (SQLException e) {
 			try {
 				BDD.getConnexion().rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
 			}
 			throw new RuntimeException(e);
+		}
+	}
+	
+	public void resetEquipeGagnante(Rencontre rencontre) throws Exception {
+		this.checkMiseAJourScore(rencontre);
+
+		try {
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("update rencontre set idEquipeGagnante = null where idRencontre = ?");
+			ps.setInt(1, rencontre.getIdRencontre());
+			ps.execute();
+			ps.close();
+
+			// 0 => null
+			rencontre.setIdEquipeGagnante(0);
+
+			BDD.getConnexion().commit();
+		} catch (SQLException e) {
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void checkMiseAJourScore(Rencontre rencontre) throws Exception {
+		Tournoi tournoi = new ModeleTournoi().getTournoiRencontre(rencontre.getIdRencontre()).orElse(null);
+		if (tournoi == null) {
+			throw new IllegalArgumentException("Le tournoi n'existe pas");
+		}
+		if (tournoi.getEstCloture()) {
+			throw new IllegalArgumentException("Le tournoi est clôturé");
+		}
+
+		/**
+		 * Seuls les arbitres peuvent affecter le résultat d'une rencontre
+		 * PS : Il n'y a pas besoin de vérifier que l'arbitre est bien assigné au tournoi
+		 * car seuls les arbitres assignés à un unique tournoi ouvert peuvent se connecter
+		 */
+		if (ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ARBITRE) {
+			throw new IllegalArgumentException("Seuls les arbitres peut affecter le résultat d'une rencontre");
 		}
 	}
 
