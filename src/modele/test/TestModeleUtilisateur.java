@@ -19,6 +19,12 @@ public class TestModeleUtilisateur {
             this.modeleUtilisateur.deconnecter();
     }
 
+    @Test
+    public void testChiffrerMotDePasse() {
+        String motDePasse = "mdp";
+        assertNotEquals(ModeleUtilisateur.chiffrerMotDePasse(motDePasse), motDePasse);
+    }
+
 	/*
      * Test l'erreur IllegalArgumentException lorsqu'on essaie de se connecter si l'on l'est déjà
      */
@@ -70,7 +76,7 @@ public class TestModeleUtilisateur {
     public void testDeconnexionInvalide() throws IllegalStateException {
     	modeleUtilisateur.deconnecter();
     }
-    
+
     /*
      * Test du getter getCompteCourant
      */
@@ -78,5 +84,4 @@ public class TestModeleUtilisateur {
     public void testGetCompteCourant() {
     	assertEquals(ModeleUtilisateur.getCompteCourant(), null);
     }
-	
 }
