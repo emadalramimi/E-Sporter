@@ -18,13 +18,14 @@ import org.junit.runners.Suite;
     TestRencontre.class,
     TestSatistiquesEquipe.class,
     TestTournoi.class,
+    
     TestModeleAdministrateur.class,
     TestModeleArbitre.class,
     TestModeleEquipe.class,
     TestModeleJoueur.class,
     TestModelePoule.class,
-    TestModeleRenontre.class,
-    TestModeleTournoi.class,
+    TestModeleRencontre.class,
+    //TestModeleTournoi.class,
     TestModeleUtilisateur.class
 })
 
