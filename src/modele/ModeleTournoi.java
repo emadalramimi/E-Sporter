@@ -466,25 +466,30 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	public List<Tournoi> getParFiltrage(Notoriete notoriete, ControleurTournois.Statut statut) throws Exception {
 		List<Tournoi> tournois = this.getTout();
 
+		// Si une notoriété est renseignée pour filtrer
 		if (notoriete != null) {
 			tournois = tournois.stream()
 					.filter(t -> t.getNotoriete().equals(notoriete))
 					.collect(Collectors.toList());
 		}
 
+		// Si un statut est renseigné pour filtrer
 		if (statut != null) {
 			switch (statut) {
 				case PHASE_INSCRIPTIONS:
+					// Récupération des tournois en phase d'inscriptions
 					tournois = tournois.stream()
 							.filter(t -> t.getEstCloture() == true && System.currentTimeMillis() / 1000 < t.getDateTimeFin())
 							.collect(Collectors.toList());
 					break;
 				case OUVERT:
+					// Récupération des tournois ouverts
 					tournois = tournois.stream()
 							.filter(t -> t.getEstCloture() == false)
 							.collect(Collectors.toList());
 					break;
 				case CLOTURE:
+					// Récupération des tournois cloturés
 					tournois = tournois.stream()
 							.filter(t -> t.getEstCloture() == true && System.currentTimeMillis() / 1000 > t.getDateTimeFin())
 							.collect(Collectors.toList());
