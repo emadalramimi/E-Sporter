@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import controleur.ControleurTournois;
 import modele.metier.Arbitre;
 import modele.metier.Equipe;
 import modele.metier.Poule;
@@ -450,48 +451,42 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
     }
 
 	/**
-	 * Méthode de recherche de tournois par notoriété
+	 * Méthode de recherche de tournois par filtrage
 	 * @param notoriete Notoriété du tournoi
-	 * @return Retourne les tournois par notoriété
+	 * @param statut Statut du tournoi
+	 * @return Retourne les tournois par filtrage
 	 * @throws Exception Exception SQL
 	 */
-    public List<Tournoi> getParNotoriete(Notoriete notoriete) throws Exception {
-        return this.getTout().stream()
-                .filter(t -> t.getNotoriete().equals(notoriete))
-                .collect(Collectors.toList());
-    }
+	public List<Tournoi> getParFiltrage(Notoriete notoriete, ControleurTournois.Statut statut) throws Exception {
+		List<Tournoi> tournois = this.getTout();
 
-	/**
-	 * Méthode de recherche de tournois par date de début
-	 * @return Retourne les tournois par date de début
-	 * @throws Exception Exception SQL
-	 */
-    public List<Tournoi> getParPhaseInscription() throws Exception {
-        return this.getTout().stream()
-                .filter(t -> t.getEstCloture() == true && System.currentTimeMillis() / 1000 < t.getDateTimeFin())
-                .collect(Collectors.toList());
-    }
+		if (notoriete != null) {
+			tournois = tournois.stream()
+					.filter(t -> t.getNotoriete().equals(notoriete))
+					.collect(Collectors.toList());
+		}
 
-	/**
-	 * Méthode de recherche de tournois par date de fin
-	 * @return Retourne les tournois par date de fin
-	 * @throws Exception Exception SQL
-	 */
-	public List<Tournoi> getParOuvert() throws Exception {
-		return this.getTout().stream()
-				.filter(t -> t.getEstCloture() == false)
-				.collect(Collectors.toList());
+		if (statut != null) {
+			switch (statut) {
+				case PHASE_INSCRIPTIONS:
+					tournois = tournois.stream()
+							.filter(t -> t.getEstCloture() == true && System.currentTimeMillis() / 1000 < t.getDateTimeFin())
+							.collect(Collectors.toList());
+					break;
+				case OUVERT:
+					tournois = tournois.stream()
+							.filter(t -> t.getEstCloture() == false)
+							.collect(Collectors.toList());
+					break;
+				case CLOTURE:
+					tournois = tournois.stream()
+							.filter(t -> t.getEstCloture() == true && System.currentTimeMillis() / 1000 > t.getDateTimeFin())
+							.collect(Collectors.toList());
+					break;
+			}
+		}
+
+		return tournois;
 	}
-	
-	/**
-	 * Méthode pour récupérer les tournois cloturés
-	 * @return Retourne les tournois cloturés
-	 * @throws Exception Exception SQL
-	 */
-    public List<Tournoi> getParCloture() throws Exception {
-        return this.getTout().stream()
-                .filter(t -> t.getEstCloture() == true && System.currentTimeMillis() / 1000 > t.getDateTimeFin())
-                .collect(Collectors.toList());
-    }
 
 }

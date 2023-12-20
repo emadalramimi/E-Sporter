@@ -25,7 +25,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.TimeZone;
@@ -141,19 +140,13 @@ public class VueTournois extends JFrameTheme {
 		panelChoixFiltres.setBackground(CharteGraphique.FOND);
 
 		// Ajouter comboBox filtre pour choisir un statut
-		String[] items = {"Tous statuts", "Phase d'inscriptions", "Ouvert", "Clôturé"};
-		cboxStatuts = new JComboBoxTheme<>(items);
+		cboxStatuts = new JComboBoxTheme<>(ControleurTournois.Statut.getLibellesFiltres());
 		cboxStatuts.addItemListener(controleur);
 		cboxStatuts.setPreferredSize(new Dimension(200, 45));
 		panelChoixFiltres.add(cboxStatuts);
 
 		// Ajouter comboBox filtre pour choisir une notoriete
-		List<String> notorietes = new ArrayList<>();
-		notorietes.add("Toutes notoriétés");
-		for (Notoriete notoriete : Notoriete.values()) {
-			notorietes.add(notoriete.getLibelle());
-		}
-		cboxNotoriete = new JComboBoxTheme<>(notorietes.toArray(new String[0]));
+		cboxNotoriete = new JComboBoxTheme<>(Notoriete.getLibellesFiltres());
 		cboxNotoriete.addItemListener(controleur);
 		cboxNotoriete.setPreferredSize(new Dimension(200, 45));
 		panelChoixFiltres.add(cboxNotoriete);
@@ -315,6 +308,13 @@ public class VueTournois extends JFrameTheme {
 	public boolean estChampRecherche(JTextField champ) {
 		return this.txtRecherche.equals(champ);
 	}
+
+	/**
+	 * Remet à zéro le champ de recherche
+	 */
+	public void resetChampRecherche() {
+		this.txtRecherche.setText("");
+	}
 	
 	/**
 	 * @return la requête de recherche tapée par l'utilisateur
@@ -364,21 +364,34 @@ public class VueTournois extends JFrameTheme {
 	}
 
 	/**
-	 * Méthode pour vérifier si la comboBox est la comboBox de notoriété
+	 * Méthode pour vérifier si la comboBox est la comboBox de notoriétés ou de statuts
 	 * @param comboBox : la comboBox à vérifier
-	 * @return true si la comboBox est la comboBox de notoriété, false sinon
+	 * @return true si la comboBox est la comboBox de notoriétés ou de statuts, false sinon
 	 */
-	public boolean estCboxNotoriete(JComboBoxTheme<?> comboBox) {
-		return comboBox.equals(this.cboxNotoriete);
+	public boolean estCboxFiltre(JComboBoxTheme<?> comboBox) {
+		return comboBox.equals(this.cboxNotoriete) || comboBox.equals(this.cboxStatuts);
 	}
-	
-	/**
-	 * Méthode pour vérifier si la comboBox est la comboBox de statuts
-	 * @param comboBox : la comboBox à vérifier
-	 * @return true si la comboBox est la comboBox de statuts, false sinon
-	 */
-	public boolean estCboxStatuts(JComboBoxTheme<?> comboBox) {
-		return comboBox.equals(this.cboxStatuts);
+
+	public Notoriete getNotorieteSelectionnee() {
+		if(this.cboxNotoriete.getSelectedIndex() == 0) {
+			return null;
+		}
+		return Notoriete.valueOfLibelle((String) this.cboxNotoriete.getSelectedItem());
+	}
+
+	public ControleurTournois.Statut getStatutSelectionne() {
+		if(this.cboxStatuts.getSelectedIndex() == 0) {
+			return null;
+		}
+		return ControleurTournois.Statut.valueOfLibelle((String) this.cboxStatuts.getSelectedItem());
+	}
+
+	public void resetCboxNotoriete() {
+		this.cboxNotoriete.setSelectedIndex(0);
+	}
+
+	public void resetCboxStatuts() {
+		this.cboxStatuts.setSelectedIndex(0);
 	}
 
 	public VueBase getVueBase() {

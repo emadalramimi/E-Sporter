@@ -141,8 +141,6 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 					this.vueSaisieTournoi.afficherPopupErreur("Impossible de récupérer les tournois");
 					throw new RuntimeException("Impossible de récupérer les tournois", err);
 				}
-
-				this.vueSaisieTournoi.fermerFenetre();
 			} 
 			// Modification du tournoi au clic de modifier
 			else if (bouton.getText() == "Modifier") {
@@ -185,9 +183,14 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 					this.vueSaisieTournoi.afficherPopupErreur("Impossible de récupérer les tournois");
 					throw new RuntimeException("Impossible de récupérer les tournois", err);
 				}
-
-				this.vueSaisieTournoi.fermerFenetre();
 			}
+
+			// TODO SI FILTRE/RECHERCHE réappliquer ici
+			this.vueTournois.resetChampRecherche();
+			this.vueTournois.resetCboxNotoriete();
+			this.vueTournois.resetCboxStatuts();
+
+			this.vueSaisieTournoi.fermerFenetre();
 		}
 	}
 

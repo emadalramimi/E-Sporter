@@ -33,6 +33,15 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
             }
             throw new IllegalArgumentException("Notoriété avec le libellé '" + libelle + "' non trouvé.");
         }
+
+		public static String[] getLibellesFiltres() {
+			String[] libelles = new String[values().length + 1];
+			libelles[0] = "Toutes les notoriétés";
+			for (int i = 0; i < values().length; i++) {
+				libelles[i + 1] = values()[i].getLibelle();
+			}
+			return libelles;
+		}
     }
 	
 	private int idTournoi;

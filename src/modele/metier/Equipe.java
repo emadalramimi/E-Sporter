@@ -9,7 +9,7 @@ public class Equipe implements Comparable<Equipe> {
 
 	private int idEquipe;
 	private String nom;
-	private String pays;
+	private Pays pays;
 	private int classement;
 	private int worldRanking;
 	private String saison;
@@ -25,7 +25,7 @@ public class Equipe implements Comparable<Equipe> {
 	 * @param saison
 	 * @param joueurs
 	 */
-	public Equipe(int idEquipe, String nom, String pays, int classement, int worldRanking, String saison, List<Joueur> joueurs) {
+	public Equipe(int idEquipe, String nom, Pays pays, int classement, int worldRanking, String saison, List<Joueur> joueurs) {
 		this.idEquipe = idEquipe;
 		this.nom = nom;
 		this.pays = pays;
@@ -35,7 +35,7 @@ public class Equipe implements Comparable<Equipe> {
 		this.joueurs = joueurs;
 	}
 	
-	public Equipe(String nom, String pays, List<Joueur> joueurs) {
+	public Equipe(String nom, Pays pays, List<Joueur> joueurs) {
 		this.nom = nom;
 		this.pays = pays;
 		this.joueurs = joueurs;
@@ -77,7 +77,7 @@ public class Equipe implements Comparable<Equipe> {
 	 * Retourne le pays
 	 * @return Pays
 	 */
-	public String getPays() {
+	public Pays getPays() {
 		return this.pays;
 	}
 	
@@ -85,7 +85,7 @@ public class Equipe implements Comparable<Equipe> {
 	 * Modifie le pays
 	 * @param pays Pays
 	 */
-	public void setPays(String pays) {
+	public void setPays(Pays pays) {
 		this.pays = pays;
 	}
 

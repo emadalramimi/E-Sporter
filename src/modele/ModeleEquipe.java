@@ -16,6 +16,7 @@ import java.util.stream.StreamSupport;
 
 import modele.metier.Equipe;
 import modele.metier.Joueur;
+import modele.metier.Pays;
 import modele.metier.Tournoi;
 
 public class ModeleEquipe extends DAO<Equipe, Integer> {
@@ -48,7 +49,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
                         action.accept(new Equipe(
                     		rs.getInt("idEquipe"),
                     		rs.getString("nom"),
-                    		rs.getString("pays"),
+							Pays.valueOfNom(rs.getString("pays")),
                     		rs.getInt("classement"),
                     		rs.getInt("worldRanking"),
                     		rs.getString("saison"),
@@ -87,7 +88,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 			equipe = new Equipe(
 	    		rs.getInt("idEquipe"),
 	    		rs.getString("nom"),
-	    		rs.getString("pays"),
+				Pays.valueOfNom(rs.getString("pays")),
 	    		rs.getInt("classement"),
 	    		rs.getInt("worldRanking"),
 	    		rs.getString("saison"),
@@ -129,7 +130,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into equipe values (?, ?, ?, ?, ?, ?)");
 			ps.setInt(1, equipe.getIdEquipe());
 			ps.setString(2, equipe.getNom());
-			ps.setString(3, equipe.getPays());
+			ps.setString(3, equipe.getPays().getNomPays());
 			ps.setInt(4, equipe.getClassement());
 			ps.setInt(5, equipe.getWorldRanking());
 			ps.setString(6, equipe.getSaison());
@@ -169,7 +170,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set nom = ?, pays = ?, worldRanking = ? where idEquipe = ?");
 			// On ne peut pas modifier le classement et la saison d'une équipe
 			ps.setString(1, equipe.getNom());
-			ps.setString(2, equipe.getPays());
+			ps.setString(2, equipe.getPays().getNomPays());
 			ps.setInt(3, equipe.getWorldRanking());
 			ps.setInt(4, equipe.getIdEquipe());
 			ps.execute();
@@ -271,7 +272,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 								action.accept(new Equipe(
 										rs.getInt("idEquipe"),
 										rs.getString("nom"),
-										rs.getString("pays"),
+										Pays.valueOfNom(rs.getString("pays")),
 										rs.getInt("classement"),
 										rs.getInt("worldRanking"),
 										rs.getString("saison"),
@@ -427,6 +428,23 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 				.filter(e -> !equipesNonEligibles.contains(e) && e.getSaison().equals(String.valueOf(LocalDate.now().getYear())))
 				.sorted()
 				.toArray(Equipe[]::new);
+	}
+
+	/**
+	 * Méthode de recherche d'équipes par filtrage
+	 * @param pays Pays de l'équipe
+	 * @throws Exception Exception SQL
+	 */
+		public List<Equipe> getParFiltrage(Pays pays) throws Exception {
+		List<Equipe> equipes = this.getTout();
+
+		if (pays != null) {
+			equipes = equipes.stream()
+					.filter(t -> t.getPays().equals(pays))
+					.collect(Collectors.toList());
+		}
+
+		return equipes;
 	}
 	
 }

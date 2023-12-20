@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import modele.ModeleEquipe;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
+import modele.metier.Pays;
 import vue.VueEquipes;
 import vue.VueSaisieEquipe;
 
@@ -68,7 +69,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 				for (String nomJoueur : nomsJoueurs) {
 					joueurs.add(new Joueur(nomJoueur));
 				}
-				Equipe equipe = new Equipe(nom, pays, joueurs);
+				Equipe equipe = new Equipe(nom, Pays.valueOfNom(pays), joueurs);
 				
 				// Ajout de l'équipe dans la base de données
 				try {
@@ -100,7 +101,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 				
 				// Modification des champs
 				equipe.setNom(nom);
-				equipe.setPays(pays);
+				equipe.setPays(Pays.valueOfNom(pays));
 				
 				// Récupération des joueurs saisis et mise à jour des joueurs de l'équipe
 				List<Joueur> joueursEquipe = equipe.getJoueurs();
@@ -127,6 +128,9 @@ public class ControleurSaisieEquipe implements ActionListener {
 				}
 			}
 			
+			// TODO SI FILTRE/RECHERCHE réappliquer ici
+			this.vueEquipes.resetChampRecherche();
+
 			this.vueSaisieEquipe.fermerFenetre();
 		} else if(bouton.getText() == "Annuler") {
 			this.vueSaisieEquipe.fermerFenetre();

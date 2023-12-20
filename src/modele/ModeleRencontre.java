@@ -18,6 +18,7 @@ import modele.metier.Equipe;
 import modele.metier.Rencontre;
 import modele.metier.Tournoi;
 import modele.metier.Utilisateur;
+import modele.metier.Pays;
 
 public class ModeleRencontre extends DAO<Rencontre, Integer> {
 
@@ -216,7 +217,7 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 								action.accept(new Equipe(
 										rs.getInt("idEquipe"),
 										rs.getString("nom"),
-										rs.getString("pays"),
+										Pays.valueOfNom(rs.getString("pays")),
 										rs.getInt("classement"),
 										rs.getInt("worldRanking"),
 										rs.getString("saison"),

@@ -54,7 +54,7 @@ public class VueEquipes extends JFrameTheme {
 	private JTable table;
 	private DefaultTableModel model;
 	private JButtonTheme btnAjouter;
-	private JComboBoxTheme cboxPays;
+	private JComboBoxTheme<String> cboxPays;
 	private JPanel panel;
 	private JPanel panelLabelEquipe;
 	private JLabel lblEquipes;
@@ -180,9 +180,9 @@ public class VueEquipes extends JFrameTheme {
 		TableColumn paysColumn = table.getColumnModel().getColumn(2);
 	    paysColumn.setCellRenderer(new ImageTableCellRenderer());
 	    
-	    // Ajouter comboBox filtre pour choisir un pays
-	 	String[] pays = Pays.getTout();
-	 	cboxPays = new JComboBoxTheme<String>(pays);
+	    // Ajouter comboBox filtre pour filtrer par pays
+	 	cboxPays = new JComboBoxTheme<String>(Pays.getLibellesFiltres());
+		cboxPays.addItemListener(controleur);
 	 	cboxPays.setPreferredSize(new Dimension(200, 45));
 	 	panelChoixFiltres.add(cboxPays);
 		
@@ -327,6 +327,13 @@ public class VueEquipes extends JFrameTheme {
 	public boolean estChampRecherche(JTextField champ) {
 		return this.txtRecherche.equals(champ);
 	}
+
+	/**
+	 * Remet à zéro le champ de recherche
+	 */
+	public void resetChampRecherche() {
+		this.txtRecherche.setText("");
+	}
 	
 	/**
 	 * @return la requête de recherche tapée par l'utilisateur
@@ -339,7 +346,7 @@ public class VueEquipes extends JFrameTheme {
 	 * Remplit/met à jour le tableau d'équipes
 	 * @param equipes : liste des équipes à mettre dans le tableau
 	 */
-	private void remplirTableau(List<Equipe> equipes) {
+	public void remplirTableau(List<Equipe> equipes) {
 		// Vider le tableau
 		this.model.setRowCount(0);
 		
@@ -349,9 +356,9 @@ public class VueEquipes extends JFrameTheme {
 		    rowData.add(equipe.getIdEquipe());
 		    rowData.add(equipe.getNom());
 		    
-		    Pays pays = Pays.valueOfNom(equipe.getPays());
+		    Pays pays = equipe.getPays();
 	        ImageIcon drapeau = pays.getDrapeauPays();
-	        rowData.add(new LabelIcon(drapeau, equipe.getPays()));
+	        rowData.add(new LabelIcon(drapeau, equipe.getPays().getNomPays()));
 	        
 		    rowData.add(equipe.getWorldRanking());
 		    this.model.addRow(rowData);
@@ -359,6 +366,26 @@ public class VueEquipes extends JFrameTheme {
 		
 		// Mise à jour du tableau
 		this.table.setModel(this.model);
+	}
+
+	/**
+	 * Méthode pour vérifier si la comboBox est la comboBox de notoriétés ou de statuts
+	 * @param comboBox : la comboBox à vérifier
+	 * @return true si la comboBox est la comboBox de notoriétés ou de statuts, false sinon
+	 */
+	public boolean estCboxPays(JComboBoxTheme<?> comboBox) {
+		return comboBox.equals(this.cboxPays);
+	}
+
+	public Pays getPaysSelectionne() {
+		if(this.cboxPays.getSelectedIndex() == 0) {
+			return null;
+		}
+		return Pays.valueOfNom(this.cboxPays.getSelectedItem().toString());
+	}
+
+	public void resetCboxPays() {
+		this.cboxPays.setSelectedIndex(0);
 	}
 
 	public VueBase getVueBase() {

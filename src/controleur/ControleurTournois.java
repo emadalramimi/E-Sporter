@@ -15,7 +15,6 @@ import javax.swing.JTextField;
 import modele.ModeleTournoi;
 import modele.ModeleUtilisateur;
 import modele.metier.Tournoi;
-import modele.metier.Tournoi.Notoriete;
 import modele.metier.Utilisateur;
 import vue.VueTournois;
 import vue.theme.JButtonTable;
@@ -26,6 +25,40 @@ import vue.theme.JComboBoxTheme;
  * @see VueTournois
  */
 public class ControleurTournois extends KeyAdapter implements ActionListener, ItemListener {
+
+	public enum Statut {
+		PHASE_INSCRIPTIONS("Phase d'inscriptions"),
+		OUVERT("Ouvert"),
+		CLOTURE("Clôturé");
+
+		private String libelle;
+
+		Statut(String libelle) {
+			this.libelle = libelle;
+		}
+
+		public String getLibelle() {
+			return this.libelle;
+		}
+
+		public static Statut valueOfLibelle(String libelle) {
+			for (Statut statut : Statut.values()) {
+				if (statut.getLibelle().equals(libelle)) {
+					return statut;
+				}
+			}
+			return null;
+		}
+
+		public static String[] getLibellesFiltres() {
+			String[] libelles = new String[Statut.values().length + 1];
+			libelles[0] = "Tous les statuts";
+			for (int i = 0; i < Statut.values().length; i++) {
+				libelles[i + 1] = Statut.values()[i].getLibelle();
+			}
+			return libelles;
+		}
+	}
 
 	private VueTournois vue;
 	private ModeleTournoi modeleTournoi;
@@ -133,6 +166,10 @@ public class ControleurTournois extends KeyAdapter implements ActionListener, It
 
 						// Mise à jour du tableau des tournois
 						this.vue.getVueBase().changerOnglet(ControleurBase.Menus.TOURNOIS);
+
+						this.vue.resetChampRecherche();
+						this.vue.resetCboxNotoriete();
+						this.vue.resetCboxStatuts();
 					}
 					break;
 			}
@@ -196,66 +233,12 @@ public class ControleurTournois extends KeyAdapter implements ActionListener, It
 		if (e.getSource() instanceof JComboBoxTheme<?>) {
 			JComboBoxTheme<?> comboBox = (JComboBoxTheme<?>) e.getSource();
 
-			// Si il s'agit de la combobox notoriété
-			if (this.vue.estCboxNotoriete(comboBox)) {
-				String selection = (String) comboBox.getSelectedItem();
-				if (selection.equals("Toutes notoriétés")) {
-					// Chargement des tournois avec toutes les notoriétés
-					try {
-						this.vue.remplirTableau(this.modeleTournoi.getTout());
-					} catch (Exception err) {
-						this.vue.afficherPopupErreur("Une erreur est survenue");
-						throw new RuntimeException("Erreur dans la récupération des tournois");
-					}
-				} else {
-					// Chargement des tournois avec la notoriété sélectionnée
-					try {
-						this.vue.remplirTableau(this.modeleTournoi.getParNotoriete(Notoriete.valueOfLibelle(selection)));
-					} catch (Exception err) {
-						this.vue.afficherPopupErreur("Une erreur est survenue");
-						throw new RuntimeException("Erreur dans la récupération des tournois");
-					}
-				}
-			} 
-			// Si il s'agit de la combobox statuts
-			else if (this.vue.estCboxStatuts(comboBox)) {
-				switch((String) comboBox.getSelectedItem()) {
-					case "Tous statuts":
-						// Chargement des tournois avec tous les statuts
-						try {
-							this.vue.remplirTableau(this.modeleTournoi.getTout());
-						} catch (Exception err) {
-							this.vue.afficherPopupErreur("Une erreur est survenue");
-							throw new RuntimeException("Erreur dans la récupération des tournois");
-						}
-						break;
-					case "Phase d'inscriptions":
-						// Chargement des tournois avec le statut "Phase d'inscriptions"
-						try {
-							this.vue.remplirTableau(this.modeleTournoi.getParPhaseInscription());
-						} catch (Exception err) {
-							this.vue.afficherPopupErreur("Une erreur est survenue");
-							throw new RuntimeException("Erreur dans la récupération des tournois");
-						}
-						break;
-					case "Ouvert":
-						// Chargement des tournois avec le statut "Ouvert"
-						try {
-							this.vue.remplirTableau(this.modeleTournoi.getParOuvert());
-						} catch (Exception err) {
-							this.vue.afficherPopupErreur("Une erreur est survenue");
-							throw new RuntimeException("Erreur dans la récupération des tournois");
-						}
-						break;
-					case "Clôturé":
-						// Chargement des tournois avec le statut "Clôturé"
-						try {
-							this.vue.remplirTableau(this.modeleTournoi.getParCloture());
-						} catch (Exception err) {
-							this.vue.afficherPopupErreur("Une erreur est survenue");
-							throw new RuntimeException("Erreur dans la récupération des tournois");
-						}
-						break;
+			if (this.vue.estCboxFiltre(comboBox)) {
+			 	try {
+					this.vue.remplirTableau(this.modeleTournoi.getParFiltrage(this.vue.getNotorieteSelectionnee(), this.vue.getStatutSelectionne()));
+				} catch (Exception err) {
+					this.vue.afficherPopupErreur("Une erreur est survenue");
+					throw new RuntimeException("Erreur dans la récupération des tournois");
 				}
 			}
 		}
@@ -268,6 +251,8 @@ public class ControleurTournois extends KeyAdapter implements ActionListener, It
 	private void rechercher(String requeteRecherche) {
 		try {
 			// Mise à jour du tableau avec les résultats de recherche
+			this.vue.resetCboxNotoriete();
+			this.vue.resetCboxStatuts();
 			this.vue.remplirTableau(this.modeleTournoi.getParNom(requeteRecherche));
 		} catch (Exception e1) {
 			this.vue.afficherPopupErreur("Une erreur est survenue");

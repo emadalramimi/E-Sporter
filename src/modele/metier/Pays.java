@@ -193,6 +193,20 @@ public enum Pays {
         }
         return nomsPays;
     }
+
+    /**
+     * Retourne une liste du nom de tous les pays spéciale pour le filtrage (avec "Tous les pays" en premier)
+     * @return une liste du nom de tous les pays spéciale pour le filtrage (avec "Tous les pays" en premier)
+     */
+    public static String[] getLibellesFiltres() {
+        Pays[] pays = Pays.values();
+        String[] nomsPays = new String[pays.length + 1];
+        nomsPays[0] = "Tous les pays";
+        for (int i = 0; i < pays.length; i++) {
+            nomsPays[i + 1] = pays[i].getNomPays();
+        }
+        return nomsPays;
+    }
     
     /**
      * Retourne un pays à partir de son nom

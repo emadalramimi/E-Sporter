@@ -2,6 +2,8 @@ package controleur;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -17,12 +19,13 @@ import modele.metier.Equipe;
 import modele.metier.Utilisateur;
 import vue.VueEquipes;
 import vue.theme.JButtonTable;
+import vue.theme.JComboBoxTheme;
 
 /**
  * Contrôleur de la vue des équipes
  * @see VueEquipes
  */
-public class ControleurEquipes extends KeyAdapter implements ActionListener {
+public class ControleurEquipes extends KeyAdapter implements ActionListener, ItemListener {
 
 	private VueEquipes vue;
 	private ModeleEquipe modeleEquipe;
@@ -132,6 +135,8 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 						// Mise à jour du tableau des équipes
 						// PS : À la suppression, pour éviter un bug, nous sommes contraints de recharger la page entière
 						this.vue.getVueBase().changerOnglet(ControleurBase.Menus.EQUIPES);
+
+						this.vue.resetCboxPays();
 					}
 
 					break;
@@ -191,6 +196,26 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 			}
 		}
 	}
+
+	/**
+	 * Quand on change la sélection d'un élément de la fenêtre
+	 * Filtre les tournois en fonction de la sélection
+	 */
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		if (e.getSource() instanceof JComboBoxTheme<?>) {
+			JComboBoxTheme<?> comboBox = (JComboBoxTheme<?>) e.getSource();
+
+			if (this.vue.estCboxPays(comboBox) && e.getStateChange() == ItemEvent.SELECTED) {
+			 	try {
+					this.vue.remplirTableau(this.modeleEquipe.getParFiltrage(this.vue.getPaysSelectionne()));
+				} catch (Exception err) {
+					this.vue.afficherPopupErreur("Une erreur est survenue");
+					throw new RuntimeException("Erreur dans la récupération des tournois");
+				}
+			}
+		}
+	}
 	
 	/**
 	 * Effectue une recherche de requête requeteRecherche
@@ -199,6 +224,7 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 	private void rechercher(String requeteRecherche) {
 		try {
 			// Mise à jour du tableau avec les résultats de recherche
+			this.vue.resetCboxPays();
 			this.vue.remplirTableau(this.modeleEquipe.getParNom(requeteRecherche));
 		} catch (Exception e1) {
 			this.vue.afficherPopupErreur("Une erreur est survenue");
