@@ -252,7 +252,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		// Remplissage des champs du formulaire si une équipe est renseignée pour modification
 		if (equipe != null) {
 			this.txtNom.setText(equipe.getNom());
-			this.cboxPays.setSelectedItem(equipe.getPays());
+			this.cboxPays.setSelectedItem(equipe.getPays().getNomPays());
 
 			List<Joueur> joueurs = equipe.getJoueurs();
 			this.txtJoueur1.setText(joueurs.get(0).getPseudo());
