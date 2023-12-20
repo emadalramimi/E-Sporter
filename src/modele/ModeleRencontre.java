@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
@@ -67,6 +68,35 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 				});
 			
 			return stream.collect(Collectors.toList());
+	}
+
+	/**
+	 * Récupère une rencontre depuis la BDD par sa clé primaire
+	 * @param idJoueur : identifiant de la rencontre
+	 * @return Retourne une rencontre depuis la BDD par sa clé primaire
+	 * @throws Exception Exception SQL
+	 */
+	@Override
+	public Optional<Rencontre> getParId(Integer... idRencontre) throws Exception {
+		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from rencontre where idRencontre = ?");
+		ps.setInt(1, idRencontre[0]);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		// Création de joueur si il existe
+		Rencontre rencontre = null;
+		if(rs.next()) {
+			rencontre = new Rencontre(
+				rs.getInt("idRencontre"),
+				rs.getInt("idPoule"),
+				rs.getInt("idEquipeGagnante"),
+				getEquipesRencontre(rs.getInt("idRencontre"))
+			);
+		}
+		
+		rs.close();
+		ps.close();
+		return Optional.ofNullable(rencontre);
 	}
 
 	/**

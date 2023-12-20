@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
@@ -52,6 +53,34 @@ public class ModeleArbitre extends DAO<Arbitre, Integer> {
 			});
 		
 		return stream.collect(Collectors.toList());
+	}
+
+	/**
+	 * Récupère un arbitre depuis la BDD par sa clé primaire
+	 * @param idJoueur : identifiant de l'arbitre
+	 * @return Retourne un arbitre depuis la BDD par sa clé primaire
+	 * @throws Exception Exception SQL
+	 */
+	@Override
+	public Optional<Arbitre> getParId(Integer... idArbitre) throws Exception {
+		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from arbitre where idArbitre = ?");
+		ps.setInt(1, idArbitre[0]);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		// Création de joueur si il existe
+		Arbitre arbitre = null;
+		if(rs.next()) {
+			arbitre = new Arbitre(
+				rs.getInt("idArbitre"),
+				rs.getString("nom"),
+				rs.getString("prenom")
+			);
+		}
+		
+		rs.close();
+		ps.close();
+		return Optional.ofNullable(arbitre);
 	}
 	
 	/**
