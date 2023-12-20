@@ -1,5 +1,7 @@
 package modele.metier;
 
+import java.util.Arrays;
+
 /**
  * Modèle métier rencontre
  */
@@ -105,7 +107,7 @@ public class Rencontre {
 	    Rencontre rencontre = (Rencontre) o;
 	    return this.idRencontre == rencontre.getIdPoule()
 	            && this.idPoule == rencontre.getIdPoule()
-	     	    && this.equipes == rencontre.getEquipes();
+	     	    && Arrays.equals(this.equipes, rencontre.getEquipes());
 	}
 	
 	@Override
