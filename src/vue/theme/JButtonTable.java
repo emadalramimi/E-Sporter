@@ -22,7 +22,6 @@ public class JButtonTable extends JButton {
 	/**
 	 * Crée le JButton
 	 * @param type : type du bouton
-	 * @param idElement : identifiant dans la BDD de l'élément sélectionné
 	 */
 	public JButtonTable(Type type) {
 		this.type = type;

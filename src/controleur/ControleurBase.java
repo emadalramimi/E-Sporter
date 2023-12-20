@@ -33,7 +33,8 @@ public class ControleurBase extends MouseAdapter {
 		}
 		
 		/**
-		 * @return Si un menu est activable
+		 * Retourne true si un menu est activable, false sinon
+		 * @return True si un menu est activable, false sinon
 		 */
 		public boolean getEstActivable() {
 			return this.estActivable;
@@ -74,7 +75,7 @@ public class ControleurBase extends MouseAdapter {
 	
 	/**
 	 * Modifie l'unique bouton activé (hors survol) du menu
-	 * @param boutonActif
+	 * @param boutonActif Bouton actif
 	 */
 	public void setBoutonActif(JButtonMenu boutonActif) {
 		for(JButtonMenu bouton : boutonsMenu) {

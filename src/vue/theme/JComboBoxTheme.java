@@ -10,9 +10,14 @@ import javax.swing.plaf.basic.ComboPopup;
 
 /**
  * Extension de JComboBox de Swing
+ * @param <T> Type
  */
 public class JComboBoxTheme<T> extends JComboBox<T> {
 
+	/**
+	 * Crée une JComboBoxTheme aux couleurs du thème
+	 * @param items Elements de la JComboBox
+	 */
     public JComboBoxTheme(T[] items) {
         super(items);
 

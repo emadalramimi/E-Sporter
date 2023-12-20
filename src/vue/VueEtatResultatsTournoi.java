@@ -24,9 +24,13 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.util.Vector;
 
+/**
+ * Vue de l'état des résultats d'un tournoi
+ */
 public class VueEtatResultatsTournoi extends JFrameTheme {
 
 	private JTableTheme table;
+	
 	/**
      * Constructeur de l'IHM pour l'état des résultats d'un tournoi
 	 * @param tournoi : le tournoi dont on veut afficher les résultats

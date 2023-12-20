@@ -5,12 +5,18 @@ import java.sql.SQLException;
 import modele.metier.Tournoi;
 import modele.metier.Utilisateur;
 
+/**
+ * Modèle utilisateur
+ */
 public class ModeleUtilisateur {
 
 	private static Utilisateur compteCourant;
 	private ModeleAdministrateur modeleAdministrateur;
 	private ModeleTournoi modeleTournoi;
 	
+	/**
+	 * Construit un modèle utilisateur
+	 */
 	public ModeleUtilisateur() {
 		this.modeleAdministrateur = new ModeleAdministrateur();
 		this.modeleTournoi = new ModeleTournoi();

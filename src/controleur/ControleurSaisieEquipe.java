@@ -30,7 +30,6 @@ public class ControleurSaisieEquipe implements ActionListener {
 	 * Construit un controleur pour VueSaisieEquipe
 	 * @param vueSaisieEquipes : VueSaisieEquipe
 	 * @param vueEquipes : VueEquipes (pour mettre à jour le tableau à l'insertion d'une nouvelle donnée)
-	 * @param controleurEquipes : Pour mettre à jour le tableau à l'insertion d'une nouvelle donnée
 	 * @param equipeOptionnel : À saisir si modification d'équipe
 	 */
 	public ControleurSaisieEquipe(VueSaisieEquipe vueSaisieEquipes, VueEquipes vueEquipes, Optional<Equipe> equipeOptionnel) {

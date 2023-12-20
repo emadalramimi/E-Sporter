@@ -5,8 +5,8 @@ import java.util.Optional;
 
 /**
  * Classe abstraite DAO
- * @param <T>
- * @param <T1>
+ * @param <T> Type class métier
+ * @param <T1> Type clé primaire
  */
 public abstract class DAO<T, T1> {
 

@@ -47,6 +47,9 @@ import controleur.ControleurTournois;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
+/**
+ * Vue de la liste des tournois
+ */
 public class VueTournois extends JFrameTheme {
 
 	private JTable table;
@@ -325,7 +328,7 @@ public class VueTournois extends JFrameTheme {
 	
 	/**
 	 * Remplit/met à jour le tableau d'équipes
-	 * @param equipes : liste des équipes à mettre dans le tableau
+	 * @param tournois : liste des tournois à mettre dans le tableau
 	 */
 	public void remplirTableau(List<Tournoi> tournois) {
 		// Vider le tableau

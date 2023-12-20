@@ -11,11 +11,19 @@ import javax.swing.UIManager;
  */
 public class JOptionPaneTheme extends JOptionPane {
     
+	/**
+	 * Crée un JOptionPane aux couleurs du thème
+	 */
     public JOptionPaneTheme() {
         super();
         this.personnaliser();
     }
     
+    /**
+     * Crée un JOptionPane aux couleurs du thème avec message
+     * @param message Message
+     * @param messageType Type de message
+     */
     public JOptionPaneTheme(Object message, int messageType) {
         super(message, messageType);
         this.personnaliser();

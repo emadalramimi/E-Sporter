@@ -15,7 +15,11 @@ import java.util.stream.StreamSupport;
 
 import modele.metier.Arbitre;
 
+/**
+ * Modèle arbitre
+ */
 public class ModeleArbitre extends DAO<Arbitre, Integer> {
+
 	/**
 	 * Récupère tous les arbitres
 	 * @return Liste des arbitres
@@ -57,7 +61,7 @@ public class ModeleArbitre extends DAO<Arbitre, Integer> {
 
 	/**
 	 * Récupère un arbitre depuis la BDD par sa clé primaire
-	 * @param idJoueur : identifiant de l'arbitre
+	 * @param idArbitre : identifiant de l'arbitre
 	 * @return Retourne un arbitre depuis la BDD par sa clé primaire
 	 * @throws Exception Exception SQL
 	 */

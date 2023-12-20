@@ -33,6 +33,9 @@ import java.awt.Insets;
 
 import javax.swing.ImageIcon;
 
+/**
+ * Vue de la saisie d'une poule
+ */
 public class VuePoule extends JFrameTheme {
 
 	private JTableTheme table;

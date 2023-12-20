@@ -58,7 +58,7 @@ public class BDD {
 
 	/**
 	 * Point d'entrée de BDD (pour remettre à zéro la base de données et insérer les données d'exemple)
-	 * @param args
+	 * @param args Arguments
 	 */
 	public static void main(String[] args) {
 		try {
@@ -415,7 +415,7 @@ public class BDD {
 						
 	/**
 	 * Insère les données d'exemple dans la base de données (environnement de développement)
-	 * @param st
+	 * @param st Statement BDD
 	 */
 	public void insererDonnees(Statement st) {
 		try {

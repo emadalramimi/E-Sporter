@@ -15,11 +15,11 @@ public class Poule {
 	
 	/**
 	 * Construit une poule
-	 * @param idPoule
-	 * @param estCloturee
-	 * @param estFinale
-	 * @param idTournoi
-	 * @param rencontres
+	 * @param idPoule 		Clé primaire
+	 * @param estCloturee 	Si clôturée
+	 * @param estFinale 	Si finale
+	 * @param idTournoi 	Clé étrangère tournoi
+	 * @param rencontres 	Liste des rencontres
 	 */
 	public Poule(int idPoule, boolean estCloturee, boolean estFinale, int idTournoi, List<Rencontre> rencontres) {
 		this.idPoule = idPoule;
@@ -30,11 +30,11 @@ public class Poule {
 	}
 	
 	/**
-	 * Construit une poule
-	 * @param estCloturee
-	 * @param estFinale
-	 * @param idTournoi
-	 * @param rencontres
+	 * Construit une poule pour l'insertion en BDD
+	 * @param estCloturee 	Si clôturée
+	 * @param estFinale 	Si finale
+	 * @param idTournoi 	Clé étrangère tournoi
+	 * @param rencontres 	Liste des rencontres
 	 */
 	public Poule(boolean estCloturee, boolean estFinale, int idTournoi, List<Rencontre> rencontres) {
 		this.estCloturee = estCloturee;
@@ -82,7 +82,7 @@ public class Poule {
 
 	/**
 	 * Modifie si la poule est une finale
-	 * @param estCloturee
+	 * @param estFinale
 	 */
 	public void setEstFinale(boolean estFinale) {
 		this.estFinale = estFinale;

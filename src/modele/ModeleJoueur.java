@@ -16,11 +16,14 @@ import java.util.stream.StreamSupport;
 
 import modele.metier.Joueur;
 
+/**
+ * Modèle joueur
+ */
 public class ModeleJoueur extends DAO<Joueur, Integer> {
 
 	/**
 	 * Récupère tous les joueurs
-	 * @return Liste de tous les équipes
+	 * @return Liste de tous les joueurs
 	 * @throws Exception Exception SQL
 	 */
 	@Override
@@ -61,7 +64,7 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
 	/**
 	 * Récupère un joueur depuis la BDD par sa clé primaire
 	 * @param idJoueur : identifiant du joueur
-	 * @return Retourne une équipe depuis la BDD par sa clé primaire
+	 * @return Retourne un joueur depuis la BDD par sa clé primaire
 	 * @throws Exception Exception SQL
 	 */
 	@Override

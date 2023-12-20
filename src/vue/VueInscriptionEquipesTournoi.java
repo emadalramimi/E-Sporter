@@ -28,6 +28,9 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Vue de l'inscription des équipes à un tournoi
+ */
 public class VueInscriptionEquipesTournoi extends JFrameTheme {
 
 	private JPanel contentPane;

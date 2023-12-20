@@ -26,6 +26,9 @@ import vue.theme.JComboBoxTheme;
  */
 public class ControleurTournois extends KeyAdapter implements ActionListener, ItemListener {
 
+	/**
+	 * Enumération des statuts d'un tournoi
+	 */
 	public enum Statut {
 		PHASE_INSCRIPTIONS("Phase d'inscriptions"),
 		OUVERT("Ouvert"),
@@ -33,14 +36,27 @@ public class ControleurTournois extends KeyAdapter implements ActionListener, It
 
 		private String libelle;
 
+		/**
+		 * Constructeur d'un statut
+		 * @param libelle : libellé du statut
+		 */
 		Statut(String libelle) {
 			this.libelle = libelle;
 		}
 
+		/**
+		 * Récupère le libellé du statut
+		 * @return libellé du statut
+		 */
 		public String getLibelle() {
 			return this.libelle;
 		}
 
+		/**
+		 * Récupère le statut en fonction de son libellé
+		 * @param libelle : libellé du statut
+		 * @return statut
+		 */
 		public static Statut valueOfLibelle(String libelle) {
 			for (Statut statut : Statut.values()) {
 				if (statut.getLibelle().equals(libelle)) {
@@ -50,6 +66,10 @@ public class ControleurTournois extends KeyAdapter implements ActionListener, It
 			return null;
 		}
 
+		/**
+		 * Récupère tous les libellés des statuts pour les filtres
+		 * @return libellés des statuts pour les filtres
+		 */
 		public static String[] getLibellesFiltres() {
 			String[] libelles = new String[Statut.values().length + 1];
 			libelles[0] = "Tous les statuts";

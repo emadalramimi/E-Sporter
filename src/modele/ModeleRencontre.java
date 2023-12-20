@@ -21,10 +21,16 @@ import modele.metier.Tournoi;
 import modele.metier.Utilisateur;
 import modele.metier.Pays;
 
+/**
+ * Modèle rencontre
+ */
 public class ModeleRencontre extends DAO<Rencontre, Integer> {
 
 	private ModeleJoueur modeleJoueur;
 
+	/**
+	 * Construit un modèle rencontre
+	 */
 	public ModeleRencontre() {
 		this.modeleJoueur = new ModeleJoueur();
 	}
@@ -72,8 +78,7 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 
 	/**
 	 * Récupère une rencontre depuis la BDD par sa clé primaire
-	 * @param idJoueur : identifiant de la rencontre
-	 * @return Retourne une rencontre depuis la BDD par sa clé primaire
+	 * @param idRencontre identifiant de la rencontre
 	 * @throws Exception Exception SQL
 	 */
 	@Override

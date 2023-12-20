@@ -7,7 +7,9 @@ import java.util.List;
  */
 public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	
-	// TODO ajouter une méthode à l'énum permettant de get le multiplicateur de pts
+	/**
+	 * Enumération des notoriétés
+	 */
 	public enum Notoriete {
         LOCAL("Local"),
         REGIONAL("Régional"),
@@ -17,14 +19,27 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 
         private final String libelle;
 
+		/**
+		 * Construit une notoriété
+		 * @param libelle Libellé
+		 */
         Notoriete(String libelle) {
             this.libelle = libelle;
         }
 
+		/**
+		 * Retourne le libellé
+		 * @return Libellé
+		 */
         public String getLibelle() {
             return libelle;
         }
         
+		/**
+		 * Retourne la notoriété à partir du libellé
+		 * @param libelle Libellé
+		 * @return Notoriété
+		 */
         public static Notoriete valueOfLibelle(String libelle) {
             for (Notoriete notoriete : values()) {
                 if (notoriete.getLibelle().equalsIgnoreCase(libelle)) {
@@ -34,6 +49,10 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
             throw new IllegalArgumentException("Notoriété avec le libellé '" + libelle + "' non trouvé.");
         }
 
+		/**
+		 * Retourne les libellés des notoriétés pour les filtres
+		 * @return Libellés des notoriétés pour les filtres
+		 */
 		public static String[] getLibellesFiltres() {
 			String[] libelles = new String[values().length + 1];
 			libelles[0] = "Toutes les notoriétés";
@@ -58,21 +77,18 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	
 	/**
 	 * Construit un tournoi
-	 * @param idTournoi
-	 * @param nomTournoi
-	 * @param notoriete
-	 * @param dateTimeDebut
-	 * @param dateTimeFin
-	 * @param identifiant
-	 * @param motDePasse
-	 * @param poules
-	 * @param equipes
-	 * @param arbitres
+	 * @param idTournoi 	Clé primaire
+	 * @param nomTournoi 	Nom
+	 * @param notoriete 	Notoriété
+	 * @param dateTimeDebut Date et heure de début
+	 * @param dateTimeFin 	Date et heure de fin
+	 * @param identifiant 	Identifiant arbitres
+	 * @param motDePasse 	Mot de passe arbitres
+	 * @param poules 		Liste des poules
+	 * @param equipes 		Liste des équipes
+	 * @param arbitres 		Liste des arbitres
 	 */
-	public Tournoi(int idTournoi, String nomTournoi, Notoriete notoriete,
-			long dateTimeDebut, long dateTimeFin, boolean estCloture,
-			String identifiant, String motDePasse, List<Poule> poules,
-			List<Equipe> equipes, List<Arbitre> arbitres) {
+	public Tournoi(int idTournoi, String nomTournoi, Notoriete notoriete, long dateTimeDebut, long dateTimeFin, boolean estCloture, String identifiant, String motDePasse, List<Poule> poules, List<Equipe> equipes, List<Arbitre> arbitres) {
 		this.idTournoi = idTournoi;
 		this.nomTournoi = nomTournoi;
 		this.notoriete = notoriete;
@@ -86,10 +102,18 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 		this.arbitres = arbitres;
 	}
 	
-	// Pas d'équipe et poule car inscription
-	public Tournoi(String nomTournoi, Notoriete notoriete, long dateTimeDebut,
-			long dateTimeFin, String identifiant, String motDePasse,
-			List<Arbitre> arbitres) {
+	/**
+	 * Construit un tournoi pour l'insertion en BDD
+	 * Pas d'équipe et poule car inscription des équipes et création des poules après
+	 * @param nomTournoi 	Nom
+	 * @param notoriete 	Notoriété
+	 * @param dateTimeDebut Date et heure de début
+	 * @param dateTimeFin 	Date et heure de fin
+	 * @param identifiant 	Identifiant arbitres
+	 * @param motDePasse 	Mot de passe arbitres
+	 * @param arbitres 		Liste des arbitres
+	 */
+	public Tournoi(String nomTournoi, Notoriete notoriete, long dateTimeDebut, long dateTimeFin, String identifiant, String motDePasse, List<Arbitre> arbitres) {
 		this.nomTournoi = nomTournoi;
 		this.notoriete = notoriete;
 		this.dateTimeDebut = dateTimeDebut;
@@ -108,7 +132,7 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 
 	/**
 	 * Modifie la clé primaire
-	 * @param idEquipe clé primaire
+	 * @param idTournoi clé primaire
 	 */
 	public void setIdTournoi(int idTournoi) {
 		this.idTournoi = idTournoi;
@@ -223,6 +247,10 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 		this.motDePasse = motDePasse;
 	}
 	
+	/**
+	 * Retourne le rôle de l'arbitre
+	 * @return Role
+	 */
 	public Role getRole() {
 		return Role.ARBITRE;
 	}
@@ -242,6 +270,9 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 		this.poules = poules;
 	}
 
+	/**
+	 * Retourne la poule actuelle du tournoi
+	 */
 	public Poule getPouleActuelle() {
 		for (Poule poule : this.poules) {
 			if (poule.getEstCloturee() == false) {
@@ -251,26 +282,50 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 		return null;
 	}
 	
+	/**
+	 * Retourne la liste des équipes
+	 * @return Liste des équipes
+	 */
 	public List<Equipe> getEquipes() {
 		return this.equipes;
 	}
 	
+	/**
+	 * Modifie la liste des équipes
+	 * @param equipes Liste des équipes
+	 */
 	public void setEquipes(List<Equipe> equipes) {
 		this.equipes = equipes;
 	}
 
+	/**
+	 * Ajoute une équipe à la liste des équipes
+	 * @param equipe Equipe à ajouter
+	 */
 	public void addEquipe(Equipe equipe) {
 		this.equipes.add(equipe);
 	}
 
+	/**
+	 * Supprime une équipe de la liste des équipes
+	 * @param equipe Equipe à supprimer
+	 */
 	public void removeEquipe(Equipe equipe) {
 		this.equipes.remove(equipe);
 	}
 	
+	/**
+	 * Retourne la liste des arbitres
+	 * @return Liste des arbitres
+	 */
 	public List<Arbitre> getArbitres() {
 		return this.arbitres;
 	}
 	
+	/**
+	 * Modifie la liste des arbitres
+	 * @param arbitres Liste des arbitres
+	 */
 	public void setArbitres(List<Arbitre> arbitres) {
 		this.arbitres = arbitres;
 	}
@@ -290,14 +345,9 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	    return this.idTournoi == tournoi.getIdTournoi();
 	}
 
-	@Override
-	public String toString() {
-		return "Tournoi [idTournoi=" + idTournoi + ", nomTournoi=" + nomTournoi + ", notoriete=" + notoriete
-				+ ", dateTimeDebut=" + dateTimeDebut + ", dateTimeFin=" + dateTimeFin + ", estCloture=" + estCloture + ", identifiant="
-				+ identifiant + ", motDePasse=" + motDePasse + ", poules=" + poules + ", equipes=" + equipes
-				+ ", arbitres=" + arbitres + "]";
-	}
-
+	/**
+	 * Compare le tournoi avec un autre tournoi
+	 */
 	@Override
 	public int compareTo(Tournoi tournoi) {
 		// Vérifie si le tournoi actuel est clos, ouvert ou en cours de création
@@ -323,6 +373,14 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 				return 1; // Le tournoi fourni commence plus tôt, donc il vient en premier
 			}
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "Tournoi [idTournoi=" + idTournoi + ", nomTournoi=" + nomTournoi + ", notoriete=" + notoriete
+				+ ", dateTimeDebut=" + dateTimeDebut + ", dateTimeFin=" + dateTimeFin + ", estCloture=" + estCloture + ", identifiant="
+				+ identifiant + ", motDePasse=" + motDePasse + ", poules=" + poules + ", equipes=" + equipes
+				+ ", arbitres=" + arbitres + "]";
 	}
 	
 }

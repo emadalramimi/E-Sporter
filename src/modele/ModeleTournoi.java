@@ -25,12 +25,18 @@ import modele.metier.StatistiquesEquipe;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
+/**
+ * Modèle tournoi
+ */
 public class ModeleTournoi extends DAO<Tournoi, Integer> {
 
 	private ModeleArbitre modeleArbitre;
 	private ModeleEquipe modeleEquipes;
 	private ModelePoule modelePoule;
 
+	/**
+	 * Construit un modèle tournoi
+	 */
 	public ModeleTournoi() {
 		this.modeleArbitre = new ModeleArbitre();
 		this.modeleEquipes = new ModeleEquipe();

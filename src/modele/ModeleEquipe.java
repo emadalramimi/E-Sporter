@@ -19,10 +19,16 @@ import modele.metier.Joueur;
 import modele.metier.Pays;
 import modele.metier.Tournoi;
 
+/**
+ * Modèle équipe
+ */
 public class ModeleEquipe extends DAO<Equipe, Integer> {
 	
 	private ModeleJoueur modeleJoueur;
 	
+	/**
+	 * Construit un modèle équipe
+	 */
 	public ModeleEquipe() {
 		this.modeleJoueur = new ModeleJoueur();
 	}
@@ -396,6 +402,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	}
 	
 	/**
+	 * Méthode qui récupère les équipes contenant la variable nom dans leur nom d'équipe
 	 * @param nom : contenu dans le nom d'une équipe
 	 * @return la liste des équipes contenant la variable nom dans leur nom d'équipe
 	 * @throws Exception Erreur SQL
@@ -434,6 +441,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	 * Méthode de recherche d'équipes par filtrage
 	 * @param pays Pays de l'équipe
 	 * @throws Exception Exception SQL
+	 * @return Retourne la liste des équipes filtrées par pays
 	 */
 		public List<Equipe> getParFiltrage(Pays pays) throws Exception {
 		List<Equipe> equipes = this.getTout();

@@ -17,13 +17,13 @@ public class Equipe implements Comparable<Equipe> {
 	
 	/**
 	 * Construit une équipe
-	 * @param idEquipe
-	 * @param nom
-	 * @param pays
-	 * @param classement
-	 * @param worldRanking
-	 * @param saison
-	 * @param joueurs
+	 * @param idEquipe 		Clé primaire
+	 * @param nom 			Nom
+	 * @param pays 			Pays
+	 * @param classement 	Classement
+	 * @param worldRanking 	World Ranking
+	 * @param saison 		Saison
+	 * @param joueurs 		Liste des joueurs
 	 */
 	public Equipe(int idEquipe, String nom, Pays pays, int classement, int worldRanking, String saison, List<Joueur> joueurs) {
 		this.idEquipe = idEquipe;
@@ -35,6 +35,12 @@ public class Equipe implements Comparable<Equipe> {
 		this.joueurs = joueurs;
 	}
 	
+	/**
+	 * Construit une équipe pour l'insertion en BDD
+	 * @param nom 		Nom
+	 * @param pays 		Pays
+	 * @param joueurs 	Liste des joueurs
+	 */
 	public Equipe(String nom, Pays pays, List<Joueur> joueurs) {
 		this.nom = nom;
 		this.pays = pays;
@@ -168,15 +174,18 @@ public class Equipe implements Comparable<Equipe> {
 	    return this.nom.equals(equipe.nom) && this.pays.equals(equipe.pays);
 	}
 
+	/**
+	 * Compare l'équipe avec une autre équipe
+	 */
+	@Override
+	public int compareTo(Equipe equipe) {
+		return this.nom.compareTo(equipe.nom);
+	}
+
 	@Override
 	public String toString() {
 		return "Equipe [idEquipe=" + idEquipe + ", nom=" + nom + ", pays=" + pays + ", classement=" + classement
 				+ ", worldRanking=" + worldRanking + ", saison=" + saison + "]";
-	}
-
-	@Override
-	public int compareTo(Equipe equipe) {
-		return this.nom.compareTo(equipe.nom);
 	}
 
 }

@@ -7,6 +7,9 @@ import java.util.Optional;
 
 import modele.metier.Administrateur;
 
+/**
+ * Modèle administrateur
+ */
 public class ModeleAdministrateur {
 	
     /**

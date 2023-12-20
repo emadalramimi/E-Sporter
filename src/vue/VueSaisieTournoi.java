@@ -55,6 +55,9 @@ import java.awt.FlowLayout;
 
 import javax.swing.SpinnerNumberModel;
 
+/**
+ * Vue de la saisie d'un tournoi
+ */
 public class VueSaisieTournoi extends JFrameTheme {
 
 	private JPanel contentPane;

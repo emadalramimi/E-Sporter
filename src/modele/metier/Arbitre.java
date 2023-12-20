@@ -68,11 +68,11 @@ public class Arbitre {
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
-	@Override
-	public String toString() {
-		return "Arbitre [idArbitre=" + idArbitre + ", nom=" + nom + ", prenom=" + prenom + "]";
-	}
 
+	/**
+	 * Retourne vrai si l'arbitre est égal à l'objet passé en paramètre
+	 * @param o Objet à comparer
+	 */
 	@Override
 	public boolean equals(Object o) {
 	    if (o == null) {
@@ -83,6 +83,11 @@ public class Arbitre {
 	    }
 	    Arbitre arbitre = (Arbitre) o;
 	    return arbitre.getIdArbitre() == this.getIdArbitre();
+	}
+
+	@Override
+	public String toString() {
+		return "Arbitre [idArbitre=" + idArbitre + ", nom=" + nom + ", prenom=" + prenom + "]";
 	}
 	
 }

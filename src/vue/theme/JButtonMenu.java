@@ -42,6 +42,7 @@ public class JButtonMenu extends JButton {
 	
 	/**
 	 * Retourne le menu relatif au bouton
+	 * @return Menu relatif au bouton
 	 */
 	public ControleurBase.Menus getMenu() {
 		return this.menu;

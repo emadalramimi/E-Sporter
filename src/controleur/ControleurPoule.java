@@ -28,7 +28,8 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
 
     /**
      * Constructeur du controleur de VuePoule
-     * @param vue : vuePoule
+     * @param vue Vue poule
+     * @param tournoi Tournoi
      */
     public ControleurPoule(VuePoule vue, Tournoi tournoi) {
         this.vue = vue;
@@ -99,6 +100,9 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
         }
     }
 
+    /**
+     * Quand on clique sur un bouton
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton bouton = (JButton) e.getSource();
@@ -108,6 +112,7 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
                 // TODO S3
                 break;
             case "État des résultats":
+                // Affiche la vue d'état des résultats du tournoi
                 this.vue.afficherVueEtatResultatsTournoi(this.tournoi);
                 break;
             case "Fermer":

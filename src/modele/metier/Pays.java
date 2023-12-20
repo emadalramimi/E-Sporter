@@ -210,7 +210,7 @@ public enum Pays {
     
     /**
      * Retourne un pays à partir de son nom
-     * @param nom
+     * @param nom Nom du pays
      * @return un Pays à partir de son nom
      */
     public static Pays valueOfNom(String nom) {

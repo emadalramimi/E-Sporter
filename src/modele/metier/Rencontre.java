@@ -12,9 +12,9 @@ public class Rencontre {
 	
 	/**
 	 * Construit une rencontre
-	 * @param idRencontre
-	 * @param idPoule
-	 * @param equipes
+	 * @param idRencontre 		Clé primaire
+	 * @param idPoule 			Clé étrangère poule
+	 * @param equipes 			Tableau d'équipes
 	 */
 	public Rencontre(int idRencontre, int idPoule, int idEquipeGagnante, Equipe[] equipes) {
 		this.idRencontre = idRencontre;
@@ -25,8 +25,7 @@ public class Rencontre {
 	
 	/**
 	 * Construit une rencontre (pour l'insertion en BDD)
-	 * @param idRencontre
-	 * @param idPoule
+	 * @param equipes Tableau d'équipes
 	 */
 	public Rencontre(Equipe[] equipes) {
 		this.equipes = equipes;

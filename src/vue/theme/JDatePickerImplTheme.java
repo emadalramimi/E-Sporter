@@ -17,7 +17,7 @@ import vue.VueTournois;
 public class JDatePickerImplTheme extends JDatePickerImpl {
 	
     /**
-     * Créer un nouveau composant JDatePickerImpl avec un style personnalisé.
+     * Crée un nouveau composant JDatePickerImpl avec un style personnalisé
      * @param datePanel Le panel de sélection de la date.
      * @param formatter Le formatteur de la date.
      */

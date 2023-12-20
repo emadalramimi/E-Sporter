@@ -24,6 +24,9 @@ import javax.swing.SwingConstants;
 import controleur.ControleurInscriptionEquipesTournoiPopup;
 import controleur.ControleurSaisieTournoiArbitre;
 
+/**
+ * Vue de la saisie d'un tournoi avec une liste d'équipes ou d'arbitres
+ */
 public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 
 	private JPanel contentPane;
@@ -53,8 +56,8 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	
 	/**
      * Constructeur de l'IHM pour la saisie d'un tournoi avec une liste d'arbitres
-	 * @param arbitres : la liste des arbitres
-	 * @param tournoi : le tournoi en cours de création
+	 * @param vueSaisieTournoi Vue saisie tournoi
+	 * @param arbitres Tableau d'arbitres
      */
 	public VueSaisieTournoiEquipeArbitre(VueSaisieTournoi vueSaisieTournoi, Arbitre[] arbitres) {
 		this.type = VueSaisieTournoiEquipeArbitre.Type.ARBITRE;

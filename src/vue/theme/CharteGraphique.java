@@ -23,9 +23,9 @@ public class CharteGraphique {
 	public final static Color TOURNOI_CLOTURE = new Color(255, 0, 0);
 	
 	/**
-	 * @param taille
-	 * @param estGras
-	 * @return la police du logiciel
+	 * @param taille Taille de la police
+	 * @param estGras True pour afficher une police grasse, false sinon
+	 * @return la police générale du logiciel
 	 */
 	public static Font getPolice(float taille, boolean estGras) {
 	    Font police = null;

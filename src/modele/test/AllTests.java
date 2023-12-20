@@ -18,7 +18,6 @@ import org.junit.runners.Suite;
     TestRencontre.class,
     TestSatistiquesEquipe.class,
     TestTournoi.class,
-    
     TestModeleAdministrateur.class,
     TestModeleArbitre.class,
     TestModeleEquipe.class,
@@ -27,13 +26,20 @@ import org.junit.runners.Suite;
     TestModeleRenontre.class,
     TestModeleTournoi.class,
     TestModeleUtilisateur.class
-    
 })
 
+/**
+ * Classe de test pour lancer tous les tests
+ */
 public class AllTests {
-	
+
+    /**
+     * Méthode principale pour lancer tous les tests
+     * @param args Arguments
+     */
     public static void main(String[] args) {
     	BDD.main(args);
         JUnitCore.runClasses(AllTests.class);
     }
+
 }

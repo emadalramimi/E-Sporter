@@ -41,7 +41,7 @@ public class JFrameTheme extends JFrame {
     private JButtonTitlebar btnToggleAgrandir;
     private JButtonTitlebar btnFermer;
     
-    public List<JFrameTheme> fenetresEnfant;
+    private List<JFrameTheme> fenetresEnfant;
 
     /**
      * Crée une JFrameTheme avec titlebar personnalisée
@@ -163,7 +163,7 @@ public class JFrameTheme extends JFrame {
     
     /**
      * Ajoute la fenêtre enfant à la liste des fenêtres enfant
-     * @param fenetre
+     * @param fenetre Fenêtre enfant à ajouter
      */
     public void ajouterFenetreEnfant(JFrameTheme fenetre) {
     	this.fenetresEnfant.add(fenetre);
@@ -171,7 +171,7 @@ public class JFrameTheme extends JFrame {
     
     /**
      * Retire la fenêtre enfant à la liste des fenêtres enfant
-     * @param fenetre
+     * @param fenetre Fenêtre enfant à retirer
      */
     public void retirerFenetreEnfant(JFrameTheme fenetre) {
     	this.fenetresEnfant.remove(fenetre);
@@ -196,7 +196,7 @@ public class JFrameTheme extends JFrame {
     
     /**
 	 * Affiche un popup d'erreur
-	 * @param message
+	 * @param message Message du popup
 	 */
 	public void afficherPopupErreur(String message) {
 		JOptionPaneTheme.showMessageDialog(this, message, "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -204,7 +204,7 @@ public class JFrameTheme extends JFrame {
 	
 	/**
 	 * Affiche un popup de message
-	 * @param message
+	 * @param message Message du popup
 	 */
 	public void afficherPopupMessage(String message) {
 		JOptionPaneTheme.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);

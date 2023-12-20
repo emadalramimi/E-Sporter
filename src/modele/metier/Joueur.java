@@ -13,6 +13,7 @@ public class Joueur {
 	 * Construit un joueur
 	 * @param idJoueur	Clé primaire
 	 * @param pseudo	Pseudo
+	 * @param idEquipe	Clé étrangère idEquipe
 	 */
 	public Joueur(int idJoueur, String pseudo, int idEquipe) {
 		this.idJoueur = idJoueur;
@@ -54,7 +55,7 @@ public class Joueur {
 	
 	/**
 	 * Modifie le pseudo
-	 * @param pseudo
+	 * @param pseudo Pseudo de l'équipe
 	 */
 	public void setPseudo(String pseudo) {
 		this.pseudo = pseudo;
@@ -70,7 +71,7 @@ public class Joueur {
 	
 	/**
 	 * Modifie la clé étrangère équipe
-	 * @param idEquipe
+	 * @param idEquipe Identifiant de l'équipe
 	 */
 	public void setIdEquipe(int idEquipe) {
 		this.idEquipe = idEquipe;

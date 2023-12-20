@@ -15,10 +15,16 @@ import java.util.stream.StreamSupport;
 import modele.metier.Poule;
 import modele.metier.Rencontre;
 
+/**
+ * Modèle poule
+ */
 public class ModelePoule extends DAO<Poule, Integer> {
 	
 	private ModeleRencontre modeleRencontre;
 
+	/**
+	 * Construit un modèle poule
+	 */
 	public ModelePoule() {
 		this.modeleRencontre = new ModeleRencontre();
 	}
@@ -156,10 +162,9 @@ public class ModelePoule extends DAO<Poule, Integer> {
 	}
 
 	/**
-	 * Getter de la liste des poules d'un tournoi
+	 * Retourne les poules d'un tournoi
 	 * @param idTournoi Identifiant du tournoi
 	 * @return Liste des poules du tournoi
-	 * @throws Exception Exception SQL
 	 */
 	public List<Poule> getPoulesTournoi(int idTournoi) {
 		try {
