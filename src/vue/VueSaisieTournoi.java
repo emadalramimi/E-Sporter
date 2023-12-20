@@ -18,6 +18,7 @@ import vue.theme.JDatePickerImplTheme;
 import vue.theme.JFrameTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.JPasswordFieldTheme;
+import vue.theme.JSpinnerTheme;
 import vue.theme.JTextFieldTheme;
 
 import java.awt.BorderLayout;
@@ -71,7 +72,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 	private JComboBoxTheme<String> cboxNotoriete;
 	private UtilDateModel modelDateDebut;
 	private UtilDateModel modelDateFin;
-	private JSpinner spinnerHeuresDebut;
+	private JSpinnerTheme spinnerHeuresDebut;
 	private JSpinner spinnerMinutesDebut;
 	private JSpinner spinnerHeuresFin;
 	private JSpinner spinnerMinutesFin;
@@ -289,7 +290,7 @@ public class VueSaisieTournoi extends JFrameTheme {
         panelHeureDebut.add(lblHeure);
 
 		// Spinner heure debut (heures)
-        spinnerHeuresDebut = new JSpinner();
+        spinnerHeuresDebut = new JSpinnerTheme();
         spinnerHeuresDebut.setBackground(CharteGraphique.FOND_SECONDAIRE);
         spinnerHeuresDebut.setForeground(CharteGraphique.TEXTE); 
         spinnerHeuresDebut.setModel(new SpinnerNumberModel(0, 0, 23, 1));
