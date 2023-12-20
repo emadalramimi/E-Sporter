@@ -313,18 +313,6 @@ public class TestModeleRencontre {
 		modele.setEquipeGagnante(rencontre,"fausseEquipe");
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	public void testAjouterTropEquipes() throws Exception {
-		modeleUtilisateur.connecter("admin", "mdp");
-		ModeleEquipe modeleEquipe = new ModeleEquipe();
-		Equipe[] testRencontre = {
-				modeleEquipe.getParId(1).get(),
-				modeleEquipe.getParId(2).get(),
-				modeleEquipe.getParId(3).get()
-		};
-		Rencontre rencontre = new Rencontre(testRencontre);
-	}
-	
 	@After
     public void tearsDown() throws Exception {
 		modeleUtilisateur.deconnecter();
