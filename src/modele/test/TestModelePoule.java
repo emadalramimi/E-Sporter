@@ -15,10 +15,9 @@ import org.junit.Test;
 import modele.ModelePoule;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
+import modele.metier.Pays;
 import modele.metier.Poule;
 import modele.metier.Rencontre;
-import modele.metier.Tournoi;
-import modele.metier.Tournoi.Notoriete;
 
 public class TestModelePoule {
 	
@@ -38,8 +37,8 @@ public class TestModelePoule {
 		    new Joueur(5, "Joueur5", 2)
 		));
     	
-        Equipe equipeA = new Equipe(1, "Equipe A", "France", 5, 5, "2020", joueurs);
-        Equipe equipeB = new Equipe(2, "Equipe B", "Maroc", 5, 5, "2020", joueurs);
+        Equipe equipeA = new Equipe(1, "Equipe A", Pays.FRANCE, 5, 5, "2020", joueurs);
+        Equipe equipeB = new Equipe(2, "Equipe B", Pays.MAROC, 5, 5, "2020", joueurs);
         Equipe[] equipes = {equipeA, equipeB};
         rencontres = new ArrayList<>(Arrays.asList(
         	new Rencontre(1, 1000, 10000, equipes),

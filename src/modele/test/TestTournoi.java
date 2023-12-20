@@ -12,6 +12,7 @@ import org.junit.Test;
 import modele.metier.Arbitre;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
+import modele.metier.Pays;
 import modele.metier.Poule;
 import modele.metier.Rencontre;
 import modele.metier.Tournoi;
@@ -41,8 +42,8 @@ public class TestTournoi {
 			    new Joueur(5, "Joueur5", 2)
 			));
     	
-        equipeA = new Equipe(50, "Equipe A", "France", 5, 5, "2020", joueurs);
-        equipeB = new Equipe(51, "Equipe B", "Maroc", 5, 5, "2020", joueurs);
+        equipeA = new Equipe(50, "Equipe A", Pays.FRANCE, 5, 5, "2020", joueurs);
+        equipeB = new Equipe(51, "Equipe B", Pays.MAROC, 5, 5, "2020", joueurs);
         Equipe[] equipeArray = {equipeA, equipeB};
         equipes = new ArrayList<>(Arrays.asList(
         		equipeA,
@@ -197,8 +198,8 @@ public class TestTournoi {
 	@Test
 	public void testSetEquipes() {
 		
-		Equipe equipe1 = new Equipe("AutreEquipe1", "Algérie", joueurs);
-        Equipe equipe2 = new Equipe("AutreEquipe2", "Maroc", joueurs);
+		Equipe equipe1 = new Equipe("AutreEquipe1", Pays.ALGERIE, joueurs);
+        Equipe equipe2 = new Equipe("AutreEquipe2", Pays.MAROC, joueurs);
         List<Equipe> autreEquipes = new ArrayList<>(Arrays.asList(equipe1, equipe2));
 		
 		tournoi1.setEquipes(autreEquipes);
@@ -239,7 +240,7 @@ public class TestTournoi {
 	
 	@Test
 	public void testAddEquipe() {
-		Equipe equipeTest = new Equipe(50, "Equipe C", "France", 5, 5, "2020", joueurs);
+		Equipe equipeTest = new Equipe(50, "Equipe C", Pays.FRANCE, 5, 5, "2020", joueurs);
 		tournoi1.addEquipe(equipeTest);
 		equipes.add(equipeTest);
 		assertEquals(tournoi1.getEquipes(),equipes);

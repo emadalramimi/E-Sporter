@@ -15,6 +15,7 @@ import modele.ModeleEquipe;
 import modele.ModeleJoueur;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
+import modele.metier.Pays;
 
 public class TestModeleJoueur {
 	
@@ -36,7 +37,7 @@ private ModeleJoueur modele;
 				new Joueur(41, "joueur", 6),
 				new Joueur(42, "joueur", 6)
 				));
-		equipe = new Equipe("Equipe", "Canada", joueurs);
+		equipe = new Equipe("Equipe", Pays.CANADA, joueurs);
     }
 	
 	@Test

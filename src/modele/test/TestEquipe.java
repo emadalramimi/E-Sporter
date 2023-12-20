@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import modele.metier.Equipe;
 import modele.metier.Joueur;
+import modele.metier.Pays;
 
 public class TestEquipe {
 	
@@ -20,7 +21,7 @@ public class TestEquipe {
 	
 	@Before
     public void setUp() {
-		equipeSansJoueurs = new Equipe(1, "Equipe1", "France", 1, 1, "2023", listJoueurs);
+		equipeSansJoueurs = new Equipe(1, "Equipe1", Pays.FRANCE, 1, 1, "2023", listJoueurs);
 		listJoueurs = new ArrayList<>(Arrays.asList(
 			    new Joueur(1, "Joueur1", 2),
 			    new Joueur(2, "Joueur2", 2),
@@ -28,7 +29,7 @@ public class TestEquipe {
 			    new Joueur(4, "Joueur4", 2),
 			    new Joueur(5, "Joueur5", 2)
 			));
-		equipeAvecJoueurs = new Equipe("Equipe2", "Canada",listJoueurs);
+		equipeAvecJoueurs = new Equipe("Equipe2", Pays.CANADA, listJoueurs);
     }
 	
 	@Test
@@ -56,13 +57,13 @@ public class TestEquipe {
 	
 	@Test
 	public void testGetPays() {
-		assertEquals(equipeSansJoueurs.getPays(), "France");
+		assertEquals(equipeSansJoueurs.getPays(), Pays.FRANCE);
 	}
 	
 	@Test
 	public void testSetPays() {
-		equipeSansJoueurs.setPays("Allemagne");
-		assertEquals(equipeSansJoueurs.getPays(), "Allemagne");
+		equipeSansJoueurs.setPays(Pays.ALLEMAGNE);
+		assertEquals(equipeSansJoueurs.getPays(), Pays.ALLEMAGNE);
 	}
 	
 	@Test

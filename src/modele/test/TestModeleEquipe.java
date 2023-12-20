@@ -15,6 +15,7 @@ import modele.ModeleEquipe;
 import modele.ModeleTournoi;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
+import modele.metier.Pays;
 
 public class TestModeleEquipe {
 	
@@ -35,8 +36,8 @@ public class TestModeleEquipe {
 			    new Joueur(4, "Joueur4", 2),
 			    new Joueur(5, "Joueur5", 2)
 			));
-		equipe = new Equipe(10, "Equipe", "Canada", 2, 2, "Saison 2023", listJoueurs);
-		equipeAModif = new Equipe(10, "EquipeModif", "France", 3, 3, "Saison 2024", listJoueurs);
+		equipe = new Equipe(10, "Equipe", Pays.CANADA, 2, 2, "Saison 2023", listJoueurs);
+		equipeAModif = new Equipe(10, "EquipeModif", Pays.FRANCE, 3, 3, "Saison 2024", listJoueurs);
     }
 	
 	@Test

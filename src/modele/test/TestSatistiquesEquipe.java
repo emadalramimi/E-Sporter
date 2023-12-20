@@ -10,6 +10,7 @@ import static org.junit.Assert.assertEquals;
 
 import modele.metier.Equipe;
 import modele.metier.Joueur;
+import modele.metier.Pays;
 import modele.metier.StatistiquesEquipe;
 
 public class TestSatistiquesEquipe {
@@ -26,7 +27,7 @@ public class TestSatistiquesEquipe {
 			    new Joueur(4, "Joueur4", 2),
 			    new Joueur(5, "Joueur5", 2)
 			));
-		equipe = new Equipe("Equipe1", "Canada",listJoueurs);
+		equipe = new Equipe("Equipe1", Pays.CANADA, listJoueurs);
 		statEquipe = new StatistiquesEquipe(equipe, 3, 1);
 	}
 	
