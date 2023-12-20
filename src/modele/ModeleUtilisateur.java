@@ -118,7 +118,7 @@ public class ModeleUtilisateur {
 			throw new IllegalArgumentException("Identifiant et/ou mot de passe incorrects.");
 		}
 		if (utilisateur.getRole() == Utilisateur.Role.ARBITRE && ((Tournoi) utilisateur).getEstCloture() == true) {
-			throw new IllegalArgumentException("Vous ne pouvez pas vous connecter sur un tournoi clôturé.");
+			throw new IllegalArgumentException("Vous ne pouvez pas vous connecter sur un tournoi en phase d'inscriptions ou clôturé.");
 		}
 	}
 	
