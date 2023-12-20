@@ -173,7 +173,7 @@ public class VueEquipes extends JFrameTheme {
 		
 		// Ajouter buttons dans la derniere colonne
 		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
-		buttonColumn.setCellRenderer(new TableButtonsPanel(table, controleur, 0));
+		buttonColumn.setCellRenderer(new TableButtonsPanel(table, controleur));
 		buttonColumn.setCellEditor(new TableButtonsCellEditor(controleur));
 		
 		// Règles d'affichage du drapeau du pays
@@ -196,6 +196,57 @@ public class VueEquipes extends JFrameTheme {
 		this.remplirTableau(this.controleur.getEquipes());
 		
 		scrollPaneEquipes.setViewportView(table);
+	}
+	
+	/**
+	 * Classe interne de label avec une icone (pour les drapeaux)
+	 */
+	private static class LabelIcon {
+
+        ImageIcon icon;
+        String label;
+
+        public LabelIcon(ImageIcon icon, String label) {
+            this.icon = icon;
+            this.label = label;
+        }
+        
+    }
+	
+	/**
+	 * Classe interne pour afficher les drapeaux
+	 */
+	private static class ImageTableCellRenderer extends DefaultTableCellRenderer {
+		
+		@Override
+	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+			// Affichage du label et de l'icone à gauche
+	        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+	        LabelIcon labelIcon = (LabelIcon) value;
+	        setIcon(labelIcon.icon);
+	        setText(labelIcon.label);
+	        
+	        // Couleur de fond des cellules alternantes
+ 			if(row % 2 == 0) {
+ 				this.setBackground(CharteGraphique.FOND_SECONDAIRE);
+ 			} else {
+ 				this.setBackground(CharteGraphique.FOND);
+ 			}
+ 			
+ 			// Bordure de la cellule du tableau
+ 			setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, CharteGraphique.BORDURE));
+ 			
+ 			// Police
+ 			this.setFont(CharteGraphique.getPolice(16, false));
+ 			this.setForeground(CharteGraphique.TEXTE);
+ 			
+ 			// Centrer les textes dans toutes les cellules
+			this.setHorizontalAlignment(CENTER);
+			this.setVerticalAlignment(CENTER);
+	        
+	        return label;
+	    }
+		
 	}
 	
 	/**
@@ -288,7 +339,7 @@ public class VueEquipes extends JFrameTheme {
 	 * Remplit/met à jour le tableau d'équipes
 	 * @param equipes : liste des équipes à mettre dans le tableau
 	 */
-	public void remplirTableau(List<Equipe> equipes) {
+	private void remplirTableau(List<Equipe> equipes) {
 		// Vider le tableau
 		this.model.setRowCount(0);
 		
@@ -309,55 +360,9 @@ public class VueEquipes extends JFrameTheme {
 		// Mise à jour du tableau
 		this.table.setModel(this.model);
 	}
-	
-	/**
-	 * Classe interne de label avec une icone (pour les drapeaux)
-	 */
-	private static class LabelIcon {
 
-        ImageIcon icon;
-        String label;
-
-        public LabelIcon(ImageIcon icon, String label) {
-            this.icon = icon;
-            this.label = label;
-        }
-        
-    }
-	
-	/**
-	 * Classe interne pour afficher les drapeaux
-	 */
-	private static class ImageTableCellRenderer extends DefaultTableCellRenderer {
-		
-		@Override
-	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-			// Affichage du label et de l'icone à gauche
-	        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
-	        LabelIcon labelIcon = (LabelIcon) value;
-	        setIcon(labelIcon.icon);
-	        setText(labelIcon.label);
-	        
-	        // Couleur de fond des cellules alternantes
- 			if(row % 2 == 0) {
- 				this.setBackground(CharteGraphique.FOND_SECONDAIRE);
- 			} else {
- 				this.setBackground(CharteGraphique.FOND);
- 			}
- 			
- 			// Bordure de la cellule du tableau
- 			setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, CharteGraphique.BORDURE));
- 			
- 			// Police
- 			this.setFont(CharteGraphique.getPolice(16, false));
- 			this.setForeground(CharteGraphique.TEXTE);
- 			
- 			// Centrer les textes dans toutes les cellules
-			this.setHorizontalAlignment(CENTER);
-			this.setVerticalAlignment(CENTER);
-	        
-	        return label;
-	    }
-		
+	public VueBase getVueBase() {
+		return this.vueBase;
 	}
+
 }

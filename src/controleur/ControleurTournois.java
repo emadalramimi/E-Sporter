@@ -132,12 +132,7 @@ public class ControleurTournois extends KeyAdapter implements ActionListener, It
 						this.vue.afficherPopupMessage("Le tournoi a bien été supprimé");
 
 						// Mise à jour du tableau des tournois
-						try {
-							this.vue.remplirTableau(this.modeleTournoi.getTout());
-						} catch (Exception err) {
-							this.vue.afficherPopupErreur("Impossible de récupérer les tournois");
-							throw new RuntimeException("Impossible de récupérer les tournois");
-						}
+						this.vue.getVueBase().changerOnglet(ControleurBase.Menus.TOURNOIS);
 					}
 					break;
 			}

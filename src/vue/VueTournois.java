@@ -189,8 +189,8 @@ public class VueTournois extends JFrameTheme {
 		table.getColumnModel().getColumn(1).setCellRenderer(new StatutCellRenderer());
 		
 		// Ajouter buttons dans la derniere colonne
-		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
-		buttonColumn.setCellRenderer(new TableButtonsPanel(table, controleur, 0));
+		TableColumn buttonColumn = this.table.getColumnModel().getColumn(table.getColumnCount() - 1);
+		buttonColumn.setCellRenderer(new TableButtonsPanel(table, controleur));
 		buttonColumn.setCellEditor(new TableButtonsCellEditor(controleur));
 		
 		// Masquage de la colonne ID (sert pour obtenir l'Equipe d'une ligne dont un bouton est cliqué)
@@ -355,10 +355,10 @@ public class VueTournois extends JFrameTheme {
 
 			rowData.add(dateTimeDebut);
 			rowData.add(dateTimeFin);
-
+			
 			this.model.addRow(rowData);
 		}
-
+		
 		// Mise à jour du tableau
 		this.table.setModel(this.model);
 	}
@@ -379,6 +379,10 @@ public class VueTournois extends JFrameTheme {
 	 */
 	public boolean estCboxStatuts(JComboBoxTheme<?> comboBox) {
 		return comboBox.equals(this.cboxStatuts);
+	}
+
+	public VueBase getVueBase() {
+		return this.vueBase;
 	}
 	
 }

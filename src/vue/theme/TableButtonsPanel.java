@@ -20,13 +20,13 @@ public class TableButtonsPanel extends JPanel implements TableCellRenderer {
     private JButtonTable boutonModifier;
     private JButtonTable boutonSupprimer;
 
-    public TableButtonsPanel(JTable table, ActionListener controleur, int idElement) {
+    public TableButtonsPanel(JTable table, ActionListener controleur) {
     	setLayout(new FlowLayout(FlowLayout.CENTER, 5, 2));
         
     	// Création des boutons avec leur action
-        boutonVoir = new JButtonTable(JButtonTable.Type.VOIR, idElement);
-        boutonModifier = new JButtonTable(JButtonTable.Type.MODIFIER, idElement);
-        boutonSupprimer = new JButtonTable(JButtonTable.Type.SUPPRIMER, idElement);
+        boutonVoir = new JButtonTable(JButtonTable.Type.VOIR);
+        boutonModifier = new JButtonTable(JButtonTable.Type.MODIFIER);
+        boutonSupprimer = new JButtonTable(JButtonTable.Type.SUPPRIMER);
 
         // Fond du panel
         setBackground(CharteGraphique.FOND);
@@ -82,7 +82,12 @@ public class TableButtonsPanel extends JPanel implements TableCellRenderer {
      */
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    	if (row % 2 == 0) {
+    	int idElement = (int) table.getValueAt(row, 0);
+        boutonVoir.setIdElement(idElement);
+    	boutonModifier.setIdElement(idElement);
+    	boutonSupprimer.setIdElement(idElement);
+
+        if (row % 2 == 0) {
             setBackground(CharteGraphique.FOND_SECONDAIRE);
             boutonVoir.setBackground(CharteGraphique.FOND_SECONDAIRE);
             boutonModifier.setBackground(CharteGraphique.FOND_SECONDAIRE);

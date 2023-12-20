@@ -126,13 +126,12 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener {
 							this.vue.afficherPopupErreur("Une erreur est survenue dans la suppression de l'équipe.");
 							throw new RuntimeException("Erreur dans la suppression de l'équipe");
 						}
+
 						this.vue.afficherPopupMessage("L'équipe a bien été supprimée");
-						try {
-							this.vue.remplirTableau(this.modeleEquipe.getEquipesSaison());
-						} catch (Exception err) {
-							this.vue.afficherPopupErreur("Impossible de récupérer les équipes");
-							throw new RuntimeException("Impossible de récupérer les équipes");
-						}
+						
+						// Mise à jour du tableau des équipes
+						// PS : À la suppression, pour éviter un bug, nous sommes contraints de recharger la page entière
+						this.vue.getVueBase().changerOnglet(ControleurBase.Menus.EQUIPES);
 					}
 
 					break;
