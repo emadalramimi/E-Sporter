@@ -13,12 +13,14 @@ import vue.theme.JOptionPaneTheme;
 import vue.theme.CharteGraphique;
 import vue.theme.TableButtonsCellEditor;
 import vue.theme.JButtonTheme;
+import vue.theme.JComboBoxTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
 import vue.theme.JTextFieldTheme;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -52,6 +54,7 @@ public class VueEquipes extends JFrameTheme {
 	private JTable table;
 	private DefaultTableModel model;
 	private JButtonTheme btnAjouter;
+	private JComboBoxTheme cboxPays;
 	private JPanel panel;
 	private JPanel panelLabelEquipe;
 	private JLabel lblEquipes;
@@ -135,6 +138,10 @@ public class VueEquipes extends JFrameTheme {
 		btnRecherche.addActionListener(controleur);
 		panelTableauFiltres.add(btnRecherche);
 		
+		// Panel contenant les filtres
+		JPanel panelChoixFiltres = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
+		panelChoixFiltres.setBackground(CharteGraphique.FOND);
+		
 		// ScrollPane englobant le tableau
 		scrollPaneEquipes = new JScrollPaneTheme();
 		GridBagConstraints gbc_scrollPaneEquipes = new GridBagConstraints();
@@ -160,6 +167,9 @@ public class VueEquipes extends JFrameTheme {
 		// Tableau d'équipes
 		table = new JTableTheme();
 		table.setModel(model);
+
+		// Ajouter les filtres
+		panelTableauFiltres.add(panelChoixFiltres);
 		
 		// Ajouter buttons dans la derniere colonne
 		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
@@ -169,6 +179,12 @@ public class VueEquipes extends JFrameTheme {
 		// Règles d'affichage du drapeau du pays
 		TableColumn paysColumn = table.getColumnModel().getColumn(2);
 	    paysColumn.setCellRenderer(new ImageTableCellRenderer());
+	    
+	    // Ajouter comboBox filtre pour choisir un pays
+	 	String[] pays = Pays.getTout();
+	 	cboxPays = new JComboBoxTheme<String>(pays);
+	 	cboxPays.setPreferredSize(new Dimension(200, 45));
+	 	panelChoixFiltres.add(cboxPays);
 		
 		// Masquage de la colonne ID (sert pour obtenir l'Equipe d'une ligne dont un bouton est cliqué)
 		TableColumn idColumn = table.getColumnModel().getColumn(0);
@@ -267,7 +283,7 @@ public class VueEquipes extends JFrameTheme {
 	public String getRequeteRecherche() {
 		return this.txtRecherche.getText().trim();
 	}
-	
+
 	/**
 	 * Remplit/met à jour le tableau d'équipes
 	 * @param equipes : liste des équipes à mettre dans le tableau
