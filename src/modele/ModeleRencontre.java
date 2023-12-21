@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import modele.exception.DroitsInsuffisantsException;
+import modele.exception.TournoiClotureException;
+import modele.exception.TournoiInexistantException;
 import modele.metier.Equipe;
 import modele.metier.Rencontre;
 import modele.metier.Tournoi;
@@ -139,8 +142,8 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 		} catch (SQLException e) {
 			try {
 				BDD.getConnexion().rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
 			}
 			throw new RuntimeException(e);
 		}
@@ -169,8 +172,8 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 		} catch (SQLException e) {
 			try {
 				BDD.getConnexion().rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
 			}
 			throw new RuntimeException(e);
 		}
@@ -285,6 +288,7 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 	 * @throws Exception Exception SQL et IllegalArgumentException si l'équipe n'existe pas
 	 */
 	public void setEquipeGagnante(Rencontre rencontre, String nomEquipe) throws Exception {
+		// Gestion des exceptions dans une méthode externe
 		this.checkMiseAJourScore(rencontre);
 
 		try {
@@ -293,12 +297,15 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("select idEquipe from equipe where nom = ? and saison = ?");
 			ps.setString(1, nomEquipe);
 			ps.setString(2, String.valueOf(LocalDate.now().getYear()));
+
 			ResultSet rs = ps.executeQuery();
+
 			if (!rs.next()) {
 				throw new IllegalArgumentException("L'équipe n'existe pas");
 			} else {
 				idEquipeGagnante = rs.getInt("idEquipe");
 			}
+
 			ps.close();
 			rs.close();
 
@@ -327,6 +334,7 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 	 * @throws Exception Exception SQL
 	 */
 	public void resetEquipeGagnante(Rencontre rencontre) throws Exception {
+		// Gestion des exceptions dans une méthode externe
 		this.checkMiseAJourScore(rencontre);
 
 		try {
@@ -352,15 +360,18 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 	/**
 	 * Vérifie que la rencontre peut être mise à jour
 	 * @param rencontre Rencontre à mettre à jour
-	 * @throws Exception Exception SQL et IllegalArgumentException si le tournoi est clôturé ou n'existe pas ou si l'utilisateur n'est pas un arbitre
+	 * @throws Exception Exceptions SQL
+	 * @throws TournoiInexistantException Le tournoi n'existe pas
+	 * @throws TournoiClotureException Le tournoi est clôturé
+	 * @throws DroitsInsuffisantsException Seuls les arbitres peut affecter le résultat d'une rencontre
 	 */
 	private void checkMiseAJourScore(Rencontre rencontre) throws Exception {
 		Tournoi tournoi = new ModeleTournoi().getTournoiRencontre(rencontre.getIdRencontre()).orElse(null);
 		if (tournoi == null) {
-			throw new IllegalArgumentException("Le tournoi n'existe pas");
+			throw new TournoiInexistantException("Le tournoi n'existe pas");
 		}
 		if (tournoi.getEstCloture()) {
-			throw new IllegalArgumentException("Le tournoi est clôturé");
+			throw new TournoiClotureException("Le tournoi est clôturé");
 		}
 
 		/**
@@ -369,7 +380,7 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 		 * car seuls les arbitres assignés à un unique tournoi ouvert peuvent se connecter
 		 */
 		if (ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ARBITRE) {
-			throw new IllegalArgumentException("Seuls les arbitres peut affecter le résultat d'une rencontre");
+			throw new DroitsInsuffisantsException("Seuls les arbitres peut affecter le résultat d'une rencontre");
 		}
 	}
 }

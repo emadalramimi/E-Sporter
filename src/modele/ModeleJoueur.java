@@ -112,8 +112,8 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
 		} catch(SQLException e) {
 			try {
 				BDD.getConnexion().rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
 			}
 			throw new RuntimeException(e);
 		}
@@ -139,8 +139,8 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
 		} catch(SQLException e) {
 			try {
 				BDD.getConnexion().rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
 			}
 			throw new RuntimeException(e);
 		}
@@ -188,8 +188,8 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
 		} catch(SQLException e) {
 			try {
 				BDD.getConnexion().rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
 			}
 			throw new RuntimeException(e);
 		}
