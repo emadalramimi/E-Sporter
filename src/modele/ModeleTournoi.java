@@ -296,15 +296,9 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 			throw new IllegalArgumentException("La date de fin du tournoi est passée");
 		}
 
-		int nbEquipes = modeleEquipes.getEquipesTournoi(tournoi.getIdTournoi()).size();
+		int nbEquipes = tournoi.getEquipes().size();
 		if (nbEquipes < 4 || nbEquipes > 8) {
 			throw new IllegalArgumentException("Le nombre d'équipes inscrites doit être compris entre 4 et 8 équipes");
-		}
-		if (tournoi.getDateTimeFin() <= System.currentTimeMillis() / 1000) {
-			throw new IllegalArgumentException("La date de fin du tournoi est passée");
-		}
-		if(tournoi.getDateTimeFin() <= System.currentTimeMillis() / 1000 && tournoi.getEstCloture()) {
-			throw new IllegalArgumentException("Le tournoi est cloturé");
 		}
 		if(this.getTout().stream().anyMatch(t -> t.getEstCloture() == false)) {
 			throw new IllegalArgumentException("Il ne peut y avoir qu'un seul tournoi ouvert à la fois");
@@ -489,7 +483,7 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 							.collect(Collectors.toList());
 					break;
 				case CLOTURE:
-					// Récupération des tournois cloturés
+					// Récupération des tournois cloturés	
 					tournois = tournois.stream()
 							.filter(t -> t.getEstCloture() == true && System.currentTimeMillis() / 1000 > t.getDateTimeFin())
 							.collect(Collectors.toList());
