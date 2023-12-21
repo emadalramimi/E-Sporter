@@ -183,7 +183,7 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	 */
 	@Override
 	public boolean modifier(Tournoi tournoi) throws Exception {
-		if (System.currentTimeMillis() / 1000 >= tournoi.getDateTimeFin() || !tournoi.getEstCloture()) {
+		if (System.currentTimeMillis() / 1000 >= tournoi.getDateTimeFin() || tournoi.getEstCloture() == false) {
 			throw new IllegalArgumentException("Le tournoi est cloturé");
 		}
 
@@ -222,7 +222,7 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	 */
 	@Override
 	public boolean supprimer(Tournoi tournoi) throws Exception {
-		if (System.currentTimeMillis() / 1000 >= tournoi.getDateTimeFin() && !tournoi.getEstCloture()) {
+		if (System.currentTimeMillis() / 1000 >= tournoi.getDateTimeFin() && tournoi.getEstCloture() == false) {
 			throw new IllegalArgumentException("Le tournoi est cloturé");
 		}
 
