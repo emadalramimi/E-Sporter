@@ -226,7 +226,7 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener, Ite
 			// Mise à jour du tableau avec les résultats de recherche
 			this.vue.resetCboxPays();
 			this.vue.remplirTableau(this.modeleEquipe.getParNom(requeteRecherche));
-		} catch (Exception e1) {
+		} catch (Exception ex) {
 			this.vue.afficherPopupErreur("Une erreur est survenue");
 			throw new RuntimeException("Erreur dans la recherche");
 		}

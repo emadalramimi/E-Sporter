@@ -102,7 +102,7 @@ public class ControleurConnexion extends KeyAdapter implements ActionListener {
 				} catch (Exception err) {
 					err.printStackTrace();
 				}
-			} catch (IllegalArgumentException ex) {
+			} catch (IllegalArgumentException | IllegalStateException ex) {
 				vue.afficherPopupErreur(ex.getMessage());
 			} catch (RuntimeException err) {
 				// Si une autre erreur SQL est survenue (deux instances ouvertes par exemple)

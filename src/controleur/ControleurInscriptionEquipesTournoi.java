@@ -10,6 +10,9 @@ import javax.swing.event.ListSelectionListener;
 
 import modele.ModeleEquipe;
 import modele.ModeleTournoi;
+import modele.exception.DatesTournoiException;
+import modele.exception.OuvertureTournoiException;
+import modele.exception.TournoiDejaOuvertException;
 import modele.metier.Equipe;
 import modele.metier.Tournoi;
 import vue.VueInscriptionEquipesTournoi;
@@ -58,9 +61,9 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 				Equipe[] equipes;
 				try {
 					equipes = this.getEquipesEligibles();
-				} catch (Exception e1) {
+				} catch (Exception ex) {
 					this.vueInscriptionEquipesTournoi.afficherPopupErreur("Impossible de récupérer les équipes");
-					throw new RuntimeException(e1);
+					throw new RuntimeException(ex);
 				}
 
 				// On vérifie qu'il reste des équipes éligibles et qu'on n'a pas atteint le nombre maximal d'équipes inscrites
@@ -69,8 +72,7 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 					throw new RuntimeException("Plus aucune équipe disponible");
 				}
 				if (nbEquipes >= 8) {
-					this.vueInscriptionEquipesTournoi
-							.afficherPopupErreur("Le nombre maximal d'équipes inscrites a été atteint");
+					this.vueInscriptionEquipesTournoi.afficherPopupErreur("Le nombre maximal d'équipes inscrites a été atteint");
 					throw new RuntimeException("Le nombre maximal d'équipes inscrites a été atteint");
 				}
 
@@ -90,14 +92,14 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 					// On met à jour le tableau des tournois
 					this.vueTournois.remplirTableau(this.modeleTournoi.getTout());
 					this.vueInscriptionEquipesTournoi.fermerFenetre();
-				} catch (IllegalArgumentException err) {
+				} catch (OuvertureTournoiException | DatesTournoiException | TournoiDejaOuvertException | IllegalArgumentException ex) {
 					// Récupération des erreurs IllegalArgumentException et affichage de leur message
-					this.vueInscriptionEquipesTournoi.afficherPopupErreur(err.getMessage());
-					err.printStackTrace();
-				} catch (Exception err) {
+					this.vueInscriptionEquipesTournoi.afficherPopupErreur(ex.getMessage());
+					ex.printStackTrace();
+				} catch (Exception ex) {
 					// Pour le reste, on affiche un message générique
 					this.vueInscriptionEquipesTournoi.afficherPopupErreur("Impossible d'ouvrir le tournoi");
-					err.printStackTrace();
+					ex.printStackTrace();
 				}
 				break;
 			case "Fermer":

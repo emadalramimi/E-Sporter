@@ -9,6 +9,9 @@ import javax.swing.JButton;
 
 import modele.ModeleEquipe;
 import modele.ModeleRencontre;
+import modele.exception.DroitsInsuffisantsException;
+import modele.exception.TournoiClotureException;
+import modele.exception.TournoiInexistantException;
 import modele.metier.Equipe;
 import modele.metier.Rencontre;
 import modele.metier.Tournoi;
@@ -88,8 +91,8 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
                         this.modele.setEquipeGagnante(rencontre, nomEquipe);
                         this.vue.toggleGagnant(ligne, col);
                     }
-                } catch (IllegalArgumentException ex) {
-                    // Affichage des messages d'erreur IllegalArgumentException
+                } catch (TournoiInexistantException | TournoiClotureException | DroitsInsuffisantsException ex) {
+                    // Affichage des messages d'erreur
                     this.vue.afficherPopupErreur(ex.getMessage());
                     ex.printStackTrace();
                 } catch (Exception ex) {

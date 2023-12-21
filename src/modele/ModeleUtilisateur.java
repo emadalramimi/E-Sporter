@@ -2,9 +2,6 @@ package modele;
 
 import java.sql.SQLException;
 
-import modele.exception.IdentifiantOuMdpIncorrectsException;
-import modele.exception.TournoiClotureException;
-import modele.exception.UtilisateurDejaConnecteException;
 import modele.metier.Tournoi;
 import modele.metier.Utilisateur;
 
@@ -44,12 +41,12 @@ public class ModeleUtilisateur {
 	 * Connecte un utilisateur avec son couple identifiant/mot de passe s'il existe
 	 * @param identifiant Identifiant de l'utilisateur
 	 * @param motDePasse Mot de passe de l'utilisateur
-	 * @throws UtilisateurDejaConnecteException si un utilisateur est déjà connecté
-	 * @throws RuntimeException si une erreur SQL survient
+	 * @throws IllegalArgumentException si l'identifiant et/ou le mot de passe sont incorrects
+	 * @throws IllegalStateException si un utilisateur est déjà connecté
 	 */
-	public void connecter(String identifiant, String motDePasse) throws Exception {
+	public void connecter(String identifiant, String motDePasse) throws IllegalArgumentException, IllegalStateException {
 	    if (compteCourant != null) {
-            throw new UtilisateurDejaConnecteException("Un utilisateur est déjà connecté");
+            throw new IllegalStateException("Un utilisateur est déjà connecté");
         }
 
 	    Utilisateur utilisateur = null;
@@ -57,7 +54,7 @@ public class ModeleUtilisateur {
 			// Cherche l'utilisateur dans la base de données
 	        utilisateur = chercherUtilisateur(identifiant);
 	    } catch (SQLException e) {
-	        throw new RuntimeException("Erreur lors de la connexion", e);
+	        throw new IllegalStateException("Erreur lors de la connexion", e);
 	    }
 
 		// Vérifie que l'utilisateur existe et que le mot de passe est correct
@@ -67,7 +64,7 @@ public class ModeleUtilisateur {
 	
 	/**
 	 * Déconnecte l'utilisateur
-	 * @throws IllegalStateException si l'administrateur est déjà déconnecté
+	 * @throws IllegalArgumentException si l'administrateur est déjà déconnecté
 	 */
 	public void deconnecter() throws IllegalStateException {
 		if(compteCourant == null) {
@@ -114,15 +111,14 @@ public class ModeleUtilisateur {
 	 * Valide un utilisateur
 	 * @param utilisateur Utilisateur à valider
 	 * @param motDePasse Mot de passe de l'utilisateur
-	 * @throws IdentifiantOuMdpIncorrectsException si l'identifiant ou le mot de passe est incorrect
-	 * @throws TournoiClotureException si le tournoi est clôturé (connexion arbitre)
+	 * @throws IllegalArgumentException si l'utilisateur n'existe pas ou si le mot de passe est incorrect ou si l'utilisateur est un arbitre et que le tournoi est clôturé
 	 */
-	private void validerUtilisateur(Utilisateur utilisateur, String motDePasse) throws Exception {
+	private void validerUtilisateur(Utilisateur utilisateur, String motDePasse) throws IllegalArgumentException {
 		if (utilisateur == null || !this.verifierMotDePasse(motDePasse, utilisateur.getMotDePasse())) {
-			throw new IdentifiantOuMdpIncorrectsException("Identifiant et/ou mot de passe incorrects.");
+			throw new IllegalArgumentException("Identifiant et/ou mot de passe incorrects.");
 		}
 		if (utilisateur.getRole() == Utilisateur.Role.ARBITRE && ((Tournoi) utilisateur).getEstCloture() == true) {
-			throw new TournoiClotureException("Vous ne pouvez pas vous connecter sur un tournoi en phase d'inscriptions ou clôturé.");
+			throw new IllegalArgumentException("Vous ne pouvez pas vous connecter sur un tournoi en phase d'inscriptions ou clôturé.");
 		}
 	}
 	
