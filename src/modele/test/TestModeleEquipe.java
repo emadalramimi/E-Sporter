@@ -91,18 +91,21 @@ public class TestModeleEquipe {
 
 	@Test
 	public void testGetEquipesTournoi() throws Exception {
-		List<Equipe> listEquipes = modele.getTout();
-		listEquipes.remove(modele.getParId(5).orElse(null));
+		List<Equipe> listEquipes = new ArrayList<>(Arrays.asList(
+			
+		));
 		assertEquals(listEquipes, modele.getEquipesTournoi(1));
 	}
 	
 	@Test
 	public void testEstEquipeInscriteUnTournoi() throws Exception {
+		modele.inscrireEquipe(modele.getParId(1).orElse(null), modeleTournoi.getParId(1).orElse(null));
 		assertTrue(modele.estEquipeInscriteUnTournoi(modele.getParId(1).orElse(null)));
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testInscrireDejaInscrite() throws Exception{
+		modele.inscrireEquipe(modele.getParId(1).orElse(null), modeleTournoi.getParId(1).orElse(null));
 		modele.inscrireEquipe(modele.getParId(1).orElse(null), modeleTournoi.getParId(1).orElse(null));
 	}
 
@@ -118,13 +121,13 @@ public class TestModeleEquipe {
 	}
 
 	@Test(expected = IllegalStateException.class)
-	public void testDesinscrire() throws Exception{
+	public void testDesinscrireNonInscrite() throws Exception{
 		modele.ajouter(equipe)	;
 		modele.desinscrireEquipe(equipe, modeleTournoi.getParId(1).orElse(null));
 	}
 
 	@Test
-	public void testDesinscrireNonInscrite() throws Exception{
+	public void testDesinscrire() throws Exception{
 		modele.ajouter(equipe);
 		modele.inscrireEquipe(equipe, modeleTournoi.getParId(1).orElse(null));
 		modele.desinscrireEquipe(equipe, modeleTournoi.getParId(1).orElse(null));
@@ -162,16 +165,22 @@ public class TestModeleEquipe {
 
 	@After
     public void tearsDown() throws Exception {
-        List<Integer> idsToPreserve = Arrays.asList(1, 2, 3, 4, 5);
+		//Réinitialise les rencontres
+        List<Integer> idREncontreAGarder = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
         modele.getTout().stream()
-                .filter(equipe -> !idsToPreserve.contains(equipe.getIdEquipe()))
-                .forEach(equipe -> {
+                .filter(rencontre -> !idREncontreAGarder.contains(rencontre.getIdEquipe()))
+                .forEach(rencontre -> {
                     try {
-                        modele.supprimer(equipe);
+                        modele.supprimer(rencontre);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                });
+        });
+        
+        for (Equipe equipe : modele.getEquipesTournoi(1)) {
+        		modele.desinscrireEquipe(equipe, modeleTournoi.getParId(1).get());
+        
+        }
     }
 	
 }
