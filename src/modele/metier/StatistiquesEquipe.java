@@ -79,6 +79,20 @@ public class StatistiquesEquipe implements Comparable<StatistiquesEquipe> {
     public String getRatioPourcentage() {
         return String.format("%.2f", this.ratio*100) + " %";
     }
+    
+    @Override
+	public boolean equals(Object o) {
+	    if (o == null) {
+	        return false;
+	    }
+	    if (!(o instanceof StatistiquesEquipe)) {
+	        return false;
+	    }
+	    StatistiquesEquipe stat = (StatistiquesEquipe) o;
+	    return this.equipe.equals(stat.getEquipe())
+	            && this.nbMatchsGagnes == stat.getNbMatchsGagnes()
+	            && this.nbMatchsJoues == stat.getNbMatchsJoues();
+	}
 
     /**
      * Compare deux statistiques d'équipe
