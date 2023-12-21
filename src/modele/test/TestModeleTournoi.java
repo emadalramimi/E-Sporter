@@ -115,6 +115,68 @@ public class TestModeleTournoi {
 		modele.ajouter(tournoi);
 	    modele.ouvrirTournoi(tournoi);
 	}
+	@Test
+	public void testGetParFiltrageNotorieteNull() throws Exception {
+		List<Tournoi> tournois = modele.getTout();
+		assertEquals(tournois.size(), modele.getParFiltrage(null, ControleurTournois.Statut.CLOTURE).size());
+		for(int i = 0; i < tournois.size(); i++){
+			assertEquals(tournois.get(i), modele.getParFiltrage(null, ControleurTournois.Statut.CLOTURE).get(i));
+		}
+	}
+	
+	@Test
+	public void testGetParFiltrageStatutNull() throws Exception {
+		List<Tournoi> tournois = new ArrayList<>();
+		tournois.add(modele.getParId(3).orElse(null));
+		assertEquals(tournois.size(), modele.getParFiltrage(Notoriete.NATIONAL, null).size());
+		for(int i = 0; i < tournois.size(); i++){
+			assertEquals(tournois.get(i), modele.getParFiltrage(Notoriete.NATIONAL, null).get(i));
+		}
+	}
+	
+	@Test
+	public void testGetParFiltrageCloture() throws Exception {
+		List<Tournoi> tournois = modele.getTout();
+		tournois.remove(modele.getParId(6).orElse(null));
+		tournois.remove(modele.getParId(3).orElse(null));
+		tournois.remove(modele.getParId(4).orElse(null));
+		for(int i = 0; i < tournois.size(); i++){
+			assertEquals(tournois.get(i), modele.getParFiltrage(Notoriete.INTERNATIONAL, ControleurTournois.Statut.CLOTURE).get(i));
+		}
+	}
+	
+	@Test
+	public void testGetParFiltrageOuvert() throws Exception {
+		ModeleEquipe modeleEquipe = new ModeleEquipe();
+		Tournoi tournoiTest = modele.getParId(1).orElse(null);
+		Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, System.currentTimeMillis() / 1000 + 3600, System.currentTimeMillis() / 1000 + 7200, true, "arbitre", "password", tournoiTest.getPoules(), tournoiTest.getEquipes(), tournoiTest.getArbitres());
+		modele.ajouter(tournoi);
+		for(int i = 0; i < 4; i++){
+			modeleEquipe.inscrireEquipe(modeleEquipe.getTout().get(i), tournoi);
+		}
+		modele.ouvrirTournoi(tournoi);
+		
+		//Ici getParNom() car un seul tournoi ne peut être ouvert à la fois donc le filtre n'en retournera que 1, celui qu'on vient d'ouvrir
+		List<Tournoi> tournois = modele.getParNom(tournoi.getNomTournoi());
+		assertEquals(tournois.size(), modele.getParFiltrage(Notoriete.NATIONAL, ControleurTournois.Statut.OUVERT).size());
+		for(int i = 0; i < tournois.size(); i++) {
+			assertEquals(tournois.get(i), modele.getParFiltrage(Notoriete.NATIONAL, ControleurTournois.Statut.OUVERT).get(i));
+		}
+	}
+	
+	@Test
+	public void testGetParFiltrageInscription() throws Exception {
+		Tournoi tournoiTest = modele.getParId(1).orElse(null);
+		Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, System.currentTimeMillis() / 1000 + 3600, System.currentTimeMillis() / 1000 + 7200, true, "arbitre", "password", tournoiTest.getPoules(), tournoiTest.getEquipes(), tournoiTest.getArbitres());
+		modele.ajouter(tournoi);
+		List<Tournoi> tournois = new ArrayList<>();
+		tournois.add(tournoi);
+		assertEquals(tournois.size(), modele.getParFiltrage(Notoriete.NATIONAL, ControleurTournois.Statut.PHASE_INSCRIPTIONS).size());
+		for(int i = 0; i < tournois.size(); i++) {
+			assertEquals(tournois.get(i), modele.getParFiltrage(Notoriete.NATIONAL, ControleurTournois.Statut.PHASE_INSCRIPTIONS).get(i));
+		}
+	}
+	
 	@After
 	public void tearsDown() throws Exception {
 		
