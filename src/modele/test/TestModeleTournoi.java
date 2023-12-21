@@ -19,6 +19,7 @@ import modele.metier.Arbitre;
 import modele.metier.Equipe;
 import modele.metier.Pays;
 import modele.metier.Poule;
+import modele.metier.StatistiquesEquipe;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
@@ -171,6 +172,31 @@ public class TestModeleTournoi {
 	}
 	
 	@Test
+    public void testGetResultatsTournoi() throws Exception {
+        ModeleEquipe modeleEquipe = new ModeleEquipe();
+        Tournoi tournoiTest = modele.getParId(1).orElse(null);
+        Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, System.currentTimeMillis() / 1000 + 3600, System.currentTimeMillis() / 1000 + 7200, true, "arbitre", "password", tournoiTest.getPoules(), tournoiTest.getEquipes(), tournoiTest.getArbitres());
+        modele.ajouter(tournoi);
+        
+        List<StatistiquesEquipe> statistiquesEquipes = new ArrayList<>(Arrays.asList(
+                new StatistiquesEquipe(modeleEquipe.getParId(1).get(), 0, 0),
+                new StatistiquesEquipe(modeleEquipe.getParId(2).get(), 0, 0),
+                new StatistiquesEquipe(modeleEquipe.getParId(4).get(), 0, 0),
+                new StatistiquesEquipe(modeleEquipe.getParId(3).get(), 0, 0)
+            ));
+        for(int i = 1; i < 5; i++){
+            modeleEquipe.inscrireEquipe(modeleEquipe.getParId(i).get(), tournoi);
+        }
+        modele.ouvrirTournoi(tournoi);
+        System.out.println(statistiquesEquipes);
+        System.out.println(modele.getResultatsTournoi(tournoi));
+        assertEquals(statistiquesEquipes.size(), modele.getResultatsTournoi(tournoi).size());
+        for(int i = 1; i < statistiquesEquipes.size(); i++){
+        	assertEquals(statistiquesEquipes.get(i), modele.getResultatsTournoi(tournoi).get(i));
+        }
+    }
+	
+	@Test
 	public void testGetParNom() throws Exception {
 		assertEquals(modele.getParNom("Asia Star Challengers Invitational 2023").size(), 1);
 		assertEquals(modele.getTout().get(0), modele.getParNom("Asia Star Challengers Invitational 2023").get(0));
@@ -238,13 +264,12 @@ public class TestModeleTournoi {
 		}
 	}
 	
+	//Réinitialise les tournoi
 	@After
 	public void tearsDown() throws Exception {
-		
-		//Réinitialise les tournoi
-		List<Integer> IdAGarder = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6));
+		List<Integer> idAGarder = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6));
 		for(Tournoi tournoi : modele.getTout()) {
-			if(!IdAGarder.contains(tournoi.getIdTournoi())) {
+			if(!idAGarder.contains(tournoi.getIdTournoi())) {
 				modele.supprimer(tournoi);
 			}
 		}
