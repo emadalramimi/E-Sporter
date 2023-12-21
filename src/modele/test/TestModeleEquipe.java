@@ -104,6 +104,7 @@ public class TestModeleEquipe {
 
 	@Test
 	public void testEstEquipeInscriteUnTournoi() throws Exception {
+		modele.desinscrireEquipe(modele.getParId(1).orElse(null), modeleTournoi.getParId(1).orElse(null));
 		modele.inscrireEquipe(modele.getParId(1).orElse(null), modeleTournoi.getParId(1).orElse(null));
 		assertTrue(modele.estEquipeInscriteUnTournoi(modele.getParId(1).orElse(null)));
 	}
