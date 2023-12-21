@@ -18,7 +18,6 @@ import org.junit.runners.Suite;
     TestRencontre.class,
     TestSatistiquesEquipe.class,
     TestTournoi.class,
-    
     TestModeleAdministrateur.class,
     TestModeleArbitre.class,
     TestModeleEquipe.class,
