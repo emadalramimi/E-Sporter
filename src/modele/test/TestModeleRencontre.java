@@ -25,23 +25,20 @@ import modele.metier.Tournoi.Notoriete;
 public class TestModeleRencontre {
 	
 	private ModeleRencontre modele;
-    private ModeleTournoi modeleTournoi;
-    private ModelePoule modelePoule;
-    private ModeleUtilisateur modeleUtilisateur;
+	private ModeleTournoi modeleTournoi;
+	private ModelePoule modelePoule;
+	private ModeleUtilisateur modeleUtilisateur;
+	private ModeleEquipe modeleEquipe;
+	private Rencontre rencontre;
 	
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         modele = new ModeleRencontre();
         modeleTournoi = new ModeleTournoi();
         modelePoule = new ModelePoule();
         modeleUtilisateur = new ModeleUtilisateur();
         
-        
-    }
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void testResetEquipeGagnanteTournoiExistePas() throws Exception {
-		ModeleEquipe modeleEquipe = new ModeleEquipe();
+        modeleEquipe = new ModeleEquipe();
 		Equipe[] equipes = {
 				modeleEquipe.getParId(1).get(),
 				modeleEquipe.getParId(2).get(),
@@ -70,7 +67,7 @@ public class TestModeleRencontre {
 		Tournoi tournoi = new Tournoi("tournoi", Notoriete.LOCAL, timestampDebut, timestampFin, "a", "m", modeleArbitre.getTout());
 		modeleTournoi.ajouter(tournoi);
 		
-		Rencontre rencontre = new Rencontre(equipes);
+		rencontre = new Rencontre(equipes);
 		List<Rencontre> rencontres = new ArrayList<>(Arrays.asList(
 				rencontre));		
 		Poule poule = new Poule(0, false, false, tournoi.getIdTournoi(), rencontres);
@@ -79,143 +76,31 @@ public class TestModeleRencontre {
 		for (int i=1;i<5;i++)
 		modeleEquipe.inscrireEquipe(modeleEquipe.getParId(i).get(), tournoi);
 		modeleUtilisateur.connecter("admin", "mdp");
-		
 		modeleTournoi.ouvrirTournoi(modeleTournoi.getParId(tournoi.getIdTournoi()).get());
+    }
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testResetEquipeGagnanteTournoiExistePas() throws Exception {
+		Equipe[] equipes = {
+				modeleEquipe.getParId(1).get(),
+				modeleEquipe.getParId(2).get(),
+		};
 		Rencontre rencontreTest = new Rencontre(equipes);
 		modele.resetEquipeGagnante(rencontreTest);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testResetEquipeGagnanteTournoiCloture() throws Exception {
-		ModeleEquipe modeleEquipe = new ModeleEquipe();
-		Equipe[] equipes = {
-				modeleEquipe.getParId(1).get(),
-				modeleEquipe.getParId(2).get(),
-		};
-		
-		ModeleArbitre modeleArbitre = new ModeleArbitre();
-		
-		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-	
-		// Obtenir le timestamp en secondes
-		long timestampDebut = calendar.getTimeInMillis() / 1000;
-		
-		calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-		calendar.set(Calendar.HOUR_OF_DAY, 24);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-	
-		// Obtenir le timestamp en secondes
-		long timestampFin = calendar.getTimeInMillis() / 1000;
-		
-		Tournoi tournoi = new Tournoi("tournoi", Notoriete.LOCAL, timestampDebut, timestampFin, "a", "m", modeleArbitre.getTout());
-		modeleTournoi.ajouter(tournoi);
-		
-		Rencontre rencontre = new Rencontre(equipes);
-		List<Rencontre> rencontres = new ArrayList<>(Arrays.asList(
-				rencontre));		
-		Poule poule = new Poule(0, false, false, tournoi.getIdTournoi(), rencontres);
-		modelePoule.ajouter(poule);
-		
-		for (int i=1;i<5;i++)
-		modeleEquipe.inscrireEquipe(modeleEquipe.getParId(i).get(), tournoi);
-		modeleUtilisateur.connecter("admin", "mdp");
-		
-		modeleTournoi.ouvrirTournoi(modeleTournoi.getParId(tournoi.getIdTournoi()).get());
 		modele.resetEquipeGagnante(modele.getParId(1).get());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testResetEquipeGagnanteMauvaisUtilisateur() throws Exception {
-		ModeleEquipe modeleEquipe = new ModeleEquipe();
-		Equipe[] equipes = {
-				modeleEquipe.getParId(1).get(),
-				modeleEquipe.getParId(2).get(),
-		};
-		
-		ModeleArbitre modeleArbitre = new ModeleArbitre();
-		
-		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-	
-		// Obtenir le timestamp en secondes
-		long timestampDebut = calendar.getTimeInMillis() / 1000;
-		
-		calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-		calendar.set(Calendar.HOUR_OF_DAY, 24);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-	
-		// Obtenir le timestamp en secondes
-		long timestampFin = calendar.getTimeInMillis() / 1000;
-		
-		Tournoi tournoi = new Tournoi("tournoi", Notoriete.LOCAL, timestampDebut, timestampFin, "a", "m", modeleArbitre.getTout());
-		modeleTournoi.ajouter(tournoi);
-		
-		Rencontre rencontre = new Rencontre(equipes);
-		List<Rencontre> rencontres = new ArrayList<>(Arrays.asList(
-				rencontre));		
-		Poule poule = new Poule(0, false, false, tournoi.getIdTournoi(), rencontres);
-		modelePoule.ajouter(poule);
-		
-		for (int i=1;i<5;i++)
-		modeleEquipe.inscrireEquipe(modeleEquipe.getParId(i).get(), tournoi);
-		modeleUtilisateur.connecter("admin", "mdp");
-		
-		modeleTournoi.ouvrirTournoi(modeleTournoi.getParId(tournoi.getIdTournoi()).get());		
+	public void testResetEquipeGagnanteMauvaisUtilisateur() throws Exception {		
 		modele.resetEquipeGagnante(rencontre);
 	}
 	
 	@Test
 	public void testResetEquipeGagnante() throws Exception {
-		ModeleEquipe modeleEquipe = new ModeleEquipe();
-		Equipe[] equipes = {
-				modeleEquipe.getParId(1).get(),
-				modeleEquipe.getParId(2).get(),
-		};
-		ModeleArbitre modeleArbitre = new ModeleArbitre();
-		
-		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-	
-		// Obtenir le timestamp en secondes
-		long timestampDebut = calendar.getTimeInMillis() / 1000;
-		
-		calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-		calendar.set(Calendar.HOUR_OF_DAY, 24);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-	
-		// Obtenir le timestamp en secondes
-		long timestampFin = calendar.getTimeInMillis() / 1000;
-		
-		Tournoi tournoi = new Tournoi("tournoi", Notoriete.LOCAL, timestampDebut, timestampFin, "a", "m", modeleArbitre.getTout());
-		modeleTournoi.ajouter(tournoi);
-		
-		Rencontre rencontre = new Rencontre(equipes);
-		List<Rencontre> rencontres = new ArrayList<>(Arrays.asList(
-				rencontre));		
-		Poule poule = new Poule(0, false, false, tournoi.getIdTournoi(), rencontres);
-		modelePoule.ajouter(poule);
-		
-		for (int i=1;i<5;i++)
-		modeleEquipe.inscrireEquipe(modeleEquipe.getParId(i).get(), tournoi);
-		
-		modeleUtilisateur.connecter("admin", "mdp");
-		modeleTournoi.ouvrirTournoi(modeleTournoi.getParId(tournoi.getIdTournoi()).get());
 		modeleUtilisateur.deconnecter();
 		modeleUtilisateur.connecter("a", "m");
 		modele.resetEquipeGagnante(rencontre);
@@ -223,45 +108,10 @@ public class TestModeleRencontre {
 	
 	@Test
 	public void testSetEquipeGagnante() throws Exception {
-		ModeleEquipe modeleEquipe = new ModeleEquipe();
 		Equipe[] equipes = {
 				modeleEquipe.getParId(1).get(),
 				modeleEquipe.getParId(2).get(),
 		};
-		ModeleArbitre modeleArbitre = new ModeleArbitre();
-		
-		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-	
-		// Obtenir le timestamp en secondes
-		long timestampDebut = calendar.getTimeInMillis() / 1000;
-		
-		calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-		calendar.set(Calendar.HOUR_OF_DAY, 24);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-	
-		// Obtenir le timestamp en secondes
-		long timestampFin = calendar.getTimeInMillis() / 1000;
-		
-		Tournoi tournoi = new Tournoi("tournoi", Notoriete.LOCAL, timestampDebut, timestampFin, "a", "m", modeleArbitre.getTout());
-		modeleTournoi.ajouter(tournoi);
-		
-		Rencontre rencontre = new Rencontre(equipes);
-		List<Rencontre> rencontres = new ArrayList<>(Arrays.asList(
-				rencontre));		
-		Poule poule = new Poule(0, false, false, tournoi.getIdTournoi(), rencontres);
-		modelePoule.ajouter(poule);
-		
-		for (int i=1;i<5;i++)
-		modeleEquipe.inscrireEquipe(modeleEquipe.getParId(i).get(), tournoi);
-		
-		modeleUtilisateur.connecter("admin", "mdp");
-		modeleTournoi.ouvrirTournoi(modeleTournoi.getParId(tournoi.getIdTournoi()).get());
 		modeleUtilisateur.deconnecter();
 		modeleUtilisateur.connecter("a", "m");
 		modele.setEquipeGagnante(rencontre,equipes[0].getNom());
@@ -269,45 +119,6 @@ public class TestModeleRencontre {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testSetEquipeGagnanteInnexistant() throws Exception {
-		ModeleEquipe modeleEquipe = new ModeleEquipe();
-		Equipe[] equipes = {
-				modeleEquipe.getParId(1).get(),
-				modeleEquipe.getParId(2).get(),
-		};
-		ModeleArbitre modeleArbitre = new ModeleArbitre();
-		
-		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-	
-		// Obtenir le timestamp en secondes
-		long timestampDebut = calendar.getTimeInMillis() / 1000;
-		
-		calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
-		calendar.set(Calendar.HOUR_OF_DAY, 24);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-	
-		// Obtenir le timestamp en secondes
-		long timestampFin = calendar.getTimeInMillis() / 1000;
-		
-		Tournoi tournoi = new Tournoi("tournoi", Notoriete.LOCAL, timestampDebut, timestampFin, "a", "m", modeleArbitre.getTout());
-		modeleTournoi.ajouter(tournoi);
-		
-		Rencontre rencontre = new Rencontre(equipes);
-		List<Rencontre> rencontres = new ArrayList<>(Arrays.asList(
-				rencontre));		
-		Poule poule = new Poule(0, false, false, tournoi.getIdTournoi(), rencontres);
-		modelePoule.ajouter(poule);
-		
-		for (int i=1;i<5;i++)
-		modeleEquipe.inscrireEquipe(modeleEquipe.getParId(i).get(), tournoi);
-		
-		modeleUtilisateur.connecter("admin", "mdp");
-		modeleTournoi.ouvrirTournoi(modeleTournoi.getParId(tournoi.getIdTournoi()).get());
 		modeleUtilisateur.deconnecter();
 		modeleUtilisateur.connecter("a", "m");
 		modele.setEquipeGagnante(rencontre,"fausseEquipe");
