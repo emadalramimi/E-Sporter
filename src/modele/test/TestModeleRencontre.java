@@ -74,7 +74,7 @@ public class TestModeleRencontre {
 		modelePoule.ajouter(poule);
 		
 		for (int i=1;i<5;i++)
-		modeleEquipe.inscrireEquipe(modeleEquipe.getParId(i).get(), tournoi);
+			modeleEquipe.inscrireEquipe(modeleEquipe.getParId(i).get(), tournoi);
 		modeleUtilisateur.connecter("admin", "mdp");
 		modeleTournoi.ouvrirTournoi(modeleTournoi.getParId(tournoi.getIdTournoi()).get());
     }

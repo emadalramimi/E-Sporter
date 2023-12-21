@@ -372,5 +372,4 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 			throw new IllegalArgumentException("Seuls les arbitres peut affecter le résultat d'une rencontre");
 		}
 	}
-
 }
