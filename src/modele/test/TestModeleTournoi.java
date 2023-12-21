@@ -149,6 +149,18 @@ public class TestModeleTournoi {
 	}
 	
 	@Test
+	public void testOuvrirTournoi() throws Exception {
+		ModeleEquipe modeleEquipe = new ModeleEquipe();
+		Tournoi tournoiTest = modele.getParId(1).orElse(null);
+		Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, System.currentTimeMillis() / 1000 + 3600, System.currentTimeMillis() / 1000 + 7200, true, "arbitre", "password", tournoiTest.getPoules(), tournoiTest.getEquipes(), tournoiTest.getArbitres());
+		modele.ajouter(tournoi);
+		for(int i = 0; i < 4; i++){
+			modeleEquipe.inscrireEquipe(modeleEquipe.getTout().get(i), tournoi);
+		}
+		modele.ouvrirTournoi(tournoi);
+	}
+	
+	@Test
 	public void testGetParIdentifiant() throws Exception {
 		assertEquals(modele.getParIdentifiant("AsiaStar"), modele.getParId(2));
 	}
