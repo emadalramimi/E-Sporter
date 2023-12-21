@@ -16,6 +16,9 @@ import modele.ModelePoule;
 import modele.ModeleRencontre;
 import modele.ModeleTournoi;
 import modele.ModeleUtilisateur;
+import modele.exception.DroitsInsuffisantsException;
+import modele.exception.TournoiClotureException;
+import modele.exception.TournoiInexistantException;
 import modele.metier.Equipe;
 import modele.metier.Poule;
 import modele.metier.Rencontre;
@@ -37,7 +40,7 @@ public class TestModeleRencontre {
         modeleTournoi = new ModeleTournoi();
         modelePoule = new ModelePoule();
         modeleUtilisateur = new ModeleUtilisateur();
-        
+
         modeleEquipe = new ModeleEquipe();
 		Equipe[] equipes = {
 				modeleEquipe.getParId(1).get(),
@@ -66,7 +69,7 @@ public class TestModeleRencontre {
 		
 		Tournoi tournoi = new Tournoi("tournoi", Notoriete.LOCAL, timestampDebut, timestampFin, "a", "m", modeleArbitre.getTout());
 		modeleTournoi.ajouter(tournoi);
-		
+
 		rencontre = new Rencontre(equipes);
 		List<Rencontre> rencontres = new ArrayList<>(Arrays.asList(
 				rencontre));		
@@ -74,12 +77,12 @@ public class TestModeleRencontre {
 		modelePoule.ajouter(poule);
 		
 		for (int i=1;i<5;i++)
-			modeleEquipe.inscrireEquipe(modeleEquipe.getParId(i).get(), tournoi);
+		modeleEquipe.inscrireEquipe(modeleEquipe.getParId(i).get(), tournoi);
 		modeleUtilisateur.connecter("admin", "mdp");
 		modeleTournoi.ouvrirTournoi(modeleTournoi.getParId(tournoi.getIdTournoi()).get());
-    }
+	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=TournoiInexistantException.class)
 	public void testResetEquipeGagnanteTournoiExistePas() throws Exception {
 		Equipe[] equipes = {
 				modeleEquipe.getParId(1).get(),
@@ -88,13 +91,13 @@ public class TestModeleRencontre {
 		Rencontre rencontreTest = new Rencontre(equipes);
 		modele.resetEquipeGagnante(rencontreTest);
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
+
+	@Test(expected=TournoiClotureException.class)
 	public void testResetEquipeGagnanteTournoiCloture() throws Exception {
 		modele.resetEquipeGagnante(modele.getParId(1).get());
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=DroitsInsuffisantsException.class)
 	public void testResetEquipeGagnanteMauvaisUtilisateur() throws Exception {		
 		modele.resetEquipeGagnante(rencontre);
 	}
@@ -142,7 +145,7 @@ public class TestModeleRencontre {
         //Réinitialise les tournoi
         List<Integer> idTournoiAGarder = Arrays.asList(1, 2, 3, 4, 5, 6);
         modeleTournoi.getTout().stream()
-                .filter(tournoi -> !idTournoiAGarder.contains(tournoi.getIdTournoi()))
+        	.filter(tournoi -> !idTournoiAGarder.contains(tournoi.getIdTournoi()))
                 .forEach(tournoi -> {
                     try {
                     	modeleTournoi.supprimer(tournoi);
