@@ -13,6 +13,8 @@ import org.junit.Test;
 
 import modele.ModeleEquipe;
 import modele.ModeleTournoi;
+import modele.exception.InscriptionEquipeTournoiException;
+import modele.exception.SaisonException;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
 import modele.metier.Pays;
@@ -91,10 +93,13 @@ public class TestModeleEquipe {
 
 	@Test
 	public void testGetEquipesTournoi() throws Exception {
-		List<Equipe> listEquipes = new ArrayList<>(Arrays.asList(
-			
+		List<Equipe> equipes = new ArrayList<>(Arrays.asList(
+			modele.getParId(1).get(),
+			modele.getParId(2).get(),
+			modele.getParId(3).get(),
+			modele.getParId(4).get()
 		));
-		assertEquals(listEquipes, modele.getEquipesTournoi(1));
+		assertEquals(equipes, modele.getEquipesTournoi(1));
 	}
 
 	@Test
@@ -103,13 +108,13 @@ public class TestModeleEquipe {
 		assertTrue(modele.estEquipeInscriteUnTournoi(modele.getParId(1).orElse(null)));
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test(expected = InscriptionEquipeTournoiException.class)
 	public void testInscrireDejaInscrite() throws Exception{
 		modele.inscrireEquipe(modele.getParId(1).orElse(null), modeleTournoi.getParId(1).orElse(null));
 		modele.inscrireEquipe(modele.getParId(1).orElse(null), modeleTournoi.getParId(1).orElse(null));
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test(expected = SaisonException.class)
 	public void testInscrireSaisonAnterieure() throws Exception{
 		modele.inscrireEquipe(modele.getParId(5).orElse(null), modeleTournoi.getParId(1).orElse(null));
 	}
@@ -120,7 +125,7 @@ public class TestModeleEquipe {
 		modele.inscrireEquipe(equipe, modeleTournoi.getParId(1).orElse(null));
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test(expected = InscriptionEquipeTournoiException.class)
 	public void testDesinscrireNonInscrite() throws Exception{
 		modele.desinscrireEquipe(equipe, modeleTournoi.getParId(1).orElse(null));
 	}
