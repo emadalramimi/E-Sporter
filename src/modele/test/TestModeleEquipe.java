@@ -16,15 +16,16 @@ import modele.ModeleTournoi;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
 import modele.metier.Pays;
+import modele.metier.Tournoi;
 
 public class TestModeleEquipe {
-	
+
 	private ModeleEquipe modele;
 	private ModeleTournoi modeleTournoi;
 	private Equipe equipe;
 	private Equipe equipeAModif;
 	private List<Joueur> listJoueurs;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		modele = new ModeleEquipe();
@@ -39,41 +40,40 @@ public class TestModeleEquipe {
 		equipe = new Equipe(10, "Equipe", Pays.CANADA, 2, 2, "Saison 2023", listJoueurs);
 		equipeAModif = new Equipe(10, "EquipeModif", Pays.FRANCE, 3, 3, "Saison 2024", listJoueurs);
     }
-	
+
 	@Test
 	public void testGetTout() throws Exception {
 	    assertNotNull(modele.getTout());
-	    Equipe equipeFromDb = modele.getParId(1).orElse(null);
-	    assertNotNull(equipeFromDb);
+	    Equipe equipeTest = modele.getParId(1).orElse(null);
+	    assertNotNull(equipeTest);
 	    List<Equipe> result = modele.getTout();
 	    assertNotNull(result);
 	    assertFalse(result.isEmpty());
-	    assertEquals(equipeFromDb, result.get(0));
+	    assertEquals(equipeTest, result.get(0));
 	}
 	
 	@Test
 	public void testGetParId() throws Exception {
-	    Equipe equipeFromDb = modele.getParId(1).orElse(null);
-	    assertNotNull(equipeFromDb);
-	    Optional<Equipe> result = modele.getParId(equipeFromDb.getIdEquipe());
-	    assertTrue(result.isPresent());
+	    Equipe equipeTest = modele.getParId(1).orElse(null);
+	    assertNotNull(equipeTest);
+	    Optional<Equipe> equipe = modele.getParId(equipeTest.getIdEquipe());
+	    assertTrue(equipe.isPresent());
 		assertNotNull(modele.getParId(1).orElse(null));
-	    assertEquals(equipeFromDb, result.get());
+	    assertEquals(equipeTest, equipe.get());
 	}
-	
+
 	@Test
 	public void testAjouterTrue() throws Exception{
 		assertTrue(modele.ajouter(equipe));
 		assertEquals(equipe.getWorldRanking(), 1000);
 	}
-	
+
 	@Test
 	public void testAjouterSaisonDerniere() throws Exception {
 		Equipe equipeOM = modele.getParId(5).orElse(null);
 		Equipe equipeAjouter = new Equipe(equipeOM.getNom(), equipeOM.getPays(), equipeOM.getJoueurs());
 		modele.ajouter(equipeAjouter);
-		assertNotNull(modele.getParId(6).orElse(null));
-		Equipe equipeTest = modele.getParId(6).orElse(null);
+		Equipe equipeTest = modele.getTout().get(modele.getTout().size()-1);
 		assertEquals(equipeTest.getWorldRanking(), equipeOM.getClassement());
 	}
 
@@ -82,7 +82,7 @@ public class TestModeleEquipe {
 		modele.ajouter(equipe);
 		assertTrue(modele.modifier(equipeAModif));
 	}
-	
+
 	@Test
 	public void testSupprimerTrue() throws Exception {
 		modele.ajouter(equipe);
@@ -96,7 +96,7 @@ public class TestModeleEquipe {
 		));
 		assertEquals(listEquipes, modele.getEquipesTournoi(1));
 	}
-	
+
 	@Test
 	public void testEstEquipeInscriteUnTournoi() throws Exception {
 		modele.inscrireEquipe(modele.getParId(1).orElse(null), modeleTournoi.getParId(1).orElse(null));
@@ -122,7 +122,6 @@ public class TestModeleEquipe {
 
 	@Test(expected = IllegalStateException.class)
 	public void testDesinscrireNonInscrite() throws Exception{
-		modele.ajouter(equipe)	;
 		modele.desinscrireEquipe(equipe, modeleTournoi.getParId(1).orElse(null));
 	}
 
@@ -165,22 +164,19 @@ public class TestModeleEquipe {
 
 	@After
     public void tearsDown() throws Exception {
-		//Réinitialise les rencontres
-        List<Integer> idREncontreAGarder = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
-        modele.getTout().stream()
-                .filter(rencontre -> !idREncontreAGarder.contains(rencontre.getIdEquipe()))
-                .forEach(rencontre -> {
-                    try {
-                        modele.supprimer(rencontre);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-        });
-        
-        for (Equipe equipe : modele.getEquipesTournoi(1)) {
-        		modele.desinscrireEquipe(equipe, modeleTournoi.getParId(1).get());
-        
+		ModeleTournoi modeleTournoi = new ModeleTournoi();
+        List<Integer> idsAGarder = Arrays.asList(1, 2, 3, 4, 5);
+        for(Equipe equipe : modele.getTout()) {
+        	if(!idsAGarder.contains(equipe.getIdEquipe())) {
+        		if(modele.estEquipeInscriteUnTournoi(equipe)) {
+        			for(Tournoi tournoi : modeleTournoi.getTout()) {
+        				if(modele.getEquipesTournoi(tournoi.getIdTournoi()).contains(equipe)) {
+        					modele.desinscrireEquipe(equipe, tournoi);
+        				}
+        			}
+        		}
+        		modele.supprimer(equipe);
+        	}
         }
     }
-	
 }
