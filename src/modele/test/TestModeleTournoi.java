@@ -115,6 +115,23 @@ public class TestModeleTournoi {
 		modele.ajouter(tournoi);
 	    modele.ouvrirTournoi(tournoi);
 	}
+	
+	@Test
+	public void testGetParIdentifiant() throws Exception {
+		assertEquals(modele.getParIdentifiant("AsiaStar"), modele.getParId(2));
+	}
+	
+	@Test
+	public void testGetTournoiRencontre() throws Exception {
+		assertEquals(modele.getTournoiRencontre(1), modele.getParId(1));
+	}
+	
+	@Test
+	public void testGetParNom() throws Exception {
+		assertEquals(modele.getParNom("Asia Star Challengers Invitational 2023").size(), 1);
+		assertEquals(modele.getTout().get(0), modele.getParNom("Asia Star Challengers Invitational 2023").get(0));
+	}
+	
 	@Test
 	public void testGetParFiltrageNotorieteNull() throws Exception {
 		List<Tournoi> tournois = modele.getTout();
