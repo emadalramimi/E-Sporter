@@ -87,6 +87,16 @@ public class TestModeleTournoi {
 		modele.supprimer(tournoi);
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void testOuvrirTournoiNombreEquipesInf4() throws Exception {
+	    List<Equipe> equipes = new ArrayList<>(Arrays.asList(
+			new Equipe("Name1", Pays.FRANCE, new ArrayList<>()),
+			new Equipe("Name2", Pays.FRANCE, new ArrayList<>()),
+			new Equipe("Name3", Pays.FRANCE, new ArrayList<>())
+		));
+		Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, System.currentTimeMillis() / 1000 + 3600, System.currentTimeMillis() / 1000 + 7200, true, "arbitre3", "password", new ArrayList<>(), equipes, new ArrayList<>());
+	    modele.ouvrirTournoi(tournoi);
+	}
 	@After
 	public void tearsDown() throws Exception {
 		
