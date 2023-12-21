@@ -88,6 +88,18 @@ public class TestModeleTournoi {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
+	public void testOuvrirTournoiTournoiOuvert() throws Exception {
+	    Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, System.currentTimeMillis() / 1000 - 3600, System.currentTimeMillis() / 1000 + 3600, false, "arbitre1", "password", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+	    modele.ouvrirTournoi(tournoi);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testOuvrirTournoiDateFinPassee() throws Exception {
+	    Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, System.currentTimeMillis() / 1000 - 7200, System.currentTimeMillis() / 1000 - 3600, true, "arbitre2", "password", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+		modele.ouvrirTournoi(tournoi);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
 	public void testOuvrirTournoiNombreEquipesInf4() throws Exception {
 	    List<Equipe> equipes = new ArrayList<>(Arrays.asList(
 			new Equipe("Name1", Pays.FRANCE, new ArrayList<>()),
@@ -114,6 +126,26 @@ public class TestModeleTournoi {
 	    Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, System.currentTimeMillis() / 1000 + 3600, System.currentTimeMillis() / 1000 + 7200, true, "arbitre3", "password", new ArrayList<>(), equipes, new ArrayList<>());
 		modele.ajouter(tournoi);
 	    modele.ouvrirTournoi(tournoi);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testOuvrirTournoiTournoiEnCours() throws Exception {
+		ModeleEquipe modeleEquipe = new ModeleEquipe();
+		Tournoi tournoiTest = modele.getParId(1).orElse(null);
+		Tournoi tournoi1 = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, System.currentTimeMillis() / 1000 + 3200, System.currentTimeMillis() / 1000 + 7200, true, "arbitre", "password", tournoiTest.getPoules(), tournoiTest.getEquipes(), tournoiTest.getArbitres());
+		modele.ajouter(tournoi1);
+		for(int i = 0; i < 4; i++){
+			modeleEquipe.inscrireEquipe(modeleEquipe.getTout().get(i), tournoi1);
+		}
+		modele.ajouter(tournoi1);
+		Tournoi tournoi2 = new Tournoi(8, "TournoiTest2", Notoriete.NATIONAL, System.currentTimeMillis() / 1000 + 3300, System.currentTimeMillis() / 1000 + 7600, true, "arbitre2", "password2", tournoiTest.getPoules(), tournoiTest.getEquipes(), tournoiTest.getArbitres());
+		modele.ajouter(tournoi2);
+		for(int i = 0; i < 4; i++){
+			modeleEquipe.inscrireEquipe(modeleEquipe.getTout().get(i), tournoi2);
+		}
+		modele.ajouter(tournoi2);
+	    modele.ouvrirTournoi(tournoi1);
+	    modele.ouvrirTournoi(tournoi2);
 	}
 	
 	@Test
