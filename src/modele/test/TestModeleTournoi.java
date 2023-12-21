@@ -15,6 +15,9 @@ import org.junit.Test;
 import controleur.ControleurTournois;
 import modele.ModeleEquipe;
 import modele.ModeleTournoi;
+import modele.exception.DatesTournoiException;
+import modele.exception.OuvertureTournoiException;
+import modele.exception.TournoiDejaOuvertException;
 import modele.metier.Arbitre;
 import modele.metier.Equipe;
 import modele.metier.Pays;
@@ -88,13 +91,13 @@ public class TestModeleTournoi {
 		modele.supprimer(tournoi);
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = OuvertureTournoiException.class)
 	public void testOuvrirTournoiTournoiOuvert() throws Exception {
 	    Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, System.currentTimeMillis() / 1000 - 3600, System.currentTimeMillis() / 1000 + 3600, false, "arbitre1", "password", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 	    modele.ouvrirTournoi(tournoi);
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = DatesTournoiException.class)
 	public void testOuvrirTournoiDateFinPassee() throws Exception {
 	    Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, System.currentTimeMillis() / 1000 - 7200, System.currentTimeMillis() / 1000 - 3600, true, "arbitre2", "password", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 		modele.ouvrirTournoi(tournoi);
@@ -129,7 +132,7 @@ public class TestModeleTournoi {
 	    modele.ouvrirTournoi(tournoi);
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = TournoiDejaOuvertException.class)
 	public void testOuvrirTournoiTournoiEnCours() throws Exception {
 		ModeleEquipe modeleEquipe = new ModeleEquipe();
 		Tournoi tournoiTest = modele.getParId(1).orElse(null);
@@ -188,8 +191,6 @@ public class TestModeleTournoi {
             modeleEquipe.inscrireEquipe(modeleEquipe.getParId(i).get(), tournoi);
         }
         modele.ouvrirTournoi(tournoi);
-        System.out.println(statistiquesEquipes);
-        System.out.println(modele.getResultatsTournoi(tournoi));
         assertEquals(statistiquesEquipes.size(), modele.getResultatsTournoi(tournoi).size());
         for(int i = 1; i < statistiquesEquipes.size(); i++){
         	assertEquals(statistiquesEquipes.get(i), modele.getResultatsTournoi(tournoi).get(i));
