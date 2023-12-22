@@ -46,10 +46,12 @@ private ModeleJoueur modele;
 	    List<Joueur> listTest = modele.getTout();
 	    assertEquals(listTest.size(), modele.getTout().size());
 	    List<Joueur> listJoueurs = new ArrayList<>();
+	    
 	    for(int i = 0; i < listTest.size(); i++) {
 	    	assertNotNull(listTest.get(i));
 	        listJoueurs.add(listTest.get(i));
 	    }
+	    
 	    assertEquals(listTest.size(), listJoueurs.size());
 	    for (int i = 0; i < listTest.size(); i++) {
 	    	assertTrue(listTest.get(i).equals(listJoueurs.get(i)));
@@ -74,27 +76,12 @@ private ModeleJoueur modele;
 		modele.ajouter(joueur);
 		assertTrue(modele.modifier(new Joueur(50, "joueurModif", 1)));
 	}
-	/*
-	@Test
-	public void testSupprimerTrue() throws Exception {
-		modele.ajouter(joueur);
-		assertTrue(modele.supprimer(joueur));
-	}
-	
-	
-	@Test
-	public void testGetNextValId() {
-	    int nextVal = modele.getNextValId();
-	    assertTrue(nextVal != 0);
-	}
-	*/
 	
 	@Test
 	public void testSupprimerJoueursParEquipe() throws Exception {
 		assertTrue(modele.supprimerJoueursEquipe(equipe.getIdEquipe()));
 	}
-		
-	
+
 	@Test
 	public void testGetListeJoueursParId() throws Exception {
 		ModeleEquipe modeleEquipe = new ModeleEquipe();
@@ -102,9 +89,11 @@ private ModeleJoueur modele;
 	    assertEquals(5, modele.getListeJoueursParId(equipe.getIdEquipe()).size());
 	    assertEquals(modele.getListeJoueursParId(equipe.getIdEquipe()).toString(), joueurs.toString());
 	}
-	
+
 	@After
     public void tearsDown() throws Exception {
 		modele.supprimerJoueursEquipe(6);
+		ModeleEquipe modeleEquipe = new ModeleEquipe();
+		modeleEquipe.supprimer(equipe);
     }
 }
