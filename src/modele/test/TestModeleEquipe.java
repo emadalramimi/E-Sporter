@@ -19,6 +19,7 @@ import modele.metier.Equipe;
 import modele.metier.Joueur;
 import modele.metier.Pays;
 import modele.metier.Tournoi;
+import modele.metier.Tournoi.Notoriete;
 
 public class TestModeleEquipe {
 
@@ -32,6 +33,7 @@ public class TestModeleEquipe {
 	public void setUp() throws Exception {
 		modele = new ModeleEquipe();
 		modeleTournoi = new ModeleTournoi();
+		
 		listJoueurs = new ArrayList<>(Arrays.asList(
 				new Joueur(1, "Joueur1", 2),
 			    new Joueur(2, "Joueur2", 2),
@@ -39,6 +41,7 @@ public class TestModeleEquipe {
 			    new Joueur(4, "Joueur4", 2),
 			    new Joueur(5, "Joueur5", 2)
 			));
+		
 		equipe = new Equipe(10, "Equipe", Pays.CANADA, 2, 2, "Saison 2023", listJoueurs);
 		equipeAModif = new Equipe(10, "EquipeModif", Pays.FRANCE, 3, 3, "Saison 2024", listJoueurs);
     }
@@ -78,11 +81,43 @@ public class TestModeleEquipe {
 		Equipe equipeTest = modele.getTout().get(modele.getTout().size()-1);
 		assertEquals(equipeTest.getWorldRanking(), equipeOM.getClassement());
 	}
+	
+	@Test(expected = InscriptionEquipeTournoiException.class)
+	public void testModifierException() throws Exception {
+		ModeleTournoi modeleTournoi = new ModeleTournoi();
+		Tournoi tournoiTest = modeleTournoi.getParId(1).orElse(null);
+		Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, System.currentTimeMillis() / 1000 + 3600, System.currentTimeMillis() / 1000 + 7200, true, "arbitre", "password", tournoiTest.getPoules(), tournoiTest.getEquipes(), tournoiTest.getArbitres());
+		modeleTournoi.ajouter(tournoi);
+		
+		for(int i = 0; i < 4; i++){
+			modele.inscrireEquipe(modele.getTout().get(i), tournoi);
+		}
+		
+		modeleTournoi.ouvrirTournoi(tournoi);
+		Equipe equipeAModif = modele.getParId(1).orElse(null);
+		equipeAModif.setNom("Coucou");
+		modele.modifier(equipeAModif);
+	}
 
 	@Test
 	public void testModifierTrue() throws Exception {
 		modele.ajouter(equipe);
 		assertTrue(modele.modifier(equipeAModif));
+	}
+	
+	@Test(expected = InscriptionEquipeTournoiException.class)
+	public void testSupprimerException() throws Exception {
+		ModeleTournoi modeleTournoi = new ModeleTournoi();
+		Tournoi tournoiTest = modeleTournoi.getParId(1).orElse(null);
+		Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, System.currentTimeMillis() / 1000 + 3600, System.currentTimeMillis() / 1000 + 7200, true, "arbitre", "password", tournoiTest.getPoules(), tournoiTest.getEquipes(), tournoiTest.getArbitres());
+		modeleTournoi.ajouter(tournoi);
+		
+		for(int i = 0; i < 4; i++){
+			modele.inscrireEquipe(modele.getTout().get(i), tournoi);
+		}
+		
+		modeleTournoi.ouvrirTournoi(tournoi);
+		modele.supprimer(modele.getParId(1).orElse(null));
 	}
 
 	@Test
@@ -99,6 +134,7 @@ public class TestModeleEquipe {
 			modele.getParId(3).get(),
 			modele.getParId(4).get()
 		));
+		
 		assertEquals(equipes, modele.getEquipesTournoi(1));
 	}
 
@@ -148,6 +184,7 @@ public class TestModeleEquipe {
 	@Test
 	public void testGetEquipesSaison() throws Exception {
 		assertNotNull(modele.getEquipesSaison());
+		
 		for(int i = 1; i <= 4; i++){
 			assertTrue(modele.getEquipesSaison().contains(modele.getParId(i).orElse(null)));
 		}
@@ -156,15 +193,46 @@ public class TestModeleEquipe {
 	@Test
 	public void testGetTableauEquipes() throws Exception {
 		List<Equipe> equipes = modele.getTout();
+		
 		List<Equipe> equipesInscrites = new ArrayList<>(Arrays.asList(
 			modele.getParId(1).orElse(null)
 		));
+		
 		Equipe[] equipesEligibles = modele.getTableauEquipes(equipesInscrites);
 		assertNotNull(equipes);
 		assertNotNull(equipesInscrites);
 		assertTrue(equipesEligibles.length != 0);
+		
 		for(int i = 0; i < equipesEligibles.length; i++){
 			assertTrue(!equipesInscrites.contains(equipesEligibles[i]));
+		}
+	}
+	
+	@Test
+	public void testGetParFiltrage() throws Exception {
+		Equipe equipeATester = modele.getParId(1).orElse(null);
+		equipeATester.setIdEquipe(6);
+		equipeATester.setPays(Pays.ALLEMAGNE);
+		modele.ajouter(equipeATester);
+		List<Equipe> equipes = new ArrayList<>();
+		equipes.add(equipeATester);
+		assertEquals(equipes.size(), modele.getParFiltrage(Pays.ALLEMAGNE).size());
+		
+		for (int i = 0; i < equipes.size(); i++) {
+			assertEquals(equipes.get(i), modele.getParFiltrage(Pays.ALLEMAGNE).get(i));
+		}
+	}
+	
+	@Test
+	public void testGetParFiltrageNull() throws Exception {
+		Equipe equipeATester = modele.getParId(1).orElse(null);
+		equipeATester.setIdEquipe(6);
+		equipeATester.setPays(Pays.ALLEMAGNE);
+		modele.ajouter(equipeATester);
+		assertEquals(modele.getTout().size(), modele.getParFiltrage(null).size());
+		
+		for (int i = 0; i < modele.getTout().size(); i++) {
+			assertEquals(modele.getTout().get(i), modele.getParFiltrage(null).get(i));
 		}
 	}
 
@@ -172,6 +240,7 @@ public class TestModeleEquipe {
     public void tearsDown() throws Exception {
 		ModeleTournoi modeleTournoi = new ModeleTournoi();
         List<Integer> idsAGarder = Arrays.asList(1, 2, 3, 4, 5);
+        
         for(Equipe equipe : modele.getTout()) {
         	if(!idsAGarder.contains(equipe.getIdEquipe())) {
         		if(modele.estEquipeInscriteUnTournoi(equipe)) {
@@ -181,7 +250,16 @@ public class TestModeleEquipe {
         				}
         			}
         		}
+        		
         		modele.supprimer(equipe);
+        	}
+        }
+        
+        List<Integer> idsAGarderTournoi = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6));
+        
+        for(Tournoi tournoi : modeleTournoi.getTout()) {
+        	if (!idsAGarderTournoi.contains(tournoi.getIdTournoi())) {
+        		modeleTournoi.supprimer(tournoi);
         	}
         }
     }
