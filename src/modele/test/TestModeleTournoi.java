@@ -16,7 +16,6 @@ import controleur.ControleurTournois;
 import modele.ModeleEquipe;
 import modele.ModeleTournoi;
 import modele.exception.DatesTournoiException;
-import modele.exception.InscriptionEquipeTournoiException;
 import modele.exception.OuvertureTournoiException;
 import modele.exception.TournoiDejaOuvertException;
 import modele.metier.Arbitre;
