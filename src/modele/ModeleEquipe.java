@@ -143,6 +143,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 			ps.setInt(5, equipe.getWorldRanking());
 			ps.setString(6, equipe.getSaison());
 			ps.execute();
+			ps.close();
 			
 			// On ajoute les joueurs de l'équipe
 			for(Joueur joueur : equipe.getJoueurs()) {
@@ -151,7 +152,6 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 			}
 			
 			BDD.getConnexion().commit();
-			ps.close();
 			return true;
 		} catch(Exception e) {
 			try {
@@ -409,7 +409,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	 * @throws Exception Erreur SQL
 	 */
 	public List<Equipe> getParNom(String nom) throws Exception {
-		return this.getTout().stream()
+		return this.getEquipesSaison().stream()
 				.filter(e -> e.getNom().toLowerCase().contains(nom.toLowerCase()))
 				.collect(Collectors.toList());
 	}
@@ -432,8 +432,8 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	 * @throws Exception Erreur SQL
 	 */
 	public Equipe[] getTableauEquipes(List<Equipe> equipesNonEligibles) throws Exception {
-		return this.getTout().stream()
-				.filter(e -> !equipesNonEligibles.contains(e) && e.getSaison().equals(String.valueOf(LocalDate.now().getYear())))
+		return this.getEquipesSaison().stream()
+				.filter(e -> !equipesNonEligibles.contains(e))
 				.sorted()
 				.toArray(Equipe[]::new);
 	}
@@ -445,7 +445,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	 * @throws Exception Exception SQL
 	 */
 		public List<Equipe> getParFiltrage(Pays pays) throws Exception {
-		List<Equipe> equipes = this.getTout();
+		List<Equipe> equipes = this.getEquipesSaison();
 
 		if (pays != null) {
 			equipes = equipes.stream()

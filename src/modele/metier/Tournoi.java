@@ -55,7 +55,7 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 		 */
 		public static String[] getLibellesFiltres() {
 			String[] libelles = new String[values().length + 1];
-			libelles[0] = "Toutes les notoriétés";
+			libelles[0] = "Toutes notoriétés";
 			for (int i = 0; i < values().length; i++) {
 				libelles[i + 1] = values()[i].getLibelle();
 			}
