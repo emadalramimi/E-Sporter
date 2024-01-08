@@ -500,7 +500,7 @@ public class BDD {
 					+ "'Taïwan',"
 					+ "3,"
 					+ "414,"
-					+ "'2023'"
+					+ "'2024'"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO equipe VALUES ("
@@ -509,7 +509,7 @@ public class BDD {
 					+ "'Taïwan',"
 					+ "1,"
 					+ "362,"
-					+ "'2023'"
+					+ "'2024'"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO equipe VALUES ("
@@ -518,7 +518,7 @@ public class BDD {
 					+ "'Taïwan',"
 					+ "4,"
 					+ "275,"
-					+ "'2023'"
+					+ "'2024'"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO equipe VALUES ("
@@ -527,7 +527,7 @@ public class BDD {
 					+ "'Taïwan',"
 					+ "2,"
 					+ "237,"
-					+ "'2023'"
+					+ "'2024'"
 					+ ")");
 			st.executeUpdate(
 					"INSERT INTO equipe VALUES ("
@@ -536,7 +536,7 @@ public class BDD {
 					+ "'France',"
 					+ "5,"
 					+ "632,"
-					+ "'2022'"
+					+ "'2023'"
 					+ ")");
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table equipe");
