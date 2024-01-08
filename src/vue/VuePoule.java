@@ -105,6 +105,7 @@ public class VuePoule extends JFrameTheme {
 
 		// Bouton de clôture de la poule
 		JButtonTheme btnCloturerPoule = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Clôturer la poule");
+		btnCloturerPoule.addActionListener(controleur);
 		btnCloturerPoule.setFont(CharteGraphique.getPolice(17, false));
 
 		// Panel du bouton de clôture de la poule

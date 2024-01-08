@@ -1,6 +1,7 @@
 package modele.metier;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Modèle métier Équipe
@@ -172,6 +173,14 @@ public class Equipe implements Comparable<Equipe> {
 	    }
 	    Equipe equipe = (Equipe) o;
 	    return this.nom.equals(equipe.nom) && this.pays.equals(equipe.pays);
+	}
+
+	/**
+	 * Retourne le hashcode de l'équipe
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(nom, pays);
 	}
 
 	/**

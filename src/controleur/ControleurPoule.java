@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 
 import modele.ModeleEquipe;
+import modele.ModelePoule;
 import modele.ModeleRencontre;
 import modele.exception.DroitsInsuffisantsException;
 import modele.exception.TournoiClotureException;
@@ -26,7 +27,8 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
     
     private VuePoule vue;
     private Tournoi tournoi;
-    private ModeleRencontre modele;
+    private ModelePoule modelePoule;
+    private ModeleRencontre modeleRencontre;
     private ModeleEquipe modeleEquipe;
 
     /**
@@ -37,7 +39,8 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
     public ControleurPoule(VuePoule vue, Tournoi tournoi) {
         this.vue = vue;
         this.tournoi = tournoi;
-        this.modele = new ModeleRencontre();
+        this.modelePoule = new ModelePoule();
+        this.modeleRencontre = new ModeleRencontre();
         this.modeleEquipe = new ModeleEquipe();
     }
 
@@ -85,10 +88,10 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
 
                     // Si l'équipe sélectionnée est celle qui est déjà gagnante, on la retire, sinon, on l'ajoute
                     if(equipeGagnante != null && equipeGagnante.getNom().equals(nomEquipe)) {
-                        this.modele.resetEquipeGagnante(rencontre);
+                        this.modeleRencontre.resetEquipeGagnante(rencontre);
                         this.vue.resetGagnant(ligne, col);
                     } else {
-                        this.modele.setEquipeGagnante(rencontre, nomEquipe);
+                        this.modeleRencontre.setEquipeGagnante(rencontre, nomEquipe);
                         this.vue.toggleGagnant(ligne, col);
                     }
                 } catch (TournoiInexistantException | TournoiClotureException | DroitsInsuffisantsException ex) {
@@ -112,7 +115,16 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
 
         switch(bouton.getText()) {
             case "Clôturer la poule":
-                // TODO S3
+                try {
+                    this.modelePoule.cloturerPoule(this.tournoi.getPouleActuelle());
+                    this.vue.afficherPopupMessage("La poule a été clôturée.");
+                    this.vue.fermerFenetre();
+                } catch(IllegalArgumentException ex) {
+                    this.vue.afficherPopupErreur(ex.getMessage());
+                } catch (Exception ex) {
+                    this.vue.afficherPopupErreur("Une erreur est survenue lors de la clôture de la poule.");
+                    ex.printStackTrace();
+                }
                 break;
             case "État des résultats":
                 // Affiche la vue d'état des résultats du tournoi
