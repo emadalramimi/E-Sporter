@@ -8,8 +8,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 
 import modele.ModeleEquipe;
-import modele.ModelePoule;
 import modele.ModeleRencontre;
+import modele.ModeleTournoi;
 import modele.exception.DroitsInsuffisantsException;
 import modele.exception.TournoiClotureException;
 import modele.exception.TournoiInexistantException;
@@ -27,7 +27,7 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
     
     private VuePoule vue;
     private Tournoi tournoi;
-    private ModelePoule modelePoule;
+    private ModeleTournoi modeleTournoi;
     private ModeleRencontre modeleRencontre;
     private ModeleEquipe modeleEquipe;
 
@@ -39,7 +39,7 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
     public ControleurPoule(VuePoule vue, Tournoi tournoi) {
         this.vue = vue;
         this.tournoi = tournoi;
-        this.modelePoule = new ModelePoule();
+        this.modeleTournoi = new ModeleTournoi();
         this.modeleRencontre = new ModeleRencontre();
         this.modeleEquipe = new ModeleEquipe();
     }
@@ -116,7 +116,7 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
         switch(bouton.getText()) {
             case "Clôturer la poule":
                 try {
-                    this.modelePoule.cloturerPoule(this.tournoi.getPouleActuelle());
+                    this.modeleTournoi.cloturerPoule(this.tournoi);
                     this.vue.afficherPopupMessage("La poule a été clôturée.");
                     this.vue.fermerFenetre();
                 } catch(IllegalArgumentException ex) {
