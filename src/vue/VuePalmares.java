@@ -64,7 +64,7 @@ public class VuePalmares extends JFrameTheme {
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{1020, 0};
 		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 1.0};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0};
 		panel.setLayout(gbl_panel);
 		
 		// panelLabelHistoriquePoints, le panel contenant le label lblHistoriquePoints
@@ -85,8 +85,66 @@ public class VuePalmares extends JFrameTheme {
 		lblPalmares.setForeground(CharteGraphique.TEXTE);
 		panelLabelPalmares.add(lblPalmares);
 		
-		// JPanel affichant le Podium
 		JPanel panelPodium = new JPanel();
+		panelPodium.setBackground(CharteGraphique.FOND);
+		GridBagConstraints gbc_panelPodium = new GridBagConstraints();
+		gbc_panelPodium.insets = new Insets(0, 0, 20, 0);
+		gbc_panelPodium.fill = GridBagConstraints.VERTICAL;
+		gbc_panelPodium.gridx = 0;
+		gbc_panelPodium.gridy = 1;
+		panel.add(panelPodium, gbc_panelPodium);
+		GridBagLayout gbl_panelPodium = new GridBagLayout();
+		gbl_panelPodium.columnWidths = new int[] {200, 200, 200};
+		gbl_panelPodium.rowHeights = new int[]{141, 0, 0};
+		gbl_panelPodium.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelPodium.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		panelPodium.setLayout(gbl_panelPodium);
+
+		JLabel icon2 = new JLabel(new ImageIcon(VueTournois.class.getResource("/images/medailles/top2.png")));
+		GridBagConstraints gbc_lblIcon2 = new GridBagConstraints();
+		gbc_lblIcon2.gridx = 0;
+		gbc_lblIcon2.gridy = 0;
+		panelPodium.add(icon2, gbc_lblIcon2);
+
+		JLabel icon1 = new JLabel(new ImageIcon(VueTournois.class.getResource("/images/medailles/top1.png")));
+		GridBagConstraints gbc_lblIcon = new GridBagConstraints();
+		gbc_lblIcon.anchor = GridBagConstraints.NORTH;
+		gbc_lblIcon.gridx = 1;
+		gbc_lblIcon.gridy = 0;
+		panelPodium.add(icon1, gbc_lblIcon);
+
+		JLabel icon3 = new JLabel(new ImageIcon(VueTournois.class.getResource("/images/medailles/top3.png")));
+		GridBagConstraints gbc_lblIcon_1 = new GridBagConstraints();
+		gbc_lblIcon_1.anchor = GridBagConstraints.SOUTH;
+		gbc_lblIcon_1.gridx = 2;
+		gbc_lblIcon_1.gridy = 0;
+		panelPodium.add(icon3, gbc_lblIcon_1);
+
+		JLabel lblTop2 = new JLabel("Top2");
+		lblTop2.setFont(CharteGraphique.getPolice(20, true));
+		lblTop2.setForeground(CharteGraphique.TEXTE);
+		GridBagConstraints gbc_lblTop2 = new GridBagConstraints();
+		gbc_lblTop2.insets = new Insets(0, 0, 0, 5);
+		gbc_lblTop2.gridx = 0;
+		gbc_lblTop2.gridy = 1;
+		panelPodium.add(lblTop2, gbc_lblTop2);
+
+		JLabel lblTop1 = new JLabel("Top1");
+		lblTop1.setFont(CharteGraphique.getPolice(20, true));
+		lblTop1.setForeground(CharteGraphique.TEXTE);
+		GridBagConstraints gbc_lblTop1 = new GridBagConstraints();
+		gbc_lblTop1.insets = new Insets(0, 0, 0, 5);
+		gbc_lblTop1.gridx = 1;
+		gbc_lblTop1.gridy = 1;
+		panelPodium.add(lblTop1, gbc_lblTop1);
+
+		JLabel lblTop3 = new JLabel("Top3");
+		lblTop3.setFont(CharteGraphique.getPolice(20, true));
+		lblTop3.setForeground(CharteGraphique.TEXTE);
+		GridBagConstraints gbc_lblTop3 = new GridBagConstraints();
+		gbc_lblTop3.gridx = 2;
+		gbc_lblTop3.gridy = 1;
+		panelPodium.add(lblTop3, gbc_lblTop3);
 		
 		//JPanel de recherche
 		panelTableauFiltres = new JPanel();
@@ -95,7 +153,7 @@ public class VuePalmares extends JFrameTheme {
 		gbc_panelRecherche.insets = new Insets(0, 0, 20, 0);
 		gbc_panelRecherche.fill = GridBagConstraints.BOTH;
 		gbc_panelRecherche.gridx = 0;
-		gbc_panelRecherche.gridy = 1;
+		gbc_panelRecherche.gridy = 2;
 		panel.add(panelTableauFiltres, gbc_panelRecherche);
 		panelTableauFiltres.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		
@@ -119,7 +177,7 @@ public class VuePalmares extends JFrameTheme {
 		GridBagConstraints gbc_scrollPaneEquipes = new GridBagConstraints();
 		gbc_scrollPaneEquipes.fill = GridBagConstraints.BOTH;
 		gbc_scrollPaneEquipes.gridx = 0;
-		gbc_scrollPaneEquipes.gridy = 2;
+		gbc_scrollPaneEquipes.gridy = 3;
 		panel.add(scrollPaneEquipes, gbc_scrollPaneEquipes);
 				
 		// Création du modèle du tableau avec désactivation de l'édition
