@@ -29,35 +29,7 @@ public class ModeleArbitre extends DAO<Arbitre, Integer> {
 		Statement st = BDD.getConnexion().createStatement();
 		ResultSet rs = st.executeQuery("select * from arbitre");
 		
-		// Parcourt les arbitres dans la base de données et les formate dans une liste
-		Stream<Arbitre> stream = StreamSupport.stream(
-    		new Spliterators.AbstractSpliterator<Arbitre>(Long.MAX_VALUE, Spliterator.ORDERED) {
-                @Override
-                public boolean tryAdvance(Consumer <? super Arbitre> action) {
-                    try {
-                        if (!rs.next()) {
-                            return false;
-                        }
-                        action.accept(new Arbitre(
-                    		rs.getInt("idArbitre"),
-                			rs.getString("nom"),
-                			rs.getString("prenom")
-                        ));
-                        return true;
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-	        }, false).onClose(() -> {
-				try {
-					rs.close();
-                    st.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			});
-		
-		return stream.collect(Collectors.toList());
+		return this.collect(st, rs);
 	}
 
 	/**
@@ -144,6 +116,43 @@ public class ModeleArbitre extends DAO<Arbitre, Integer> {
 		return this.getTout().stream()
 				.filter(e -> !arbitresNonEligibles.contains(e))
 				.toArray(Arbitre[]::new);
+	}
+
+	/**
+	 * Parcourt les arbitres dans la base de données et les formate dans une liste
+	 * @param st Statement
+	 * @param rs ResultSet
+	 * @return Liste des arbitres
+	 */
+	private List<Arbitre> collect(Statement st, ResultSet rs) throws Exception {
+		Stream<Arbitre> stream = StreamSupport.stream(
+    		new Spliterators.AbstractSpliterator<Arbitre>(Long.MAX_VALUE, Spliterator.ORDERED) {
+                @Override
+                public boolean tryAdvance(Consumer <? super Arbitre> action) {
+                    try {
+                        if (!rs.next()) {
+                            return false;
+                        }
+                        action.accept(new Arbitre(
+                    		rs.getInt("idArbitre"),
+                			rs.getString("nom"),
+                			rs.getString("prenom")
+                        ));
+                        return true;
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+	        }, false).onClose(() -> {
+				try {
+					rs.close();
+                    st.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			});
+		
+		return stream.collect(Collectors.toList());
 	}
 	
 }
