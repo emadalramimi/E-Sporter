@@ -4,20 +4,20 @@ public class HistoriquePoints {
     
     private int idHistoriquePoints;
     private float points;
-    private int idTournoi;
-    private Equipe equipe;
+    private Tournoi tournoi;
+    private int idEquipe;
 
-    public HistoriquePoints(int idHistoriquePoints, float points, int idTournoi, Equipe equipe) {
+    public HistoriquePoints(int idHistoriquePoints, float points, Tournoi tournoi, int idEquipe) {
         this.idHistoriquePoints = idHistoriquePoints;
         this.points = points;
-        this.idTournoi = idTournoi;
-        this.equipe = equipe;
+        this.tournoi = tournoi;
+        this.idEquipe = idEquipe;
     }
 
-    public HistoriquePoints(float points, int idTournoi, Equipe equipe) {
+    public HistoriquePoints(float points, Tournoi tournoi, int idEquipe) {
         this.points = points;
-        this.idTournoi = idTournoi;
-        this.equipe = equipe;
+        this.tournoi = tournoi;
+        this.idEquipe = idEquipe;
     }
 
     public int getIdHistoriquePoints() {
@@ -36,20 +36,20 @@ public class HistoriquePoints {
         this.points = points;
     }
 
-    public int getIdTournoi() {
-        return this.idTournoi;
+    public Tournoi getTournoi() {
+        return this.tournoi;
     }
 
-    public void setIdTournoi(int idTournoi) {
-        this.idTournoi = idTournoi;
+    public void setTournoi(Tournoi tournoi) {
+        this.tournoi = tournoi;
     }
 
-    public Equipe getEquipe() {
-        return this.equipe;
+    public int getIdEquipe() {
+        return this.idEquipe;
     }
 
-    public void setEquipe(Equipe equipe) {
-        this.equipe = equipe;
+    public void setIdEquipe(int idEquipe) {
+        this.idEquipe = idEquipe;
     }
 
 }

@@ -44,7 +44,6 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	private ModeleArbitre modeleArbitre;
 	private ModeleEquipe modeleEquipes;
 	private ModelePoule modelePoule;
-	private ModeleHistoriquePoints modeleHistoriquePoints;
 
 	/**
 	 * Construit un modèle tournoi
@@ -53,7 +52,6 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 		this.modeleArbitre = new ModeleArbitre();
 		this.modeleEquipes = new ModeleEquipe();
 		this.modelePoule = new ModelePoule();
-		this.modeleHistoriquePoints = new ModeleHistoriquePoints();
 	}
 
 	/**
@@ -613,8 +611,9 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
     			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (ancienneValeur, nouvelleValeur) -> ancienneValeur, LinkedHashMap::new));
 
 			// Création des historiques de points
+			ModeleHistoriquePoints modeleHistoriquePoints = new ModeleHistoriquePoints();
 			for (Map.Entry<Equipe, Float> entry : nbPointsParEquipeClasse.entrySet()) {
-				this.modeleHistoriquePoints.ajouter(new HistoriquePoints(entry.getValue(), tournoi.getIdTournoi(), entry.getKey().getIdEquipe()));
+				modeleHistoriquePoints.ajouter(new HistoriquePoints(entry.getValue(), tournoi, entry.getKey().getIdEquipe()));
 			}
 
 			// Fermeture de la poule et du tournoi

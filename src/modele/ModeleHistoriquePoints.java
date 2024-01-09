@@ -3,7 +3,6 @@ package modele;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -16,11 +15,17 @@ import modele.metier.HistoriquePoints;
 
 public class ModeleHistoriquePoints extends DAO<HistoriquePoints, Integer> {
     
-    // à modifier car la sélection dans la liste entraine voir doc
-    @Override
-    public List<HistoriquePoints> getTout() throws Exception {
-		Statement st = BDD.getConnexion().createStatement();
-		ResultSet rs = st.executeQuery("select * from historiquePoints");
+    private ModeleTournoi modeleTournoi;
+
+    public ModeleHistoriquePoints() {
+        this.modeleTournoi = new ModeleTournoi();
+    }
+
+    public List<HistoriquePoints> getParEquipe(int idEquipe) throws Exception {
+		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from historiquePoints where idEquipe = ?");
+        ps.setInt(1, idEquipe);
+
+        ResultSet rs = ps.executeQuery();
 		
 		// Parcourt les historiquePoints dans la base de données et les formate dans une liste
 		Stream<HistoriquePoints> stream = StreamSupport.stream(
@@ -31,12 +36,16 @@ public class ModeleHistoriquePoints extends DAO<HistoriquePoints, Integer> {
                         if (!rs.next()) {
                             return false;
                         }
-                        action.accept(new HistoriquePoints(
-                    		rs.getInt("idHistoriquePoints"),
-                            rs.getInt("points"),
-                            rs.getInt("idTournoi"),
-                            rs.getInt("idEquipe")
-                        ));
+                        try {
+                            action.accept(new HistoriquePoints(
+                                rs.getInt("idHistoriquePoints"),
+                                rs.getFloat("points"),
+                                ModeleHistoriquePoints.this.modeleTournoi.getParId(rs.getInt("idTournoi")).orElse(null),
+                                rs.getInt("idEquipe")
+                            ));
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                         return true;
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
@@ -44,7 +53,8 @@ public class ModeleHistoriquePoints extends DAO<HistoriquePoints, Integer> {
                 }
 	        }, false).onClose(() -> {
 				try {
-					st.close();
+					rs.close();
+					ps.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -57,8 +67,8 @@ public class ModeleHistoriquePoints extends DAO<HistoriquePoints, Integer> {
     public boolean ajouter(HistoriquePoints historiquePoints) throws Exception {
         try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into historiquePoints values (next value for idHistoriquePoints, ?, ?, ?)");
-            ps.setInt(1, historiquePoints.getPoints());
-            ps.setInt(2, historiquePoints.getIdTournoi());
+            ps.setFloat(1, historiquePoints.getPoints());
+            ps.setInt(2, historiquePoints.getTournoi().getIdTournoi());
             ps.setInt(3, historiquePoints.getIdEquipe());
 			ps.execute();
 			ps.close();
@@ -74,7 +84,5 @@ public class ModeleHistoriquePoints extends DAO<HistoriquePoints, Integer> {
 			throw new RuntimeException(e);
 		}
     }
-
-
 
 }
