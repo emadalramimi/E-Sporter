@@ -70,6 +70,7 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 	                }
 		        }, false).onClose(() -> {
 					try {
+						rs.close();
 						st.close();
 					} catch (SQLException e) {
 						e.printStackTrace();

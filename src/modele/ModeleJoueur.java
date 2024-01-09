@@ -52,7 +52,8 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
                 }
 	        }, false).onClose(() -> {
 				try {
-					st.close();
+					rs.close();
+                    st.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}

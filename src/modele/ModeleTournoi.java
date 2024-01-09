@@ -93,7 +93,8 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
                 }
 	        }, false).onClose(() -> {
 				try {
-					st.close();
+					rs.close();
+                    st.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}

@@ -70,7 +70,8 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
                 }
 	        }, false).onClose(() -> {
 				try {
-					st.close();
+					rs.close();
+                    st.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
