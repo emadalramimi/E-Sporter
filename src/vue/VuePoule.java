@@ -129,7 +129,6 @@ public class VuePoule extends JFrameTheme {
 			panelVersus.setBackground(CharteGraphique.FOND);
 			panelTableau.add(panelVersus, BorderLayout.NORTH);
 			GridBagLayout gbl_panelVersus = new GridBagLayout();
-			gbl_panelVersus.columnWidths = new int[]{141, 153, 29, 153, 0};
 			gbl_panelVersus.rowHeights = new int[]{49, 0};
 			gbl_panelVersus.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 			gbl_panelVersus.rowWeights = new double[]{0.0, Double.MIN_VALUE};
@@ -142,7 +141,7 @@ public class VuePoule extends JFrameTheme {
 			GridBagConstraints gbc_panelEquipe1 = new GridBagConstraints();
 			gbc_panelEquipe1.anchor = GridBagConstraints.WEST;
 			gbc_panelEquipe1.insets = new Insets(0, 0, 0, 5);
-			gbc_panelEquipe1.gridx = 1;
+			gbc_panelEquipe1.gridx = 0;
 			gbc_panelEquipe1.gridy = 0;
 			panelVersus.add(panelLblEquipe1, gbc_panelEquipe1);
 			
@@ -156,7 +155,7 @@ public class VuePoule extends JFrameTheme {
 			panelVS.setBackground(CharteGraphique.FOND);
 			GridBagConstraints gbc_panelVS = new GridBagConstraints();
 			gbc_panelVS.insets = new Insets(0, 0, 0, 5);
-			gbc_panelVS.gridx = 2;
+			gbc_panelVS.gridx = 1;
 			gbc_panelVS.gridy = 0;
 			panelVersus.add(panelVS, gbc_panelVS);
 			
@@ -169,7 +168,7 @@ public class VuePoule extends JFrameTheme {
 			panelEquipe2.setBackground(CharteGraphique.FOND);
 			GridBagConstraints gbc_panelEquipe2 = new GridBagConstraints();
 			gbc_panelEquipe2.anchor = GridBagConstraints.EAST;
-			gbc_panelEquipe2.gridx = 3;
+			gbc_panelEquipe2.gridx = 2;
 			gbc_panelEquipe2.gridy = 0;
 			panelVersus.add(panelEquipe2, gbc_panelEquipe2);
 			
