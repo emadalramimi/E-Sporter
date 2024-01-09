@@ -29,10 +29,10 @@ public class ControleurHistoriquePoints implements ListSelectionListener {
         if(e.getSource() == tableEquipes.getSelectionModel() && !e.getValueIsAdjusting()) {
             int idEquipe = (int) tableEquipes.getValueAt(tableEquipes.getSelectedRow(), 0);
             try {
-                this.vue.remplirTableauHistoriquePoints(this.modeleHistoriquePoints.getHistoriquePointsEquipe(idEquipe));
+                this.vue.remplirTableauHistoriquePoints(this.modeleHistoriquePoints.getParEquipe(idEquipe));
             } catch(Exception err) {
-                this.vue.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
-                throw new RuntimeException("Equipe inexistante");
+                this.vue.afficherPopupErreur("Une erreur est survenue lors de la récupération des historiques de points de l'équipe");
+                throw new RuntimeException(err);
             }
         }
     }
