@@ -376,7 +376,6 @@ public class BDD {
 		    st.executeUpdate("CREATE TABLE participer("
 		            + "idTournoi INT, "
 		            + "idEquipe INT, "
-		            + "classement INT, "
 		            + "PRIMARY KEY(idTournoi, idEquipe), "
 		            + "FOREIGN KEY(idTournoi) REFERENCES tournoi(idTournoi), "
 		            + "FOREIGN KEY(idEquipe) REFERENCES equipe(idEquipe)"
@@ -907,26 +906,22 @@ public class BDD {
 		try {
 			st.executeUpdate("INSERT INTO participer VALUES ("
 					+ "1,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "1,"
+					+ "2)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
 					+ "1,"
 					+ "3)"
 			);
 			st.executeUpdate(
 					"INSERT INTO participer VALUES ("
 					+ "1,"
-					+ "2,"
-					+ "1)"
-			);
-			st.executeUpdate(
-					"INSERT INTO participer VALUES ("
-					+ "1,"
-					+ "3,"
 					+ "4)"
-			);
-			st.executeUpdate(
-					"INSERT INTO participer VALUES ("
-					+ "1,"
-					+ "4,"
-					+ "2)"
 			);
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table participer");

@@ -42,7 +42,7 @@ import modele.metier.Tournoi.Notoriete;
 public class ModeleTournoi extends DAO<Tournoi, Integer> {
 
 	private ModeleArbitre modeleArbitre;
-	private ModeleEquipe modeleEquipes;
+	private ModeleEquipe modeleEquipe;
 	private ModelePoule modelePoule;
 
 	/**
@@ -50,7 +50,7 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	 */
 	public ModeleTournoi() {
 		this.modeleArbitre = new ModeleArbitre();
-		this.modeleEquipes = new ModeleEquipe();
+		this.modeleEquipe = new ModeleEquipe();
 		this.modelePoule = new ModelePoule();
 	}
 
@@ -83,7 +83,7 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
                 			rs.getString("identifiant"),
 							rs.getString("motDePasse"),
 							ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
-							ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
+							ModeleTournoi.this.modeleEquipe.getEquipesTournoi(rs.getInt("idTournoi")),
                 			ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
                         ));
                         return true;
@@ -128,7 +128,7 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 				rs.getString("identifiant"),
 				rs.getString("motDePasse"),
 				ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
-				ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
+				ModeleTournoi.this.modeleEquipe.getEquipesTournoi(rs.getInt("idTournoi")),
 				ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
             );
 		}
@@ -317,8 +317,15 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 		}
 
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("update tournoi set estCloture = false where idTournoi = ?");
-			ps.setInt(1, tournoi.getIdTournoi());
+			PreparedStatement ps;
+			if(tournoi.getDateTimeDebut() > System.currentTimeMillis() / 1000) {
+				ps = BDD.getConnexion().prepareStatement("update tournoi set estCloture = false, dateDebut = ? where idTournoi = ?");
+				ps.setInt(1, (int) (System.currentTimeMillis() / 1000));
+				ps.setInt(2, tournoi.getIdTournoi());
+			} else {
+				ps = BDD.getConnexion().prepareStatement("update tournoi set estCloture = false where idTournoi = ?");
+				ps.setInt(1, tournoi.getIdTournoi());
+			}
 			ps.execute();
 			ps.close();
 			
@@ -372,7 +379,7 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 				rs.getString("identifiant"),
 				rs.getString("motDePasse"),
 				ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
-				ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
+				ModeleTournoi.this.modeleEquipe.getEquipesTournoi(rs.getInt("idTournoi")),
 				ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi")));
 		}
 
@@ -405,7 +412,7 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 					rs.getString("identifiant"),
 					rs.getString("motDePasse"),
 					ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
-					ModeleTournoi.this.modeleEquipes.getEquipesTournoi(rs.getInt("idTournoi")),
+					ModeleTournoi.this.modeleEquipe.getEquipesTournoi(rs.getInt("idTournoi")),
 					ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
 				);
 			}
@@ -576,8 +583,6 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 				}
 			}
 
-			System.out.println(nbPointsParEquipe);
-
 			// Trier par classement des équipes
 			// Convertir la map en une liste d'entrées (clé-valeur)
 			List<Map.Entry<Equipe, Float>> listePoints = new ArrayList<>(nbPointsParEquipe.entrySet());
@@ -617,16 +622,25 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 				modeleHistoriquePoints.ajouter(new HistoriquePoints(entry.getValue(), tournoi, entry.getKey().getIdEquipe()));
 			}
 
-			// Fermeture de la poule et du tournoi
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("update poule set estCloturee = true where idPoule = ?");
-			ps.setInt(1, poule.getIdPoule());
-			ps.execute();
-			ps.close();
+			this.majClassements();
 
-			ps = BDD.getConnexion().prepareStatement("update tournoi set estCloture = true where idTournoi = ?");
-			ps.setInt(1, tournoi.getIdTournoi());
-			ps.execute();
-			ps.close();
+			// Fermeture de la poule et du tournoi
+			PreparedStatement psCloturePoule = BDD.getConnexion().prepareStatement("update poule set estCloturee = true where idPoule = ?");
+			psCloturePoule.setInt(1, poule.getIdPoule());
+			psCloturePoule.execute();
+			psCloturePoule.close();
+
+			PreparedStatement psClotureTournoi;
+			if(tournoi.getDateTimeFin() > System.currentTimeMillis() / 1000) {
+				psClotureTournoi = BDD.getConnexion().prepareStatement("update tournoi set estCloture = true, dateFin = ? where idTournoi = ?");
+				psClotureTournoi.setInt(1, (int) (System.currentTimeMillis() / 1000));
+				psClotureTournoi.setInt(2, tournoi.getIdTournoi());
+			} else {
+				psClotureTournoi = BDD.getConnexion().prepareStatement("update tournoi set estCloture = true where idTournoi = ?");
+				psClotureTournoi.setInt(1, tournoi.getIdTournoi());
+			}
+			psClotureTournoi.execute();
+			psClotureTournoi.close();
 
 		}
 	}
@@ -655,5 +669,42 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	
 		return equipesSelectionnees;
 	}
+
+	public void majClassements() throws Exception {
+        Map<Equipe, Integer> classementParEquipe = new HashMap<>();
+        for (Equipe equipe : this.modeleEquipe.getEquipesSaison()) {
+            classementParEquipe.put(equipe, 1000);
+        }
+
+        Statement st = BDD.getConnexion().createStatement();
+        ResultSet rs = st.executeQuery("select e.idEquipe, sum(hp.points) from equipe e, historiquePoints hp where e.idEquipe = hp.idEquipe group by e.idEquipe order by sum(hp.points) desc");
+
+        int classement = 1;
+        int pointsPrecedents = -1;
+        while (rs.next()) {
+            Equipe equipe = this.modeleEquipe.getParId(rs.getInt(1)).orElse(null);
+            int points = rs.getInt(2);
+
+            if (points != pointsPrecedents) {
+                classement++;
+            }
+
+            classementParEquipe.put(equipe, classement);
+
+            pointsPrecedents = points;
+        }
+
+        rs.close();
+
+        for(Equipe equipe : classementParEquipe.keySet()) {
+            equipe.setClassement(classementParEquipe.get(equipe));
+            
+            PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set classement = ? where idEquipe = ?");
+            ps.setInt(1, classementParEquipe.get(equipe));
+            ps.setInt(2, equipe.getIdEquipe());
+            ps.executeUpdate();
+            ps.close();
+        }
+    }
 
 }

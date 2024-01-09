@@ -45,39 +45,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 		Statement st = BDD.getConnexion().createStatement();
 		ResultSet rs = st.executeQuery("select * from equipe");
 		
-		// Parcourt les équipes dans la base de données et les formate dans une liste
-		Stream<Equipe> stream = StreamSupport.stream(
-    		new Spliterators.AbstractSpliterator<Equipe>(Long.MAX_VALUE, Spliterator.ORDERED) {
-                @Override
-                public boolean tryAdvance(Consumer <? super Equipe> action) {
-                    try {
-                        if (!rs.next()) {
-                            return false;
-                        }
-                        action.accept(new Equipe(
-                    		rs.getInt("idEquipe"),
-                    		rs.getString("nom"),
-							Pays.valueOfNom(rs.getString("pays")),
-                    		rs.getInt("classement"),
-                    		rs.getInt("worldRanking"),
-                    		rs.getString("saison"),
-                    		ModeleEquipe.this.modeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))
-                        ));
-                        return true;
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-	        }, false).onClose(() -> {
-				try {
-					rs.close();
-                    st.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			});
-		
-		return stream.collect(Collectors.toList());
+		return this.collect(st, rs);
 	}
 
 	/**
@@ -176,7 +144,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 		}
 		
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set nom = ?, pays = ?, worldRanking = ? where idEquipe = ?");
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set nom = ?, pays = ?, worldRanking = ?, classement = ? where idEquipe = ?");
 			// On ne peut pas modifier le classement et la saison d'une équipe
 			ps.setString(1, equipe.getNom());
 			ps.setString(2, equipe.getPays().getNomPays());
@@ -257,6 +225,19 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
     }
 
 	/**
+	 * Récupère toutes les équipes
+	 * @return Liste de tous les équipes
+	 * @throws Exception Erreur SQL
+	 */
+	public List<Equipe> getClassement() throws Exception {
+		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from equipe where saison = ? order by classement asc");
+		ps.setInt(1, LocalDate.now().getYear());
+		ResultSet rs = ps.executeQuery();
+
+		return this.collect(ps, rs);
+	}
+
+	/**
 	 * Récupère les équipes inscrites à un tournoi
 	 * @param idTournoi Identifiant du tournoi
 	 * @return Liste des équipes inscrites
@@ -268,40 +249,14 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 
 			ResultSet rs = ps.executeQuery();
 
-			// Parcourt les arbitres dans la base de données et les formate dans une liste
-			Stream<Equipe> stream = StreamSupport.stream(
-					new Spliterators.AbstractSpliterator<Equipe>(Long.MAX_VALUE, Spliterator.ORDERED) {
-						@Override
-						public boolean tryAdvance(Consumer<? super Equipe> action) {
-							try {
-								if (!rs.next()) {
-									return false;
-								}
-								action.accept(new Equipe(
-										rs.getInt("idEquipe"),
-										rs.getString("nom"),
-										Pays.valueOfNom(rs.getString("pays")),
-										rs.getInt("classement"),
-										rs.getInt("worldRanking"),
-										rs.getString("saison"),
-										ModeleEquipe.this.modeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))));
-								return true;
-							} catch (SQLException e) {
-								throw new RuntimeException(e);
-							}
-						}
-					}, false).onClose(() -> {
-						try {
-							ps.close();
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-					});
-
-			return stream.collect(Collectors.toList());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			return this.collect(ps, rs);
+		} catch(Exception e) {
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -356,10 +311,9 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 		}
 		
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into participer values (?, ?, ?)");
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into participer values (?, ?)");
 			ps.setInt(1, tournoi.getIdTournoi());
 			ps.setInt(2, equipe.getIdEquipe());
-			ps.setInt(3, 1000); // Classement
 			ps.execute();
 			ps.close();
 
@@ -445,7 +399,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 	 * @return Retourne la liste des équipes filtrées par pays
 	 * @throws Exception Exception SQL
 	 */
-		public List<Equipe> getParFiltrage(Pays pays) throws Exception {
+	public List<Equipe> getParFiltrage(Pays pays) throws Exception {
 		List<Equipe> equipes = this.getEquipesSaison();
 
 		if (pays != null) {
@@ -455,6 +409,47 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 		}
 
 		return equipes;
+	}
+
+	/**
+	 * Parcourt les équipes dans la base de données et les formate dans une liste
+	 * @param st Statement
+	 * @param rs ResultSet
+	 * @return Liste des équipes
+	 */
+	private List<Equipe> collect(Statement st, ResultSet rs) throws Exception {
+		Stream<Equipe> stream = StreamSupport.stream(
+    		new Spliterators.AbstractSpliterator<Equipe>(Long.MAX_VALUE, Spliterator.ORDERED) {
+                @Override
+                public boolean tryAdvance(Consumer <? super Equipe> action) {
+                    try {
+                        if (!rs.next()) {
+                            return false;
+                        }
+                        action.accept(new Equipe(
+                    		rs.getInt("idEquipe"),
+                    		rs.getString("nom"),
+							Pays.valueOfNom(rs.getString("pays")),
+                    		rs.getInt("classement"),
+                    		rs.getInt("worldRanking"),
+                    		rs.getString("saison"),
+                    		ModeleEquipe.this.modeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))
+                        ));
+                        return true;
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+	        }, false).onClose(() -> {
+				try {
+					rs.close();
+                    st.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			});
+		
+		return stream.collect(Collectors.toList());
 	}
 	
 }
