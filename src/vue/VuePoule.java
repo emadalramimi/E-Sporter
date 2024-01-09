@@ -3,11 +3,7 @@ package vue;
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Vector;
 
 import vue.theme.JFrameTheme;
@@ -20,12 +16,9 @@ import javax.swing.table.TableColumn;
 
 import controleur.ControleurPoule;
 import modele.metier.Equipe;
-import modele.metier.Joueur;
-import modele.metier.Pays;
 import modele.metier.Poule;
 import modele.metier.Rencontre;
 import modele.metier.Tournoi;
-import modele.metier.Tournoi.Notoriete;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
@@ -36,6 +29,7 @@ import javax.swing.JLabel;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 import java.awt.Insets;
 
@@ -48,30 +42,6 @@ public class VuePoule extends JFrameTheme {
 
 	private JTableTheme table;
 	private boolean[][] isActif;
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		VueTournois vueT = new VueTournois();
-		Tournoi tournoi = new Tournoi(10, "Test", Notoriete.LOCAL, 15358, 215651, false, "arbitre", "12345", null, null, null);
-		Equipe[] equipes = {new Equipe("PSG", Pays.AFGHANISTAN, null),
-			new Equipe("Mars", Pays.FRANCE, null)};
-		List<Rencontre> rencontres = new ArrayList<>(Arrays.asList(
-				new Rencontre(equipes)
-			));
-		Poule poule = new Poule(false, true, 10, rencontres);
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VuePoule frame = new VuePoule(vueT, tournoi, poule);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 	
 	// private VueTournois vueTournois; sera utilisé plus tard pour rafraîchir la liste des tournois à la cloture
 	private VueEtatResultatsTournoi vueEtatResultatsTournoi;
@@ -167,20 +137,6 @@ public class VuePoule extends JFrameTheme {
 			
 			Equipe[] equipes = poule.getRencontres().get(0).getEquipes();
 			
-			JPanel panelIconEquipe1 = new JPanel();
-			panelIconEquipe1.setBackground(CharteGraphique.FOND);
-			GridBagConstraints gbc_panelIconEquipe1 = new GridBagConstraints();
-			gbc_panelIconEquipe1.anchor = GridBagConstraints.EAST;
-			gbc_panelIconEquipe1.insets = new Insets(0, 0, 0, 5);
-			gbc_panelIconEquipe1.gridx = 0;
-			gbc_panelIconEquipe1.gridy = 0;
-			panelVersus.add(panelIconEquipe1, gbc_panelIconEquipe1);
-			
-			JLabel iconEquipe1 = new JLabel();
-			iconEquipe1.setFont(CharteGraphique.getPolice(25, true));
-			iconEquipe1.setIcon(equipes[0].getPays().getDrapeauPays());
-			panelIconEquipe1.add(iconEquipe1);
-			
 			JPanel panelLblEquipe1 = new JPanel();
 			panelLblEquipe1.setBackground(CharteGraphique.FOND);
 			GridBagConstraints gbc_panelEquipe1 = new GridBagConstraints();
@@ -193,6 +149,7 @@ public class VuePoule extends JFrameTheme {
 			JLabel lblEquipe1 = new JLabel(equipes[0].getNom());
 			lblEquipe1.setFont(CharteGraphique.getPolice(25, true));
 			lblEquipe1.setForeground(CharteGraphique.TEXTE);
+			lblEquipe1.setIcon(equipes[0].getPays().getDrapeauPays());
 			panelLblEquipe1.add(lblEquipe1);
 			
 			JPanel panelVS = new JPanel();
@@ -219,21 +176,9 @@ public class VuePoule extends JFrameTheme {
 			JLabel lblEquipe2 = new JLabel(equipes[1].getNom());
 			lblEquipe2.setFont(CharteGraphique.getPolice(25, true));
 			lblEquipe2.setForeground(CharteGraphique.TEXTE);
+			lblEquipe2.setHorizontalTextPosition(SwingConstants.LEFT);
+			lblEquipe2.setIcon(equipes[1].getPays().getDrapeauPays());
 			panelEquipe2.add(lblEquipe2);
-			
-			JPanel panelIconEquipe2 = new JPanel();
-			panelIconEquipe2.setBackground(CharteGraphique.FOND);
-			GridBagConstraints gbc_panelIconEquipe2 = new GridBagConstraints();
-			gbc_panelIconEquipe2.anchor = GridBagConstraints.WEST;
-			gbc_panelIconEquipe2.insets = new Insets(0, 0, 0, 5);
-			gbc_panelIconEquipe2.gridx = 4;
-			gbc_panelIconEquipe2.gridy = 0;
-			panelVersus.add(panelIconEquipe2, gbc_panelIconEquipe2);
-			
-			JLabel iconEquipe2 = new JLabel();
-			iconEquipe2.setFont(CharteGraphique.getPolice(25, true));
-			iconEquipe2.setIcon(equipes[1].getPays().getDrapeauPays());
-			panelIconEquipe2.add(iconEquipe2);
 		}
 		
 		JScrollPaneTheme scrollPane = new JScrollPaneTheme();
