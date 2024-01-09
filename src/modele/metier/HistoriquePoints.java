@@ -3,21 +3,21 @@ package modele.metier;
 public class HistoriquePoints {
     
     private int idHistoriquePoints;
-    private int points;
+    private float points;
     private int idTournoi;
-    private int idEquipe;
+    private Equipe equipe;
 
-    public HistoriquePoints(int idHistoriquePoints, int points, int idTournoi, int idEquipe) {
+    public HistoriquePoints(int idHistoriquePoints, float points, int idTournoi, Equipe equipe) {
         this.idHistoriquePoints = idHistoriquePoints;
         this.points = points;
         this.idTournoi = idTournoi;
-        this.idEquipe = idEquipe;
+        this.equipe = equipe;
     }
 
-    public HistoriquePoints(int points, int idTournoi, int idEquipe) {
+    public HistoriquePoints(float points, int idTournoi, Equipe equipe) {
         this.points = points;
         this.idTournoi = idTournoi;
-        this.idEquipe = idEquipe;
+        this.equipe = equipe;
     }
 
     public int getIdHistoriquePoints() {
@@ -28,11 +28,11 @@ public class HistoriquePoints {
         this.idHistoriquePoints = idHistoriquePoints;
     }
 
-    public int getPoints() {
+    public float getPoints() {
         return this.points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(float points) {
         this.points = points;
     }
 
@@ -44,12 +44,12 @@ public class HistoriquePoints {
         this.idTournoi = idTournoi;
     }
 
-    public int getIdEquipe() {
-        return this.idEquipe;
+    public Equipe getEquipe() {
+        return this.equipe;
     }
 
-    public void setIdEquipe(int idEquipe) {
-        this.idEquipe = idEquipe;
+    public void setEquipe(Equipe equipe) {
+        this.equipe = equipe;
     }
 
 }

@@ -9,6 +9,7 @@ public class StatistiquesEquipe implements Comparable<StatistiquesEquipe> {
     private int nbMatchsJoues;
     private int nbMatchsGagnes;
     private float ratio;
+    private float points;
 
     /**
      * Construit les statistiques d'une équipe
@@ -29,6 +30,9 @@ public class StatistiquesEquipe implements Comparable<StatistiquesEquipe> {
         if(equipe == null) {
             throw new IllegalArgumentException("L'équipe ne peut pas être nulle");
         }
+        if(points < 0) {
+            throw new IllegalArgumentException("Le nombre de points ne peut pas être négatif");
+        }
 
         this.equipe = equipe;
         this.nbMatchsJoues = nbMatchsJoues;
@@ -38,6 +42,7 @@ public class StatistiquesEquipe implements Comparable<StatistiquesEquipe> {
         } else {
             this.ratio = (float) nbMatchsGagnes / nbMatchsJoues;
         }
+        this.points = EnumPoints.POULE_MATCH_VICTOIRE.getPoints() * nbMatchsGagnes + EnumPoints.POULE_MATCH_PERDU.getPoints() * (nbMatchsJoues - nbMatchsGagnes);
     }
 
     /**
@@ -45,7 +50,7 @@ public class StatistiquesEquipe implements Comparable<StatistiquesEquipe> {
      * @return L'équipe
      */
     public Equipe getEquipe() {
-        return equipe;
+        return this.equipe;
     }
 
     /**
@@ -53,7 +58,7 @@ public class StatistiquesEquipe implements Comparable<StatistiquesEquipe> {
      * @return Le nombre de matchs joués
      */
     public int getNbMatchsJoues() {
-        return nbMatchsJoues;
+        return this.nbMatchsJoues;
     }
 
     /**
@@ -61,7 +66,7 @@ public class StatistiquesEquipe implements Comparable<StatistiquesEquipe> {
      * @return Le nombre de matchs gagnés
      */
     public int getNbMatchsGagnes() {
-        return nbMatchsGagnes;
+        return this.nbMatchsGagnes;
     }
 
     /**
@@ -69,7 +74,15 @@ public class StatistiquesEquipe implements Comparable<StatistiquesEquipe> {
      * @return Le ratio de l'équipe
      */
     public float getRatio() {
-        return ratio;
+        return this.ratio;
+    }
+
+    /**
+     * Retourne le nombre de points de l'équipe
+     * @return Le nombre de points de l'équipe
+     */
+    public float getPoints() {
+        return this.points;
     }
 
     /**
@@ -101,15 +114,15 @@ public class StatistiquesEquipe implements Comparable<StatistiquesEquipe> {
      */
     @Override
     public int compareTo(StatistiquesEquipe statistiquesEquipes) {
-        if (this.ratio == statistiquesEquipes.ratio) {
+        if (this.points == statistiquesEquipes.points) {
             return this.equipe.compareTo(statistiquesEquipes.equipe);
         }
-        return Float.compare(statistiquesEquipes.ratio, this.ratio);
+        return Float.compare(statistiquesEquipes.points, this.points);
     }
 
     @Override
 	public String toString() {
-		return "StatistiquesEquipe [equipe=" + equipe + ", nbMatchsJoues=" + nbMatchsJoues + ", nbMatchsGagnes=" + nbMatchsGagnes + ", ratio=" + ratio + "]";
+		return "StatistiquesEquipe [equipe=" + equipe + ", nbMatchsJoues=" + nbMatchsJoues + ", nbMatchsGagnes=" + nbMatchsGagnes + ", ratio=" + ratio + ", points=" + points + "]";
 	}
 
 }

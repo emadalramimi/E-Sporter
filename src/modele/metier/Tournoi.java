@@ -11,20 +11,22 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	 * Enumération des notoriétés
 	 */
 	public enum Notoriete {
-        LOCAL("Local"),
-        REGIONAL("Régional"),
-        NATIONAL("National"),
-        INTERNATIONAL("International"),
-        INTERNATIONAL_CLASSE("International classé");
+        LOCAL("Local", 1F),
+        REGIONAL("Régional", 1.5F),
+        NATIONAL("National", 2F),
+        INTERNATIONAL("International", 2.25F),
+        INTERNATIONAL_CLASSE("International classé", 3F);
 
-        private final String libelle;
+        private String libelle;
+		private float multiplicateur;
 
 		/**
 		 * Construit une notoriété
 		 * @param libelle Libellé
 		 */
-        Notoriete(String libelle) {
+        Notoriete(String libelle, float multiplicateur) {
             this.libelle = libelle;
+			this.multiplicateur = multiplicateur;
         }
 
 		/**
@@ -34,6 +36,14 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
         public String getLibelle() {
             return libelle;
         }
+
+		/**
+		 * Retourne le multiplicateur selon la notoriété du tournoi
+		 * @return Multiplicateur
+		 */
+		public float getMultiplicateur() {
+			return multiplicateur;
+		}
         
 		/**
 		 * Retourne la notoriété à partir du libellé

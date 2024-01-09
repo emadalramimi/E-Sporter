@@ -100,7 +100,7 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		// Création du modèle de la table
 		DefaultTableModel model = new DefaultTableModel(
 			new Object[][] {}, 
-			new String[] { "Équipe", "Matchs joués", "Matchs gagnés", "Ratio" }
+			new String[] { "Équipe", "Matchs joués", "Matchs gagnés", "Ratio", "Nombre de points" }
 		) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -115,6 +115,8 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 			row.add(statistiquesEquipe.getNbMatchsJoues());
             row.add(statistiquesEquipe.getNbMatchsGagnes());
             row.add(statistiquesEquipe.getRatioPourcentage());
+			// Les points à ce stade étant toujours des entiers
+			row.add((int) statistiquesEquipe.getPoints());
 			model.addRow(row);
 		}
 		this.table.setModel(model);
