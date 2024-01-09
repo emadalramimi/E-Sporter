@@ -300,8 +300,12 @@ public class VueBase extends JFrameTheme {
 			vueEquipe.afficherVueEquipe(this.contenu, this);
 			break;
 		case HISTORIQUE:
+			VueHistoriquePoints vueHistoriquePoints = new VueHistoriquePoints();
+			vueHistoriquePoints.afficherVueHistoriquePoints(this.contenu, this);
 			break;
 		case PALMARES:
+			VuePalmares vuePalmares = new VuePalmares();
+			vuePalmares.afficherVuePalmares(this.contenu, this);
 			break;
 		default:
 			break;
