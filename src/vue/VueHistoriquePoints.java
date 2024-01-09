@@ -97,13 +97,13 @@ public class VueHistoriquePoints extends JFrameTheme {
 		
 		// Champ de recherche
 		txtRecherche = new JTextFieldTheme(20);
-		//txtRecherche.addKeyListener(controleur);
+		txtRecherche.addKeyListener(controleur);
 		txtRecherche.setColumns(20);
 		panelTableauFiltres.add(txtRecherche);
 		
 		// Bouton de recherche
 		btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/actions/rechercher.png")));
-		//btnRecherche.addActionListener(controleur);
+		btnRecherche.addActionListener(controleur);
 		panelTableauFiltres.add(btnRecherche);
 		
 		JPanel panelTableaux = new JPanel();
