@@ -144,7 +144,7 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 		}
 		
 		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set nom = ?, pays = ?, worldRanking = ?, classement = ? where idEquipe = ?");
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set nom = ?, pays = ?, worldRanking = ? where idEquipe = ?");
 			// On ne peut pas modifier le classement et la saison d'une équipe
 			ps.setString(1, equipe.getNom());
 			ps.setString(2, equipe.getPays().getNomPays());
