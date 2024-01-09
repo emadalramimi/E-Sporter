@@ -4,14 +4,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -21,7 +27,9 @@ import modele.exception.DatesTournoiException;
 import modele.exception.OuvertureTournoiException;
 import modele.exception.TournoiDejaOuvertException;
 import modele.metier.Arbitre;
+import modele.metier.EnumPoints;
 import modele.metier.Equipe;
+import modele.metier.HistoriquePoints;
 import modele.metier.Poule;
 import modele.metier.Rencontre;
 import modele.metier.StatistiquesEquipe;
@@ -36,6 +44,7 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 	private ModeleArbitre modeleArbitre;
 	private ModeleEquipe modeleEquipes;
 	private ModelePoule modelePoule;
+	private ModeleHistoriquePoints modeleHistoriquePoints;
 
 	/**
 	 * Construit un modèle tournoi
@@ -44,6 +53,7 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 		this.modeleArbitre = new ModeleArbitre();
 		this.modeleEquipes = new ModeleEquipe();
 		this.modelePoule = new ModelePoule();
+		this.modeleHistoriquePoints = new ModeleHistoriquePoints();
 	}
 
 	/**
@@ -409,37 +419,6 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 		}
 		return Optional.empty();
 	}
-
-	/**
-	 * Méthode pour récupérer les résultats d'un tournoi
-	 * @param tournoi Tournoi dont on veut récupérer les résultats
-	 * @return Retourne les résultats d'un tournoi
-	 */
-	public List<StatistiquesEquipe> getResultatsTournoi(Tournoi tournoi) {
-		List<StatistiquesEquipe> statistiques = new LinkedList<>();
-		for (Equipe equipe : tournoi.getEquipes()) {
-			int nbMatchsJoues = 0;
-			int nbMatchsGagnes = 0;
-
-			// Parcourt les poules du tournoi
-			for(Poule poule : this.modelePoule.getPoulesTournoi(tournoi.getIdTournoi())) {
-				for(Rencontre rencontre : poule.getRencontres()) {
-					// 0 => valeur nulle
-					if(Arrays.asList(rencontre.getEquipes()).contains(equipe) && rencontre.getIdEquipeGagnante() != 0) {
-						nbMatchsJoues++;
-					}
-					// Vérifie si l'équipe est gagnante
-					if(Arrays.asList(rencontre.getEquipes()).contains(equipe) && rencontre.getIdEquipeGagnante() == equipe.getIdEquipe()) {
-						nbMatchsGagnes++;
-					}
-				}
-			}
-
-			statistiques.add(new StatistiquesEquipe(equipe, nbMatchsJoues, nbMatchsGagnes));
-		}
-
-		return statistiques.stream().sorted().collect(Collectors.toList());
-	}
 	
 	/**
 	 * Méthode de recherche de tournois par nom
@@ -495,6 +474,186 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
 		}
 
 		return tournois;
+	}
+
+	/**
+	 * Méthode pour récupérer les résultats d'un tournoi
+	 * @param tournoi Tournoi dont on veut récupérer les résultats
+	 * @return Retourne les résultats d'un tournoi
+	 */
+	public List<StatistiquesEquipe> getResultatsTournoi(Tournoi tournoi) {
+		List<StatistiquesEquipe> statistiques = new LinkedList<>();
+		for (Equipe equipe : tournoi.getEquipes()) {
+			int nbMatchsJoues = 0;
+			int nbMatchsGagnes = 0;
+
+			// Parcourt les poules du tournoi
+			for(Poule poule : this.modelePoule.getPoulesTournoi(tournoi.getIdTournoi())) {
+				for(Rencontre rencontre : poule.getRencontres()) {
+					// 0 => valeur nulle
+					if(Arrays.asList(rencontre.getEquipes()).contains(equipe) && rencontre.getIdEquipeGagnante() != 0) {
+						nbMatchsJoues++;
+					}
+					// Vérifie si l'équipe est gagnante
+					if(Arrays.asList(rencontre.getEquipes()).contains(equipe) && rencontre.getIdEquipeGagnante() == equipe.getIdEquipe()) {
+						nbMatchsGagnes++;
+					}
+				}
+			}
+
+			statistiques.add(new StatistiquesEquipe(equipe, nbMatchsJoues, nbMatchsGagnes));
+		}
+
+		return statistiques.stream().sorted().collect(Collectors.toList());
+	}
+
+	public void cloturerPoule(Tournoi tournoi) throws Exception {
+		Poule poule = tournoi.getPouleActuelle();
+
+		if(poule.getEstCloturee()) {
+			throw new IllegalArgumentException("La poule est déjà cloturée");
+		}
+
+		// Vérification que tous les matchs ont été joués (0 = aucun gagnant)
+		for(Rencontre rencontre : poule.getRencontres()) {
+			if(rencontre.getIdEquipeGagnante() == 0) {
+				throw new IllegalArgumentException("Tous les matchs de la poule n'ont pas été joués");
+			}
+		}
+
+		if(poule.getEstFinale() == false) {
+			// Récupération des points de toutes les équipes
+			Map<Equipe, StatistiquesEquipe> mapStatistiquesEquipes = this.getResultatsTournoi(tournoi).stream()
+				.collect(Collectors.toMap(StatistiquesEquipe::getEquipe, Function.identity()));
+
+			List<Equipe> equipesSelectionnees = poule.getRencontres().stream()
+				.flatMap(rencontre -> Arrays.stream(rencontre.getEquipes()))
+				.collect(Collectors.groupingBy(
+					Function.identity(),
+					Collectors.summingDouble(equipe -> mapStatistiquesEquipes.get(equipe).getPoints())
+				))
+				.entrySet().stream()
+				.sorted(Comparator.<Map.Entry<Equipe, Double>>comparingDouble(Map.Entry::getValue)
+					.thenComparing((entry1, entry2) -> Integer.compare(entry2.getKey().getWorldRanking(), entry1.getKey().getWorldRanking()))
+					.reversed())
+				.map(Map.Entry::getKey)
+				.collect(Collectors.toList());
+
+			equipesSelectionnees = selectionnerMeilleuresEquipes(equipesSelectionnees, mapStatistiquesEquipes);
+				
+			// Nous sommes sûrs qu'equipesSelectionnees contient 2 équipes
+
+			// Clôture de la poule à refactorer
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("update poule set estCloturee = true where idPoule = ?");
+			ps.setInt(1, poule.getIdPoule());
+			ps.execute();
+			ps.close();
+
+			// Création de la finale
+			List<Rencontre> rencontres = new LinkedList<>();
+			rencontres.add(new Rencontre(equipesSelectionnees.toArray(new Equipe[2])));
+			Poule finale = new Poule(false, true, poule.getIdTournoi(), rencontres);
+			this.modelePoule.ajouter(finale);
+		} else {
+			Map<Equipe, Float> nbPointsParEquipe = new HashMap<>();
+
+			// Récupération de tous les matchs du tournoi
+			List<Rencontre> rencontresTournoi = tournoi.getPoules().stream()
+				.flatMap(pouleTournoi -> pouleTournoi.getRencontres().stream())
+				.collect(Collectors.toList());
+
+			// Nombre de points par match
+			for(Rencontre rencontre : rencontresTournoi) {
+				for(Equipe equipe : rencontre.getEquipes()) {
+					// Si l'équipe n'est pas dans la map, on l'ajoute
+					nbPointsParEquipe.putIfAbsent(equipe, 0F);
+
+					// Si l'équipe a gagné, on ajoute 25 points, sinon 15 point
+					if (equipe.getIdEquipe() == rencontre.getIdEquipeGagnante()) {
+						nbPointsParEquipe.put(equipe, nbPointsParEquipe.get(equipe) + EnumPoints.MATCH_VICTOIRE.getPoints());
+					} else {
+						nbPointsParEquipe.put(equipe, nbPointsParEquipe.get(equipe) + EnumPoints.MATCH_DEFAITE.getPoints());
+					}
+				}
+			}
+
+			System.out.println(nbPointsParEquipe);
+
+			// Trier par classement des équipes
+			// Convertir la map en une liste d'entrées (clé-valeur)
+			List<Map.Entry<Equipe, Float>> listePoints = new ArrayList<>(nbPointsParEquipe.entrySet());
+
+			// Trier la liste selon le nombre de points décroissant
+			listePoints.sort(Map.Entry.<Equipe, Float>comparingByValue().reversed());
+
+			for (int i = 0; i < listePoints.size(); i++) {
+				Map.Entry<Equipe, Float> entry = listePoints.get(i);
+
+				entry.setValue(entry.getValue() * 10F);
+
+				switch (i) {
+					case 0:
+						entry.setValue(entry.getValue() + EnumPoints.CLASSEMENT_PREMIER.getPoints());
+						break;
+					case 1:
+						entry.setValue(entry.getValue() + EnumPoints.CLASSEMENT_DEUXIEME.getPoints());
+						break;
+					case 2:
+						entry.setValue(entry.getValue() + EnumPoints.CLASSEMENT_TROISIEME.getPoints());
+						break;
+					case 3:
+						entry.setValue(entry.getValue() + EnumPoints.CLASSEMENT_QUATRIEME.getPoints());
+						break;
+				}
+
+				entry.setValue(entry.getValue() * tournoi.getNotoriete().getMultiplicateur());
+			}
+
+			Map<Equipe, Float> nbPointsParEquipeClasse = listePoints.stream()
+    			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (ancienneValeur, nouvelleValeur) -> ancienneValeur, LinkedHashMap::new));
+
+			// Création des historiques de points
+			for (Map.Entry<Equipe, Float> entry : nbPointsParEquipeClasse.entrySet()) {
+				this.modeleHistoriquePoints.ajouter(new HistoriquePoints(entry.getValue(), tournoi.getIdTournoi(), entry.getKey().getIdEquipe()));
+			}
+
+			// Fermeture de la poule et du tournoi
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("update poule set estCloturee = true where idPoule = ?");
+			ps.setInt(1, poule.getIdPoule());
+			ps.execute();
+			ps.close();
+
+			ps = BDD.getConnexion().prepareStatement("update tournoi set estCloture = true where idTournoi = ?");
+			ps.setInt(1, tournoi.getIdTournoi());
+			ps.execute();
+			ps.close();
+
+		}
+	}
+
+	private List<Equipe> selectionnerMeilleuresEquipes(List<Equipe> equipes, Map<Equipe, StatistiquesEquipe> mapStatistiquesEquipes) {
+		List<Equipe> equipesSelectionnees = equipes.stream()
+			.sorted(Comparator.comparing((Equipe equipe) -> mapStatistiquesEquipes.get(equipe).getPoints())
+				.reversed()
+				.thenComparing(Equipe::getWorldRanking))
+			.collect(Collectors.toList());
+
+		int minWorldRanking = equipesSelectionnees.stream()
+			.limit(2)
+			.mapToInt(Equipe::getWorldRanking)
+			.max()
+			.orElse(Integer.MAX_VALUE);
+
+		equipesSelectionnees = equipesSelectionnees.stream()
+			.filter(equipe -> equipe.getWorldRanking() <= minWorldRanking)
+			.collect(Collectors.toList());
+	
+		if (equipesSelectionnees.size() > 2) {
+			Collections.shuffle(equipesSelectionnees);
+			equipesSelectionnees = equipesSelectionnees.subList(0, 2);
+		}
+	
+		return equipesSelectionnees;
 	}
 
 }

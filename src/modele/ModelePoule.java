@@ -4,23 +4,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import modele.metier.EnumPoints;
-import modele.metier.Equipe;
 import modele.metier.Poule;
 import modele.metier.Rencontre;
 
@@ -185,80 +176,6 @@ public class ModelePoule extends DAO<Poule, Integer> {
 			e.printStackTrace();
 			return null;
 		}
-	}
-
-	// peut etre bouger ce code dans le modèle tournoi
-	public void cloturerPoule(Poule poule) throws Exception {
-		Map<Equipe, Integer> nbPointsParEquipe = new HashMap<>();
-
-		// Calcul des points par équipe
-		for(Rencontre rencontre : poule.getRencontres()) {
-			// Vérification que tous les matchs ont été joués (0 = aucun gagnant)
-			if(rencontre.getIdEquipeGagnante() == 0) {
-				throw new IllegalArgumentException("Tous les matchs de la poule n'ont pas été joués");
-			}
-
-			for(Equipe equipe : rencontre.getEquipes()) {
-				// Si l'équipe n'est pas dans la map, on l'ajoute
-				nbPointsParEquipe.putIfAbsent(equipe, 0);
-
-				// Si l'équipe a gagné, on ajoute 3 points, sinon 1 point
-				if (equipe.getIdEquipe() == rencontre.getIdEquipeGagnante()) {
-					nbPointsParEquipe.put(equipe, nbPointsParEquipe.get(equipe) + EnumPoints.POULE_MATCH_VICTOIRE.getPoints());
-				} else {
-					nbPointsParEquipe.put(equipe, nbPointsParEquipe.get(equipe) + EnumPoints.POULE_MATCH_PERDU.getPoints());
-				}
-			}
-		}
-		
-		List<Equipe> equipesSelectionnees = poule.getRencontres().stream()
-			.flatMap(rencontre -> Arrays.stream(rencontre.getEquipes()))
-			.collect(Collectors.groupingBy(
-				Function.identity(),
-				Collectors.summingInt(equipe -> nbPointsParEquipe.getOrDefault(equipe, 0))
-			))
-			.entrySet().stream()
-			.sorted(Comparator.<Map.Entry<Equipe, Integer>>comparingInt(entry -> entry.getValue())
-				.thenComparing((entry1, entry2) -> Integer.compare(entry2.getKey().getWorldRanking(), entry1.getKey().getWorldRanking()))
-				.reversed())
-			.map(Map.Entry::getKey)
-			.collect(Collectors.collectingAndThen(
-				Collectors.toList(),
-				equipes -> selectionnerMeilleuresEquipes(equipes, nbPointsParEquipe)
-			));
-			
-		// Nous sommes sûrs qu'equipesSelectionnees contient 2 équipes
-
-		// Clôture de la poule
-		PreparedStatement ps = BDD.getConnexion().prepareStatement("update poule set estCloturee = true where idPoule = ?");
-		ps.setInt(1, poule.getIdPoule());
-		ps.execute();
-		ps.close();
-
-		// Création de la finale
-		List<Rencontre> rencontres = new LinkedList<>();
-		rencontres.add(new Rencontre(equipesSelectionnees.toArray(new Equipe[2])));
-		Poule finale = new Poule(false, true, poule.getIdTournoi(), rencontres);
-		this.ajouter(finale);
-
-	}
-
-	private List<Equipe> selectionnerMeilleuresEquipes(List<Equipe> equipes, Map<Equipe, Integer> nbPointsParEquipe) {
-		int pointsMin = equipes.stream().limit(2).mapToInt(equipe -> nbPointsParEquipe.getOrDefault(equipe, 0)).min().orElse(0);
-		List<Equipe> equipesSelectionnees = equipes.stream()
-			.filter(equipe -> nbPointsParEquipe.getOrDefault(equipe, 0) >= pointsMin)
-			.collect(Collectors.toList());
-	
-		if (equipesSelectionnees.size() > 2) {
-			equipesSelectionnees.sort(Comparator.comparingInt(Equipe::getWorldRanking));
-		}
-	
-		if (equipesSelectionnees.size() > 2) {
-			Collections.shuffle(equipesSelectionnees);
-			equipesSelectionnees = equipesSelectionnees.subList(0, 2);
-		}
-	
-		return equipesSelectionnees;
 	}
 	
 }
