@@ -1,5 +1,6 @@
 package vue;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -14,6 +15,7 @@ import vue.theme.JTextFieldTheme;
 import vue.theme.JButtonTheme.Types;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 
 import javax.swing.JLabel;
@@ -25,10 +27,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import controleur.ControleurPalmares;
 import modele.metier.Equipe;
 import modele.metier.Pays;
 
@@ -39,7 +44,7 @@ public class VuePalmares extends JFrameTheme {
 	public VuePalmares() {
 	}
 	
-	private JTable tableEquipes;
+	private JTable table;
 	private JPanel panelTableauFiltres;
 	private JTextFieldTheme txtRecherche;
 	private JButton btnRecherche;
@@ -49,6 +54,8 @@ public class VuePalmares extends JFrameTheme {
 	private JLabel lblPalmares;
 	
 	public void afficherVuePalmares(JPanel contentPane, VueBase vueBase) {
+		ControleurPalmares controleur = new ControleurPalmares(this);
+
 		// panel contient tous les éléments de la page
 		panel = new JPanel();
 		panel.setBackground(CharteGraphique.FOND);
@@ -72,7 +79,7 @@ public class VuePalmares extends JFrameTheme {
 		panelLabelPalmares.setBackground(CharteGraphique.FOND);
 		panelLabelPalmares.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		lblPalmares = new JLabel("Palmares");
+		lblPalmares = new JLabel("Palmarès");
 		lblPalmares.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPalmares.setFont(CharteGraphique.getPolice(30, true));
 		lblPalmares.setForeground(CharteGraphique.TEXTE);
@@ -118,70 +125,25 @@ public class VuePalmares extends JFrameTheme {
 		// Création du modèle du tableau avec désactivation de l'édition
 		this.model = new DefaultTableModel(
 			new Object[][] {}, 
-			new String[] {"ID", "Classement", "Pays", "Equipe"}
+			new String[] {"Classement", "Pays", "Equipe", "Points"}
 		) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				if(column != tableEquipes.getColumnCount() - 1) {
-					return false;
-				}
-				return true;
+				return false;
 			}
 		};
 			
-		// Tableau d'équipes
-		tableEquipes = new JTableTheme();
-		tableEquipes.setModel(model);
-		
-		// Masquage de la colonne ID (sert pour obtenir l'Equipe d'une ligne dont un bouton est cliqué)
-				TableColumn idColumn = tableEquipes.getColumnModel().getColumn(0);
-				idColumn.setMinWidth(1); // 1px pour garder la bordure
-				idColumn.setMaxWidth(1);
-				idColumn.setWidth(1);
-				idColumn.setPreferredWidth(1);
+		// Tableau de palmarès
+		this.table = new JTableTheme();
+		this.table.setModel(model);
+
+		// Règles d'affichage du drapeau du pays
+		TableColumn paysColumn = table.getColumnModel().getColumn(1);
+	    paysColumn.setCellRenderer(new ImageTableCellRenderer());
 				
-				//this.remplirTableau(this.controleur.getEquipes());
-		scrollPaneEquipes.setViewportView(tableEquipes);
-		
-	}
-	
-	/**
-	 * @param bouton
-	 * @return true si bouton est le bouton de recherche, false sinon
-	 */
-	public boolean estBoutonRecherche(JButton bouton) {
-		if(bouton instanceof JButtonTheme) {
-			String iconeRecherche = VueTournois.class.getResource("/images/actions/rechercher.png").toString();
-		    return bouton.getIcon().toString().equals(iconeRecherche);
-		}
-		return false;
-	}
-	
-	/**
-	 * Remplit/met à jour le tableau d'équipes
-	 * @param equipes : liste des équipes à mettre dans le tableau
-	 */
-	public void remplirTableau(List<Equipe> equipes) {
-		// Vider le tableau
-		this.model.setRowCount(0);
-		
-		int i = 1;
-		// Remplir avec les données d'équipes
-		for(Equipe equipe : equipes) {
-		    Vector<Object> rowData = new Vector<>();
-		    rowData.add(i);
-		    
-		    Pays pays = equipe.getPays();
-	        ImageIcon drapeau = pays.getDrapeauPays();
-	        rowData.add(new LabelIcon(drapeau, equipe.getPays().getNomPays()));
-	        
-	        rowData.add(equipe.getNom());
-		    this.model.addRow(rowData);
-		    i++;
-		}
-		
-		// Mise à jour du tableau
-		this.tableEquipes.setModel(this.model);
+		scrollPaneEquipes.setViewportView(this.table);
+
+		this.remplirTableau(controleur.getClassement());
 	}
 
 	/**
@@ -198,4 +160,104 @@ public class VuePalmares extends JFrameTheme {
         }
         
     }
+	
+	/**
+	 * Classe interne pour afficher les drapeaux
+	 */
+	private static class ImageTableCellRenderer extends DefaultTableCellRenderer {
+		
+		@Override
+	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+			// Affichage du label et de l'icone à gauche
+	        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+	        LabelIcon labelIcon = (LabelIcon) value;
+	        setIcon(labelIcon.icon);
+	        setText(labelIcon.label);
+	        
+	        // Couleur de fond des cellules alternantes
+ 			if(row % 2 == 0) {
+ 				this.setBackground(CharteGraphique.FOND_SECONDAIRE);
+ 			} else {
+ 				this.setBackground(CharteGraphique.FOND);
+ 			}
+ 			
+ 			// Bordure de la cellule du tableau
+ 			setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, CharteGraphique.BORDURE));
+ 			
+ 			// Police
+ 			this.setFont(CharteGraphique.getPolice(16, false));
+ 			this.setForeground(CharteGraphique.TEXTE);
+ 			
+ 			// Centrer les textes dans toutes les cellules
+			this.setHorizontalAlignment(CENTER);
+			this.setVerticalAlignment(CENTER);
+	        
+	        return label;
+	    }
+		
+	}
+	
+	/**
+	 * @param bouton
+	 * @return true si bouton est le bouton de recherche, false sinon
+	 */
+	public boolean estBoutonRecherche(JButton bouton) {
+		if(bouton instanceof JButtonTheme) {
+			String iconeRecherche = VueTournois.class.getResource("/images/actions/rechercher.png").toString();
+		    return bouton.getIcon().toString().equals(iconeRecherche);
+		}
+		return false;
+	}
+	
+	/**
+	 * @param champ
+	 * @return true si le champ est le champ de recherche, false sinon
+	 */
+	public boolean estChampRecherche(JTextField champ) {
+		return this.txtRecherche.equals(champ);
+	}
+
+	/**
+	 * Remet à zéro le champ de recherche
+	 */
+	public void resetChampRecherche() {
+		this.txtRecherche.setText("");
+	}
+	
+	/**
+	 * @return la requête de recherche tapée par l'utilisateur
+	 */
+	public String getRequeteRecherche() {
+		return this.txtRecherche.getText().trim();
+	}
+
+	/**
+	 * Remplit/met à jour le tableau d'équipes
+	 * @param equipes : liste des équipes à mettre dans le tableau
+	 */
+	public void remplirTableau(List<Equipe> equipes) {
+		// Vider le tableau
+		this.model.setRowCount(0);
+		
+		// Remplir avec les données d'équipes
+		for(Equipe equipe : equipes) {
+		    Vector<Object> rowData = new Vector<>();
+
+			rowData.add("#" + equipe.getClassement());
+		    
+		    Pays pays = equipe.getPays();
+	        ImageIcon drapeau = pays.getDrapeauPays();
+	        rowData.add(new LabelIcon(drapeau, equipe.getPays().getNomPays()));
+
+		    rowData.add(equipe.getNom());
+
+			rowData.add(0);
+
+		    this.model.addRow(rowData);
+		}
+		
+		// Mise à jour du tableau
+		this.table.setModel(this.model);
+	}
+
 }
