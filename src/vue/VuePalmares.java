@@ -35,6 +35,7 @@ import javax.swing.table.TableColumn;
 
 import controleur.ControleurPalmares;
 import modele.metier.Equipe;
+import modele.metier.Palmares;
 import modele.metier.Pays;
 
 /**
@@ -54,7 +55,7 @@ public class VuePalmares extends JFrameTheme {
 	private JLabel lblPalmares;
 	
 	public void afficherVuePalmares(JPanel contentPane, VueBase vueBase) {
-		ControleurPalmares controleur = new ControleurPalmares(this);
+		ControleurPalmares controleur = new ControleurPalmares();
 
 		// panel contient tous les éléments de la page
 		panel = new JPanel();
@@ -293,13 +294,15 @@ public class VuePalmares extends JFrameTheme {
 	 * Remplit/met à jour le tableau d'équipes
 	 * @param equipes : liste des équipes à mettre dans le tableau
 	 */
-	public void remplirTableau(List<Equipe> equipes) {
+	public void remplirTableau(List<Palmares> palmares) {
 		// Vider le tableau
 		this.model.setRowCount(0);
 		
 		// Remplir avec les données d'équipes
-		for(Equipe equipe : equipes) {
+		for(Palmares podium : palmares) {
 		    Vector<Object> rowData = new Vector<>();
+
+			Equipe equipe = podium.getEquipe();
 
 			rowData.add("#" + equipe.getClassement());
 		    
@@ -309,7 +312,7 @@ public class VuePalmares extends JFrameTheme {
 
 		    rowData.add(equipe.getNom());
 
-			rowData.add(0);
+			rowData.add(podium.getPoints());
 
 		    this.model.addRow(rowData);
 		}
