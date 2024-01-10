@@ -41,7 +41,7 @@ public class VueBase extends JFrameTheme {
 		this.controleurBase = new ControleurBase(this);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1300, 700);
+		setBounds(100, 100, 1600, 900);
 		
 		// contentPane, un panel contenant tous les éléments de la fenêtre
 		JPanel contentPane = super.getContentPane();
