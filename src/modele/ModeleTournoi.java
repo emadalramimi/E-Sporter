@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -676,10 +677,11 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
             classementParEquipe.put(equipe, 1000);
         }
 
-        Statement st = BDD.getConnexion().createStatement();
-        ResultSet rs = st.executeQuery("select e.idEquipe, sum(hp.points) from equipe e, historiquePoints hp where e.idEquipe = hp.idEquipe group by e.idEquipe order by sum(hp.points) desc");
+        PreparedStatement psTotalPointsParEquipe = BDD.getConnexion().prepareStatement("select e.idEquipe, sum(hp.points) from equipe e, historiquePoints hp where e.idEquipe = hp.idEquipe and e.saison = ? group by e.idEquipe order by sum(hp.points) desc");
+		psTotalPointsParEquipe.setInt(1, LocalDate.now().getYear());
+		ResultSet rs = psTotalPointsParEquipe.executeQuery();
 
-        int classement = 1;
+        int classement = 0;
         int pointsPrecedents = -1;
         while (rs.next()) {
             Equipe equipe = this.modeleEquipe.getParId(rs.getInt(1)).orElse(null);
@@ -699,11 +701,11 @@ public class ModeleTournoi extends DAO<Tournoi, Integer> {
         for(Equipe equipe : classementParEquipe.keySet()) {
             equipe.setClassement(classementParEquipe.get(equipe));
             
-            PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set classement = ? where idEquipe = ?");
-            ps.setInt(1, classementParEquipe.get(equipe));
-            ps.setInt(2, equipe.getIdEquipe());
-            ps.executeUpdate();
-            ps.close();
+            PreparedStatement psClassement = BDD.getConnexion().prepareStatement("update equipe set classement = ? where idEquipe = ?");
+            psClassement.setInt(1, classementParEquipe.get(equipe));
+            psClassement.setInt(2, equipe.getIdEquipe());
+            psClassement.executeUpdate();
+            psClassement.close();
         }
     }
 
