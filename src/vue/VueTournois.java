@@ -59,6 +59,7 @@ public class VueTournois extends JFrameTheme {
 	private ControleurTournois controleur;
 	private VueSaisieTournoi vueSaisieTournoi;
 	private VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi;
+	private VueEtatResultatsTournoi vueEtatResultatsTournoi;
 	private VuePoule vuePoule;
 	private VueBase vueBase;
 	private JComboBoxTheme<String> cboxNotoriete;
@@ -263,6 +264,22 @@ public class VueTournois extends JFrameTheme {
 			this.vuePoule.toFront();
 		}
 	}
+
+	/**
+	 * Ouvre la fenêtre d'état des résultats du tournoi
+	 * @param tournoi le tournoi dont on veut afficher les résultats
+	 */
+	public void afficherVueEtatResultatsTournoi(Tournoi tournoi) {
+		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
+        if (this.vueEtatResultatsTournoi == null || !this.vueEtatResultatsTournoi.isVisible()) {
+        	this.vueEtatResultatsTournoi = new VueEtatResultatsTournoi(tournoi);
+        	this.ajouterFenetreEnfant(this.vueEtatResultatsTournoi);
+        	this.vueEtatResultatsTournoi.setLocationRelativeTo(this);
+        	this.vueEtatResultatsTournoi.setVisible(true);
+        } else {
+        	this.vueEtatResultatsTournoi.toFront();
+        }
+    }
 	
 	/**
 	 * Retire une fenêtre enfant de la liste des fenêtres enfant dans VueBase

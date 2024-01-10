@@ -43,8 +43,7 @@ public class VuePoule extends JFrameTheme {
 	private JTableTheme table;
 	private boolean[][] isActif;
 	
-	// private VueTournois vueTournois; sera utilisé plus tard pour rafraîchir la liste des tournois à la cloture
-	private VueEtatResultatsTournoi vueEtatResultatsTournoi;
+	private VueTournois vueTournois;
 	
 	/*
      * Constructeur de l'IHM pour la saisie d'un poule
@@ -53,6 +52,8 @@ public class VuePoule extends JFrameTheme {
 	 * @param poule La poule en cours
      */
 	public VuePoule(VueTournois vueTournois, Tournoi tournoi, Poule poule) {
+		this.vueTournois = vueTournois;
+		
 		ControleurPoule controleur = new ControleurPoule(this, tournoi);
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -334,19 +335,11 @@ public class VuePoule extends JFrameTheme {
 	}
 
 	/**
-	 * Ouvre la fenêtre d'état des résultats du tournoi
+	 * Ouvre la fenêtre d'état des résultats du tournoi dans la vue tournois
 	 * @param tournoi le tournoi dont on veut afficher les résultats
 	 */
 	public void afficherVueEtatResultatsTournoi(Tournoi tournoi) {
-		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
-        if (this.vueEtatResultatsTournoi == null || !this.vueEtatResultatsTournoi.isVisible()) {
-        	this.vueEtatResultatsTournoi = new VueEtatResultatsTournoi(tournoi);
-        	this.ajouterFenetreEnfant(this.vueEtatResultatsTournoi);
-        	this.vueEtatResultatsTournoi.setLocationRelativeTo(this);
-        	this.vueEtatResultatsTournoi.setVisible(true);
-        } else {
-        	this.vueEtatResultatsTournoi.toFront();
-        }
+		this.vueTournois.afficherVueEtatResultatsTournoi(tournoi);
     }
 
 }

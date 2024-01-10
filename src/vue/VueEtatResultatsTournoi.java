@@ -43,7 +43,7 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
         ControleurEtatResultatsTournoi controleur = new ControleurEtatResultatsTournoi(this, tournoi);
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 550, 450);
+		setBounds(100, 100, 750, 450);
 
 		/*JPanel */contentPane = super.getContentPane();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));

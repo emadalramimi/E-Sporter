@@ -141,6 +141,15 @@ public class VueEquipes extends JFrameTheme {
 		// Panel contenant les filtres
 		JPanel panelChoixFiltres = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
 		panelChoixFiltres.setBackground(CharteGraphique.FOND);
+
+	    // Ajouter comboBox filtre pour filtrer par pays
+	 	cboxPays = new JComboBoxTheme<String>(Pays.getLibellesFiltres());
+		cboxPays.addItemListener(controleur);
+	 	cboxPays.setPreferredSize(new Dimension(200, 45));
+	 	panelChoixFiltres.add(cboxPays);
+
+		// Ajouter les filtres
+		panelTableauFiltres.add(panelChoixFiltres);
 		
 		// ScrollPane englobant le tableau
 		scrollPaneEquipes = new JScrollPaneTheme();
@@ -167,9 +176,6 @@ public class VueEquipes extends JFrameTheme {
 		// Tableau d'équipes
 		table = new JTableTheme();
 		table.setModel(model);
-
-		// Ajouter les filtres
-		panelTableauFiltres.add(panelChoixFiltres);
 		
 		// Ajouter buttons dans la derniere colonne
 		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
@@ -179,12 +185,6 @@ public class VueEquipes extends JFrameTheme {
 		// Règles d'affichage du drapeau du pays
 		TableColumn paysColumn = table.getColumnModel().getColumn(2);
 	    paysColumn.setCellRenderer(new ImageTableCellRenderer());
-	    
-	    // Ajouter comboBox filtre pour filtrer par pays
-	 	cboxPays = new JComboBoxTheme<String>(Pays.getLibellesFiltres());
-		cboxPays.addItemListener(controleur);
-	 	cboxPays.setPreferredSize(new Dimension(200, 45));
-	 	panelChoixFiltres.add(cboxPays);
 		
 		// Masquage de la colonne ID (sert pour obtenir l'Equipe d'une ligne dont un bouton est cliqué)
 		TableColumn idColumn = table.getColumnModel().getColumn(0);
