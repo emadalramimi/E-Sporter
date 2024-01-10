@@ -403,9 +403,6 @@ public class TestModeleTournoi {
         }
         
         tournoi.setPoules(poulesTest);
-        
-        System.out.println(tournoi);
-        System.out.println(tournoi.getPoules());
         modele.cloturerPoule(tournoi);
     }
 	
