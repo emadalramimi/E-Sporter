@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 
 import vue.theme.JFrameTheme;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -16,6 +17,7 @@ import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
+import vue.theme.JTableThemeImpression;
 
 import javax.swing.JLabel;
 import java.awt.GridBagLayout;
@@ -31,17 +33,19 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 
 	private JTableTheme table;
 	
+	private JPanel contentPane;
+
 	/**
      * Constructeur de l'IHM pour l'état des résultats d'un tournoi
 	 * @param tournoi : le tournoi dont on veut afficher les résultats
      */
 	public VueEtatResultatsTournoi(Tournoi tournoi) {
-        ControleurEtatResultatsTournoi controleur = new ControleurEtatResultatsTournoi(this);
+        ControleurEtatResultatsTournoi controleur = new ControleurEtatResultatsTournoi(this, tournoi);
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 550, 450);
 
-		JPanel contentPane = super.getContentPane();
+		/*JPanel */contentPane = super.getContentPane();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		contentPane.setLayout(new BorderLayout(0, 20));
@@ -94,13 +98,11 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 
 		// Création de la table
 		this.table = new JTableTheme();
-		this.table.setBackground(CharteGraphique.FOND);
-		this.table.setFont(CharteGraphique.getPolice(16, false));
 
 		// Création du modèle de la table
 		DefaultTableModel model = new DefaultTableModel(
 			new Object[][] {}, 
-			new String[] { "Équipe", "Matchs joués", "Matchs gagnés", "Ratio", "Nombre de points" }
+			new String[] { "Équipe", "Matchs joués", "Matchs gagnés", "Ratio", "Points" }
 		) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -129,6 +131,10 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		btnFermer.addActionListener(controleur);
 		btnFermer.setFont(CharteGraphique.getPolice(17, false));
 
+		JButtonTheme btnImprimer = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Imprimer");
+		btnImprimer.addActionListener(controleur);
+		btnImprimer.setFont(CharteGraphique.getPolice(17, false));
+
 		// Création du panel pour les boutons
 		JPanel panelBoutons = new JPanel();
 		FlowLayout layout = new FlowLayout(FlowLayout.CENTER);
@@ -138,9 +144,23 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 
 		// Ajout des boutons au panel
 		panelBoutons.add(btnFermer);
+		panelBoutons.add(btnImprimer);
 
 		// Ajout du panel à contentPane
 		contentPane.add(panelBoutons, BorderLayout.SOUTH);
+	}
+
+	public JTableThemeImpression getTableImpression() {
+		JTableThemeImpression table = new JTableThemeImpression(this.table.getModel());
+
+		// Create a new JFrame to display the table
+		JFrame frame = new JFrame();
+		frame.add(new JScrollPane(table));
+
+		// Pack the frame to fit the preferred size of its components
+		frame.pack();
+
+		return table;
 	}
 
 }
