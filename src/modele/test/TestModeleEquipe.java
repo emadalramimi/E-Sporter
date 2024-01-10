@@ -231,8 +231,8 @@ public class TestModeleEquipe {
 		modele.ajouter(equipeATester);
 		assertEquals(modele.getEquipesSaison().size(), modele.getParFiltrage(null).size());
 		
-		for (int i = 0; i < modele.getTout().size(); i++) {
-			assertEquals(modele.getTout().get(i), modele.getParFiltrage(null).get(i));
+		for (int i = 0; i < modele.getEquipesSaison().size(); i++) {
+			assertEquals(modele.getEquipesSaison().get(i), modele.getParFiltrage(null).get(i));
 		}
 	}
 
