@@ -1,11 +1,13 @@
 package modele.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.After;
@@ -14,6 +16,7 @@ import org.junit.Test;
 
 import controleur.ControleurTournois;
 import modele.ModeleEquipe;
+import modele.ModelePoule;
 import modele.ModeleTournoi;
 import modele.exception.DatesTournoiException;
 import modele.exception.OuvertureTournoiException;
@@ -21,6 +24,8 @@ import modele.exception.TournoiDejaOuvertException;
 import modele.metier.Arbitre;
 import modele.metier.Equipe;
 import modele.metier.Pays;
+import modele.metier.Poule;
+import modele.metier.Rencontre;
 import modele.metier.StatistiquesEquipe;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
@@ -28,13 +33,30 @@ import modele.metier.Tournoi.Notoriete;
 public class TestModeleTournoi {
 
 	private ModeleTournoi modele;
+	private ModelePoule modelePoule;
+	private ModeleEquipe modeleEquipe;
+	private Poule poule;
+	private Tournoi tournoi;
+	private Equipe[] equipes;
+	private List<Poule> poules;
+	private Rencontre rencontreCloture;
 	
 	/**
 	 * Créée une nouveau ModeleTournoi
+	 * @throws Exception 
 	 */
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 	    modele = new ModeleTournoi();
+	    modelePoule = new ModelePoule();
+	    modeleEquipe = new ModeleEquipe();
+        Arbitre arbitre = new Arbitre(1, "Willem", "Miled");
+        
+        List<Arbitre> arbitres = new ArrayList<>(Arrays.asList(
+        	arbitre
+		));
+    	tournoi = new Tournoi(1, "Tournoi1", Notoriete.INTERNATIONAL, this.getDateCourante() + 500, this.getDateCourante() + 1000, false, "Identifiant", "mdp", modele.getParId(1).orElse(null).getPoules(), modele.getParId(1).orElse(null).getEquipes(), arbitres);
+    	tournoi.getPoules();
 	}
 	
 	/**
@@ -367,6 +389,25 @@ public class TestModeleTournoi {
 			assertEquals(tournois.get(i), modele.getParFiltrage(Notoriete.NATIONAL, ControleurTournois.Statut.PHASE_INSCRIPTIONS).get(i));
 		}
 	}
+	
+	/**
+     * Teste la levée d'exception si la poule est déjà cloturée
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void testCloturerPouleCloturee() throws Exception {
+        List<Poule> poulesTest = new ArrayList<>();
+        
+        for(Poule p : tournoi.getPoules()) {
+            p.setEstCloturee(true);
+            poulesTest.add(p);
+        }
+        
+        tournoi.setPoules(poulesTest);
+        
+        System.out.println(tournoi);
+        System.out.println(tournoi.getPoules());
+        modele.cloturerPoule(tournoi);
+    }
 	
 	//Réinitialise les tournoi
 	@After
