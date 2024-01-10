@@ -229,7 +229,7 @@ public class TestModeleEquipe {
 		equipeATester.setIdEquipe(6);
 		equipeATester.setPays(Pays.ALLEMAGNE);
 		modele.ajouter(equipeATester);
-		assertEquals(modele.getTout().size(), modele.getParFiltrage(null).size());
+		assertEquals(modele.getEquipesSaison().size(), modele.getParFiltrage(null).size());
 		
 		for (int i = 0; i < modele.getTout().size(); i++) {
 			assertEquals(modele.getTout().get(i), modele.getParFiltrage(null).get(i));
