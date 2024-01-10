@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 
+import modele.ModeleImpression;
 import modele.ModeleTournoi;
 import modele.metier.StatistiquesEquipe;
 import modele.metier.Tournoi;
@@ -18,15 +19,19 @@ import vue.VueEtatResultatsTournoi;
 public class ControleurEtatResultatsTournoi implements ActionListener {
     
     private VueEtatResultatsTournoi vue;
+    private Tournoi tournoi;
     private ModeleTournoi modeleTournoi;
+    private ModeleImpression modeleImpression;
 
     /**
      * Constructeur du controleur de VueEtatResultatsTournoi
      * @param vue : vueEtatResultatsTournoi
      */
-    public ControleurEtatResultatsTournoi(VueEtatResultatsTournoi vue) {
+    public ControleurEtatResultatsTournoi(VueEtatResultatsTournoi vue, Tournoi tournoi) {
         this.vue = vue;
+        this.tournoi = tournoi;
         this.modeleTournoi = new ModeleTournoi();
+        this.modeleImpression = new ModeleImpression();
     }
 
     /**
@@ -37,8 +42,13 @@ public class ControleurEtatResultatsTournoi implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JButton bouton = (JButton) e.getSource();
         
-        if (bouton.getText() == "Fermer") {
-        	this.vue.fermerFenetre();
+        switch(bouton.getText()) {
+            case "Fermer":
+                this.vue.fermerFenetre();
+                break;
+            case "Imprimer":
+                this.modeleImpression.imprimerEtatResultatsTournoi(this.vue.getTableImpression(), this.tournoi);
+                break;
         }
     }
 
