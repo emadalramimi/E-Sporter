@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
+import modele.metier.EnumPoints;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
 import modele.metier.Pays;
@@ -80,5 +81,13 @@ public class TestSatistiquesEquipe {
 	@Test
 	public void testGetRatioPourcentage() {
 		assertEquals(statEquipe.getRatioPourcentage(), String.format("%.2f", (float) 100/3) + " %");
+	}
+	
+	@Test
+	public void testGetPoints() {
+		 float expectedPoints = EnumPoints.POULE_MATCH_VICTOIRE.getPoints() * statEquipe.getNbMatchsGagnes()
+			        + EnumPoints.POULE_MATCH_PERDU.getPoints() * (statEquipe.getNbMatchsJoues() - statEquipe.getNbMatchsGagnes());
+		 
+		 assertEquals(expectedPoints, statEquipe.getPoints(), 0.01);
 	}
 }
