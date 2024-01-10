@@ -2,23 +2,20 @@ package controleur;
 
 import java.util.List;
 
-import modele.ModeleEquipe;
-import modele.metier.Equipe;
-import vue.VuePalmares;
+import modele.ModelePalmares;
+import modele.metier.Palmares;
 
 public class ControleurPalmares {
     
-    private VuePalmares vue;
-    private ModeleEquipe modeleEquipe;
+    private ModelePalmares modelePalmares;
 
-    public ControleurPalmares(VuePalmares vue) {
-        this.vue = vue;
-        this.modeleEquipe = new ModeleEquipe();
+    public ControleurPalmares() {
+        this.modelePalmares = new ModelePalmares();
     }
 
-    public List<Equipe> getClassement() {
+    public List<Palmares> getClassement() {
         try {
-            return modeleEquipe.getClassement();
+            return modelePalmares.getClassement();
         } catch (Exception e) {
             e.printStackTrace();
             return null;

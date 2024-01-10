@@ -62,20 +62,24 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 		// Création d'équipe si elle existe
 		Equipe equipe = null;
 		if(rs.next()) {
-			equipe = new Equipe(
-	    		rs.getInt("idEquipe"),
-	    		rs.getString("nom"),
-				Pays.valueOfNom(rs.getString("pays")),
-	    		rs.getInt("classement"),
-	    		rs.getInt("worldRanking"),
-	    		rs.getString("saison"),
-	    		ModeleEquipe.this.modeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))
-            );
+			equipe = this.construireEquipe(rs);
 		}
 		
 		rs.close();
 		ps.close();
 		return Optional.ofNullable(equipe);
+	}
+
+	public Equipe construireEquipe(ResultSet rs) throws SQLException {
+		return new Equipe(
+			rs.getInt("idEquipe"),
+			rs.getString("nom"),
+			Pays.valueOfNom(rs.getString("pays")),
+			rs.getInt("classement"),
+			rs.getInt("worldRanking"),
+			rs.getString("saison"),
+			ModeleEquipe.this.modeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))
+		);
 	}
 
 	/**
@@ -223,19 +227,6 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
         
         return nextVal;
     }
-
-	/**
-	 * Récupère toutes les équipes
-	 * @return Liste de tous les équipes
-	 * @throws Exception Erreur SQL
-	 */
-	public List<Equipe> getClassement() throws Exception {
-		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from equipe where saison = ? order by classement asc");
-		ps.setInt(1, LocalDate.now().getYear());
-		ResultSet rs = ps.executeQuery();
-
-		return this.collect(ps, rs);
-	}
 
 	/**
 	 * Récupère les équipes inscrites à un tournoi
