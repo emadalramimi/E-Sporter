@@ -27,7 +27,7 @@ import modele.metier.Pays;
 /**
  * Modèle rencontre
  */
-public class ModeleRencontre extends DAO<Rencontre, Integer> {
+public class ModeleRencontre implements DAO<Rencontre, Integer> {
 
 	private ModeleJoueur modeleJoueur;
 
@@ -148,36 +148,6 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
 			throw new RuntimeException(e);
 		}
 	}
-
-	/**
-	 * Supprime la rencontre dans la BDD
-	 * @param tournoi Rencontre à supprimer
-	 * @return true si l'opération s'est bien déroulée, false sinon
-	 * @throws Exception Exception SQL
-	 */
-	@Override
-	public boolean supprimer(Rencontre tournoi) throws Exception {
-		try {
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from jouer where idRencontre = ?");
-			ps.setInt(1, tournoi.getIdRencontre());
-			ps.execute();
-			ps.close();
-
-			ps = BDD.getConnexion().prepareStatement("delete from rencontre where idRencontre = ?");
-			ps.setInt(1, tournoi.getIdRencontre());
-			ps.execute();
-			ps.close();
-			
-			return true;
-		} catch (SQLException e) {
-			try {
-				BDD.getConnexion().rollback();
-			} catch (SQLException ex) {
-				ex.printStackTrace();
-			}
-			throw new RuntimeException(e);
-		}
-	}
 	
 	/**
 	 * Méthode permettant de récupérer le prochain identifiant unique de rencontre
@@ -201,6 +171,41 @@ public class ModeleRencontre extends DAO<Rencontre, Integer> {
         
         return nextVal;
     }
+
+	@Override
+	public boolean modifier(Rencontre rencontre) throws Exception {
+		throw new UnsupportedOperationException("Méthode non implémentée");
+	}
+
+	/**
+	 * Supprime la rencontre dans la BDD
+	 * @param tournoi Rencontre à supprimer
+	 * @return true si l'opération s'est bien déroulée, false sinon
+	 * @throws Exception Exception SQL
+	 */
+	@Override
+	public boolean supprimer(Rencontre rencontre) throws Exception {
+		try {
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from jouer where idRencontre = ?");
+			ps.setInt(1, rencontre.getIdRencontre());
+			ps.execute();
+			ps.close();
+
+			ps = BDD.getConnexion().prepareStatement("delete from rencontre where idRencontre = ?");
+			ps.setInt(1, rencontre.getIdRencontre());
+			ps.execute();
+			ps.close();
+			
+			return true;
+		} catch (SQLException e) {
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			throw new RuntimeException(e);
+		}
+	}
 
 	/**
 	 * Récupère la rencontre par son identifiant

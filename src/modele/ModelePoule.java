@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
@@ -18,7 +19,7 @@ import modele.metier.Rencontre;
 /**
  * Modèle poule
  */
-public class ModelePoule extends DAO<Poule, Integer> {
+public class ModelePoule implements DAO<Poule, Integer> {
 	
 	private ModeleRencontre modeleRencontre;
 
@@ -72,34 +73,9 @@ public class ModelePoule extends DAO<Poule, Integer> {
 		return stream.collect(Collectors.toList());
 	}
 
-	/**
-	 * Supprime la poule dans la BDD
-	 * @param poule Poule à supprimer
-	 * @return true si l'opération s'est bien déroulée, false sinon
-	 * @throws Exception Exception SQL
-	 */
 	@Override
-	public boolean supprimer(Poule poule) throws Exception {
-		try {
-			// Supprime les rencontres de la poule
-			for (Rencontre rencontre : poule.getRencontres()) {
-				this.modeleRencontre.supprimer(rencontre);
-			}
-			
-			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from poule where idPoule = ?");
-			ps.setInt(1, poule.getIdPoule());
-			ps.execute();
-			ps.close();
-			
-			return true;
-		} catch (SQLException e) {
-			try {
-				BDD.getConnexion().rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			throw new RuntimeException(e);
-		}
+	public Optional<Poule> getParId(Integer... idPoule) throws Exception {
+		throw new UnsupportedOperationException("Méthode non implémentée");
 	}
 
 	/**
@@ -160,6 +136,41 @@ public class ModelePoule extends DAO<Poule, Integer> {
 		}
 
 		return nextVal;
+	}
+
+	@Override
+	public boolean modifier(Poule poule) throws Exception {
+		throw new UnsupportedOperationException("Méthode non implémentée");
+	}
+
+	/**
+	 * Supprime la poule dans la BDD
+	 * @param poule Poule à supprimer
+	 * @return true si l'opération s'est bien déroulée, false sinon
+	 * @throws Exception Exception SQL
+	 */
+	@Override
+	public boolean supprimer(Poule poule) throws Exception {
+		try {
+			// Supprime les rencontres de la poule
+			for (Rencontre rencontre : poule.getRencontres()) {
+				this.modeleRencontre.supprimer(rencontre);
+			}
+			
+			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from poule where idPoule = ?");
+			ps.setInt(1, poule.getIdPoule());
+			ps.execute();
+			ps.close();
+			
+			return true;
+		} catch (SQLException e) {
+			try {
+				BDD.getConnexion().rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**

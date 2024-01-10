@@ -18,7 +18,7 @@ import modele.metier.Arbitre;
 /**
  * Modèle arbitre
  */
-public class ModeleArbitre extends DAO<Arbitre, Integer> {
+public class ModeleArbitre implements DAO<Arbitre, Integer> {
 
 	/**
 	 * Récupère tous les arbitres
@@ -58,6 +58,21 @@ public class ModeleArbitre extends DAO<Arbitre, Integer> {
 		rs.close();
 		ps.close();
 		return Optional.ofNullable(arbitre);
+	}
+	
+	@Override
+	public boolean ajouter(Arbitre arbitre) throws Exception {
+		throw new UnsupportedOperationException("Méthode non implémentée");
+	}
+
+	@Override
+	public boolean modifier(Arbitre arbitre) throws Exception {
+		throw new UnsupportedOperationException("Méthode non implémentée");
+	}
+
+	@Override
+	public boolean supprimer(Arbitre arbitre) throws Exception {
+		throw new UnsupportedOperationException("Méthode non implémentée");
 	}
 	
 	/**

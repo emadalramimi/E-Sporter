@@ -15,6 +15,7 @@ import modele.ModeleEquipe;
 import modele.ModelePoule;
 import modele.ModeleRencontre;
 import modele.ModeleTournoi;
+import modele.ModeleTournoiOuverture;
 import modele.ModeleUtilisateur;
 import modele.exception.DroitsInsuffisantsException;
 import modele.exception.TournoiClotureException;
@@ -29,6 +30,7 @@ public class TestModeleRencontre {
 	
 	private ModeleRencontre modele;
 	private ModeleTournoi modeleTournoi;
+	private ModeleTournoiOuverture modeleTournoiOuverture;
 	private ModelePoule modelePoule;
 	private ModeleUtilisateur modeleUtilisateur;
 	private ModeleEquipe modeleEquipe;
@@ -38,6 +40,7 @@ public class TestModeleRencontre {
     public void setUp() throws Exception {
         modele = new ModeleRencontre();
         modeleTournoi = new ModeleTournoi();
+		modeleTournoiOuverture = new ModeleTournoiOuverture();
         modelePoule = new ModelePoule();
         modeleUtilisateur = new ModeleUtilisateur();
 
@@ -79,7 +82,7 @@ public class TestModeleRencontre {
 		for (int i=1;i<5;i++)
 		modeleEquipe.inscrireEquipe(modeleEquipe.getParId(i).get(), tournoi);
 		modeleUtilisateur.connecter("admin", "mdp");
-		modeleTournoi.ouvrirTournoi(modeleTournoi.getParId(tournoi.getIdTournoi()).get());
+		modeleTournoiOuverture.ouvrirTournoi(modeleTournoi.getParId(tournoi.getIdTournoi()).get());
 	}
 	
 	@Test(expected=TournoiInexistantException.class)

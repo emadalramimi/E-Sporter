@@ -24,7 +24,7 @@ import modele.metier.Tournoi;
 /**
  * Modèle équipe
  */
-public class ModeleEquipe extends DAO<Equipe, Integer> {
+public class ModeleEquipe implements DAO<Equipe, Integer> {
 	
 	private ModeleJoueur modeleJoueur;
 	
@@ -135,6 +135,30 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	/**
+	 * Récupère le prochain identifiant d'équipe
+	 * @return Identifiant d'équipe
+	 */
+	private int getNextValId() {
+        int nextVal = 0;
+        try {
+            PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idEquipe");
+
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                nextVal = rs.getInt(1);
+            }
+            
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return nextVal;
+    }
 
 	/**
 	 * Modifie l'équipe dans la BDD
@@ -203,30 +227,6 @@ public class ModeleEquipe extends DAO<Equipe, Integer> {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	/**
-	 * Récupère le prochain identifiant d'équipe
-	 * @return Identifiant d'équipe
-	 */
-	private int getNextValId() {
-        int nextVal = 0;
-        try {
-            PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idEquipe");
-
-            ResultSet rs = ps.executeQuery();
-            
-            if (rs.next()) {
-                nextVal = rs.getInt(1);
-            }
-            
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return nextVal;
-    }
 
 	/**
 	 * Récupère les équipes inscrites à un tournoi

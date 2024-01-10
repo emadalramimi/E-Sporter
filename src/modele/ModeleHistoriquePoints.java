@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
@@ -14,13 +15,23 @@ import java.util.stream.StreamSupport;
 
 import modele.metier.HistoriquePoints;
 
-public class ModeleHistoriquePoints extends DAO<HistoriquePoints, Integer> {
+public class ModeleHistoriquePoints implements DAO<HistoriquePoints, Integer> {
     
     private ModeleTournoi modeleTournoi;
 
     public ModeleHistoriquePoints() {
         this.modeleTournoi = new ModeleTournoi();
     }
+
+    @Override
+	public List<HistoriquePoints> getTout() throws Exception {
+		throw new UnsupportedOperationException("Méthode non implémentée");
+	}
+
+    @Override
+	public Optional<HistoriquePoints> getParId(Integer... idHistoriquePoints) throws Exception {
+		throw new UnsupportedOperationException("Méthode non implémentée");
+	}
 
     @Override
     public boolean ajouter(HistoriquePoints historiquePoints) throws Exception {
@@ -45,6 +56,16 @@ public class ModeleHistoriquePoints extends DAO<HistoriquePoints, Integer> {
 			throw new RuntimeException(e);
 		}
     }
+
+    @Override
+	public boolean modifier(HistoriquePoints historiquePoints) throws Exception {
+		throw new UnsupportedOperationException("Méthode non implémentée");
+	}
+
+    @Override
+	public boolean supprimer(HistoriquePoints historiquePoints) throws Exception {
+		throw new UnsupportedOperationException("Méthode non implémentée");
+	}
 
     // TODO MODIFIER COLLECT
     public List<HistoriquePoints> getParEquipe(int idEquipe) throws Exception {

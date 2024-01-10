@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import modele.ModeleEquipe;
 import modele.ModeleTournoi;
+import modele.ModeleTournoiOuverture;
 import modele.exception.InscriptionEquipeTournoiException;
 import modele.exception.SaisonException;
 import modele.metier.Equipe;
@@ -25,6 +26,7 @@ public class TestModeleEquipe {
 
 	private ModeleEquipe modele;
 	private ModeleTournoi modeleTournoi;
+	private ModeleTournoiOuverture modeleTournoiOuverture;
 	private Equipe equipe;
 	private Equipe equipeAModif;
 	private List<Joueur> listJoueurs;
@@ -33,6 +35,7 @@ public class TestModeleEquipe {
 	public void setUp() throws Exception {
 		modele = new ModeleEquipe();
 		modeleTournoi = new ModeleTournoi();
+		modeleTournoiOuverture = new ModeleTournoiOuverture();
 		
 		listJoueurs = new ArrayList<>(Arrays.asList(
 				new Joueur(1, "Joueur1", 2),
@@ -93,7 +96,7 @@ public class TestModeleEquipe {
 			modele.inscrireEquipe(modele.getTout().get(i), tournoi);
 		}
 		
-		modeleTournoi.ouvrirTournoi(tournoi);
+		modeleTournoiOuverture.ouvrirTournoi(tournoi);
 		Equipe equipeAModif = modele.getParId(1).orElse(null);
 		equipeAModif.setNom("Coucou");
 		modele.modifier(equipeAModif);
@@ -116,7 +119,7 @@ public class TestModeleEquipe {
 			modele.inscrireEquipe(modele.getTout().get(i), tournoi);
 		}
 		
-		modeleTournoi.ouvrirTournoi(tournoi);
+		modeleTournoiOuverture.ouvrirTournoi(tournoi);
 		modele.supprimer(modele.getParId(1).orElse(null));
 	}
 

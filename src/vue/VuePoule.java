@@ -342,4 +342,12 @@ public class VuePoule extends JFrameTheme {
 		this.vueTournois.afficherVueEtatResultatsTournoi(tournoi);
     }
 
+	/**
+	 * Retourne la vue tournois fenêtre parente
+	 * @return Vue tournois
+	 */
+	public VueTournois getVueTournois() {
+		return this.vueTournois;
+	}
+
 }

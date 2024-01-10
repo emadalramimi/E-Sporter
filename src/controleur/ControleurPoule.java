@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import modele.ModeleEquipe;
 import modele.ModeleRencontre;
 import modele.ModeleTournoi;
+import modele.ModeleTournoiCloture;
 import modele.exception.DroitsInsuffisantsException;
 import modele.exception.TournoiClotureException;
 import modele.exception.TournoiInexistantException;
@@ -28,6 +29,7 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
     private VuePoule vue;
     private Tournoi tournoi;
     private ModeleTournoi modeleTournoi;
+    private ModeleTournoiCloture modeleTournoiCloture;
     private ModeleRencontre modeleRencontre;
     private ModeleEquipe modeleEquipe;
 
@@ -40,6 +42,7 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
         this.vue = vue;
         this.tournoi = tournoi;
         this.modeleTournoi = new ModeleTournoi();
+        this.modeleTournoiCloture = new ModeleTournoiCloture();
         this.modeleRencontre = new ModeleRencontre();
         this.modeleEquipe = new ModeleEquipe();
     }
@@ -116,8 +119,15 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
         switch(bouton.getText()) {
             case "Clôturer la poule":
                 try {
-                    this.modeleTournoi.cloturerPoule(this.tournoi);
-                    this.vue.afficherPopupMessage("La poule a été clôturée.");
+                    this.modeleTournoiCloture.cloturerPoule(this.tournoi);
+                    
+                    if(!this.tournoi.getPouleActuelle().getEstFinale()) {
+                        this.vue.afficherPopupMessage("La poule a été clôturée.");
+                    } else {
+                        this.vue.afficherPopupMessage("Le tournoi a été clôturé.");
+                        this.vue.getVueTournois().remplirTableau(this.modeleTournoi.getTout());
+                    }
+
                     this.vue.fermerFenetre();
                 } catch(IllegalArgumentException ex) {
                     this.vue.afficherPopupErreur(ex.getMessage());

@@ -19,7 +19,7 @@ import modele.metier.Joueur;
 /**
  * Modèle joueur
  */
-public class ModeleJoueur extends DAO<Joueur, Integer> {
+public class ModeleJoueur implements DAO<Joueur, Integer> {
 
 	/**
 	 * Récupère tous les joueurs
@@ -119,6 +119,30 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	/**
+	 * Méthode privée pour récupérer le prochain identifiant unique de joueur
+	 * @return le prochain identifiant unique de joueur
+	 */
+	private int getNextValId() {
+        int nextVal = 0;
+        try {
+            PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idJoueur");
+
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                nextVal = rs.getInt(1);
+            }
+            
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return nextVal;
+    }
 
 	/**
 	 * Modifie le joueur dans la BDD
@@ -146,30 +170,11 @@ public class ModeleJoueur extends DAO<Joueur, Integer> {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	/**
-	 * Méthode privée pour récupérer le prochain identifiant unique de joueur
-	 * @return le prochain identifiant unique de joueur
-	 */
-	private int getNextValId() {
-        int nextVal = 0;
-        try {
-            PreparedStatement ps = BDD.getConnexion().prepareStatement("values next value for idJoueur");
 
-            ResultSet rs = ps.executeQuery();
-            
-            if (rs.next()) {
-                nextVal = rs.getInt(1);
-            }
-            
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return nextVal;
-    }
+	@Override
+	public boolean supprimer(Joueur joueur) throws Exception {
+		throw new UnsupportedOperationException("Méthode non implémentée");
+	}
 	
 	/**
 	 * Supprime tous les joueurs d'une équipe idEquipe

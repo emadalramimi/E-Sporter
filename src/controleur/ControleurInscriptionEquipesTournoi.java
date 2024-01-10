@@ -10,6 +10,7 @@ import javax.swing.event.ListSelectionListener;
 
 import modele.ModeleEquipe;
 import modele.ModeleTournoi;
+import modele.ModeleTournoiOuverture;
 import modele.exception.DatesTournoiException;
 import modele.exception.OuvertureTournoiException;
 import modele.exception.TournoiDejaOuvertException;
@@ -29,6 +30,7 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 	private Tournoi tournoi;
 	private ModeleEquipe modeleEquipe;
 	private ModeleTournoi modeleTournoi;
+	private ModeleTournoiOuverture modeleTournoiOuverture;
 	
 	/**
 	 * Constructeur du contrôleur de la vue d'inscription des équipes à un tournoi
@@ -42,6 +44,7 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 		this.tournoi = tournoi;
 		this.modeleEquipe = new ModeleEquipe();
 		this.modeleTournoi = new ModeleTournoi();
+		this.modeleTournoiOuverture = new ModeleTournoiOuverture();
 	}
 	
 	/**
@@ -87,7 +90,7 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 			case "Ouvrir le tournoi":
 				// On ouvre le tournoi
 				try {
-					this.modeleTournoi.ouvrirTournoi(this.tournoi);
+					this.modeleTournoiOuverture.ouvrirTournoi(this.tournoi);
 					this.vueTournois.afficherPopupMessage("Le tournoi a été ouvert avec succès");
 					// On met à jour le tableau des tournois
 					this.vueTournois.remplirTableau(this.modeleTournoi.getTout());
