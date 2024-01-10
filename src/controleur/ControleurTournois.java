@@ -133,9 +133,10 @@ public class ControleurTournois extends KeyAdapter implements ActionListener, It
 						// Le tournoi n'a pas encore commencé : affichage de la vue d'inscription des équipes
 						this.vue.afficherVueInscriptionEquipes(tournoi);
 					} else if (tournoi.getEstCloture() == true) {
-						// Le tournoi est cloturé : affichage d'un message d'erreur
-						this.vue.afficherPopupErreur("Le tournoi est cloturé.");
-						throw new RuntimeException("Tournoi cloturé");
+						// Le tournoi est cloturé : affichage de l'état des résultats du tournoi
+						this.vue.afficherVueEtatResultatsTournoi(tournoi);
+						// this.vue.afficherPopupErreur("Le tournoi est cloturé.");
+						// throw new RuntimeException("Tournoi cloturé");
 					} else {
 						// Le tournoi est en cours : affichage de la vue de poule en cours
 						this.vue.afficherVuePoule(tournoi);
