@@ -418,6 +418,7 @@ public class BDD {
 	 */
 	public void insererDonnees(Statement st) {
 		try {
+			//Premier tournoi
 			st.executeUpdate(
 					"INSERT INTO tournoi VALUES ("
 					+ "NEXT VALUE FOR idTournoi,"
@@ -429,6 +430,7 @@ public class BDD {
 					+ "'Pcl2023',"
 					+ "'" + ModeleUtilisateur.chiffrerMotDePasse("$Pcl2023") + "'"
 					+ ")");
+			//Deuxième tournoi
 			st.executeUpdate(
 					"INSERT INTO tournoi VALUES ("
 					+ "NEXT VALUE FOR idTournoi,"
@@ -440,7 +442,7 @@ public class BDD {
 					+ "'AsiaStar',"
 					+ "'" + ModeleUtilisateur.chiffrerMotDePasse("$AsiaStar") + "'"
 					+ ")");
-			
+			//Troisième tournoi
 			st.executeUpdate(
 					"INSERT INTO tournoi VALUES ("
 					+ "NEXT VALUE FOR idTournoi,"
@@ -452,6 +454,7 @@ public class BDD {
 					+ "'Ultraliga',"
 					+ "'" + ModeleUtilisateur.chiffrerMotDePasse("$Ultraliga") + "'"
 					+ ")");
+			//Quatrième tournoi
 			st.executeUpdate(
 					"INSERT INTO tournoi VALUES ("
 					+ "NEXT VALUE FOR idTournoi,"
@@ -463,7 +466,7 @@ public class BDD {
 					+ "'Superliga',"
 					+ "'" + ModeleUtilisateur.chiffrerMotDePasse("$Superliga") + "'"
 					+ ")");
-					
+			//Cinquième tournoi
 			st.executeUpdate(
 					"INSERT INTO tournoi VALUES ("
 					+ "NEXT VALUE FOR idTournoi,"
@@ -475,6 +478,7 @@ public class BDD {
 					+ "'Lcd2023Autumn',"
 					+ "'" + ModeleUtilisateur.chiffrerMotDePasse("$Lcd2023Autumn") + "'"
 					+ ")");
+			//Sixième tournoi
 			st.executeUpdate(
 					"INSERT INTO tournoi VALUES ("
 					+ "NEXT VALUE FOR idTournoi,"
@@ -835,6 +839,7 @@ public class BDD {
 		}
 		
 		try {
+			//Premier tournoi
 			st.executeUpdate(
 					"INSERT INTO poule VALUES ("
 					+ "NEXT VALUE FOR idPoule,"
@@ -848,6 +853,91 @@ public class BDD {
 					+ "TRUE,"
 					+ "TRUE,"
 					+ "1"
+					+ ")"
+			);
+			
+			//Deuzième tournoi
+			st.executeUpdate(
+					"INSERT INTO poule VALUES ("
+					+ "NEXT VALUE FOR idPoule,"
+					+ "TRUE,"
+					+ "FALSE,"
+					+ "2"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO poule VALUES ("
+					+ "NEXT VALUE FOR idPoule,"
+					+ "TRUE,"
+					+ "TRUE,"
+					+ "2"
+					+ ")"
+			);
+			
+			//Troisième tournoi
+			st.executeUpdate(
+					"INSERT INTO poule VALUES ("
+					+ "NEXT VALUE FOR idPoule,"
+					+ "TRUE,"
+					+ "FALSE,"
+					+ "3"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO poule VALUES ("
+					+ "NEXT VALUE FOR idPoule,"
+					+ "TRUE,"
+					+ "TRUE,"
+					+ "3"
+					+ ")"
+			);
+			
+			//Quatrième tournoi
+			st.executeUpdate(
+					"INSERT INTO poule VALUES ("
+					+ "NEXT VALUE FOR idPoule,"
+					+ "TRUE,"
+					+ "FALSE,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO poule VALUES ("
+					+ "NEXT VALUE FOR idPoule,"
+					+ "TRUE,"
+					+ "TRUE,"
+					+ "4"
+					+ ")"
+			);
+			
+			//Cinquième tournoi
+			st.executeUpdate(
+					"INSERT INTO poule VALUES ("
+					+ "NEXT VALUE FOR idPoule,"
+					+ "TRUE,"
+					+ "FALSE,"
+					+ "5"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO poule VALUES ("
+					+ "NEXT VALUE FOR idPoule,"
+					+ "TRUE,"
+					+ "TRUE,"
+					+ "5"
+					+ ")"
+			);
+			
+			//Sixième tournoi
+			st.executeUpdate(
+					"INSERT INTO poule VALUES ("
+					+ "NEXT VALUE FOR idPoule,"
+					+ "TRUE,"
+					+ "FALSE,"
+					+ "6"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO poule VALUES ("
+					+ "NEXT VALUE FOR idPoule,"
+					+ "TRUE,"
+					+ "TRUE,"
+					+ "6"
 					+ ")"
 			);
 		} catch (SQLException e) {
