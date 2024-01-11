@@ -40,6 +40,7 @@ public class JFrameTheme extends JFrame {
     private JButtonTitlebar btnReduire;
     private JButtonTitlebar btnToggleAgrandir;
     private JButtonTitlebar btnFermer;
+    private boolean agrandissable;
     
     private List<JFrameTheme> fenetresEnfant;
 
@@ -49,6 +50,7 @@ public class JFrameTheme extends JFrame {
     public JFrameTheme() {
     	// Liste des fenêtres enfant pour gérer leur fermeture à la fermeture de la fenêtre parente
     	this.fenetresEnfant = new LinkedList<>();
+        this.agrandissable = true;
     	
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1000, 600);
@@ -99,7 +101,9 @@ public class JFrameTheme extends JFrame {
         	 * @param e
         	 */
             public void actionPerformed(ActionEvent e) {
-                toggleAgrandir();
+                if(JFrameTheme.this.agrandissable) {
+                    toggleAgrandir();
+                }
             }
         });
         btnToggleAgrandir.addMouseListener(new LightHoverMouseAdapter());
@@ -209,6 +213,11 @@ public class JFrameTheme extends JFrame {
 	public void afficherPopupMessage(String message) {
 		JOptionPaneTheme.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
 	}
+
+    public void setAgrandissable(boolean agrandissable) {
+        this.agrandissable = agrandissable;
+        btnToggleAgrandir.setVisible(agrandissable);
+    }
 
     /**
      * Pour enlever la couleur de fond des boutons de la titlebar au clic
