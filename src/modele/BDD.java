@@ -1219,54 +1219,9 @@ public class BDD {
 		    System.err.println("Erreur d'insertion de la table rencontre");
 		    e.printStackTrace();
 		}
-			st.executeUpdate(
-					"INSERT INTO rencontre VALUES ("
-					+ "NEXT VALUE FOR idRencontre,"
-					+ "1,"
-					+ "4"
-					+ ")");
-			st.executeUpdate(
-					"INSERT INTO rencontre VALUES ("
-					+ "NEXT VALUE FOR idRencontre,"
-					+ "1,"
-					+ "1"
-					+ ")");
-			st.executeUpdate(
-					"INSERT INTO rencontre VALUES ("
-					+ "NEXT VALUE FOR idRencontre,"
-					+ "1,"
-					+ "4"
-					+ ")");
-			st.executeUpdate(
-					"INSERT INTO rencontre VALUES ("
-					+ "NEXT VALUE FOR idRencontre,"
-					+ "1,"
-					+ "1"
-					+ ")");
-			st.executeUpdate(
-					"INSERT INTO rencontre VALUES ("
-					+ "NEXT VALUE FOR idRencontre,"
-					+ "1,"
-					+ "1"
-					+ ")");
-			st.executeUpdate(
-					"INSERT INTO rencontre VALUES ("
-					+ "NEXT VALUE FOR idRencontre,"
-					+ "1,"
-					+ "3"
-					+ ")");
-			st.executeUpdate(
-					"INSERT INTO rencontre VALUES ("
-					+ "NEXT VALUE FOR idRencontre,"
-					+ "1,"
-					+ "1"
-					+ ")");
-		} catch (SQLException e) {
-		    System.err.println("Erreur d'insertion de la table rencontre");
-		    e.printStackTrace();
-		}
 		
 		try {
+			//Premier tournoi
 			st.executeUpdate("INSERT INTO participer VALUES ("
 					+ "1,"
 					+ "1)"
@@ -1286,6 +1241,112 @@ public class BDD {
 					+ "1,"
 					+ "4)"
 			);
+
+			//Deuxième tournoi
+			st.executeUpdate("INSERT INTO participer VALUES ("
+					+ "2,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "2,"
+					+ "2)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "2,"
+					+ "3)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "2,"
+					+ "4)"
+			);
+
+			//Troisième tournoi
+			st.executeUpdate("INSERT INTO participer VALUES ("
+					+ "3,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "3,"
+					+ "2)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "3,"
+					+ "3)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "3,"
+					+ "4)"
+			);
+
+			//Quatrième tournoi
+			st.executeUpdate("INSERT INTO participer VALUES ("
+					+ "4,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "4,"
+					+ "2)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "4,"
+					+ "3)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "4,"
+					+ "4)"
+			);
+
+			//Cinquième tournoi
+			st.executeUpdate("INSERT INTO participer VALUES ("
+					+ "5,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "5,"
+					+ "2)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "5,"
+					+ "3)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "5,"
+					+ "4)"
+			);
+
+			//Sixième tournoi
+			st.executeUpdate("INSERT INTO participer VALUES ("
+					+ "6,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "6,"
+					+ "2)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "6,"
+					+ "3)"
+			);
+			st.executeUpdate(
+					"INSERT INTO participer VALUES ("
+					+ "6,"
+					+ "4)"
+			);
+
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table participer");
 		    e.printStackTrace();
