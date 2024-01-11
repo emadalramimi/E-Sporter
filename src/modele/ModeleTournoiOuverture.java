@@ -55,7 +55,7 @@ public class ModeleTournoiOuverture {
 				ps = BDD.getConnexion().prepareStatement("update tournoi set estCloture = false where idTournoi = ?");
 				ps.setInt(1, tournoi.getIdTournoi());
 			}
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 			
 			// Génération des poules

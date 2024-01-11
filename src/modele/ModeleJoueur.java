@@ -148,7 +148,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			ps.setString(1, joueur.getPseudo());
 			ps.setInt(2, joueur.getIdEquipe());
 			ps.setInt(3, joueur.getIdJoueur());
-			ps.execute();
+			ps.executeUpdate();
 			
 			ps.close();
 			BDD.getConnexion().commit();

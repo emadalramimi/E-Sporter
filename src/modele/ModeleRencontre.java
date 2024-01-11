@@ -294,7 +294,7 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 			ps = BDD.getConnexion().prepareStatement("update rencontre set idEquipeGagnante = ? where idRencontre = ?");
 			ps.setInt(1, idEquipeGagnante);
 			ps.setInt(2, rencontre.getIdRencontre());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 
 			rencontre.setIdEquipeGagnante(idEquipeGagnante);
@@ -322,7 +322,7 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("update rencontre set idEquipeGagnante = null where idRencontre = ?");
 			ps.setInt(1, rencontre.getIdRencontre());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 
 			// 0 => null

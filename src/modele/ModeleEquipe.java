@@ -166,7 +166,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer>, Recherchable<Equipe> 
 			ps.setString(2, equipe.getPays().getNomPays());
 			ps.setInt(3, equipe.getWorldRanking());
 			ps.setInt(4, equipe.getIdEquipe());
-			ps.execute();
+			ps.executeUpdate();
 
 			List<Joueur> joueursEquipe = equipe.getJoueurs();
 			for(Joueur joueur : joueursEquipe) {

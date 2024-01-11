@@ -199,7 +199,7 @@ public class ModeleTournoi implements DAO<Tournoi, Integer>, Recherchable<Tourno
 			ps.setString(5, tournoi.getIdentifiant());
 			ps.setString(6, tournoi.getMotDePasse());
 			ps.setInt(7, tournoi.getIdTournoi());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 
 			BDD.getConnexion().commit();
