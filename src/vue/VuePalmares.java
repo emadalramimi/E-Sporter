@@ -41,7 +41,7 @@ import modele.metier.Pays;
 /**
  * IHM équipes
  */
-public class VuePalmares extends JFrameTheme {
+public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares> {
 	public VuePalmares() {
 	}
 	
@@ -55,7 +55,7 @@ public class VuePalmares extends JFrameTheme {
 	private JLabel lblPalmares;
 	
 	public void afficherVuePalmares(JPanel contentPane, VueBase vueBase) {
-		ControleurPalmares controleur = new ControleurPalmares();
+		ControleurPalmares controleur = new ControleurPalmares(this);
 
 		// panel contient tous les éléments de la page
 		panel = new JPanel();
@@ -160,13 +160,13 @@ public class VuePalmares extends JFrameTheme {
 		
 		// Champ de recherche
 		txtRecherche = new JTextFieldTheme(20);
-//		txtRecherche.addKeyListener(controleur);
+		txtRecherche.addKeyListener(controleur);
 		txtRecherche.setColumns(20);
 		panelTableauFiltres.add(txtRecherche);
 		
 		// Bouton de recherche
 		btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/actions/rechercher.png")));
-//		btnRecherche.addActionListener(controleur);
+		btnRecherche.addActionListener(controleur);
 		panelTableauFiltres.add(btnRecherche);
 		
 		// Panel contenant les filtres
@@ -260,8 +260,9 @@ public class VuePalmares extends JFrameTheme {
 	 * @param bouton
 	 * @return true si bouton est le bouton de recherche, false sinon
 	 */
+	@Override
 	public boolean estBoutonRecherche(JButton bouton) {
-		if(bouton instanceof JButtonTheme) {
+		if(bouton instanceof JButtonTheme && bouton.getIcon() != null) {
 			String iconeRecherche = VueTournois.class.getResource("/images/actions/rechercher.png").toString();
 		    return bouton.getIcon().toString().equals(iconeRecherche);
 		}
@@ -272,6 +273,7 @@ public class VuePalmares extends JFrameTheme {
 	 * @param champ
 	 * @return true si le champ est le champ de recherche, false sinon
 	 */
+	@Override
 	public boolean estChampRecherche(JTextField champ) {
 		return this.txtRecherche.equals(champ);
 	}
@@ -279,6 +281,7 @@ public class VuePalmares extends JFrameTheme {
 	/**
 	 * Remet à zéro le champ de recherche
 	 */
+	@Override
 	public void resetChampRecherche() {
 		this.txtRecherche.setText("");
 	}
@@ -286,6 +289,7 @@ public class VuePalmares extends JFrameTheme {
 	/**
 	 * @return la requête de recherche tapée par l'utilisateur
 	 */
+	@Override
 	public String getRequeteRecherche() {
 		return this.txtRecherche.getText().trim();
 	}
@@ -294,6 +298,7 @@ public class VuePalmares extends JFrameTheme {
 	 * Remplit/met à jour le tableau d'équipes
 	 * @param equipes : liste des équipes à mettre dans le tableau
 	 */
+	@Override
 	public void remplirTableau(List<Palmares> palmares) {
 		// Vider le tableau
 		this.model.setRowCount(0);

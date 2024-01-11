@@ -14,7 +14,7 @@ import java.util.stream.StreamSupport;
 
 import modele.metier.Palmares;
 
-public class ModelePalmares {
+public class ModelePalmares implements Recherchable<Palmares> {
     
     private ModeleEquipe modeleEquipe;
 
@@ -64,5 +64,13 @@ public class ModelePalmares {
 		
 		return stream.collect(Collectors.toList());
 	}
+
+    @Override
+    public List<Palmares> getParNom(String nom) throws Exception {
+        return this.getClassement()
+            .stream()
+            .filter(palmares -> palmares.getEquipe().getNom().toLowerCase().contains(nom.toLowerCase()))
+            .collect(Collectors.toList());
+    }
 
 }

@@ -48,11 +48,7 @@ public class ModeleArbitre implements DAO<Arbitre, Integer> {
 		// Création de joueur si il existe
 		Arbitre arbitre = null;
 		if(rs.next()) {
-			arbitre = new Arbitre(
-				rs.getInt("idArbitre"),
-				rs.getString("nom"),
-				rs.getString("prenom")
-			);
+			arbitre = this.construireArbitre(rs);
 		}
 		
 		rs.close();
@@ -96,11 +92,7 @@ public class ModeleArbitre implements DAO<Arbitre, Integer> {
 	                        if (!rs.next()) {
 	                            return false;
 	                        }
-	                        action.accept(new Arbitre(
-	                    		rs.getInt("idArbitre"),
-	                			rs.getString("nom"),
-	                			rs.getString("prenom")
-	                        ));
+	                        action.accept(ModeleArbitre.this.construireArbitre(rs));
 	                        return true;
 	                    } catch (SQLException e) {
 	                        throw new RuntimeException(e);
@@ -148,11 +140,7 @@ public class ModeleArbitre implements DAO<Arbitre, Integer> {
                         if (!rs.next()) {
                             return false;
                         }
-                        action.accept(new Arbitre(
-                    		rs.getInt("idArbitre"),
-                			rs.getString("nom"),
-                			rs.getString("prenom")
-                        ));
+                        action.accept(ModeleArbitre.this.construireArbitre(rs));
                         return true;
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
@@ -168,6 +156,14 @@ public class ModeleArbitre implements DAO<Arbitre, Integer> {
 			});
 		
 		return stream.collect(Collectors.toList());
+	}
+
+	private Arbitre construireArbitre(ResultSet rs) throws SQLException {
+		return new Arbitre(
+			rs.getInt("idArbitre"),
+			rs.getString("nom"),
+			rs.getString("prenom")
+		);
 	}
 	
 }

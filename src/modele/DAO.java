@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Classe abstraite DAO
+ * Interface DAO
  * @param <T> Type class métier
  * @param <T1> Type clé primaire
  */

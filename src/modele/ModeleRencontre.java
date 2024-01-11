@@ -22,20 +22,19 @@ import modele.metier.Equipe;
 import modele.metier.Rencontre;
 import modele.metier.Tournoi;
 import modele.metier.Utilisateur;
-import modele.metier.Pays;
 
 /**
  * Modèle rencontre
  */
 public class ModeleRencontre implements DAO<Rencontre, Integer> {
 
-	private ModeleJoueur modeleJoueur;
+	private ModeleEquipe modeleEquipe;
 
 	/**
 	 * Construit un modèle rencontre
 	 */
 	public ModeleRencontre() {
-		this.modeleJoueur = new ModeleJoueur();
+		this.modeleEquipe = new ModeleEquipe();
 	}
 	
 	/**
@@ -57,12 +56,7 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 	                    if (!rs.next()) {
 	                        return false;
 	                    }
-	                    action.accept(new Rencontre(
-	                    	rs.getInt("idRencontre"),
-							rs.getInt("idPoule"),
-							rs.getInt("idEquipeGagnante"),
-	                    	getEquipesRencontre(rs.getInt("idRencontre"))
-	                    ));
+	                    action.accept(ModeleRencontre.this.construireRencontre(rs));
 	                    return true;
 	                } catch (SQLException e) {
 	                    throw new RuntimeException(e);
@@ -94,12 +88,7 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 		// Création de joueur si il existe
 		Rencontre rencontre = null;
 		if(rs.next()) {
-			rencontre = new Rencontre(
-				rs.getInt("idRencontre"),
-				rs.getInt("idPoule"),
-				rs.getInt("idEquipeGagnante"),
-				getEquipesRencontre(rs.getInt("idRencontre"))
-			);
+			rencontre = this.construireRencontre(rs);
 		}
 		
 		rs.close();
@@ -220,12 +209,7 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 			
 			List<Rencontre> rencontres = new ArrayList<Rencontre>();
 			while(rs.next()) {
-				rencontres.add(new Rencontre(
-					rs.getInt("idRencontre"),
-					rs.getInt("idPoule"),
-					rs.getInt("idEquipeGagnante"),
-					this.getEquipesRencontre(rs.getInt("idRencontre"))
-	            ));
+				rencontres.add(this.construireRencontre(rs));
 			}
 			
 			rs.close();
@@ -257,14 +241,7 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 								if (!rs.next()) {
 									return false;
 								}
-								action.accept(new Equipe(
-										rs.getInt("idEquipe"),
-										rs.getString("nom"),
-										Pays.valueOfNom(rs.getString("pays")),
-										rs.getInt("classement"),
-										rs.getInt("worldRanking"),
-										rs.getString("saison"),
-										ModeleRencontre.this.modeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))));
+								action.accept(ModeleRencontre.this.modeleEquipe.construireEquipe(rs));
 								return true;
 							} catch (SQLException e) {
 								throw new RuntimeException(e);
@@ -387,5 +364,14 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 		if (ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ARBITRE) {
 			throw new DroitsInsuffisantsException("Seuls les arbitres peut affecter le résultat d'une rencontre");
 		}
+	}
+
+	private Rencontre construireRencontre(ResultSet rs) throws SQLException {
+		return new Rencontre(
+			rs.getInt("idRencontre"),
+			rs.getInt("idPoule"),
+			rs.getInt("idEquipeGagnante"),
+			this.getEquipesRencontre(rs.getInt("idRencontre"))
+		);
 	}
 }

@@ -42,7 +42,7 @@ import modele.metier.Pays;
 /**
  * IHM équipes
  */
-public class VueHistoriquePoints extends JFrameTheme {
+public class VueHistoriquePoints extends JFrameTheme implements RecherchableVue<Equipe> {
 	
 	private JTable tableEquipes;
 	private JTable tableHistoriquePoints;
@@ -173,7 +173,7 @@ public class VueHistoriquePoints extends JFrameTheme {
 		gbc_panelTableaux.gridy = 2;
 		panel.add(panelTableaux, gbc_panelTableaux);
 		
-		this.remplirTableauEquipes(controleur.getEquipes());
+		this.remplirTableau(controleur.getEquipes());
 	}
 	
 	/**
@@ -231,8 +231,9 @@ public class VueHistoriquePoints extends JFrameTheme {
 	 * @param bouton
 	 * @return true si bouton est le bouton de recherche, false sinon
 	 */
+	@Override
 	public boolean estBoutonRecherche(JButton bouton) {
-		if(bouton instanceof JButtonTheme) {
+		if(bouton instanceof JButtonTheme && bouton.getIcon() != null) {
 			String iconeRecherche = VueTournois.class.getResource("/images/actions/rechercher.png").toString();
 		    return bouton.getIcon().toString().equals(iconeRecherche);
 		}
@@ -243,6 +244,7 @@ public class VueHistoriquePoints extends JFrameTheme {
 	 * @param champ
 	 * @return true si le champ est le champ de recherche, false sinon
 	 */
+	@Override
 	public boolean estChampRecherche(JTextField champ) {
 		return this.txtRecherche.equals(champ);
 	}
@@ -250,6 +252,7 @@ public class VueHistoriquePoints extends JFrameTheme {
 	/**
 	 * Remet à zéro le champ de recherche
 	 */
+	@Override
 	public void resetChampRecherche() {
 		this.txtRecherche.setText("");
 	}
@@ -258,23 +261,17 @@ public class VueHistoriquePoints extends JFrameTheme {
 	 * Retourne la requête de recherche tapée par l'utilisateur
 	 * @return la requête de recherche tapée par l'utilisateur
 	 */
+	@Override
 	public String getRequeteRecherche() {
 		return this.txtRecherche.getText().trim();
-	}
-
-	/**
-	 * Retourne le tableau d'équipes
-	 * @return le tableau d'équipes
-	 */
-	public JTable getTableEquipes() {
-		return this.tableEquipes;
 	}
 
 	/**
 	 * Remplit/met à jour le tableau d'équipes
 	 * @param equipes : liste des équipes à mettre dans le tableau
 	 */
-	public void remplirTableauEquipes(List<Equipe> equipes) {
+	@Override
+	public void remplirTableau(List<Equipe> equipes) {
 		// Vider le tableau
 		this.modelTableEquipes.setRowCount(0);
 		
@@ -315,6 +312,14 @@ public class VueHistoriquePoints extends JFrameTheme {
 		
 		// Mise à jour du tableau
 		this.tableHistoriquePoints.setModel(this.modelTableHistoriquePoints);
+	}
+
+	/**
+	 * Retourne le tableau d'équipes
+	 * @return le tableau d'équipes
+	 */
+	public JTable getTableEquipes() {
+		return this.tableEquipes;
 	}
 
 }

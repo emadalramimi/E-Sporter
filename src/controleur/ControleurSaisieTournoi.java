@@ -185,10 +185,8 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 				}
 			}
 
-			// TODO SI FILTRE/RECHERCHE réappliquer ici
 			this.vueTournois.resetChampRecherche();
-			this.vueTournois.resetCboxNotoriete();
-			this.vueTournois.resetCboxStatuts();
+			this.vueTournois.resetFiltres();
 
 			this.vueSaisieTournoi.fermerFenetre();
 		}

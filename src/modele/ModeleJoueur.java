@@ -40,11 +40,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
                         if (!rs.next()) {
                             return false;
                         }
-                        action.accept(new Joueur(
-                    		rs.getInt("idJoueur"),
-                    		rs.getString("pseudo"),
-                    		rs.getInt("idEquipe")
-                        ));
+                        action.accept(ModeleJoueur.this.construireJoueur(rs));
                         return true;
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
@@ -78,11 +74,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 		// Création de joueur si il existe
 		Joueur joueur = null;
 		if(rs.next()) {
-			joueur = new Joueur(
-	    		rs.getInt("idJoueur"),
-	    		rs.getString("pseudo"),
-	    		rs.getInt("idEquipe")
-            );
+			joueur = this.construireJoueur(rs);
 		}
 		
 		rs.close();
@@ -216,7 +208,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 			
 			// Création de la liste des joueurs
 			while(rs.next()) {
-				joueurs.add(new Joueur(rs.getInt("idJoueur"), rs.getString("pseudo"), rs.getInt("idEquipe")));
+				joueurs.add(this.construireJoueur(rs));
 			}
 			
 			rs.close();
@@ -226,6 +218,14 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 		}
 		
 		return joueurs;
+	}
+
+	private Joueur construireJoueur(ResultSet rs) throws SQLException {
+		return new Joueur(
+			rs.getInt("idJoueur"),
+			rs.getString("pseudo"),
+			rs.getInt("idEquipe")
+		);
 	}
 	
 }

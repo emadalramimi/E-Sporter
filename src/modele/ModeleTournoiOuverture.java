@@ -17,9 +17,11 @@ import modele.metier.Tournoi;
 public class ModeleTournoiOuverture {
 
     private ModeleTournoi modeleTournoi;
+	private ModelePoule modelePoule;
 
     public ModeleTournoiOuverture() {
         this.modeleTournoi = new ModeleTournoi();
+		this.modelePoule = new ModelePoule();
     }
 
 	/**
@@ -66,9 +68,8 @@ public class ModeleTournoiOuverture {
 			}
 			Collections.shuffle(rencontres);
 			
-			ModelePoule modelePoule = new ModelePoule();
 			Poule poule = new Poule(false, false, tournoi.getIdTournoi(), rencontres);
-			modelePoule.ajouter(poule);
+			this.modelePoule.ajouter(poule);
 
 			BDD.getConnexion().commit();
 		} catch (SQLException e) {

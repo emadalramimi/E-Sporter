@@ -49,7 +49,7 @@ import modele.metier.Pays;
 /**
  * IHM équipes
  */
-public class VueEquipes extends JFrameTheme {
+public class VueEquipes extends JFrameTheme implements RecherchableVue<Equipe> {
 	
 	private JTable table;
 	private DefaultTableModel model;
@@ -312,8 +312,9 @@ public class VueEquipes extends JFrameTheme {
 	 * @param bouton
 	 * @return true si bouton est le bouton de recherche, false sinon
 	 */
+	@Override
 	public boolean estBoutonRecherche(JButton bouton) {
-		if(bouton instanceof JButtonTheme) {
+		if(bouton instanceof JButtonTheme && bouton.getIcon() != null) {
 			String iconeRecherche = VueTournois.class.getResource("/images/actions/rechercher.png").toString();
 		    return bouton.getIcon().toString().equals(iconeRecherche);
 		}
@@ -324,6 +325,7 @@ public class VueEquipes extends JFrameTheme {
 	 * @param champ
 	 * @return true si le champ est le champ de recherche, false sinon
 	 */
+	@Override
 	public boolean estChampRecherche(JTextField champ) {
 		return this.txtRecherche.equals(champ);
 	}
@@ -331,6 +333,7 @@ public class VueEquipes extends JFrameTheme {
 	/**
 	 * Remet à zéro le champ de recherche
 	 */
+	@Override
 	public void resetChampRecherche() {
 		this.txtRecherche.setText("");
 	}
@@ -338,14 +341,21 @@ public class VueEquipes extends JFrameTheme {
 	/**
 	 * @return la requête de recherche tapée par l'utilisateur
 	 */
+	@Override
 	public String getRequeteRecherche() {
 		return this.txtRecherche.getText().trim();
+	}
+
+	@Override
+	public void resetFiltres() {
+		this.cboxPays.setSelectedIndex(0);
 	}
 
 	/**
 	 * Remplit/met à jour le tableau d'équipes
 	 * @param equipes : liste des équipes à mettre dans le tableau
 	 */
+	@Override
 	public void remplirTableau(List<Equipe> equipes) {
 		// Vider le tableau
 		this.model.setRowCount(0);
@@ -382,10 +392,6 @@ public class VueEquipes extends JFrameTheme {
 			return null;
 		}
 		return Pays.valueOfNom(this.cboxPays.getSelectedItem().toString());
-	}
-
-	public void resetCboxPays() {
-		this.cboxPays.setSelectedIndex(0);
 	}
 
 	public VueBase getVueBase() {

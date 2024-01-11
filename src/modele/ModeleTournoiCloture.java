@@ -28,11 +28,13 @@ public class ModeleTournoiCloture {
     private ModelePoule modelePoule;
     private ModeleEquipe modeleEquipe;
     private ModeleTournoi modeleTournoi;
+	private ModeleHistoriquePoints modeleHistoriquePoints;
 
     public ModeleTournoiCloture() {
         this.modelePoule = new ModelePoule();
         this.modeleEquipe = new ModeleEquipe();
         this.modeleTournoi = new ModeleTournoi();
+		this.modeleHistoriquePoints = new ModeleHistoriquePoints();
     }
     
     public void cloturerPoule(Tournoi tournoi) throws Exception {
@@ -139,9 +141,8 @@ public class ModeleTournoiCloture {
     			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (ancienneValeur, nouvelleValeur) -> ancienneValeur, LinkedHashMap::new));
 
 			// Création des historiques de points
-			ModeleHistoriquePoints modeleHistoriquePoints = new ModeleHistoriquePoints();
 			for (Map.Entry<Equipe, Float> entry : nbPointsParEquipeClasse.entrySet()) {
-				modeleHistoriquePoints.ajouter(new HistoriquePoints(entry.getValue(), tournoi, entry.getKey().getIdEquipe()));
+				this.modeleHistoriquePoints.ajouter(new HistoriquePoints(entry.getValue(), tournoi, entry.getKey().getIdEquipe()));
 			}
 
 			this.majClassements();

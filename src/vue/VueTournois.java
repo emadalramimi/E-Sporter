@@ -50,7 +50,7 @@ import modele.metier.Tournoi.Notoriete;
 /**
  * Vue de la liste des tournois
  */
-public class VueTournois extends JFrameTheme {
+public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi> {
 
 	private JTable table;
 	private DefaultTableModel model;
@@ -313,8 +313,9 @@ public class VueTournois extends JFrameTheme {
 	 * @param bouton
 	 * @return true si bouton est le bouton de recherche, false sinon
 	 */
+	@Override
 	public boolean estBoutonRecherche(JButton bouton) {
-		if(bouton instanceof JButtonTheme) {
+		if(bouton instanceof JButtonTheme && bouton.getIcon() != null) {
 			String iconeRecherche = VueTournois.class.getResource("/images/actions/rechercher.png").toString();
 		    return bouton.getIcon().toString().equals(iconeRecherche);
 		}
@@ -325,6 +326,7 @@ public class VueTournois extends JFrameTheme {
 	 * @param champ
 	 * @return true si le champ est le champ de recherche, false sinon
 	 */
+	@Override
 	public boolean estChampRecherche(JTextField champ) {
 		return this.txtRecherche.equals(champ);
 	}
@@ -332,6 +334,7 @@ public class VueTournois extends JFrameTheme {
 	/**
 	 * Remet à zéro le champ de recherche
 	 */
+	@Override
 	public void resetChampRecherche() {
 		this.txtRecherche.setText("");
 	}
@@ -339,14 +342,22 @@ public class VueTournois extends JFrameTheme {
 	/**
 	 * @return la requête de recherche tapée par l'utilisateur
 	 */
+	@Override
 	public String getRequeteRecherche() {
 		return this.txtRecherche.getText().trim();
+	}
+
+	@Override
+	public void resetFiltres() {
+		this.cboxNotoriete.setSelectedIndex(0);
+		this.cboxStatuts.setSelectedIndex(0);
 	}
 	
 	/**
 	 * Remplit/met à jour le tableau d'équipes
 	 * @param tournois : liste des tournois à mettre dans le tableau
 	 */
+	@Override
 	public void remplirTableau(List<Tournoi> tournois) {
 		// Vider le tableau
 		this.model.setRowCount(0);
@@ -404,14 +415,6 @@ public class VueTournois extends JFrameTheme {
 			return null;
 		}
 		return ControleurTournois.Statut.valueOfLibelle((String) this.cboxStatuts.getSelectedItem());
-	}
-
-	public void resetCboxNotoriete() {
-		this.cboxNotoriete.setSelectedIndex(0);
-	}
-
-	public void resetCboxStatuts() {
-		this.cboxStatuts.setSelectedIndex(0);
 	}
 
 	public VueBase getVueBase() {

@@ -27,7 +27,7 @@ import modele.metier.Tournoi.Notoriete;
 /**
  * Modèle tournoi
  */
-public class ModeleTournoi implements DAO<Tournoi, Integer> {
+public class ModeleTournoi implements DAO<Tournoi, Integer>, Recherchable<Tournoi> {
 
 	private ModeleArbitre modeleArbitre;
 	private ModeleEquipe modeleEquipe;
@@ -61,19 +61,7 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
                         if (!rs.next()) {
                             return false;
                         }
-                        action.accept(new Tournoi(
-                    		rs.getInt("idTournoi"),
-                			rs.getString("nomTournoi"),
-                			Notoriete.valueOfLibelle(rs.getString("notoriete")),
-                			rs.getInt("dateDebut"),
-                			rs.getInt("dateFin"),
-                			rs.getBoolean("estCloture"),
-                			rs.getString("identifiant"),
-							rs.getString("motDePasse"),
-							ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
-							ModeleTournoi.this.modeleEquipe.getEquipesTournoi(rs.getInt("idTournoi")),
-                			ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
-                        ));
+                        action.accept(ModeleTournoi.this.construireTournoi(rs));
                         return true;
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
@@ -103,22 +91,10 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 		
 		ResultSet rs = ps.executeQuery();
 		
-		// Création de joueur si il existe
+		// Création de tournoi si il existe
 		Tournoi tournoi = null;
 		if(rs.next()) {
-			tournoi = new Tournoi(
-				rs.getInt("idTournoi"),
-				rs.getString("nomTournoi"),
-				Notoriete.valueOfLibelle(rs.getString("notoriete")),
-				rs.getInt("dateDebut"),
-				rs.getInt("dateFin"),
-				rs.getBoolean("estCloture"),
-				rs.getString("identifiant"),
-				rs.getString("motDePasse"),
-				ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
-				ModeleTournoi.this.modeleEquipe.getEquipesTournoi(rs.getInt("idTournoi")),
-				ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
-            );
+			tournoi = this.construireTournoi(rs);
 		}
 		
 		rs.close();
@@ -298,18 +274,7 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 		// Création de tournoi s'il existe
 		Tournoi tournoi = null;
 		if (rs.next()) {
-			tournoi = new Tournoi(
-				rs.getInt("idTournoi"),
-				rs.getString("nomTournoi"),
-				Notoriete.valueOfLibelle(rs.getString("notoriete")),
-				rs.getInt("dateDebut"),
-				rs.getInt("dateFin"),
-				rs.getBoolean("estCloture"),
-				rs.getString("identifiant"),
-				rs.getString("motDePasse"),
-				ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
-				ModeleTournoi.this.modeleEquipe.getEquipesTournoi(rs.getInt("idTournoi")),
-				ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi")));
+			tournoi = this.construireTournoi(rs);
 		}
 
 		rs.close();
@@ -331,19 +296,7 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 			// Création de tournoi s'il existe
 			Tournoi tournoi = null;
 			if (rs.next()) {
-				tournoi = new Tournoi(
-					rs.getInt("idTournoi"),
-					rs.getString("nomTournoi"),
-					Notoriete.valueOfLibelle(rs.getString("notoriete")),
-					rs.getInt("dateDebut"),
-					rs.getInt("dateFin"),
-					rs.getBoolean("estCloture"),
-					rs.getString("identifiant"),
-					rs.getString("motDePasse"),
-					ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
-					ModeleTournoi.this.modeleEquipe.getEquipesTournoi(rs.getInt("idTournoi")),
-					ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
-				);
+				tournoi = this.construireTournoi(rs);
 			}
 
 			rs.close();
@@ -361,6 +314,7 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 	 * @return Retourne les tournois par nom
 	 * @throws Exception Exception SQL
 	 */
+	@Override
 	public List<Tournoi> getParNom(String nom) throws Exception {
         return this.getTout().stream()
 			.filter(t -> t.getNomTournoi().toLowerCase().contains(nom.toLowerCase()))
@@ -440,6 +394,22 @@ public class ModeleTournoi implements DAO<Tournoi, Integer> {
 		}
 
 		return statistiques.stream().sorted().collect(Collectors.toList());
+	}
+
+	private Tournoi construireTournoi(ResultSet rs) throws SQLException {
+		return new Tournoi(
+			rs.getInt("idTournoi"),
+			rs.getString("nomTournoi"),
+			Notoriete.valueOfLibelle(rs.getString("notoriete")),
+			rs.getInt("dateDebut"),
+			rs.getInt("dateFin"),
+			rs.getBoolean("estCloture"),
+			rs.getString("identifiant"),
+			rs.getString("motDePasse"),
+			ModeleTournoi.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
+			ModeleTournoi.this.modeleEquipe.getEquipesTournoi(rs.getInt("idTournoi")),
+			ModeleTournoi.this.modeleArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
+		);
 	}
 
 }

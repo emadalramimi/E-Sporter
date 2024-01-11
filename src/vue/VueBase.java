@@ -4,6 +4,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import controleur.ControleurBase;
@@ -84,8 +85,8 @@ public class VueBase extends JFrameTheme {
 		panelMenu.setLayout(new GridLayout(1, 0, 20, 0));
 		
 		// Logo
-		JLabel lblLogo = new JLabel("");
-		lblLogo.setIcon(new ImageIcon(VueBase.class.getResource("/images/logo_menu.png")));
+		JLabel lblLogo = new JLabel(new ImageIcon(VueBase.class.getResource("/images/logo_menu.png")));
+		lblLogo.setHorizontalAlignment(SwingConstants.LEFT);
 		panelMenu.add(lblLogo);
 		
 		// Panel centre

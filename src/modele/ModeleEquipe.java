@@ -24,7 +24,7 @@ import modele.metier.Tournoi;
 /**
  * Modèle équipe
  */
-public class ModeleEquipe implements DAO<Equipe, Integer> {
+public class ModeleEquipe implements DAO<Equipe, Integer>, Recherchable<Equipe> {
 	
 	private ModeleJoueur modeleJoueur;
 	
@@ -68,18 +68,6 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 		rs.close();
 		ps.close();
 		return Optional.ofNullable(equipe);
-	}
-
-	public Equipe construireEquipe(ResultSet rs) throws SQLException {
-		return new Equipe(
-			rs.getInt("idEquipe"),
-			rs.getString("nom"),
-			Pays.valueOfNom(rs.getString("pays")),
-			rs.getInt("classement"),
-			rs.getInt("worldRanking"),
-			rs.getString("saison"),
-			ModeleEquipe.this.modeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))
-		);
 	}
 
 	/**
@@ -354,6 +342,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 	 * @return la liste des équipes contenant la variable nom dans leur nom d'équipe
 	 * @throws Exception Erreur SQL
 	 */
+	@Override
 	public List<Equipe> getParNom(String nom) throws Exception {
 		return this.getEquipesSaison().stream()
 				.filter(e -> e.getNom().toLowerCase().contains(nom.toLowerCase()))
@@ -417,15 +406,7 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
                         if (!rs.next()) {
                             return false;
                         }
-                        action.accept(new Equipe(
-                    		rs.getInt("idEquipe"),
-                    		rs.getString("nom"),
-							Pays.valueOfNom(rs.getString("pays")),
-                    		rs.getInt("classement"),
-                    		rs.getInt("worldRanking"),
-                    		rs.getString("saison"),
-                    		ModeleEquipe.this.modeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))
-                        ));
+                        action.accept(ModeleEquipe.this.construireEquipe(rs));
                         return true;
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
@@ -441,6 +422,19 @@ public class ModeleEquipe implements DAO<Equipe, Integer> {
 			});
 		
 		return stream.collect(Collectors.toList());
+	}
+
+	// Public car utilisé aussi par ModelePoule et ModeleRencontre
+	public Equipe construireEquipe(ResultSet rs) throws SQLException {
+		return new Equipe(
+			rs.getInt("idEquipe"),
+			rs.getString("nom"),
+			Pays.valueOfNom(rs.getString("pays")),
+			rs.getInt("classement"),
+			rs.getInt("worldRanking"),
+			rs.getString("saison"),
+			ModeleEquipe.this.modeleJoueur.getListeJoueursParId(rs.getInt("idEquipe"))
+		);
 	}
 	
 }

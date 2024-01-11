@@ -4,13 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JButton;
-import javax.swing.JTextField;
 
 import modele.ModeleEquipe;
 import modele.ModeleJoueur;
@@ -25,7 +22,7 @@ import vue.theme.JComboBoxTheme;
  * Contrôleur de la vue des équipes
  * @see VueEquipes
  */
-public class ControleurEquipes extends KeyAdapter implements ActionListener, ItemListener {
+public class ControleurEquipes extends ControleurRecherche<Equipe> implements ItemListener, ActionListener {
 
 	private VueEquipes vue;
 	private ModeleEquipe modeleEquipe;
@@ -36,8 +33,9 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener, Ite
 	 * @param vue : vueEquipes
 	 */
 	public ControleurEquipes(VueEquipes vue) {
+		super(new ModeleEquipe(), vue);
 		this.vue = vue;
-		this.modeleEquipe = new ModeleEquipe();
+		this.modeleEquipe = (ModeleEquipe) super.getModele();
 		this.modeleJoueur = new ModeleJoueur();
 	}
 	
@@ -46,6 +44,8 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener, Ite
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		super.traitementClicBoutonRecherche(e);
+
 		// Clic sur un bouton du tableau (voir, modifier, supprimer)
 		if(e.getSource() instanceof JButtonTable) {
 			JButtonTable bouton = (JButtonTable) e.getSource();
@@ -136,7 +136,7 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener, Ite
 						// PS : À la suppression, pour éviter un bug, nous sommes contraints de recharger la page entière
 						this.vue.getVueBase().changerOnglet(ControleurBase.Menus.EQUIPES);
 
-						this.vue.resetCboxPays();
+						this.vue.resetFiltres();
 					}
 
 					break;
@@ -154,45 +154,6 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener, Ite
 
 				// Ouverture de la fenêtre d'ajout d'équipe
 				this.vue.afficherVueSaisieEquipe(Optional.empty());
-			}
-			
-			// Si il s'agit du bouton de recherche
-			else if(this.vue.estBoutonRecherche(bouton)) {
-				String requeteRecherche = this.vue.getRequeteRecherche();
-				if(requeteRecherche != null) {
-					this.rechercher(this.vue.getRequeteRecherche());
-				}
-			}
-		}
-		
-	}
-	
-	/**
-	 * Quand on appuie sur une touche du clavier dans le champ de recherche
-	 */
-	@Override
-	public void keyPressed(KeyEvent e) {
-		JTextField txtRecherche = (JTextField) e.getSource();
-		// Si il s'agit du champ de recherche
-		if (this.vue.estChampRecherche(txtRecherche)) {
-			// Récupère la requête de recherche
-			String requeteRecherche = this.vue.getRequeteRecherche();
-
-			// Effectuer la recherche à l'appui de la touche entrée
-			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-				this.rechercher(requeteRecherche);
-			}
-			
-			// Lorsqu'on supprime tous les caractères dans le champ de recherche, sortir de la recherche
-			else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-				if (
-					requeteRecherche != null
-					&& requeteRecherche.length() == 1
-					|| txtRecherche.getSelectedText() != null
-					&& txtRecherche.getSelectedText().equals(requeteRecherche)
-				) {
-					this.rechercher("");
-				}
 			}
 		}
 	}
@@ -214,21 +175,6 @@ public class ControleurEquipes extends KeyAdapter implements ActionListener, Ite
 					throw new RuntimeException("Erreur dans la récupération des tournois");
 				}
 			}
-		}
-	}
-	
-	/**
-	 * Effectue une recherche de requête requeteRecherche
-	 * @param requeteRecherche
-	 */
-	private void rechercher(String requeteRecherche) {
-		try {
-			// Mise à jour du tableau avec les résultats de recherche
-			this.vue.resetCboxPays();
-			this.vue.remplirTableau(this.modeleEquipe.getParNom(requeteRecherche));
-		} catch (Exception ex) {
-			this.vue.afficherPopupErreur("Une erreur est survenue");
-			throw new RuntimeException("Erreur dans la recherche");
 		}
 	}
 
