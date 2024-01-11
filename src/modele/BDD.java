@@ -1353,6 +1353,7 @@ public class BDD {
 		}
 		
 		try {
+			//Premier tournoi
 			st.executeUpdate(
 					"INSERT INTO arbitrer VALUES ("
 					+ "1,"
@@ -1363,6 +1364,42 @@ public class BDD {
 					+ "1,"
 					+ "2)"
 			);
+
+			//Deuxième tournoi
+			st.executeUpdate(
+					"INSERT INTO arbitrer VALUES ("
+					+ "2,"
+					+ "1)"
+			);
+
+			//Troisième tournoi
+			st.executeUpdate(
+					"INSERT INTO arbitrer VALUES ("
+					+ "3,"
+					+ "1)"
+			);
+
+			//Quatrième tournoi
+			st.executeUpdate(
+					"INSERT INTO arbitrer VALUES ("
+					+ "4,"
+					+ "1)"
+			);
+
+			//Cinquième tournoi
+			st.executeUpdate(
+					"INSERT INTO arbitrer VALUES ("
+					+ "5,"
+					+ "1)"
+			);
+
+			//Sixième tournoi
+			st.executeUpdate(
+					"INSERT INTO arbitrer VALUES ("
+					+ "6,"
+					+ "1)"
+			);
+
 		} catch (SQLException e) {
 		    System.err.println("Erreur d'insertion de la table arbitrer");
 		    e.printStackTrace();
