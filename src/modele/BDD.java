@@ -946,6 +946,279 @@ public class BDD {
 		}
 		
 		try {
+			//Premier tournoi
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "1,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "1,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "1,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "1,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "1,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "1,"
+					+ "3"
+					+ ")");
+			//Finale premier tournoi
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "2,"
+					+ "1"
+					+ ")");
+			
+			//Deuxième tournoi
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "3,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "3,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "3,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "3,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "3,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "3,"
+					+ "3"
+					+ ")");
+			//Finale deuxieme tournoi
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "4,"
+					+ "1"
+					+ ")");
+			
+			//Troisieme tournoi
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "5,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "5,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "5,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "5,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "5,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "5,"
+					+ "3"
+					+ ")");
+			//Finale troisieme tournoi
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "6,"
+					+ "1"
+					+ ")");
+			
+			//Quatrieme tournoi
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "7,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "7,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "7,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "7,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "7,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "7,"
+					+ "3"
+					+ ")");
+			//Finale quatrieme tournoi
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "8,"
+					+ "1"
+					+ ")");
+
+			//Cinquième tournoi
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "9,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "9,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "9,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "9,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "9,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "9,"
+					+ "3"
+					+ ")");
+			//Finale cinquième tournoi
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "10,"
+					+ "1"
+					+ ")");
+			
+			//Sixième tournoi
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "11,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "11,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "11,"
+					+ "4"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "11,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "11,"
+					+ "1"
+					+ ")");
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "11,"
+					+ "3"
+					+ ")");
+			//Finale sixième tournoi
+			st.executeUpdate(
+					"INSERT INTO rencontre VALUES ("
+					+ "NEXT VALUE FOR idRencontre,"
+					+ "12,"
+					+ "1"
+					+ ")");
+		} catch (SQLException e) {
+		    System.err.println("Erreur d'insertion de la table rencontre");
+		    e.printStackTrace();
+		}
 			st.executeUpdate(
 					"INSERT INTO rencontre VALUES ("
 					+ "NEXT VALUE FOR idRencontre,"
