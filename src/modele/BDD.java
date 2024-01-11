@@ -1406,19 +1406,20 @@ public class BDD {
 		}
 		
 		try {
+			//Premier tournoi
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "1)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "1)"
+			);
 			st.executeUpdate(
 					"INSERT INTO jouer VALUES ("
 					+ "1,"
-					+ "1)"
-			);
-			st.executeUpdate(
-					"INSERT INTO jouer VALUES ("
-					+ "4,"
-					+ "1)"
-			);
-			st.executeUpdate(
-					"INSERT INTO jouer VALUES ("
-					+ "4,"
 					+ "2)"
 			);
 			st.executeUpdate(
@@ -1438,7 +1439,7 @@ public class BDD {
 			);
 			st.executeUpdate(
 					"INSERT INTO jouer VALUES ("
-					+ "2,"
+					+ "3,"
 					+ "4)"
 			);
 			st.executeUpdate(
@@ -1448,17 +1449,17 @@ public class BDD {
 			);
 			st.executeUpdate(
 					"INSERT INTO jouer VALUES ("
-					+ "3,"
-					+ "5)"
-			);
-			st.executeUpdate(
-					"INSERT INTO jouer VALUES ("
-					+ "2,"
+					+ "4,"
 					+ "5)"
 			);
 			st.executeUpdate(
 					"INSERT INTO jouer VALUES ("
 					+ "1,"
+					+ "5)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
 					+ "6)"
 			);
 			st.executeUpdate(
@@ -1466,9 +1467,10 @@ public class BDD {
 					+ "3,"
 					+ "6)"
 			);
+			//Finale premier tournoi
 			st.executeUpdate(
 					"INSERT INTO jouer VALUES ("
-					+ "2,"
+					+ "1,"
 					+ "7)"
 			);
 			st.executeUpdate(
@@ -1477,7 +1479,401 @@ public class BDD {
 					+ "7)"
 			);
 		} catch (SQLException e) {
-		    System.err.println("Erreur d'insertion de la table jouer");
+		    System.err.println("Erreur d'insertion de la table jouer tournoi 1");
+		    e.printStackTrace();
+		}
+		
+		try {			
+			//Deuxième tournoi
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "8)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "8)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "9)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "9)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "10)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "10)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "11)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "11)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "12)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "12)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "13)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "13)"
+			);
+			//Finale deuxième tournoi
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "14)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "14)"
+			);
+			
+		} catch (SQLException e) {
+		    System.err.println("Erreur d'insertion de la table jouer tournoi 2");
+		    e.printStackTrace();
+		}
+		
+		try {
+			//Troisième tournoi
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "15)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "15)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "16)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "16)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "17)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "17)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "18)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "18)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "19)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "19)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "20)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "20)"
+			);
+			//Finale troisième tournoi
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "21)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "21)"
+			);
+			
+		} catch (SQLException e) {
+		    System.err.println("Erreur d'insertion de la table jouer tournoi 3");
+		    e.printStackTrace();
+		}
+		
+		try {
+			//Quatrième tournoi
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "22)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "22)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "23)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "23)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "24)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "24)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "25)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "25)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "26)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "26)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "27)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "27)"
+			);
+			//Finale quatrième tournoi
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "28)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "28)"
+			);
+			
+		} catch (SQLException e) {
+		    System.err.println("Erreur d'insertion de la table jouer tournoi 4");
+		    e.printStackTrace();
+		}
+		
+		try {
+			//Cinquième tournoi
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "29)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "29)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "30)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "30)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "31)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "31)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "32)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "32)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "33)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "33)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "34)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "34)"
+			);
+			//Finale cinquième tournoi
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "35)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "35)"
+			);
+			
+		} catch (SQLException e) {
+		    System.err.println("Erreur d'insertion de la table jouer tournoi 5");
+		    e.printStackTrace();
+		}
+		
+		try {
+			//Sixième tournoi
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "36)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "36)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "37)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "37)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "38)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "38)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "39)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "39)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "40)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "40)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "2,"
+					+ "41)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "3,"
+					+ "41)"
+			);
+			//Finale sixième tournoi
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "1,"
+					+ "42)"
+			);
+			st.executeUpdate(
+					"INSERT INTO jouer VALUES ("
+					+ "4,"
+					+ "42)"
+			);
+		} catch (SQLException e) {
+		    System.err.println("Erreur d'insertion de la table jouer tournoi 6");
 		    e.printStackTrace();
 		}
 	}
