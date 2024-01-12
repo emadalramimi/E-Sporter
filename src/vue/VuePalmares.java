@@ -12,6 +12,7 @@ import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
 import vue.theme.JTextFieldTheme;
+import vue.theme.ThemeTableCellRenderer;
 import vue.theme.JButtonTheme.Types;
 
 import java.awt.BorderLayout;
@@ -202,10 +203,40 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		// Règles d'affichage du drapeau du pays
 		TableColumn paysColumn = table.getColumnModel().getColumn(1);
 	    paysColumn.setCellRenderer(new ImageTableCellRenderer());
+
+		// Règles d'affichage du classement
+		TableColumn classementColumn = table.getColumnModel().getColumn(0);
+		classementColumn.setCellRenderer(new TableCellRendererPalmares());
 				
 		scrollPaneEquipes.setViewportView(this.table);
 
 		this.remplirTableau(controleur.getClassement());
+	}
+
+	/**
+	 * Classe interne pour changer la couleur des 3 premiers du classement
+	 */
+	private class TableCellRendererPalmares extends ThemeTableCellRenderer {
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			
+			String text = this.getText();
+			
+			if("#1".equals(text)) {
+				this.setForeground(CharteGraphique.OR);
+				this.setFont(CharteGraphique.getPolice(16, true));
+			} else if("#2".equals(text)) {
+				this.setForeground(CharteGraphique.ARGENT);
+				this.setFont(CharteGraphique.getPolice(16, true));
+			} else if("#3".equals(text)) {
+				this.setForeground(CharteGraphique.BRONZE);
+				this.setFont(CharteGraphique.getPolice(16, true));
+			}
+			
+			return this;
+		}
+
 	}
 
 	/**
