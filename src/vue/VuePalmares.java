@@ -24,10 +24,12 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.List;
 import java.util.Vector;
+import java.util.stream.Collectors;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -43,20 +45,17 @@ import modele.metier.Pays;
  * IHM équipes
  */
 public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares> {
-	public VuePalmares() {
-	}
 	
 	private JTable table;
-	private JPanel panelTableauFiltres;
 	private JTextFieldTheme txtRecherche;
 	private JButton btnRecherche;
-	private JScrollPaneTheme scrollPaneEquipes;
 	private JPanel panel;
 	private DefaultTableModel model;
-	private JLabel lblPalmares;
 	
 	public void afficherVuePalmares(JPanel contentPane, VueBase vueBase) {
 		ControleurPalmares controleur = new ControleurPalmares(this);
+		
+		List<Palmares> podium = controleur.getClassement();
 
 		// panel contient tous les éléments de la page
 		panel = new JPanel();
@@ -81,7 +80,7 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		panelLabelPalmares.setBackground(CharteGraphique.FOND);
 		panelLabelPalmares.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		lblPalmares = new JLabel("Palmarès");
+		JLabel lblPalmares = new JLabel("Palmarès");
 		lblPalmares.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPalmares.setFont(CharteGraphique.getPolice(30, true));
 		lblPalmares.setForeground(CharteGraphique.TEXTE);
@@ -122,36 +121,28 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		gbc_lblIcon_1.gridy = 0;
 		panelPodium.add(icon3, gbc_lblIcon_1);
 		
-		List<Palmares> podium = controleur.getClassement();
-		
-		JLabel lblTop2 = new JLabel(podium.get(1).getEquipe().getNom());
-		lblTop2.setFont(CharteGraphique.getPolice(20, true));
-		lblTop2.setForeground(CharteGraphique.TEXTE);
+		JTextArea lblTop2 = this.textePodium(podium, 2);
 		GridBagConstraints gbc_lblTop2 = new GridBagConstraints();
 		gbc_lblTop2.insets = new Insets(0, 0, 0, 5);
 		gbc_lblTop2.gridx = 0;
 		gbc_lblTop2.gridy = 1;
 		panelPodium.add(lblTop2, gbc_lblTop2);
 
-		JLabel lblTop1 = new JLabel(podium.get(0).getEquipe().getNom());
-		lblTop1.setFont(CharteGraphique.getPolice(20, true));
-		lblTop1.setForeground(CharteGraphique.TEXTE);
+		JTextArea lblTop1 = this.textePodium(podium, 1);
 		GridBagConstraints gbc_lblTop1 = new GridBagConstraints();
 		gbc_lblTop1.insets = new Insets(0, 0, 0, 5);
 		gbc_lblTop1.gridx = 1;
 		gbc_lblTop1.gridy = 1;
 		panelPodium.add(lblTop1, gbc_lblTop1);
 
-		JLabel lblTop3 = new JLabel(podium.get(2).getEquipe().getNom());
-		lblTop3.setFont(CharteGraphique.getPolice(20, true));
-		lblTop3.setForeground(CharteGraphique.TEXTE);
+		JTextArea lblTop3 = this.textePodium(podium, 3);
 		GridBagConstraints gbc_lblTop3 = new GridBagConstraints();
 		gbc_lblTop3.gridx = 2;
 		gbc_lblTop3.gridy = 1;
 		panelPodium.add(lblTop3, gbc_lblTop3);
 		
-		//JPanel de recherche
-		panelTableauFiltres = new JPanel();
+		// JPanel de recherche
+		JPanel panelTableauFiltres = new JPanel();
 		panelTableauFiltres.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelRecherche = new GridBagConstraints();
 		gbc_panelRecherche.insets = new Insets(0, 0, 20, 0);
@@ -177,7 +168,7 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		panelChoixFiltres.setBackground(CharteGraphique.FOND);
 		
 		// ScrollPane englobant le tableau
-		scrollPaneEquipes = new JScrollPaneTheme();
+		JScrollPaneTheme scrollPaneEquipes = new JScrollPaneTheme();
 		GridBagConstraints gbc_scrollPaneEquipes = new GridBagConstraints();
 		gbc_scrollPaneEquipes.fill = GridBagConstraints.BOTH;
 		gbc_scrollPaneEquipes.gridx = 0;
@@ -209,7 +200,7 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 				
 		scrollPaneEquipes.setViewportView(this.table);
 
-		this.remplirTableau(controleur.getClassement());
+		this.remplirTableau(podium);
 	}
 
 	/**
@@ -287,6 +278,26 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 	        return label;
 	    }
 		
+	}
+
+	private JTextArea textePodium(List<Palmares> podium, int classement) {
+		List<String> equipes = podium.stream()
+			.filter(p -> p.getEquipe().getClassement() == classement)
+			.map(p -> p.getEquipe().getNom())
+			.collect(Collectors.toList());
+
+		if (equipes.size() > 3) {
+			equipes = equipes.subList(0, 3);
+			equipes.add("...");
+		}
+
+		JTextArea textArea = new JTextArea(String.join("\n", equipes));
+		textArea.setFont(CharteGraphique.getPolice(20, true));
+		textArea.setForeground(CharteGraphique.TEXTE);
+		textArea.setEditable(false);
+		textArea.setOpaque(false);
+
+		return textArea;
 	}
 	
 	/**
