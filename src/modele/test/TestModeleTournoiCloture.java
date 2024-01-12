@@ -1,1 +1,5 @@
-//TODO now :)
+package modele.test;
+
+public class TestModeleTournoiCloture {
+
+}

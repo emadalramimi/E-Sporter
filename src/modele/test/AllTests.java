@@ -23,6 +23,8 @@ import org.junit.runners.Suite;
     TestModelePoule.class,
     TestModeleRencontre.class,
     TestModeleTournoi.class,
+    TestModeleTournoiOuverture.class,
+    TestModeleTournoiCloture.class,
     TestModeleUtilisateur.class
 })
 
