@@ -34,6 +34,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import controleur.ControleurPalmares;
+import modele.ModelePalmares;
 import modele.metier.Equipe;
 import modele.metier.Palmares;
 import modele.metier.Pays;
@@ -54,7 +55,7 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 	private DefaultTableModel model;
 	private JLabel lblPalmares;
 	
-	public void afficherVuePalmares(JPanel contentPane, VueBase vueBase) {
+	public void afficherVuePalmares(JPanel contentPane, VueBase vueBase) throws Exception {
 		ControleurPalmares controleur = new ControleurPalmares(this);
 
 		// panel contient tous les éléments de la page
@@ -120,8 +121,10 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		gbc_lblIcon_1.gridx = 2;
 		gbc_lblIcon_1.gridy = 0;
 		panelPodium.add(icon3, gbc_lblIcon_1);
+		
+		ModelePalmares modelePalmares = new ModelePalmares();
 
-		JLabel lblTop2 = new JLabel("Top2");
+		JLabel lblTop2 = new JLabel(modelePalmares.getClassement().get(1).getEquipe().getNom());
 		lblTop2.setFont(CharteGraphique.getPolice(20, true));
 		lblTop2.setForeground(CharteGraphique.TEXTE);
 		GridBagConstraints gbc_lblTop2 = new GridBagConstraints();
@@ -130,7 +133,7 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		gbc_lblTop2.gridy = 1;
 		panelPodium.add(lblTop2, gbc_lblTop2);
 
-		JLabel lblTop1 = new JLabel("Top1");
+		JLabel lblTop1 = new JLabel(modelePalmares.getClassement().get(0).getEquipe().getNom());
 		lblTop1.setFont(CharteGraphique.getPolice(20, true));
 		lblTop1.setForeground(CharteGraphique.TEXTE);
 		GridBagConstraints gbc_lblTop1 = new GridBagConstraints();
@@ -139,7 +142,7 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		gbc_lblTop1.gridy = 1;
 		panelPodium.add(lblTop1, gbc_lblTop1);
 
-		JLabel lblTop3 = new JLabel("Top3");
+		JLabel lblTop3 = new JLabel(modelePalmares.getClassement().get(2).getEquipe().getNom());
 		lblTop3.setFont(CharteGraphique.getPolice(20, true));
 		lblTop3.setForeground(CharteGraphique.TEXTE);
 		GridBagConstraints gbc_lblTop3 = new GridBagConstraints();
