@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 /**
@@ -247,6 +248,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 			btnValider = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Modifier");
 		}
 		btnValider.addActionListener(controleur);
+		btnValider.setIcon(new ImageIcon(VueSaisieEquipe.class.getResource("/images/buttons/valider.png")));
 		panelValider.add(btnValider);
 		
 		// Remplissage des champs du formulaire si une équipe est renseignée pour modification
