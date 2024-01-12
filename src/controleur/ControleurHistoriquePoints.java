@@ -4,26 +4,33 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import modele.ModeleEquipe;
 import modele.ModeleHistoriquePoints;
+import modele.ModeleImpression;
 import modele.metier.Equipe;
 import vue.VueHistoriquePoints;
+import vue.theme.JTableThemeImpression;
 
 public class ControleurHistoriquePoints extends ControleurRecherche<Equipe> implements ActionListener, ListSelectionListener {
     
     private VueHistoriquePoints vue;
     private ModeleEquipe modeleEquipe;
     private ModeleHistoriquePoints modeleHistoriquePoints;
+    private ModeleImpression modeleImpression;
+    private Equipe equipeSelectionnee;
 
     public ControleurHistoriquePoints(VueHistoriquePoints vue) {
 		super(new ModeleEquipe(), vue);
 		this.vue = vue;
 		this.modeleEquipe = (ModeleEquipe) super.getModele();
         this.modeleHistoriquePoints = new ModeleHistoriquePoints();
+        this.modeleImpression = new ModeleImpression();
+        this.equipeSelectionnee = null;
     }
 
     @Override
@@ -31,6 +38,12 @@ public class ControleurHistoriquePoints extends ControleurRecherche<Equipe> impl
         JTable tableEquipes = this.vue.getTableEquipes();
         if(e.getSource() == tableEquipes.getSelectionModel() && !e.getValueIsAdjusting()) {
             int idEquipe = (int) tableEquipes.getValueAt(tableEquipes.getSelectedRow(), 0);
+            try {
+                this.equipeSelectionnee = this.modeleEquipe.getParId(idEquipe).orElse(null);
+            } catch(Exception err) {
+                this.vue.afficherPopupErreur("Une erreur est survenue lors de la récupération de l'équipe sélectionnée");
+                throw new RuntimeException(err);
+            }
             try {
                 this.vue.remplirTableauHistoriquePoints(this.modeleHistoriquePoints.getParEquipe(idEquipe));
             } catch(Exception err) {
@@ -42,6 +55,26 @@ public class ControleurHistoriquePoints extends ControleurRecherche<Equipe> impl
 
     public void actionPerformed(ActionEvent e) {
 		super.traitementClicBoutonRecherche(e);
+
+        if(e.getSource() instanceof JButton) {
+            JButton bouton = (JButton) e.getSource();
+            if(bouton.getText() == "Imprimer l'historique sélectionné") {
+                JTableThemeImpression table = null;
+                try {
+                    table = this.vue.getTableImpression();
+                } catch(IllegalArgumentException err) {
+                    this.vue.afficherPopupErreur(err.getMessage());
+                }
+                if(table != null) {
+                    try {
+                        this.modeleImpression.imprimerHistoriquePoints(table, this.equipeSelectionnee);
+                    } catch(Exception err) {
+                        this.vue.afficherPopupErreur("Une erreur est survenue lors de l'impression de l'historique des points de l'équipe");
+                        throw new RuntimeException(err);
+                    }
+                }
+            }
+        }
     }
 
     /**

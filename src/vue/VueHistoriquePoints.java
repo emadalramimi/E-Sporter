@@ -3,6 +3,7 @@ package vue;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -13,6 +14,7 @@ import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
+import vue.theme.JTableThemeImpression;
 import vue.theme.JTextFieldTheme;
 import vue.theme.LabelIcon;
 
@@ -321,6 +323,21 @@ public class VueHistoriquePoints extends JFrameTheme implements RecherchableVue<
 	 */
 	public JTable getTableEquipes() {
 		return this.tableEquipes;
+	}
+
+	public JTableThemeImpression getTableImpression() throws IllegalArgumentException {
+		if(this.modelTableHistoriquePoints.getRowCount() == 0) {
+			throw new IllegalArgumentException("Aucune donnée à imprimer");
+		}
+
+		JTableThemeImpression table = new JTableThemeImpression(this.modelTableHistoriquePoints);
+
+		// Création d'un JFrame et pack pour rendre le tableau
+		JFrame frame = new JFrame();
+		frame.add(new JScrollPane(table));
+		frame.pack();
+
+		return table;
 	}
 
 }
