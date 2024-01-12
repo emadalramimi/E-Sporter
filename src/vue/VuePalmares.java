@@ -285,18 +285,20 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 			.filter(p -> p.getEquipe().getClassement() == classement)
 			.map(p -> p.getEquipe().getNom())
 			.collect(Collectors.toList());
-
-		if (equipes.size() > 3) {
+	
+		if (equipes.isEmpty()) {
+			equipes.add("N/A");
+		} else if (equipes.size() > 3) {
 			equipes = equipes.subList(0, 3);
 			equipes.add("...");
 		}
-
+	
 		JTextArea textArea = new JTextArea(String.join("\n", equipes));
 		textArea.setFont(CharteGraphique.getPolice(20, true));
 		textArea.setForeground(CharteGraphique.TEXTE);
 		textArea.setEditable(false);
 		textArea.setOpaque(false);
-
+	
 		return textArea;
 	}
 	
