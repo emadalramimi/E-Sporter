@@ -1,6 +1,7 @@
 package modele;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.awt.print.PrinterException;
 import java.time.format.DateTimeFormatter;
@@ -12,21 +13,38 @@ import vue.theme.JTableThemeImpression;
 
 public class ModeleImpression {
     
-    public void imprimerEtatResultatsTournoi(JTableThemeImpression table, Tournoi tournoi) {
-        // Récupération de la date et heure actuelle
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY HH:mm");
-        String currentDateTime = LocalDateTime.now().format(formatter);
+    public void imprimerEtatResultatsTournoi(JTableThemeImpression table, Tournoi tournoi) throws PrinterException {
+        // Création des formats pour l'en-tête 
+        MessageFormat headerFormat = new MessageFormat("État des résultats du Palmarès " + tournoi.getNomTournoi());
+       
+        // Impression de la table
+        this.imprimer(table, headerFormat);
+    }
 
-        // Création des formats pour l'en-tête et le pied de page
-        MessageFormat headerFormat = new MessageFormat("État des résultats du tournoi " + tournoi.getNomTournoi());
-        MessageFormat footerFormat = new MessageFormat("Au " + currentDateTime);
+    public void imprimerPalmares(JTableThemeImpression table) throws PrinterException {
+
+        // Création des formats pour l'en-tête 
+        MessageFormat headerFormat = new MessageFormat("État des résultats de la saison " + LocalDate.now().getYear());
 
         // Impression de la table
-        try {
-            table.print(JTable.PrintMode.NORMAL, headerFormat, footerFormat);
-        } catch (PrinterException ex) {
-            ex.printStackTrace();
-        }
+        this.imprimer(table, headerFormat);
+    }
+
+     /**
+      * Imprime une JTableThemeImpression
+      * @param table : table à imprimer
+      * @param headerFormat : format de l'en-tête
+      * @param footerFormat : format du pied de page
+      */
+    private void imprimer(JTableThemeImpression table, MessageFormat headerFormat) throws PrinterException {
+        // Récupération de la date et heure actuelle
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY à HH:mm");
+        String currentDateTime = LocalDateTime.now().format(formatter);
+
+        // Création des formats pour le pied de page
+        MessageFormat footerFormat = new MessageFormat("Au " + currentDateTime);
+
+        table.print(JTable.PrintMode.NORMAL, headerFormat, footerFormat);
     }
 
 }

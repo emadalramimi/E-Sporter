@@ -2,6 +2,7 @@ package controleur;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PrinterException;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -47,7 +48,11 @@ public class ControleurEtatResultatsTournoi implements ActionListener {
                 this.vue.fermerFenetre();
                 break;
             case "Imprimer":
-                this.modeleImpression.imprimerEtatResultatsTournoi(this.vue.getTableImpression(), this.tournoi);
+                try {
+                    this.modeleImpression.imprimerEtatResultatsTournoi(this.vue.getTableImpression(), this.tournoi);
+                } catch(PrinterException err) {
+                    this.vue.afficherPopupErreur("Une erreur est survenue lors du lancement de la fenêtre d'impression");
+                }
                 break;
         }
     }

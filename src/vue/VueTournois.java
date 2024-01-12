@@ -80,23 +80,23 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 1.0};
 		panel.setLayout(gbl_panel);
 		
-		// panelLabelEquipe, le panel contenant le label lblEquipes
-		JPanel panelLabelEquipe = new JPanel();
-		GridBagConstraints gbc_panelLabelEquipe = new GridBagConstraints();
-		gbc_panelLabelEquipe.anchor = GridBagConstraints.NORTH;
-		gbc_panelLabelEquipe.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panelLabelEquipe.insets = new Insets(0, 0, 20, 0);
-		gbc_panelLabelEquipe.gridx = 0;
-		gbc_panelLabelEquipe.gridy = 0;
-		panel.add(panelLabelEquipe, gbc_panelLabelEquipe);
-		panelLabelEquipe.setBackground(CharteGraphique.FOND);
-		panelLabelEquipe.setLayout(new GridLayout(1, 0, 0, 0));
+		// panelLabelTournois, le panel contenant le label lblEquipes
+		JPanel panelLabelTournois = new JPanel();
+		GridBagConstraints gbc_panelLabelTournois = new GridBagConstraints();
+		gbc_panelLabelTournois.anchor = GridBagConstraints.NORTH;
+		gbc_panelLabelTournois.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panelLabelTournois.insets = new Insets(0, 0, 20, 0);
+		gbc_panelLabelTournois.gridx = 0;
+		gbc_panelLabelTournois.gridy = 0;
+		panel.add(panelLabelTournois, gbc_panelLabelTournois);
+		panelLabelTournois.setBackground(CharteGraphique.FOND);
+		panelLabelTournois.setLayout(new GridLayout(1, 0, 0, 0));
 		
 		lblTournois = new JLabel("Tournois");
 		lblTournois.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTournois.setFont(CharteGraphique.getPolice(30, true));
 		lblTournois.setForeground(CharteGraphique.TEXTE);
-		panelLabelEquipe.add(lblTournois);
+		panelLabelTournois.add(lblTournois);
 		
 		// panelAjouter, le panel contenant le bouton btnAjouter
 		JPanel panelAjouter = new JPanel();
@@ -105,7 +105,7 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 		flowLayout.setVgap(0);
 		flowLayout.setHgap(0);
 		flowLayout.setAlignment(FlowLayout.RIGHT);
-		panelLabelEquipe.add(panelAjouter);
+		panelLabelTournois.add(panelAjouter);
 		
 		// btnAjouter, un bouton pour permettre l'ajout d'une équipe
 		JButtonTheme btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
@@ -140,7 +140,7 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 		panelRecherche.add(btnRecherche);
 		panelTableauFiltres.add(panelRecherche);
 
-		// Create a new panel with a FlowLayout that has a horizontal gap of 15 pixels
+		// Création du panel contenant les filtres
 		JPanel panelChoixFiltres = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
 		panelChoixFiltres.setBackground(CharteGraphique.FOND);
 
@@ -160,12 +160,12 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 		panelTableauFiltres.add(panelChoixFiltres);
 		
 		// ScrollPane englobant le tableau
-		JScrollPaneTheme scrollPaneEquipes = new JScrollPaneTheme();
-		GridBagConstraints gbc_scrollPaneEquipes = new GridBagConstraints();
-		gbc_scrollPaneEquipes.fill = GridBagConstraints.BOTH;
-		gbc_scrollPaneEquipes.gridx = 0;
-		gbc_scrollPaneEquipes.gridy = 2;
-		panel.add(scrollPaneEquipes, gbc_scrollPaneEquipes);
+		JScrollPaneTheme scrollPaneTournois = new JScrollPaneTheme();
+		GridBagConstraints gbc_scrollPaneTournois = new GridBagConstraints();
+		gbc_scrollPaneTournois.fill = GridBagConstraints.BOTH;
+		gbc_scrollPaneTournois.gridx = 0;
+		gbc_scrollPaneTournois.gridy = 2;
+		panel.add(scrollPaneTournois, gbc_scrollPaneTournois);
 		
 		// Création du modèle du tableau avec désactivation de l'édition
 		this.model = new DefaultTableModel(
@@ -191,7 +191,7 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 		buttonColumn.setCellRenderer(new TableButtonsPanel(table, controleur));
 		buttonColumn.setCellEditor(new TableButtonsCellEditor(controleur));
 		
-		// Masquage de la colonne ID (sert pour obtenir l'Equipe d'une ligne dont un bouton est cliqué)
+		// Masquage de la colonne ID (sert pour obtenir le Tournois d'une ligne dont un bouton est cliqué)
 		TableColumn idColumn = table.getColumnModel().getColumn(0);
 		idColumn.setMinWidth(1); // 1px pour garder la bordure
 		idColumn.setMaxWidth(1);
@@ -200,7 +200,7 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 		
 		this.remplirTableau(this.controleur.getTournois());
 		
-		scrollPaneEquipes.setViewportView(table);
+		scrollPaneTournois.setViewportView(table);
 	}
 	
 	private class StatutCellRenderer extends ThemeTableCellRenderer {
@@ -211,7 +211,7 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-			// Couleur du texte
+			// Couleur du texte en fonction du statut
 			if (column == 1) {
 				switch ((String) value) {
 					case "Phase d'inscriptions":
@@ -230,6 +230,10 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 		}
 	}
 	
+	/**
+	 * Ouvre la fenêtre de saisie d'un tournoi
+	 * @param tournoi le tournoi à modifier, null si création d'un nouveau tournoi
+	 */
 	public void afficherVueSaisieTournoi(Optional<Tournoi> tournoi) {
 		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
 		if (this.vueSaisieTournoi == null || !this.vueSaisieTournoi.isVisible()) {
@@ -241,7 +245,11 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 			this.vueSaisieTournoi.toFront();
 		}
 	}
-
+	
+	/**
+	 * Ouvre la fenêtre d'inscription des équipes à un tournoi
+	 * @param tournoi le tournoi auquel on veut inscrire des équipes
+	 */
 	public void afficherVueInscriptionEquipes(Tournoi tournoi) {
 		// Une seule fenêtre d'inscription à la fois, si déjà ouverte elle est mise au premier plan
 		if (this.vueInscriptionEquipesTournoi == null || !this.vueInscriptionEquipesTournoi.isVisible()) {
@@ -254,6 +262,10 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 		}
 	}
 
+	/**
+	 * Ouvre la fenêtre de poule d'un tournoi
+	 * @param tournoi le tournoi dont on veut afficher la poule
+	 */
 	public void afficherVuePoule(Tournoi tournoi) {
 		// Une seule fenêtre de poule à la fois, si déjà ouverte elle est mise au premier plan
 		if (this.vuePoule == null || !this.vuePoule.isVisible()) {
@@ -311,7 +323,8 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
     }
 	
 	/**
-	 * @param bouton
+	 * Fonction pour vérifier si le bouton est le bouton de recherche
+	 * @param bouton : le bouton à vérifier
 	 * @return true si bouton est le bouton de recherche, false sinon
 	 */
 	@Override
@@ -324,7 +337,8 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 	}
 	
 	/**
-	 * @param champ
+	 * Fonction pour vérifier si le champ est le champ de recherche
+	 * @param champ : le champ à vérifier
 	 * @return true si le champ est le champ de recherche, false sinon
 	 */
 	@Override
@@ -341,6 +355,7 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 	}
 	
 	/**
+	 * Retourne la requête de recherche tapée par l'utilisateur
 	 * @return la requête de recherche tapée par l'utilisateur
 	 */
 	@Override
@@ -348,6 +363,9 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 		return this.txtRecherche.getText().trim();
 	}
 
+	/**
+	 * Remet à zéro les filtres
+	 */
 	@Override
 	public void resetFiltres() {
 		this.cboxNotoriete.setSelectedIndex(0);

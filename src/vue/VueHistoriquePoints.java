@@ -14,6 +14,7 @@ import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
 import vue.theme.JTextFieldTheme;
+import vue.theme.LabelIcon;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -84,6 +85,21 @@ public class VueHistoriquePoints extends JFrameTheme implements RecherchableVue<
 		lblHistoriquePoints.setFont(CharteGraphique.getPolice(30, true));
 		lblHistoriquePoints.setForeground(CharteGraphique.TEXTE);
 		panelLabelHistoriquePoints.add(lblHistoriquePoints);
+
+		// panelImprimer, le panel contenant le bouton btnImprimer
+		JPanel panelImprimer = new JPanel();
+		panelImprimer.setBackground(CharteGraphique.FOND);
+		FlowLayout flowLayout = (FlowLayout) panelImprimer.getLayout();
+		flowLayout.setVgap(0);
+		flowLayout.setHgap(0);
+		flowLayout.setAlignment(FlowLayout.RIGHT);
+		panelLabelHistoriquePoints.add(panelImprimer);
+		
+		// btnImprimer, un bouton pour permettre l'ajout d'une équipe
+		JButtonTheme btnImprimer = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Imprimer l'historique sélectionné");
+		btnImprimer.addActionListener(controleur);
+		btnImprimer.setHorizontalAlignment(SwingConstants.RIGHT);
+		panelImprimer.add(btnImprimer);
 		
 		JPanel panelTableauFiltres = new JPanel();
 		panelTableauFiltres.setBackground(CharteGraphique.FOND);
@@ -177,21 +193,6 @@ public class VueHistoriquePoints extends JFrameTheme implements RecherchableVue<
 	}
 	
 	/**
-	 * Classe interne de label avec une icone (pour les drapeaux)
-	 */
-	private static class LabelIcon {
-
-        ImageIcon icon;
-        String label;
-
-        public LabelIcon(ImageIcon icon, String label) {
-            this.icon = icon;
-            this.label = label;
-        }
-        
-    }
-	
-	/**
 	 * Classe interne pour afficher les drapeaux
 	 */
 	private static class ImageTableCellRenderer extends DefaultTableCellRenderer {
@@ -201,8 +202,8 @@ public class VueHistoriquePoints extends JFrameTheme implements RecherchableVue<
 			// Affichage du label et de l'icone à gauche
 	        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
 	        LabelIcon labelIcon = (LabelIcon) value;
-	        setIcon(labelIcon.icon);
-	        setText(labelIcon.label);
+	        setIcon(labelIcon.getIcon());
+	        setText(labelIcon.getText());
 	        
 	        // Couleur de fond des cellules alternantes
  			if(row % 2 == 0) {

@@ -3,7 +3,9 @@ package vue;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import vue.theme.JFrameTheme;
@@ -11,7 +13,9 @@ import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
+import vue.theme.JTableThemeImpression;
 import vue.theme.JTextFieldTheme;
+import vue.theme.LabelIcon;
 import vue.theme.ThemeTableCellRenderer;
 import vue.theme.JButtonTheme.Types;
 
@@ -85,6 +89,21 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		lblPalmares.setFont(CharteGraphique.getPolice(30, true));
 		lblPalmares.setForeground(CharteGraphique.TEXTE);
 		panelLabelPalmares.add(lblPalmares);
+
+		// panelImprimer, le panel contenant le bouton btnImprimer
+		JPanel panelImprimer = new JPanel();
+		panelImprimer.setBackground(CharteGraphique.FOND);
+		FlowLayout flowLayout = (FlowLayout) panelImprimer.getLayout();
+		flowLayout.setVgap(0);
+		flowLayout.setHgap(0);
+		flowLayout.setAlignment(FlowLayout.RIGHT);
+		panelLabelPalmares.add(panelImprimer);
+		
+		// btnImprimer, un bouton pour permettre l'ajout d'une équipe
+		JButtonTheme btnImprimer = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Imprimer");
+		btnImprimer.addActionListener(controleur);
+		btnImprimer.setHorizontalAlignment(SwingConstants.RIGHT);
+		panelImprimer.add(btnImprimer);
 		
 		JPanel panelPodium = new JPanel();
 		panelPodium.setBackground(CharteGraphique.FOND);
@@ -228,21 +247,6 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		}
 
 	}
-
-	/**
-	 * Classe interne de label avec une icone (pour les drapeaux)
-	 */
-	private static class LabelIcon {
-
-        ImageIcon icon;
-        String label;
-
-        public LabelIcon(ImageIcon icon, String label) {
-            this.icon = icon;
-            this.label = label;
-        }
-        
-    }
 	
 	/**
 	 * Classe interne pour afficher les drapeaux
@@ -254,8 +258,8 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 			// Affichage du label et de l'icone à gauche
 	        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
 	        LabelIcon labelIcon = (LabelIcon) value;
-	        setIcon(labelIcon.icon);
-	        setText(labelIcon.label);
+	        setIcon(labelIcon.getIcon());
+	        setText(labelIcon.getText());
 	        
 	        // Couleur de fond des cellules alternantes
  			if(row % 2 == 0) {
@@ -370,6 +374,17 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		
 		// Mise à jour du tableau
 		this.table.setModel(this.model);
+	}
+
+	public JTableThemeImpression getTableImpression() {
+		JTableThemeImpression table = new JTableThemeImpression(this.table.getModel());
+
+		// Création d'un JFrame et pack pour rendre le tableau
+		JFrame frame = new JFrame();
+		frame.add(new JScrollPane(table));
+		frame.pack();
+
+		return table;
 	}
 
 }

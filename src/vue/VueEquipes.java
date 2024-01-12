@@ -17,6 +17,7 @@ import vue.theme.JComboBoxTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
 import vue.theme.JTextFieldTheme;
+import vue.theme.LabelIcon;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -200,21 +201,6 @@ public class VueEquipes extends JFrameTheme implements RecherchableVue<Equipe> {
 	}
 	
 	/**
-	 * Classe interne de label avec une icone (pour les drapeaux)
-	 */
-	private static class LabelIcon {
-
-        ImageIcon icon;
-        String label;
-
-        public LabelIcon(ImageIcon icon, String label) {
-            this.icon = icon;
-            this.label = label;
-        }
-        
-    }
-	
-	/**
 	 * Classe interne pour afficher les drapeaux
 	 */
 	private static class ImageTableCellRenderer extends DefaultTableCellRenderer {
@@ -224,8 +210,8 @@ public class VueEquipes extends JFrameTheme implements RecherchableVue<Equipe> {
 			// Affichage du label et de l'icone à gauche
 	        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
 	        LabelIcon labelIcon = (LabelIcon) value;
-	        setIcon(labelIcon.icon);
-	        setText(labelIcon.label);
+	        setIcon(labelIcon.getIcon());
+	        setText(labelIcon.getText());
 	        
 	        // Couleur de fond des cellules alternantes
  			if(row % 2 == 0) {

@@ -153,11 +153,9 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 	public JTableThemeImpression getTableImpression() {
 		JTableThemeImpression table = new JTableThemeImpression(this.table.getModel());
 
-		// Create a new JFrame to display the table
+		// Création d'un JFrame et pack pour rendre le tableau
 		JFrame frame = new JFrame();
 		frame.add(new JScrollPane(table));
-
-		// Pack the frame to fit the preferred size of its components
 		frame.pack();
 
 		return table;

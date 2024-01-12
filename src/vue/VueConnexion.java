@@ -105,7 +105,7 @@ public class VueConnexion extends JFrameTheme {
 		// lblIdentifiant, le label de l'identifiant
 		JLabel lblIdentifiant = new JLabel("Identifiant");
 		lblIdentifiant.setForeground(CharteGraphique.TEXTE);
-		lblIdentifiant.setFont(CharteGraphique.getPolice(19, false));
+		lblIdentifiant.setFont(CharteGraphique.getPolice(17, false));
 		GridBagConstraints gbc_lblIdentifiant = new GridBagConstraints();
 		gbc_lblIdentifiant.anchor = GridBagConstraints.WEST;
 		gbc_lblIdentifiant.insets = new Insets(0, 0, 5, 0);
@@ -126,7 +126,7 @@ public class VueConnexion extends JFrameTheme {
 		// lblMotDePasse, le label du mot de passe
 		JLabel lblMotDePasse = new JLabel("Mot de passe");
 		lblMotDePasse.setForeground(CharteGraphique.TEXTE);
-		lblMotDePasse.setFont(CharteGraphique.getPolice(19, false));
+		lblMotDePasse.setFont(CharteGraphique.getPolice(17, false));
 		GridBagConstraints gbc_lblMotDePasse = new GridBagConstraints();
 		gbc_lblMotDePasse.anchor = GridBagConstraints.WEST;
 		gbc_lblMotDePasse.insets = new Insets(0, 0, 5, 0);
@@ -146,6 +146,7 @@ public class VueConnexion extends JFrameTheme {
 		
 		// chckbxAfficherMotDePasse, la checkbox pour afficher le mot de passe
 		this.chckbxAfficherMotDePasse = new JCheckBox("Afficher le mot de passe");
+		this.chckbxAfficherMotDePasse.setFocusPainted(false);
 		this.chckbxAfficherMotDePasse.addActionListener(controleur);
 		this.chckbxAfficherMotDePasse.setForeground(CharteGraphique.TEXTE);
 		this.chckbxAfficherMotDePasse.setFont(CharteGraphique.getPolice(16, false));
