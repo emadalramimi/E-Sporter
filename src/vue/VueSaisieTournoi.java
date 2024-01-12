@@ -33,6 +33,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -402,6 +403,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 
 		// Bouton ajouter arbitre
 		btnAjouterArbitre = new JButtonTheme(JButtonTheme.Types.PRIMAIRE,"Ajouter un arbitre");
+		btnAjouterArbitre.setIcon(new ImageIcon(VueSaisieTournoi.class.getResource("/images/buttons/ajouter.png")));
 		btnAjouterArbitre.addActionListener(controleur);
 		btnAjouterArbitre.setBorder(new EmptyBorder(8,8,8,8));
 		gbc.gridx = 2; 
@@ -453,6 +455,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 			btnValider = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Modifier");
 		}
 		btnValider.addActionListener(controleur);
+		btnValider.setIcon(new ImageIcon(VueSaisieTournoi.class.getResource("/images/buttons/valider.png")));
 		btnValider.setMargin(new Insets(5, 10, 5, 10)); 
 		btnValider.setBorder(new EmptyBorder(10,10,10,10));
 		panelBtnValider.add(btnValider);

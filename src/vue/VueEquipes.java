@@ -113,6 +113,7 @@ public class VueEquipes extends JFrameTheme implements RecherchableVue<Equipe> {
 		
 		// btnAjouter, un bouton pour permettre l'ajout d'une équipe
 		btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
+		btnAjouter.setIcon(new ImageIcon(VueEquipes.class.getResource("/images/buttons/ajouter.png")));
 		btnAjouter.addActionListener(controleur);
 		btnAjouter.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelAjouter.add(btnAjouter);

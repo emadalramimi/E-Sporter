@@ -11,6 +11,7 @@ import vue.theme.JButtonTheme;
 import vue.theme.JComboBoxTheme;
 import vue.theme.JFrameTheme;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import java.awt.GridBagLayout;
@@ -138,6 +139,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 			break;
 		}
 		btnAjouter.addActionListener(controleur);
+		btnAjouter.setIcon(new ImageIcon(VueSaisieTournoiEquipeArbitre.class.getResource("/images/buttons/ajouter.png")));
 		GridBagConstraints gbc_btnAjouter = new GridBagConstraints();
 		gbc_btnAjouter.gridx = 1;
 		gbc_btnAjouter.gridy = 2;

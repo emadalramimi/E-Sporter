@@ -109,6 +109,7 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 		
 		// btnAjouter, un bouton pour permettre l'ajout d'une équipe
 		JButtonTheme btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
+		btnAjouter.setIcon(new ImageIcon(VueTournois.class.getResource("/images/buttons/ajouter.png")));
 		btnAjouter.addActionListener(controleur);
 		btnAjouter.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelAjouter.add(btnAjouter);
