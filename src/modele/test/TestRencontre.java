@@ -1,7 +1,7 @@
 package modele.test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,78 +17,73 @@ import modele.metier.Rencontre;
 
 public class TestRencontre {
 
-    private Rencontre rencontre;
-    private Rencontre autreConstructeur;
-    private List<Joueur> joueurs;
+	private Rencontre rencontre;
+	private Rencontre autreConstructeur;
+	private List<Joueur> joueurs;
 
-    @Before
-    public void setUp() {
-    	joueurs = new ArrayList<>(Arrays.asList(
-            new Joueur(1, "Joueur1", 2),
-            new Joueur(2, "Joueur2", 2),
-            new Joueur(3, "Joueur3", 2),
-            new Joueur(4, "Joueur4", 2),
-            new Joueur(5, "Joueur5", 2)
-        ));
-    	
-        Equipe equipeA = new Equipe(50, "Equipe A", Pays.FRANCE, 5, 5, "2020", joueurs);
-        Equipe equipeB = new Equipe(51, "Equipe B", Pays.MAROC, 5, 5, "2020", joueurs);
-        Equipe[] equipes = {equipeA, equipeB};
+	@Before
+	public void setUp() {
+		this.joueurs = new ArrayList<>(Arrays.asList(new Joueur(1, "Joueur1", 2), new Joueur(2, "Joueur2", 2),
+				new Joueur(3, "Joueur3", 2), new Joueur(4, "Joueur4", 2), new Joueur(5, "Joueur5", 2)));
 
-        rencontre = new Rencontre(50, 50, 50, equipes);
-        autreConstructeur = new Rencontre(equipes);
-    }
+		Equipe equipeA = new Equipe(50, "Equipe A", Pays.FRANCE, 5, 5, "2020", this.joueurs);
+		Equipe equipeB = new Equipe(51, "Equipe B", Pays.MAROC, 5, 5, "2020", this.joueurs);
+		Equipe[] equipes = { equipeA, equipeB };
 
-    @Test
-    public void testGetIdRencontre() {
-        assertEquals(rencontre.getIdRencontre(), 50);
-    }
+		this.rencontre = new Rencontre(50, 50, 50, equipes);
+		this.autreConstructeur = new Rencontre(equipes);
+	}
 
-    @Test
-    public void testSetIdRencontre() {
-        rencontre.setIdRencontre(52);
-        assertEquals(rencontre.getIdRencontre(), 52);
-    }
+	@Test
+	public void testGetIdRencontre() {
+		assertEquals(this.rencontre.getIdRencontre(), 50);
+	}
 
-    @Test
-    public void testGetIdPoule() {
-        assertEquals(rencontre.getIdPoule(), 50);
-    }
+	@Test
+	public void testSetIdRencontre() {
+		this.rencontre.setIdRencontre(52);
+		assertEquals(this.rencontre.getIdRencontre(), 52);
+	}
 
-    @Test
-    public void testSetIdPoule() {
-        rencontre.setIdPoule(51);
-        assertEquals(rencontre.getIdPoule(), 51);
-    }
+	@Test
+	public void testGetIdPoule() {
+		assertEquals(this.rencontre.getIdPoule(), 50);
+	}
 
-    @Test
-    public void testGetEquipes() {
-    	Equipe equipeA = new Equipe(50, "Equipe A", Pays.FRANCE, 5, 5, "2020", joueurs);
-        Equipe equipeB = new Equipe(51, "Equipe B", Pays.MAROC, 5, 5, "2020", joueurs);
-        Equipe[] equipes2 = {equipeA, equipeB};
-        assertArrayEquals(rencontre.getEquipes(), equipes2);
-        assertArrayEquals(autreConstructeur.getEquipes(), equipes2);
-    }
+	@Test
+	public void testSetIdPoule() {
+		this.rencontre.setIdPoule(51);
+		assertEquals(this.rencontre.getIdPoule(), 51);
+	}
 
-    @Test
-    public void testSetEquipes() {
-        Equipe equipeC = new Equipe(3, "Equipe1", Pays.CANADA, 2, 2, "Saison 2023", joueurs);
-        Equipe equipeD = new Equipe(4, "Equipe1", Pays.CANADA, 2, 2, "Saison 2023", joueurs);
-        Equipe[] equipes2 = {equipeC, equipeD};
-        rencontre.setEquipes(equipes2);
-        autreConstructeur.setEquipes(equipes2);
-        assertArrayEquals(rencontre.getEquipes(), equipes2);
-        assertArrayEquals(autreConstructeur.getEquipes(), equipes2);
-    }
-    
-    @Test
-    public void testGetIdEquipeGagnante() {
-    	assertEquals(rencontre.getIdEquipeGagnante(),50);
-    }
-    
-    @Test
-    public void testSetIdEquipeGagnante() {
-    	rencontre.setIdEquipeGagnante(51);
-    	assertEquals(rencontre.getIdEquipeGagnante(),51);
-    }
+	@Test
+	public void testGetEquipes() {
+		Equipe equipeA = new Equipe(50, "Equipe A", Pays.FRANCE, 5, 5, "2020", this.joueurs);
+		Equipe equipeB = new Equipe(51, "Equipe B", Pays.MAROC, 5, 5, "2020", this.joueurs);
+		Equipe[] equipes2 = { equipeA, equipeB };
+		assertArrayEquals(this.rencontre.getEquipes(), equipes2);
+		assertArrayEquals(this.autreConstructeur.getEquipes(), equipes2);
+	}
+
+	@Test
+	public void testSetEquipes() {
+		Equipe equipeC = new Equipe(3, "Equipe1", Pays.CANADA, 2, 2, "Saison 2023", this.joueurs);
+		Equipe equipeD = new Equipe(4, "Equipe1", Pays.CANADA, 2, 2, "Saison 2023", this.joueurs);
+		Equipe[] equipes2 = { equipeC, equipeD };
+		this.rencontre.setEquipes(equipes2);
+		this.autreConstructeur.setEquipes(equipes2);
+		assertArrayEquals(this.rencontre.getEquipes(), equipes2);
+		assertArrayEquals(this.autreConstructeur.getEquipes(), equipes2);
+	}
+
+	@Test
+	public void testGetIdEquipeGagnante() {
+		assertEquals(this.rencontre.getIdEquipeGagnante(), 50);
+	}
+
+	@Test
+	public void testSetIdEquipeGagnante() {
+		this.rencontre.setIdEquipeGagnante(51);
+		assertEquals(this.rencontre.getIdEquipeGagnante(), 51);
+	}
 }

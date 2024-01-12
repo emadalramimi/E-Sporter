@@ -1,8 +1,9 @@
 package modele.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,94 +13,95 @@ import modele.metier.Tournoi.Notoriete;
 
 public class TestHistoriquePoints {
 
-    private HistoriquePoints historique;
-    private Tournoi tournoi;
+	private HistoriquePoints historique;
+	private Tournoi tournoi;
 
-    @Before
-    public void setUp() {
-        tournoi = new Tournoi("Tournoi", Notoriete.INTERNATIONAL, 101, 1001, "id", "mdp",new ArrayList<>());
-    }
-    
-    // Test constructeurs
-    @Test
-    public void testConstructeurAvecId() {
-        int idHistoriquePoints = 1;
-        float points = 10.0f;
-        int idEquipe = 2;
+	@Before
+	public void setUp() {
+		this.tournoi = new Tournoi("Tournoi", Notoriete.INTERNATIONAL, 101, 1001, "id", "mdp", new ArrayList<>());
+	}
 
-        historique = new HistoriquePoints(idHistoriquePoints, points, tournoi, idEquipe);
+	// Test constructeurs
+	@Test
+	public void testConstructeurAvecId() {
+		int idHistoriquePoints = 1;
+		float points = 10.0f;
+		int idEquipe = 2;
 
-        assertEquals(idHistoriquePoints, historique.getIdHistoriquePoints());
-        assertEquals(points, historique.getPoints(), 0.0);
-        assertEquals(tournoi, historique.getTournoi());
-        assertEquals(idEquipe, historique.getIdEquipe());
-    }
+		this.historique = new HistoriquePoints(idHistoriquePoints, points, this.tournoi, idEquipe);
 
-    @Test
-    public void testConstructeurSansId() {
-        float points = 20.0f;
-        int idEquipe = 3;
+		assertEquals(idHistoriquePoints, this.historique.getIdHistoriquePoints());
+		assertEquals(points, this.historique.getPoints(), 0.0);
+		assertEquals(this.tournoi, this.historique.getTournoi());
+		assertEquals(idEquipe, this.historique.getIdEquipe());
+	}
 
-        historique = new HistoriquePoints(points, tournoi, idEquipe);
+	@Test
+	public void testConstructeurSansId() {
+		float points = 20.0f;
+		int idEquipe = 3;
 
-        assertEquals(0, historique.getIdHistoriquePoints()); 
-        assertEquals(points, historique.getPoints(), 0.0);
-        assertEquals(tournoi, historique.getTournoi());
-        assertEquals(idEquipe, historique.getIdEquipe());
-    }
+		this.historique = new HistoriquePoints(points, this.tournoi, idEquipe);
 
-    // Test getters
-    @Test
-    public void testGetIdHistoriquePoints() {
-        historique = new HistoriquePoints(1, 10.0f, tournoi, 2);
-        assertEquals(1, historique.getIdHistoriquePoints());
-    }
+		assertEquals(0, this.historique.getIdHistoriquePoints());
+		assertEquals(points, this.historique.getPoints(), 0.0);
+		assertEquals(this.tournoi, this.historique.getTournoi());
+		assertEquals(idEquipe, this.historique.getIdEquipe());
+	}
 
-    @Test
-    public void testGetPoints() {
-        historique = new HistoriquePoints(1, 10.0f, tournoi, 2);
-        assertEquals(10.0f, historique.getPoints(), 0.0);
-    }
+	// Test getters
+	@Test
+	public void testGetIdHistoriquePoints() {
+		this.historique = new HistoriquePoints(1, 10.0f, this.tournoi, 2);
+		assertEquals(1, this.historique.getIdHistoriquePoints());
+	}
 
-    @Test
-    public void testGetTournoi() {
-        historique = new HistoriquePoints(1, 10.0f, tournoi, 2);
-        assertEquals(tournoi, historique.getTournoi());
-    }
+	@Test
+	public void testGetPoints() {
+		this.historique = new HistoriquePoints(1, 10.0f, this.tournoi, 2);
+		assertEquals(10.0f, this.historique.getPoints(), 0.0);
+	}
 
-    @Test
-    public void testGetIdEquipe() {
-        historique = new HistoriquePoints(1, 10.0f, tournoi, 2);
-        assertEquals(2, historique.getIdEquipe());
-    }
+	@Test
+	public void testGetTournoi() {
+		this.historique = new HistoriquePoints(1, 10.0f, this.tournoi, 2);
+		assertEquals(this.tournoi, this.historique.getTournoi());
+	}
 
-    // Test setters
-    @Test
-    public void testSetIdHistoriquePoints() {
-        historique = new HistoriquePoints(30.0f, tournoi, 4);
-        historique.setIdHistoriquePoints(5);
-        assertEquals(5, historique.getIdHistoriquePoints());
-    }
+	@Test
+	public void testGetIdEquipe() {
+		this.historique = new HistoriquePoints(1, 10.0f, this.tournoi, 2);
+		assertEquals(2, this.historique.getIdEquipe());
+	}
 
-    @Test
-    public void testSetPoints() {
-        historique = new HistoriquePoints(30.0f, tournoi, 4);
-        historique.setPoints(40.0f);
-        assertEquals(40.0f, historique.getPoints(), 0.0);
-    }
+	// Test setters
+	@Test
+	public void testSetIdHistoriquePoints() {
+		this.historique = new HistoriquePoints(30.0f, this.tournoi, 4);
+		this.historique.setIdHistoriquePoints(5);
+		assertEquals(5, this.historique.getIdHistoriquePoints());
+	}
 
-    @Test
-    public void testSetTournoi() {
-        historique = new HistoriquePoints(30.0f, tournoi, 4);
-        Tournoi newTournoi = new Tournoi("Tournoi2", Notoriete.INTERNATIONAL, 101, 1001, "id", "mdp", new ArrayList<>());
-        historique.setTournoi(newTournoi);
-        assertEquals(newTournoi, historique.getTournoi());
-    }
+	@Test
+	public void testSetPoints() {
+		this.historique = new HistoriquePoints(30.0f, this.tournoi, 4);
+		this.historique.setPoints(40.0f);
+		assertEquals(40.0f, this.historique.getPoints(), 0.0);
+	}
 
-    @Test
-    public void testSetIdEquipe() {
-        historique = new HistoriquePoints(30.0f, tournoi, 4);
-        historique.setIdEquipe(6);
-        assertEquals(6, historique.getIdEquipe());
-    }
+	@Test
+	public void testSetTournoi() {
+		this.historique = new HistoriquePoints(30.0f, this.tournoi, 4);
+		Tournoi newTournoi = new Tournoi("Tournoi2", Notoriete.INTERNATIONAL, 101, 1001, "id", "mdp",
+				new ArrayList<>());
+		this.historique.setTournoi(newTournoi);
+		assertEquals(newTournoi, this.historique.getTournoi());
+	}
+
+	@Test
+	public void testSetIdEquipe() {
+		this.historique = new HistoriquePoints(30.0f, this.tournoi, 4);
+		this.historique.setIdEquipe(6);
+		assertEquals(6, this.historique.getIdEquipe());
+	}
 }

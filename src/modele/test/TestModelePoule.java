@@ -1,8 +1,8 @@
 package modele.test;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,79 +20,67 @@ import modele.metier.Poule;
 import modele.metier.Rencontre;
 
 public class TestModelePoule {
-	
+
 	private ModelePoule modele;
 	private Poule poule;
 	private List<Rencontre> rencontres;
-	
+
 	@Before
 	public void setUp() throws Exception {
-		modele = new ModelePoule();
+		this.modele = new ModelePoule();
 
-		List<Joueur> joueurs = new ArrayList<>(Arrays.asList(
-		    new Joueur(1, "Joueur1", 2),
-		    new Joueur(2, "Joueur2", 2),
-		    new Joueur(3, "Joueur3", 2),
-		    new Joueur(4, "Joueur4", 2),
-		    new Joueur(5, "Joueur5", 2)
-		));
-    	
-        Equipe equipeA = new Equipe(1, "Equipe A", Pays.FRANCE, 5, 5, "2020", joueurs);
-        Equipe equipeB = new Equipe(2, "Equipe B", Pays.MAROC, 5, 5, "2020", joueurs);
-        Equipe[] equipes = {equipeA, equipeB};
-        rencontres = new ArrayList<>(Arrays.asList(
-        	new Rencontre(1, 1000, 10000, equipes),
-        	new Rencontre(2, 1050, 10050, equipes)
-        ));
-        poule = new Poule(1, false, false, 1, rencontres);
-        }
-	
+		List<Joueur> joueurs = new ArrayList<>(Arrays.asList(new Joueur(1, "Joueur1", 2), new Joueur(2, "Joueur2", 2),
+				new Joueur(3, "Joueur3", 2), new Joueur(4, "Joueur4", 2), new Joueur(5, "Joueur5", 2)));
+
+		Equipe equipeA = new Equipe(1, "Equipe A", Pays.FRANCE, 5, 5, "2020", joueurs);
+		Equipe equipeB = new Equipe(2, "Equipe B", Pays.MAROC, 5, 5, "2020", joueurs);
+		Equipe[] equipes = { equipeA, equipeB };
+		this.rencontres = new ArrayList<>(
+				Arrays.asList(new Rencontre(1, 1000, 10000, equipes), new Rencontre(2, 1050, 10050, equipes)));
+		this.poule = new Poule(1, false, false, 1, this.rencontres);
+	}
+
 	@Test
 	public void testGetTout() throws Exception {
-	    assertNotNull(modele.getTout());
-	    assertEquals(modele.getTout().size(), 2);
-	    List<Poule> poules = modele.getTout();
-	    assertEquals(modele.getTout().size(), poules.size());
+		assertNotNull(this.modele.getTout());
+		assertEquals(this.modele.getTout().size(), 2);
+		List<Poule> poules = this.modele.getTout();
+		assertEquals(this.modele.getTout().size(), poules.size());
 	}
+
 	/*
-	@Test
-	public void testGetParId() throws Exception {
-		assertTrue(modele.getParId(1).isPresent());
-		assertNotNull(modele.getParId(1).orElse(null));
-	}
-	*/
+	 * @Test public void testGetParId() throws Exception {
+	 * assertTrue(modele.getParId(1).isPresent());
+	 * assertNotNull(modele.getParId(1).orElse(null)); }
+	 */
 	@Test
 	public void testAjouterTrue() throws Exception {
-		assertTrue(modele.ajouter(poule));
+		assertTrue(this.modele.ajouter(this.poule));
 	}
-	
+
 	@Test
 	public void testSupprimerTrue() throws Exception {
-		modele.ajouter(poule);
-		assertTrue(modele.supprimer(poule));
+		this.modele.ajouter(this.poule);
+		assertTrue(this.modele.supprimer(this.poule));
 	}
-	
+
 	@Test
 	public void testGetPoulesTournoi() throws Exception {
-		List<Poule> listPoules = new ArrayList<>(Arrays.asList(
-				new Poule(1, true, false, 1, rencontres),
-			new Poule(2, true, true, 1, rencontres)
-		));
-		assertEquals(modele.getPoulesTournoi(poule.getIdTournoi()).toString(), listPoules.toString());
+		List<Poule> listPoules = new ArrayList<>(Arrays.asList(new Poule(1, true, false, 1, this.rencontres),
+				new Poule(2, true, true, 1, this.rencontres)));
+		assertEquals(this.modele.getPoulesTournoi(this.poule.getIdTournoi()).toString(), listPoules.toString());
 	}
-	
+
 	@After
-    public void tearsDown() throws Exception {
-        List<Integer> idAGarder = Arrays.asList(1, 2);
-        modele.getTout().stream()
-                .filter(poule -> !idAGarder.contains(poule.getIdPoule()))
-                .forEach(poule -> {
-                    try {
-                        modele.supprimer(poule);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-    }
-	
+	public void tearsDown() throws Exception {
+		List<Integer> idAGarder = Arrays.asList(1, 2);
+		this.modele.getTout().stream().filter(poule -> !idAGarder.contains(poule.getIdPoule())).forEach(poule -> {
+			try {
+				this.modele.supprimer(poule);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+	}
+
 }

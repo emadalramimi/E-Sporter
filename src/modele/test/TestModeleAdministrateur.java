@@ -12,15 +12,16 @@ public class TestModeleAdministrateur {
 
 	private ModeleAdministrateur modeleAdministrateur;
 	private Administrateur adminToAdd;
-	
-    @Before
-    public void setUp() {
-        this.modeleAdministrateur = new ModeleAdministrateur();
-        this.adminToAdd = new Administrateur(1, "Istrateur", "Admin", "admin", "mdp");
-    }
-    
+
+	@Before
+	public void setUp() {
+		this.modeleAdministrateur = new ModeleAdministrateur();
+		this.adminToAdd = new Administrateur(1, "Istrateur", "Admin", "admin", "mdp");
+	}
+
 	@Test
 	public void testGetParIdentifiant() throws Exception {
-		assertEquals(modeleAdministrateur.getParIdentifiant(adminToAdd.getIdentifiant()).get(),adminToAdd);
+		assertEquals(this.modeleAdministrateur.getParIdentifiant(this.adminToAdd.getIdentifiant()).get(),
+				this.adminToAdd);
 	}
 }

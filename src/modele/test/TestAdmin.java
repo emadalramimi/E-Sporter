@@ -1,6 +1,7 @@
 package modele.test;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,71 +9,71 @@ import modele.metier.Administrateur;
 import modele.metier.Utilisateur.Role;
 
 public class TestAdmin {
-	
+
 	private Administrateur admin;
 
 	@Before
-    public void setUp() {
-		admin = new Administrateur(50, "LeNoir", "Kévin", "LNK", "1234");
-    }
-	
+	public void setUp() {
+		this.admin = new Administrateur(50, "LeNoir", "Kévin", "LNK", "1234");
+	}
+
 	@Test
 	public void testGetIdAdministrateur() {
-		assertEquals(admin.getIdAdministrateur(), 50);
+		assertEquals(this.admin.getIdAdministrateur(), 50);
 	}
-	
+
 	@Test
 	public void testSetIdAdministrateur() {
-		admin.setIdAdministrateur(51);
-		assertEquals(admin.getIdAdministrateur(), 51);
+		this.admin.setIdAdministrateur(51);
+		assertEquals(this.admin.getIdAdministrateur(), 51);
 	}
-	
+
 	@Test
 	public void testGetIdentifiant() {
-		assertEquals(admin.getIdentifiant(), "LNK");
+		assertEquals(this.admin.getIdentifiant(), "LNK");
 	}
-	
+
 	@Test
 	public void testSetIdentifiant() {
-		admin.setIdentifiant("KNL");
-		assertEquals(admin.getIdentifiant(), "KNL");
+		this.admin.setIdentifiant("KNL");
+		assertEquals(this.admin.getIdentifiant(), "KNL");
 	}
-	
+
 	@Test
 	public void testGetMotDePasse() {
-		assertEquals(admin.getMotDePasse(), "1234");
+		assertEquals(this.admin.getMotDePasse(), "1234");
 	}
-	
+
 	@Test
 	public void testSetMotDePasse() {
-		admin.setMotDePasse("0000");
-		assertEquals(admin.getMotDePasse(), "0000");
+		this.admin.setMotDePasse("0000");
+		assertEquals(this.admin.getMotDePasse(), "0000");
 	}
-	
+
 	@Test
 	public void testGetNom() {
-		assertEquals(admin.getNom(), "LeNoir");
+		assertEquals(this.admin.getNom(), "LeNoir");
 	}
-	
+
 	@Test
 	public void testSetNom() {
-		admin.setNom("LeBlanc");
-		assertEquals(admin.getNom(), "LeBlanc");
+		this.admin.setNom("LeBlanc");
+		assertEquals(this.admin.getNom(), "LeBlanc");
 	}
-	
+
 	@Test
 	public void testGetPrenom() {
-		assertEquals(admin.getPrenom(),"Kévin");
+		assertEquals(this.admin.getPrenom(), "Kévin");
 	}
-	
+
 	@Test
 	public void testSetPrenom() {
-		admin.setPrenom("Max");
-		assertEquals(admin.getPrenom(),"Max");
+		this.admin.setPrenom("Max");
+		assertEquals(this.admin.getPrenom(), "Max");
 	}
-	
+
 	@Test
 	public void testGetRole() {
-		assertEquals(admin.getRole(), Role.ADMINISTRATEUR);
+		assertEquals(this.admin.getRole(), Role.ADMINISTRATEUR);
 	}
 }

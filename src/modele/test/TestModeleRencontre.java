@@ -27,7 +27,7 @@ import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
 public class TestModeleRencontre {
-	
+
 	private ModeleRencontre modele;
 	private ModeleTournoi modeleTournoi;
 	private ModeleTournoiOuverture modeleTournoiOuverture;
@@ -35,138 +35,131 @@ public class TestModeleRencontre {
 	private ModeleUtilisateur modeleUtilisateur;
 	private ModeleEquipe modeleEquipe;
 	private Rencontre rencontre;
-	
-    @Before
-    public void setUp() throws Exception {
-        modele = new ModeleRencontre();
-        modeleTournoi = new ModeleTournoi();
-		modeleTournoiOuverture = new ModeleTournoiOuverture();
-        modelePoule = new ModelePoule();
-        modeleUtilisateur = new ModeleUtilisateur();
+	private int rencontresTotal;
 
-        modeleEquipe = new ModeleEquipe();
-		Equipe[] equipes = {
-				modeleEquipe.getParId(1).get(),
-				modeleEquipe.getParId(2).get(),
-		};
-		
+	@Before
+	public void setUp() throws Exception {
+		this.modele = new ModeleRencontre();
+		this.modeleTournoi = new ModeleTournoi();
+		this.modeleTournoiOuverture = new ModeleTournoiOuverture();
+		this.modelePoule = new ModelePoule();
+		this.modeleUtilisateur = new ModeleUtilisateur();
+		this.rencontresTotal = this.modele.getTout().size();
+
+		this.modeleEquipe = new ModeleEquipe();
+		Equipe[] equipes = { this.modeleEquipe.getParId(1).get(), this.modeleEquipe.getParId(2).get(), };
+
 		ModeleArbitre modeleArbitre = new ModeleArbitre();
-		
+
 		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
-	
+
 		// Obtenir le timestamp en secondes
 		long timestampDebut = calendar.getTimeInMillis() / 1000;
-		
+
 		calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
 		calendar.set(Calendar.HOUR_OF_DAY, 24);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
-	
+
 		// Obtenir le timestamp en secondes
 		long timestampFin = calendar.getTimeInMillis() / 1000;
-		
-		Tournoi tournoi = new Tournoi("tournoi", Notoriete.LOCAL, timestampDebut, timestampFin, "a", "m", modeleArbitre.getTout());
-		modeleTournoi.ajouter(tournoi);
 
-		rencontre = new Rencontre(equipes);
-		List<Rencontre> rencontres = new ArrayList<>(Arrays.asList(
-				rencontre));		
+		Tournoi tournoi = new Tournoi("tournoi", Notoriete.LOCAL, timestampDebut, timestampFin, "a", "m",
+				modeleArbitre.getTout());
+		this.modeleTournoi.ajouter(tournoi);
+
+		this.rencontre = new Rencontre(equipes);
+		List<Rencontre> rencontres = new ArrayList<>(Arrays.asList(this.rencontre));
 		Poule poule = new Poule(0, false, false, tournoi.getIdTournoi(), rencontres);
-		modelePoule.ajouter(poule);
-		
-		for (int i=1;i<5;i++)
-		modeleEquipe.inscrireEquipe(modeleEquipe.getParId(i).get(), tournoi);
-		modeleUtilisateur.connecter("admin", "mdp");
-		modeleTournoiOuverture.ouvrirTournoi(modeleTournoi.getParId(tournoi.getIdTournoi()).get());
-	}
-	
-	@Test(expected=TournoiInexistantException.class)
-	public void testResetEquipeGagnanteTournoiExistePas() throws Exception {
-		Equipe[] equipes = {
-				modeleEquipe.getParId(1).get(),
-				modeleEquipe.getParId(2).get(),
-		};
-		Rencontre rencontreTest = new Rencontre(equipes);
-		modele.resetEquipeGagnante(rencontreTest);
+		this.modelePoule.ajouter(poule);
+
+		for (int i = 1; i < 5; i++)
+			this.modeleEquipe.inscrireEquipe(this.modeleEquipe.getParId(i).get(), tournoi);
+		this.modeleUtilisateur.connecter("admin", "mdp");
+		this.modeleTournoiOuverture.ouvrirTournoi(this.modeleTournoi.getParId(tournoi.getIdTournoi()).get());
 	}
 
-	@Test(expected=TournoiClotureException.class)
+	@Test(expected = TournoiInexistantException.class)
+	public void testResetEquipeGagnanteTournoiExistePas() throws Exception {
+		Equipe[] equipes = { this.modeleEquipe.getParId(1).get(), this.modeleEquipe.getParId(2).get(), };
+		Rencontre rencontreTest = new Rencontre(equipes);
+		this.modele.resetEquipeGagnante(rencontreTest);
+	}
+
+	@Test(expected = TournoiClotureException.class)
 	public void testResetEquipeGagnanteTournoiCloture() throws Exception {
-		modele.resetEquipeGagnante(modele.getParId(1).get());
+		this.modele.resetEquipeGagnante(this.modele.getParId(1).get());
 	}
-	
-	@Test(expected=DroitsInsuffisantsException.class)
-	public void testResetEquipeGagnanteMauvaisUtilisateur() throws Exception {		
-		modele.resetEquipeGagnante(rencontre);
+
+	@Test(expected = DroitsInsuffisantsException.class)
+	public void testResetEquipeGagnanteMauvaisUtilisateur() throws Exception {
+		this.modele.resetEquipeGagnante(this.rencontre);
 	}
-	
+
 	@Test
 	public void testResetEquipeGagnante() throws Exception {
-		modeleUtilisateur.deconnecter();
-		modeleUtilisateur.connecter("a", "m");
-		modele.resetEquipeGagnante(rencontre);
+		this.modeleUtilisateur.deconnecter();
+		this.modeleUtilisateur.connecter("a", "m");
+		this.modele.resetEquipeGagnante(this.rencontre);
 	}
-	
+
 	@Test
 	public void testSetEquipeGagnante() throws Exception {
-		Equipe[] equipes = {
-				modeleEquipe.getParId(1).get(),
-				modeleEquipe.getParId(2).get(),
-		};
-		modeleUtilisateur.deconnecter();
-		modeleUtilisateur.connecter("a", "m");
-		modele.setEquipeGagnante(rencontre,equipes[0].getNom());
+		Equipe[] equipes = { this.modeleEquipe.getParId(1).get(), this.modeleEquipe.getParId(2).get(), };
+		this.modeleUtilisateur.deconnecter();
+		this.modeleUtilisateur.connecter("a", "m");
+		this.modele.setEquipeGagnante(this.rencontre, equipes[0].getNom());
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
+
+	@Test(expected = IllegalArgumentException.class)
 	public void testSetEquipeGagnanteInnexistant() throws Exception {
-		modeleUtilisateur.deconnecter();
-		modeleUtilisateur.connecter("a", "m");
-		modele.setEquipeGagnante(rencontre,"fausseEquipe");
+		this.modeleUtilisateur.deconnecter();
+		this.modeleUtilisateur.connecter("a", "m");
+		this.modele.setEquipeGagnante(this.rencontre, "fausseEquipe");
 	}
-	
+
 	@After
-    public void tearsDown() throws Exception {
-		modeleUtilisateur.deconnecter();
-		//Réinitialise les rencontres
-        List<Integer> idREncontreAGarder = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
-        modele.getTout().stream()
-                .filter(rencontre -> !idREncontreAGarder.contains(rencontre.getIdRencontre()))
-                .forEach(rencontre -> {
-                    try {
-                        modele.supprimer(rencontre);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-        });
-        
-        //Réinitialise les tournoi
-        List<Integer> idTournoiAGarder = Arrays.asList(1, 2, 3, 4, 5, 6);
-        modeleTournoi.getTout().stream()
-        	.filter(tournoi -> !idTournoiAGarder.contains(tournoi.getIdTournoi()))
-                .forEach(tournoi -> {
-                    try {
-                    	modeleTournoi.supprimer(tournoi);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-        });
-        
-        //Réinitialise les poules
-        List<Integer> idPouleAGarder = Arrays.asList(1, 2);
-        modelePoule.getTout().stream()
-                .filter(poule -> !idPouleAGarder.contains(poule.getIdPoule()))
-                .forEach(poule -> {
-                    try {
-                        modelePoule.supprimer(poule);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-        });
-    }
+	public void tearsDown() throws Exception {
+		this.modeleUtilisateur.deconnecter();
+		// Réinitialise les rencontres
+		List<Integer> idREncontreAGarder = new ArrayList<>();
+		for (int i = 1; i < this.rencontresTotal; i++) {
+			idREncontreAGarder.add(i);
+		}
+		this.modele.getTout().stream().filter(rencontre -> !idREncontreAGarder.contains(rencontre.getIdRencontre()))
+				.forEach(rencontre -> {
+					try {
+						this.modele.supprimer(rencontre);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
+
+		// Réinitialise les tournoi
+		List<Integer> idTournoiAGarder = Arrays.asList(1, 2, 3, 4, 5, 6);
+		this.modeleTournoi.getTout().stream().filter(tournoi -> !idTournoiAGarder.contains(tournoi.getIdTournoi()))
+				.forEach(tournoi -> {
+					try {
+						this.modeleTournoi.supprimer(tournoi);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
+
+		// Réinitialise les poules
+		List<Integer> idPouleAGarder = Arrays.asList(1, 2);
+		this.modelePoule.getTout().stream().filter(poule -> !idPouleAGarder.contains(poule.getIdPoule()))
+				.forEach(poule -> {
+					try {
+						this.modelePoule.supprimer(poule);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
+	}
 }
