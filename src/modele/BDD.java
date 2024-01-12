@@ -734,107 +734,238 @@ public class BDD {
 		    e.printStackTrace();
 		}
 		
+		//Historique premier tournoi
 		try {
 			st.executeUpdate(
 					"INSERT INTO historiquePoints VALUES ("
 					+ "NEXT VALUE FOR idHistoriquePoints,"
-					+ "50,"
+					+ "2700,"
 					+ "1,"
 					+ "1)"
 			);
+
 			st.executeUpdate(
 					"INSERT INTO historiquePoints VALUES ("
 					+ "NEXT VALUE FOR idHistoriquePoints,"
-					+ "120,"
+					+ "2025,"
+					+ "1,"
+					+ "4)"
+			);
+
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "1305,"
+					+ "1,"
+					+ "3)"
+			);
+
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "1046.25,"
+					+ "1,"
+					+ "2)"
+			);
+
+		} catch (SQLException e) {
+		    System.err.println("Erreur d'insertion de la table historiquePoints du premier tournoi");
+		    e.printStackTrace();
+		}
+
+
+		//Historique deuxième tournoi
+		try {
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "1800,"
 					+ "2,"
 					+ "1)"
 			);
+
 			st.executeUpdate(
 					"INSERT INTO historiquePoints VALUES ("
 					+ "NEXT VALUE FOR idHistoriquePoints,"
-					+ "150,"
+					+ "1350,"
+					+ "2,"
+					+ "4)"
+			);
+
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "870,"
+					+ "2,"
+					+ "3)"
+			);
+
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "697.5,"
+					+ "2,"
+					+ "2)"
+			);
+
+		} catch (SQLException e) {
+		    System.err.println("Erreur d'insertion de la table historiquePoints du deuxième tournoi");
+		    e.printStackTrace();
+		}
+
+		//Historique troisième tournoi
+		try {
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "2700,"
 					+ "3,"
 					+ "1)"
 			);
+
 			st.executeUpdate(
 					"INSERT INTO historiquePoints VALUES ("
 					+ "NEXT VALUE FOR idHistoriquePoints,"
-					+ "70,"
+					+ "2025,"
+					+ "3,"
+					+ "4)"
+			);
+
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "1305,"
+					+ "3,"
+					+ "3)"
+			);
+
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "1046.25,"
+					+ "3,"
+					+ "2)"
+			);
+
+		} catch (SQLException e) {
+		    System.err.println("Erreur d'insertion de la table historiquePoints du troisième tournoi");
+		    e.printStackTrace();
+		}
+
+		//Historique quatrième tournoi
+		try {
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "1800,"
 					+ "4,"
 					+ "1)"
 			);
+
 			st.executeUpdate(
 					"INSERT INTO historiquePoints VALUES ("
 					+ "NEXT VALUE FOR idHistoriquePoints,"
-					+ "180,"
-					+ "5,"
-					+ "2)"
-			);
-			st.executeUpdate(
-					"INSERT INTO historiquePoints VALUES ("
-					+ "NEXT VALUE FOR idHistoriquePoints,"
-					+ "130,"
-					+ "4,"
-					+ "2)"
-			);
-			st.executeUpdate(
-					"INSERT INTO historiquePoints VALUES ("
-					+ "NEXT VALUE FOR idHistoriquePoints,"
-					+ "150,"
-					+ "1,"
-					+ "2)"
-			);
-			st.executeUpdate(
-					"INSERT INTO historiquePoints VALUES ("
-					+ "NEXT VALUE FOR idHistoriquePoints,"
-					+ "70,"
-					+ "3,"
-					+ "3)"
-			);
-			st.executeUpdate(
-					"INSERT INTO historiquePoints VALUES ("
-					+ "NEXT VALUE FOR idHistoriquePoints,"
-					+ "100,"
-					+ "5,"
-					+ "3)"
-			);
-			st.executeUpdate(
-					"INSERT INTO historiquePoints VALUES ("
-					+ "NEXT VALUE FOR idHistoriquePoints,"
-					+ "70,"
-					+ "1,"
-					+ "3)"
-			);
-			st.executeUpdate(
-					"INSERT INTO historiquePoints VALUES ("
-					+ "NEXT VALUE FOR idHistoriquePoints,"
-					+ "110,"
+					+ "1350,"
 					+ "4,"
 					+ "4)"
 			);
+
 			st.executeUpdate(
 					"INSERT INTO historiquePoints VALUES ("
 					+ "NEXT VALUE FOR idHistoriquePoints,"
-					+ "130,"
-					+ "3,"
+					+ "870,"
+					+ "4,"
+					+ "3)"
+			);
+
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "697.5,"
+					+ "4,"
+					+ "2)"
+			);
+
+		} catch (SQLException e) {
+		    System.err.println("Erreur d'insertion de la table historiquePoints du quatrième tournoi");
+		    e.printStackTrace();
+		}
+
+		//Historique cinquième tournoi
+		try {
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "2700,"
+					+ "5,"
+					+ "1)"
+			);
+
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "2025,"
+					+ "5,"
 					+ "4)"
 			);
+
 			st.executeUpdate(
 					"INSERT INTO historiquePoints VALUES ("
 					+ "NEXT VALUE FOR idHistoriquePoints,"
-					+ "70,"
+					+ "1305,"
+					+ "5,"
+					+ "3)"
+			);
+
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "1046.25,"
+					+ "5,"
+					+ "2)"
+			);
+
+		} catch (SQLException e) {
+		    System.err.println("Erreur d'insertion de la table historiquePoints du cinquième tournoi");
+		    e.printStackTrace();
+		}
+
+		//Historique sixième tournoi
+		try {
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "2400,"
+					+ "6,"
+					+ "1)"
+			);
+
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "1800,"
 					+ "6,"
 					+ "4)"
 			);
+
 			st.executeUpdate(
 					"INSERT INTO historiquePoints VALUES ("
 					+ "NEXT VALUE FOR idHistoriquePoints,"
-					+ "120,"
-					+ "1,"
-					+ "4)"
+					+ "1160,"
+					+ "6,"
+					+ "3)"
 			);
+
+			st.executeUpdate(
+					"INSERT INTO historiquePoints VALUES ("
+					+ "NEXT VALUE FOR idHistoriquePoints,"
+					+ "930,"
+					+ "6,"
+					+ "2)"
+			);
+
 		} catch (SQLException e) {
-		    System.err.println("Erreur d'insertion de la table historiquePoints");
+		    System.err.println("Erreur d'insertion de la table historiquePoints du sixième tournoi");
 		    e.printStackTrace();
 		}
 		
