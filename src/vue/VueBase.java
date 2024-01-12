@@ -37,8 +37,9 @@ public class VueBase extends JFrameTheme {
 	
 	/**
 	 * Crée la VueBase
+	 * @throws Exception 
 	 */
-	public VueBase() {
+	public VueBase() throws Exception {
 		this.controleurBase = new ControleurBase(this);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -282,8 +283,9 @@ public class VueBase extends JFrameTheme {
 	/**
 	 * Change l'onglet actuel
 	 * @param menu : onglet à charger
+	 * @throws Exception 
 	 */
-	public void changerOnglet(ControleurBase.Menus menu) {
+	public void changerOnglet(ControleurBase.Menus menu) throws Exception {
 		// Si le menu dispose d'un onglet attribué
 		if(menu.getEstActivable()) {
 			this.contenu.removeAll();
