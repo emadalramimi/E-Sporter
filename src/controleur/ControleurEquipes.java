@@ -134,7 +134,12 @@ public class ControleurEquipes extends ControleurRecherche<Equipe> implements It
 						
 						// Mise à jour du tableau des équipes
 						// PS : À la suppression, pour éviter un bug, nous sommes contraints de recharger la page entière
-						this.vue.getVueBase().changerOnglet(ControleurBase.Menus.EQUIPES);
+						try {
+							this.vue.getVueBase().changerOnglet(ControleurBase.Menus.EQUIPES);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 
 						this.vue.resetFiltres();
 					}

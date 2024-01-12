@@ -186,7 +186,12 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 						this.vue.afficherPopupMessage("Le tournoi a bien été supprimé");
 
 						// Mise à jour du tableau des tournois
-						this.vue.getVueBase().changerOnglet(ControleurBase.Menus.TOURNOIS);
+						try {
+							this.vue.getVueBase().changerOnglet(ControleurBase.Menus.TOURNOIS);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 
 						this.vue.resetChampRecherche();
 						this.vue.resetFiltres();
