@@ -53,6 +53,11 @@ public class ThemeTableCellRendererImpression extends DefaultTableCellRenderer {
 			this.setFont(CharteGraphique.getPolice(10, false));
 		}
 
+		if (value instanceof LabelIcon) {
+			LabelIcon labelIcon = (LabelIcon) value;
+			this.setText(labelIcon.getText());
+		}
+
 		return component;
 	}
 	
