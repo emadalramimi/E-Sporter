@@ -24,8 +24,6 @@ import modele.metier.StatistiquesEquipe;
 import modele.metier.Tournoi;
 
 public class ModeleTournoiCloture {
-	 
-	// TODO FINIR REFACTORING
 
     private ModelePoule modelePoule;
     private ModeleEquipe modeleEquipe;
@@ -104,7 +102,7 @@ public class ModeleTournoiCloture {
 		Map<Equipe, StatistiquesEquipe> mapStatistiquesEquipes = this.modeleTournoi.getResultatsTournoi(tournoi).stream()
 			.collect(Collectors.toMap(StatistiquesEquipe::getEquipe, Function.identity()));
 
-		List<Equipe> equipesSelectionnees = poule.getRencontres().stream()
+		List<Equipe> listeEquipesSelectionnees = poule.getRencontres().stream()
 			.flatMap(rencontre -> Arrays.stream(rencontre.getEquipes()))
 			.collect(Collectors.groupingBy(
 				Function.identity(),
@@ -117,9 +115,8 @@ public class ModeleTournoiCloture {
 			.map(Map.Entry::getKey)
 			.collect(Collectors.toList());
 
-		equipesSelectionnees = selectionnerMeilleuresEquipes(equipesSelectionnees, mapStatistiquesEquipes);
-			
 		// Nous sommes sûrs qu'equipesSelectionnees contient 2 équipes
+		Equipe[] equipesSelectionnees = selectionnerMeilleuresEquipes(listeEquipesSelectionnees, mapStatistiquesEquipes);
 
 		// Clôture de la poule à refactorer
 		PreparedStatement ps = BDD.getConnexion().prepareStatement("update poule set estCloturee = true where idPoule = ?");
@@ -129,7 +126,7 @@ public class ModeleTournoiCloture {
 
 		// Création de la finale
 		List<Rencontre> rencontres = new LinkedList<>();
-		rencontres.add(new Rencontre(equipesSelectionnees.toArray(new Equipe[2])));
+		rencontres.add(new Rencontre(equipesSelectionnees));
 		Poule finale = new Poule(false, true, poule.getIdTournoi(), rencontres);
 		this.modelePoule.ajouter(finale);
 	}
@@ -218,29 +215,33 @@ public class ModeleTournoiCloture {
 		psClotureTournoi.close();
 	}
 
-	private List<Equipe> selectionnerMeilleuresEquipes(List<Equipe> equipes, Map<Equipe, StatistiquesEquipe> mapStatistiquesEquipes) {
+	private Equipe[] selectionnerMeilleuresEquipes(List<Equipe> equipes, Map<Equipe, StatistiquesEquipe> mapStatistiquesEquipes) {
+		// Tri des équipes par points (ordre décroissant) puis par world ranking (ordre croissant)
 		List<Equipe> equipesSelectionnees = equipes.stream()
 			.sorted(Comparator.comparing((Equipe equipe) -> mapStatistiquesEquipes.get(equipe).getPoints())
 				.reversed()
 				.thenComparing(Equipe::getWorldRanking))
 			.collect(Collectors.toList());
 
-		int minWorldRanking = equipesSelectionnees.stream()
-			.limit(2)
-			.mapToInt(Equipe::getWorldRanking)
-			.max()
-			.orElse(Integer.MAX_VALUE);
+		// Obtention des points et le World Ranking de la deuxième équipe dans la liste triée
+		float pointsEquipe2 = mapStatistiquesEquipes.get(equipesSelectionnees.get(1)).getPoints();
+		int worldRankingEquipe2 = equipesSelectionnees.get(1).getWorldRanking();
 
-		equipesSelectionnees = equipesSelectionnees.stream()
-			.filter(equipe -> equipe.getWorldRanking() <= minWorldRanking)
+		// Filtrer les équipes qui ont le même nombre de points ou plus et le même classement mondial ou mieux que la deuxième équipe
+		List<Equipe> equipesFiltrees = equipesSelectionnees.stream()
+			.filter(equipe -> mapStatistiquesEquipes.get(equipe).getPoints() >= pointsEquipe2 && equipe.getWorldRanking() <= worldRankingEquipe2)
 			.collect(Collectors.toList());
-	
-		if (equipesSelectionnees.size() > 2) {
-			Collections.shuffle(equipesSelectionnees);
+
+		// S'il y a plus de 2 équipes après le filtrage, mélanger la liste et sélectionner les 2 premières équipes
+		if (equipesFiltrees.size() >= 2) {
+			Collections.shuffle(equipesFiltrees);
+			equipesSelectionnees = equipesFiltrees.subList(0, 2);
+		} else {
+			// Si moins de 2 équipes restent après le filtrage, sélectionner les 2 premières équipes de la liste initiale
 			equipesSelectionnees = equipesSelectionnees.subList(0, 2);
 		}
-	
-		return equipesSelectionnees;
+
+		return equipesSelectionnees.toArray(new Equipe[2]);
 	}
 
 }

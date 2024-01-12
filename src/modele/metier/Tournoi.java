@@ -375,7 +375,7 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 			return 1;
 		} else {
 			// Si les deux tournois ont le même statut, comparer par date de début et nom
-			if (this.getDateTimeDebut() < tournoi.getDateTimeDebut()) {
+			if (this.getDateTimeDebut() > tournoi.getDateTimeDebut()) {
 				return -1; // Le tournoi actuel commence plus tôt, donc il vient en premier
 			} else if (this.getDateTimeDebut() == tournoi.getDateTimeDebut()) {
 				return this.getNomTournoi().compareTo(tournoi.getNomTournoi()); // Les tournois commencent en même temps, donc on les compare par nom
