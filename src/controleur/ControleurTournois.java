@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import javax.swing.JButton;
 
+import modele.ModeleTournoi;
 import modele.ModeleUtilisateur;
 import modele.DAO.DAOTournoi;
 import modele.DAO.DAOTournoiImpl;
@@ -79,6 +80,7 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 	}
 
 	private VueTournois vue;
+	private ModeleTournoi modeleTournoi;
 	private DAOTournoi daoTournoi;
 	
 	/**
@@ -86,9 +88,10 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 	 * @param vue : vueTournois
 	 */
 	public ControleurTournois(VueTournois vue) {
-		super(new DAOTournoiImpl(), vue);
+		super(new ModeleTournoi(), vue);
 		this.vue = vue;
-		this.daoTournoi = (DAOTournoiImpl) super.getModele();
+		this.modeleTournoi = (ModeleTournoi) super.getModele();
+		this.daoTournoi = new DAOTournoiImpl();
 	}
 	
 	/**
@@ -222,7 +225,7 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 
 			if (this.vue.estCboxFiltre(comboBox)) {
 			 	try {
-					this.vue.remplirTableau(this.daoTournoi.getParFiltrage(this.vue.getNotorieteSelectionnee(), this.vue.getStatutSelectionne()));
+					this.vue.remplirTableau(this.modeleTournoi.getParFiltrage(this.vue.getNotorieteSelectionnee(), this.vue.getStatutSelectionne()));
 				} catch (Exception err) {
 					this.vue.afficherPopupErreur("Une erreur est survenue");
 					throw new RuntimeException("Erreur dans la récupération des tournois");

@@ -37,6 +37,7 @@ public class ModeleTournoiCloture {
     private DAOEquipe daoEquipe;
     private DAOTournoi daoTournoi;
 	private DAOHistoriquePoints daoHistoriquePoints;
+	private ModeleHistoriquePoints modeleHistoriquePoints;
 	private ModeleTournoi modeleTournoi;
 
     public ModeleTournoiCloture() {
@@ -44,6 +45,7 @@ public class ModeleTournoiCloture {
         this.daoEquipe = new DAOEquipeImpl();
         this.daoTournoi = new DAOTournoiImpl();
 		this.daoHistoriquePoints = new DAOHistoriquePointsImpl();
+		this.modeleHistoriquePoints = new ModeleHistoriquePoints();
 		this.modeleTournoi = new ModeleTournoi();
     }
 
@@ -52,7 +54,7 @@ public class ModeleTournoiCloture {
 	 * @throws Exception Erreurs SQL ou de récupération d'équipes
 	 */
 	public void majClassements() throws Exception {
-        Map<Equipe, Integer> classementParEquipe = this.daoHistoriquePoints.getClassementParEquipe();
+        Map<Equipe, Integer> classementParEquipe = this.modeleHistoriquePoints.getClassementParEquipe();
 
 		// Parcourt des équipes pour mettre à jour leur classement
         for(Equipe equipe : classementParEquipe.keySet()) {

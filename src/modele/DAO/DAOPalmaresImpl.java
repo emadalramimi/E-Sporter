@@ -65,12 +65,4 @@ public class DAOPalmaresImpl implements DAOPalmares {
 		return stream.collect(Collectors.toList());
 	}
 
-    @Override
-    public List<Palmares> getParNom(String nom) throws Exception {
-        return this.getClassement()
-            .stream()
-            .filter(palmares -> palmares.getEquipe().getNom().toLowerCase().contains(nom.toLowerCase()))
-            .collect(Collectors.toList());
-    }
-
 }

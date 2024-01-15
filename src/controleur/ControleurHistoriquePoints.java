@@ -9,6 +9,7 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import modele.ModeleEquipe;
 import modele.ModeleImpression;
 import modele.DAO.DAOEquipe;
 import modele.DAO.DAOEquipeImpl;
@@ -27,9 +28,9 @@ public class ControleurHistoriquePoints extends ControleurRecherche<Equipe> impl
     private Equipe equipeSelectionnee;
 
     public ControleurHistoriquePoints(VueHistoriquePoints vue) {
-		super(new DAOEquipeImpl(), vue);
+		super(new ModeleEquipe(), vue);
 		this.vue = vue;
-		this.daoEquipe = (DAOEquipe) super.getModele();
+		this.daoEquipe = new DAOEquipeImpl();
         this.daoHistoriquePoints = new DAOHistoriquePointsImpl();
         this.modeleImpression = new ModeleImpression();
         this.equipeSelectionnee = null;

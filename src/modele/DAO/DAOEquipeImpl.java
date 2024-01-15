@@ -386,19 +386,6 @@ public class DAOEquipeImpl implements DAOEquipe {
 
 		return equipes;
 	}
-	
-	/**
-	 * Méthode qui récupère les équipes contenant la variable nom dans leur nom d'équipe
-	 * @param nom : contenu dans le nom d'une équipe
-	 * @return la liste des équipes contenant la variable nom dans leur nom d'équipe
-	 * @throws Exception Erreur SQL
-	 */
-	@Override
-	public List<Equipe> getParNom(String nom) throws Exception {
-		return this.getEquipesSaison().stream()
-            .filter(e -> e.getNom().toLowerCase().contains(nom.toLowerCase()))
-            .collect(Collectors.toList());
-	}
 
 	/**
 	 * Parcourt les équipes dans la base de données et les formate dans une liste

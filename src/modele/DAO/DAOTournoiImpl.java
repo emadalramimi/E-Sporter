@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import controleur.ControleurTournois;
 import modele.ModeleUtilisateur;
 import modele.metier.Arbitre;
 import modele.metier.Poule;
@@ -27,7 +26,7 @@ public class DAOTournoiImpl implements DAOTournoi {
 
 	private DAOArbitre daoArbitre;
 	private DAOEquipe daoEquipe;
-	private DAOPouleImpl modelePoule;
+	private DAOPoule daoPoule;
 
 	/**
 	 * Construit un modèle tournoi
@@ -35,7 +34,7 @@ public class DAOTournoiImpl implements DAOTournoi {
 	public DAOTournoiImpl() {
 		this.daoArbitre = new DAOArbitreImpl();
 		this.daoEquipe = new DAOEquipeImpl();
-		this.modelePoule = new DAOPouleImpl();
+		this.daoPoule = new DAOPouleImpl();
 	}
 
 	/**
@@ -235,7 +234,7 @@ public class DAOTournoiImpl implements DAOTournoi {
 			
 			// Supprimer les poules
 			for (Poule poule : tournoi.getPoules()) {
-				this.modelePoule.supprimer(poule);
+				this.daoPoule.supprimer(poule);
 			}
 
 			ps = BDD.getConnexion().prepareStatement("delete from tournoi where idTournoi = ?");
@@ -305,64 +304,6 @@ public class DAOTournoiImpl implements DAOTournoi {
 		}
 		return Optional.empty();
 	}
-	
-	/**
-	 * Méthode de recherche de tournois par nom
-	 * @param nom Nom du tournoi
-	 * @return Retourne les tournois par nom
-	 * @throws Exception Exception SQL
-	 */
-	@Override
-	public List<Tournoi> getParNom(String nom) throws Exception {
-        return this.getTout().stream()
-			.filter(t -> t.getNomTournoi().toLowerCase().contains(nom.toLowerCase()))
-			.collect(Collectors.toList());
-    }
-
-	/**
-	 * Méthode de recherche de tournois par filtrage
-	 * @param notoriete Notoriété du tournoi
-	 * @param statut Statut du tournoi
-	 * @return Retourne les tournois par filtrage
-	 * @throws Exception Exception SQL
-	 */
-    @Override
-	public List<Tournoi> getParFiltrage(Notoriete notoriete, ControleurTournois.Statut statut) throws Exception {
-		List<Tournoi> tournois = this.getTout();
-
-		// Si une notoriété est renseignée pour filtrer
-		if (notoriete != null) {
-			tournois = tournois.stream()
-				.filter(t -> t.getNotoriete().equals(notoriete))
-				.collect(Collectors.toList());
-		}
-
-		// Si un statut est renseigné pour filtrer
-		if (statut != null) {
-			switch (statut) {
-				case PHASE_INSCRIPTIONS:
-					// Récupération des tournois en phase d'inscriptions
-					tournois = tournois.stream()
-						.filter(t -> t.getEstCloture() == true && System.currentTimeMillis() / 1000 < t.getDateTimeFin())
-						.collect(Collectors.toList());
-					break;
-				case OUVERT:
-					// Récupération des tournois ouverts
-					tournois = tournois.stream()
-						.filter(t -> t.getEstCloture() == false)
-						.collect(Collectors.toList());
-					break;
-				case CLOTURE:
-					// Récupération des tournois cloturés	
-					tournois = tournois.stream()
-						.filter(t -> t.getEstCloture() == true && System.currentTimeMillis() / 1000 > t.getDateTimeFin())
-						.collect(Collectors.toList());
-					break;
-			}
-		}
-
-		return tournois;
-	}
 
 	/**
 	 * Clôture le tournoi en BDD
@@ -411,7 +352,7 @@ public class DAOTournoiImpl implements DAOTournoi {
 			rs.getBoolean("estCloture"),
 			rs.getString("identifiant"),
 			rs.getString("motDePasse"),
-			DAOTournoiImpl.this.modelePoule.getPoulesTournoi(rs.getInt("idTournoi")),
+			DAOTournoiImpl.this.daoPoule.getPoulesTournoi(rs.getInt("idTournoi")),
 			DAOTournoiImpl.this.daoEquipe.getEquipesTournoi(rs.getInt("idTournoi")),
 			DAOTournoiImpl.this.daoArbitre.getArbitresTournoi(rs.getInt("idTournoi"))
 		);

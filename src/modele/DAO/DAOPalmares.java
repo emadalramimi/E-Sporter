@@ -4,7 +4,7 @@ import java.util.List;
 
 import modele.metier.Palmares;
 
-public interface DAOPalmares extends Recherchable<Palmares> {
+public interface DAOPalmares  {
     
     public List<Palmares> getClassement() throws Exception;
 

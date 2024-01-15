@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.JButton;
 
 import modele.ModeleImpression;
+import modele.ModelePalmares;
 import modele.DAO.DAOPalmares;
 import modele.DAO.DAOPalmaresImpl;
 import modele.metier.Palmares;
@@ -16,13 +17,13 @@ import vue.VuePalmares;
 public class ControleurPalmares extends ControleurRecherche<Palmares> implements ActionListener {
     
     private VuePalmares vue;
-    private DAOPalmares daoPalmares;
     private ModeleImpression modeleImpression;
+    private DAOPalmares daoPalmares;
 
     public ControleurPalmares(VuePalmares vue) {
-        super(new DAOPalmaresImpl(), vue);
+        super(new ModelePalmares(), vue);
         this.vue = vue;
-        this.daoPalmares = (DAOPalmares) super.getModele();
+        this.daoPalmares = new DAOPalmaresImpl();
         this.modeleImpression = new ModeleImpression();
     }
 

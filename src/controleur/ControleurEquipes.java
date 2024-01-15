@@ -13,6 +13,7 @@ import modele.DAO.DAOEquipe;
 import modele.DAO.DAOEquipeImpl;
 import modele.DAO.DAOJoueur;
 import modele.DAO.DAOJoueurImpl;
+import modele.ModeleEquipe;
 import modele.ModeleUtilisateur;
 import modele.metier.Equipe;
 import modele.metier.Utilisateur;
@@ -35,9 +36,9 @@ public class ControleurEquipes extends ControleurRecherche<Equipe> implements It
 	 * @param vue : vueEquipes
 	 */
 	public ControleurEquipes(VueEquipes vue) {
-		super(new DAOEquipeImpl(), vue);
+		super(new ModeleEquipe(), vue);
 		this.vue = vue;
-		this.daoEquipe = (DAOEquipe) super.getModele();
+		this.daoEquipe = new DAOEquipeImpl();
 		this.daoJoueur = new DAOJoueurImpl();
 	}
 	
