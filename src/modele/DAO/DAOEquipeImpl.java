@@ -155,10 +155,6 @@ public class DAOEquipeImpl implements DAOEquipe {
 	 */
 	@Override
 	public boolean modifier(Equipe equipe) throws Exception {
-		if (this.estEquipeInscriteUnTournoiOuvert(equipe)) {
-			throw new InscriptionEquipeTournoiException("Cette équipe est inscrite à un tournoi actuellement ouvert.");
-		}
-		
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("update equipe set nom = ?, pays = ?, worldRanking = ?, classement = ? where idEquipe = ?");
 			// On ne peut pas modifier la saison d'une équipe

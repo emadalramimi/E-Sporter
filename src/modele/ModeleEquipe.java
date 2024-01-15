@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import modele.DAO.DAOEquipe;
 import modele.DAO.DAOEquipeImpl;
 import modele.DAO.Recherchable;
+import modele.exception.InscriptionEquipeTournoiException;
 import modele.metier.Equipe;
 
 public class ModeleEquipe implements Recherchable<Equipe> {
@@ -15,6 +16,14 @@ public class ModeleEquipe implements Recherchable<Equipe> {
     public ModeleEquipe() {
         this.daoEquipe = new DAOEquipeImpl();
     }
+
+	public boolean modifier(Equipe equipe) throws Exception {
+		if (this.daoEquipe.estEquipeInscriteUnTournoiOuvert(equipe)) {
+			throw new InscriptionEquipeTournoiException("Cette équipe est inscrite à un tournoi actuellement ouvert.");
+		}
+
+		return this.daoEquipe.modifier(equipe);
+	}
 
 	/**
 	 * Méthode qui récupère les équipes contenant la variable nom dans leur nom d'équipe
