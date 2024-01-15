@@ -58,6 +58,11 @@ public class TestModeleTournoiCloture {
 	private long getDateCourante() {
 		return (System.currentTimeMillis() / 1000);
 	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testCloturerPouleMatchNonJoue() throws Exception {
+		modele.cloturerPoule(daoTournoi.getParIdentifiant("test").get());
+	}
 	@Test
 	public void testCloturerPouleFinale() throws Exception {
 		
