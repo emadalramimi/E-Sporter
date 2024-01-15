@@ -7,6 +7,7 @@ import controleur.ControleurConnexion;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
 import vue.theme.JPasswordFieldTheme;
 import vue.theme.JTextFieldTheme;
 
@@ -103,9 +104,7 @@ public class VueConnexion extends JFrameTheme {
 		panelChamps.setLayout(gbl_panelChamps);
 		
 		// lblIdentifiant, le label de l'identifiant
-		JLabel lblIdentifiant = new JLabel("Identifiant");
-		lblIdentifiant.setForeground(CharteGraphique.TEXTE);
-		lblIdentifiant.setFont(CharteGraphique.getPolice(17, false));
+		JLabelTheme lblIdentifiant = new JLabelTheme("Identifiant", 17, false);
 		GridBagConstraints gbc_lblIdentifiant = new GridBagConstraints();
 		gbc_lblIdentifiant.anchor = GridBagConstraints.WEST;
 		gbc_lblIdentifiant.insets = new Insets(0, 0, 5, 0);
@@ -124,9 +123,7 @@ public class VueConnexion extends JFrameTheme {
 		panelChamps.add(this.textIdentifiant, gbc_textIdentifiant);
 		
 		// lblMotDePasse, le label du mot de passe
-		JLabel lblMotDePasse = new JLabel("Mot de passe");
-		lblMotDePasse.setForeground(CharteGraphique.TEXTE);
-		lblMotDePasse.setFont(CharteGraphique.getPolice(17, false));
+		JLabelTheme lblMotDePasse = new JLabelTheme("Mot de passe", 17, false);
 		GridBagConstraints gbc_lblMotDePasse = new GridBagConstraints();
 		gbc_lblMotDePasse.anchor = GridBagConstraints.WEST;
 		gbc_lblMotDePasse.insets = new Insets(0, 0, 5, 0);

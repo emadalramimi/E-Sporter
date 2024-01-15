@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.util.Vector;
 
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
+
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -79,15 +81,13 @@ public class VuePoule extends JFrameTheme {
 		panelTitre.setLayout(gbl_panelTitre);
 
 		// Label du titre 
-		JLabel lblTitre;
+		JLabelTheme lblTitre;
 		// Si la poule n'est pas une finale on affiche "Poule de qualifications" sinon on affiche "Poule finale"
 		if (!poule.getEstFinale()) {
-			lblTitre = new JLabel("Poule de qualifications");
+			lblTitre = new JLabelTheme("Poule de qualifications", 19, true);
 		} else {
-			lblTitre = new JLabel("Poule finale");
+			lblTitre = new JLabelTheme("Poule finale", 19, true);
 		}
-		lblTitre.setFont(CharteGraphique.getPolice(19, true));
-		lblTitre.setForeground(CharteGraphique.TEXTE);
 		GridBagConstraints gbc_lblTitre = new GridBagConstraints();
 		gbc_lblTitre.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblTitre.insets = new Insets(0, 0, 5, 5);
@@ -96,9 +96,7 @@ public class VuePoule extends JFrameTheme {
 		panelTitre.add(lblTitre, gbc_lblTitre);
 
 		// Label nom tournoi
-		JLabel lblTournoi = new JLabel(tournoi.getNomTournoi());
-		lblTournoi.setFont(CharteGraphique.getPolice(16, false));
-		lblTournoi.setForeground(CharteGraphique.TEXTE);
+		JLabelTheme lblTournoi = new JLabelTheme(tournoi.getNomTournoi(), 16, false);
 		GridBagConstraints gbc_lblTournoi = new GridBagConstraints();
 		gbc_lblTournoi.insets = new Insets(0, 0, 0, 5);
 		gbc_lblTournoi.anchor = GridBagConstraints.NORTHWEST;
@@ -146,9 +144,7 @@ public class VuePoule extends JFrameTheme {
 			gbc_panelEquipe1.gridy = 0;
 			panelVersus.add(panelLblEquipe1, gbc_panelEquipe1);
 			
-			JLabel lblEquipe1 = new JLabel(equipes[0].getNom());
-			lblEquipe1.setFont(CharteGraphique.getPolice(25, true));
-			lblEquipe1.setForeground(CharteGraphique.TEXTE);
+			JLabelTheme lblEquipe1 = new JLabelTheme(equipes[0].getNom(), 25, true);
 			lblEquipe1.setIcon(equipes[0].getPays().getDrapeauPays());
 			panelLblEquipe1.add(lblEquipe1);
 			
@@ -160,9 +156,7 @@ public class VuePoule extends JFrameTheme {
 			gbc_panelVS.gridy = 0;
 			panelVersus.add(panelVS, gbc_panelVS);
 			
-			JLabel lblVS = new JLabel("VS");
-			lblVS.setFont(CharteGraphique.getPolice(15, false));
-			lblVS.setForeground(CharteGraphique.TEXTE);
+			JLabelTheme lblVS = new JLabelTheme("VS", 15, false);
 			panelVS.add(lblVS);
 			
 			JPanel panelEquipe2 = new JPanel();
@@ -173,9 +167,7 @@ public class VuePoule extends JFrameTheme {
 			gbc_panelEquipe2.gridy = 0;
 			panelVersus.add(panelEquipe2, gbc_panelEquipe2);
 			
-			JLabel lblEquipe2 = new JLabel(equipes[1].getNom());
-			lblEquipe2.setFont(CharteGraphique.getPolice(25, true));
-			lblEquipe2.setForeground(CharteGraphique.TEXTE);
+			JLabelTheme lblEquipe2 = new JLabelTheme(equipes[1].getNom(), 25, true);
 			lblEquipe2.setHorizontalTextPosition(SwingConstants.LEFT);
 			lblEquipe2.setIcon(equipes[1].getPays().getDrapeauPays());
 			panelEquipe2.add(lblEquipe2);

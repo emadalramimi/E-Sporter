@@ -6,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
@@ -22,7 +23,6 @@ import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.util.List;
@@ -54,7 +54,7 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 
 	private JTable table;
 	private DefaultTableModel model;
-	private JLabel lblTournois;
+	private JLabelTheme lblTournois;
     private JTextFieldTheme txtRecherche;
 	private ControleurTournois controleur;
 	private VueSaisieTournoi vueSaisieTournoi;
@@ -92,10 +92,8 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 		panelLabelTournois.setBackground(CharteGraphique.FOND);
 		panelLabelTournois.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		lblTournois = new JLabel("Tournois");
+		lblTournois = new JLabelTheme("Tournois", 30, true);
 		lblTournois.setHorizontalAlignment(SwingConstants.LEFT);
-		lblTournois.setFont(CharteGraphique.getPolice(30, true));
-		lblTournois.setForeground(CharteGraphique.TEXTE);
 		panelLabelTournois.add(lblTournois);
 		
 		// panelAjouter, le panel contenant le bouton btnAjouter

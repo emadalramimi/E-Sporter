@@ -260,9 +260,7 @@ public class VueBase extends JFrameTheme {
 		panelMenuDroite.add(this.lblUtilisateur, gbc_lblUtilisateur);
 		
 		// Label du bouton déconnexion
-		JLabel lblDeconnexion = new JLabel("Déconnexion");
-		lblDeconnexion.setForeground(CharteGraphique.TEXTE);
-		lblDeconnexion.setFont(CharteGraphique.getPolice(11, false));
+		JLabelTheme lblDeconnexion = new JLabelTheme("Déconnexion", 11, false);
 		GridBagConstraints gbc_lblDeconnexion = new GridBagConstraints();
 		gbc_lblDeconnexion.anchor = GridBagConstraints.NORTH;
 		gbc_lblDeconnexion.gridx = 1;

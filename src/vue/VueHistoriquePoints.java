@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import vue.theme.JButtonTheme.Types;
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
@@ -52,7 +53,7 @@ public class VueHistoriquePoints extends JFrameTheme implements RecherchableVue<
 	private DefaultTableModel modelTableEquipes;
 	private DefaultTableModel modelTableHistoriquePoints;
 	private JPanel panel;
-	private JLabel lblHistoriquePoints;
+	private JLabelTheme lblHistoriquePoints;
     private JTextFieldTheme txtRecherche;
     private JButtonTheme btnRecherche;
 	
@@ -82,10 +83,8 @@ public class VueHistoriquePoints extends JFrameTheme implements RecherchableVue<
 		panelLabelHistoriquePoints.setBackground(CharteGraphique.FOND);
 		panelLabelHistoriquePoints.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		lblHistoriquePoints = new JLabel("Historique des points");
+		lblHistoriquePoints = new JLabelTheme("Historique des points", 30, true);
 		lblHistoriquePoints.setHorizontalAlignment(SwingConstants.LEFT);
-		lblHistoriquePoints.setFont(CharteGraphique.getPolice(30, true));
-		lblHistoriquePoints.setForeground(CharteGraphique.TEXTE);
 		panelLabelHistoriquePoints.add(lblHistoriquePoints);
 
 		// panelImprimer, le panel contenant le bouton btnImprimer

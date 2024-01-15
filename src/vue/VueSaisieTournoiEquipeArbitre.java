@@ -6,10 +6,10 @@ import javax.swing.ListCellRenderer;
 import modele.metier.Arbitre;
 import modele.metier.Equipe;
 import modele.metier.Tournoi;
-import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JComboBoxTheme;
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -82,18 +82,16 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 		contentPane.setLayout(gbl_contentPane);
 
 		// Label titre
-		JLabel lblTitre = null;
+		JLabelTheme lblTitre = null;
 		// Selon le type de la liste, on affiche un titre différent
 		switch(this.type) {
 		case EQUIPE:
-			lblTitre = new JLabel("Sélectionner une équipe");
+			lblTitre = new JLabelTheme("Sélectionner une équipe", 19, true);
 			break;
 		case ARBITRE:
-			lblTitre = new JLabel("Sélectionner un arbitre");
+			lblTitre = new JLabelTheme("Sélectionner un arbitre", 19, true);
 			break;
 		}
-		lblTitre.setForeground(CharteGraphique.TEXTE);
-		lblTitre.setFont(CharteGraphique.getPolice(19, true));
 		lblTitre.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_titre = new GridBagConstraints();
 		gbc_titre.gridwidth = 2;

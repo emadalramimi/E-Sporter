@@ -10,6 +10,7 @@ import modele.metier.Tournoi;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.JScrollPaneTheme;
 
@@ -17,7 +18,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.DefaultListCellRenderer;
@@ -35,7 +35,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 
 	private JPanel contentPane;
 	private JButtonTheme btnInscrireEquipe;
-	private JLabel lblTitre;
+	private JLabelTheme lblTitre;
 	
 	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipe;
 	private Tournoi tournoi;
@@ -77,9 +77,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		panelTitre.setLayout(gbl_panelTitre);
 		
 		// Label titre
-		this.lblTitre = new JLabel();
-		this.lblTitre.setFont(CharteGraphique.getPolice(19, true));
-		this.lblTitre.setForeground(CharteGraphique.TEXTE);
+		this.lblTitre = new JLabelTheme("", 19, true);
 		GridBagConstraints gbc_lblTitre = new GridBagConstraints();
 		gbc_lblTitre.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblTitre.insets = new Insets(0, 0, 5, 5);
@@ -88,9 +86,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		panelTitre.add(this.lblTitre, gbc_lblTitre);
 		
 		// Label nom du tournoi
-		JLabel lblTournoi = new JLabel(tournoi.getNomTournoi());
-		lblTournoi.setFont(CharteGraphique.getPolice(16, false));
-		lblTournoi.setForeground(CharteGraphique.TEXTE);
+		JLabelTheme lblTournoi = new JLabelTheme(tournoi.getNomTournoi(), 16, false);
 		GridBagConstraints gbc_lblTournoi = new GridBagConstraints();
 		gbc_lblTournoi.insets = new Insets(0, 0, 0, 5);
 		gbc_lblTournoi.anchor = GridBagConstraints.NORTHWEST;

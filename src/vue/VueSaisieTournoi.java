@@ -16,6 +16,7 @@ import vue.theme.JButtonTheme;
 import vue.theme.JComboBoxTheme;
 import vue.theme.JDatePickerImplTheme;
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.JPasswordFieldTheme;
 import vue.theme.JTextFieldTheme;
@@ -24,7 +25,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 
-import javax.swing.JLabel;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
@@ -108,14 +108,12 @@ public class VueSaisieTournoi extends JFrameTheme {
 		contentPane.add(panelTitre, BorderLayout.NORTH);
 		
 		// Label Titre
-		JLabel lblTitre;
+		JLabelTheme lblTitre;
 		if (tournoi == null) {
-			lblTitre = new JLabel("Création d'un tournoi");
+			lblTitre = new JLabelTheme("Création d'un tournoi", 30, true);
 		} else {
-			lblTitre = new JLabel("Modification d'un tournoi");
+			lblTitre = new JLabelTheme("Modification d'un tournoi", 30, true);
 		}
-		lblTitre.setFont(CharteGraphique.getPolice(30, true));
-		lblTitre.setForeground(CharteGraphique.TEXTE);
 		panelTitre.add(lblTitre);
 
 		// Panel centre
@@ -150,9 +148,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelInfo2.setLayout(gbl_panelInfo2);
 
 		// Label tournoi
-		JLabel lblNom = new JLabel("Nom du tournoi");
-		lblNom.setForeground(CharteGraphique.TEXTE);
-		lblNom.setFont(CharteGraphique.getPolice(19, true));
+		JLabelTheme lblNom = new JLabelTheme("Nom du tournoi", 19, true);
 		GridBagConstraints gbc_lblNom = new GridBagConstraints();
 		gbc_lblNom.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNom.gridx = 0;
@@ -180,9 +176,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		// Label Notoriété
-		JLabel lblNotoriete = new JLabel("Notoriété");
-		lblNotoriete.setForeground(CharteGraphique.TEXTE);
-		lblNotoriete.setFont(CharteGraphique.getPolice(19, true));
+		JLabelTheme lblNotoriete = new JLabelTheme("Notoriété", 19, true);
 		GridBagConstraints gbc_lblNotoriete = new GridBagConstraints();
 		gbc_lblNotoriete.insets = new Insets(0, 0, 3, 0);
 		gbc_lblNotoriete.gridx = 0;
@@ -206,9 +200,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelInfo.add(cboxNotoriete, gbc_cboxNotoriete);
 		
 		// Label identifiant de les arbitres
-		JLabel lblIdentifiant = new JLabel("Identifiant arbitres");
-		lblIdentifiant.setForeground(CharteGraphique.TEXTE);
-		lblIdentifiant.setFont(CharteGraphique.getPolice(19, true));
+		JLabelTheme lblIdentifiant = new JLabelTheme("Identifiant arbitres", 19, true);
 		GridBagConstraints gbc_lblIdentifiant = new GridBagConstraints();
 		gbc_lblIdentifiant.insets = new Insets(0, 0, 5, 0);
 		gbc_lblIdentifiant.gridx = 0;
@@ -227,9 +219,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelInfo2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
 		// Label Mot de passe de les arbitres
-		JLabel lblMDP = new JLabel("Mot de passe arbitres");
-		lblMDP.setForeground(CharteGraphique.TEXTE);
-		lblMDP.setFont(CharteGraphique.getPolice(19, true));
+		JLabelTheme lblMDP = new JLabelTheme("Mot de passe arbitres", 19, true);
 		GridBagConstraints gbc_lblMDP = new GridBagConstraints();
 		gbc_lblMDP.insets = new Insets(0, 0, 5, 0);
 		gbc_lblMDP.gridx = 0;
@@ -247,9 +237,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelInfo.add(motDePasseArbitres, gbc_motDePasseArbitres);
 
 		// Label date debut
-        JLabel lblDateDebut = new JLabel("Date début");
-        lblDateDebut.setForeground(CharteGraphique.TEXTE);
-        lblDateDebut.setFont(CharteGraphique.getPolice(19, true));
+        JLabelTheme lblDateDebut = new JLabelTheme("Date début", 19, true);
         GridBagConstraints gbc_lblDateDebut = new GridBagConstraints();
         gbc_lblDateDebut.insets = new Insets(0, 0, 5, 0);
         gbc_lblDateDebut.gridx = 0;
@@ -284,9 +272,7 @@ public class VueSaisieTournoi extends JFrameTheme {
         panelInfo2.add(panelHeureDebut, gbc_panelHeureDebut);
 
 		// Label heure debut (heures)
-        JLabel lblHeure = new JLabel("Heure : ");
-        lblHeure.setForeground(CharteGraphique.TEXTE);
-        lblHeure.setFont(CharteGraphique.getPolice(14, true));
+        JLabelTheme lblHeure = new JLabelTheme("Heure : ", 14, true);
         panelHeureDebut.add(lblHeure);
 
 		// Spinner heure debut (heures)
@@ -297,9 +283,7 @@ public class VueSaisieTournoi extends JFrameTheme {
         panelHeureDebut.add(spinnerHeuresDebut);
 
 		// Label heure debut (minutes)
-        JLabel lblHeurDebut = new JLabel("h");
-        lblHeurDebut.setForeground(CharteGraphique.TEXTE);
-        lblHeurDebut.setFont(CharteGraphique.getPolice(14, true));
+        JLabelTheme lblHeurDebut = new JLabelTheme("h", 14, true);
         panelHeureDebut.add(lblHeurDebut);
 
 		// Spinner heure debut (minutes)
@@ -308,9 +292,7 @@ public class VueSaisieTournoi extends JFrameTheme {
         panelHeureDebut.add(spinnerMinutesDebut);
 
 		// Label date fin
-        JLabel lblDateFin = new JLabel("Date fin");
-        lblDateFin.setForeground(CharteGraphique.TEXTE);
-        lblDateFin.setFont(CharteGraphique.getPolice(19, true));
+        JLabelTheme lblDateFin = new JLabelTheme("Date fin", 19, true);
         GridBagConstraints gbc_lblDateFin = new GridBagConstraints();
         gbc_lblDateFin.insets = new Insets(0, 0, 5, 0);
         gbc_lblDateFin.gridx = 0;
@@ -341,9 +323,7 @@ public class VueSaisieTournoi extends JFrameTheme {
         panelInfo.add(panelHeureFin, gbc_panelHeureFin);
 
 		// Label heure fin (heures)
-        JLabel lblHeureFin = new JLabel("Heure : ");
-        lblHeureFin.setForeground(CharteGraphique.TEXTE);
-        lblHeureFin.setFont(CharteGraphique.getPolice(14, true));
+        JLabelTheme lblHeureFin = new JLabelTheme("Heure : ", 14, true);
         panelHeureFin.add(lblHeureFin);
 
 		// Spinner heure fin (heures)
@@ -353,9 +333,8 @@ public class VueSaisieTournoi extends JFrameTheme {
         panelHeureFin.add(spinnerHeuresFin);
 
 		// Label heure fin (minutes)
-        JLabel lblHeureFinh = new JLabel("h");
-        lblHeureFinh.setForeground(CharteGraphique.TEXTE);
-        lblHeureFinh.setFont(CharteGraphique.getPolice(14, true));
+        JLabelTheme lblHeureFinh = new JLabelTheme("h", 14, true);
+		
         panelHeureFin.add(lblHeureFinh);
         
 		// Spinner heure fin (minutes)
@@ -382,9 +361,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 		panelArbitres.setBorder(BorderFactory.createEmptyBorder(0, 10, 20, 10));
 		
 		// Label arbitres
-		JLabel lblTitreArbitre = new JLabel("Arbitres désignés");
-		lblTitreArbitre.setForeground(CharteGraphique.TEXTE);
-		lblTitreArbitre.setFont(CharteGraphique.getPolice(19, true));
+		JLabelTheme lblTitreArbitre = new JLabelTheme("Arbitres désignés", 19, true);
 		
 		// Panel titre et bouton
 		JPanel panelTitleAndButton = new JPanel(new GridBagLayout());

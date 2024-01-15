@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
@@ -84,10 +85,8 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		panelLabelPalmares.setBackground(CharteGraphique.FOND);
 		panelLabelPalmares.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JLabel lblPalmares = new JLabel("Palmarès");
+		JLabelTheme lblPalmares = new JLabelTheme("Palmarès", 30, true);
 		lblPalmares.setHorizontalAlignment(SwingConstants.LEFT);
-		lblPalmares.setFont(CharteGraphique.getPolice(30, true));
-		lblPalmares.setForeground(CharteGraphique.TEXTE);
 		panelLabelPalmares.add(lblPalmares);
 
 		// panelImprimer, le panel contenant le bouton btnImprimer

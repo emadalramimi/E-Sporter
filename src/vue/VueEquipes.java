@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import vue.theme.TableButtonsPanel;
 import vue.theme.JButtonTheme.Types;
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.CharteGraphique;
 import vue.theme.TableButtonsCellEditor;
@@ -58,7 +59,7 @@ public class VueEquipes extends JFrameTheme implements RecherchableVue<Equipe> {
 	private JComboBoxTheme<String> cboxPays;
 	private JPanel panel;
 	private JPanel panelLabelEquipe;
-	private JLabel lblEquipes;
+	private JLabelTheme lblEquipes;
 	private JPanel panelAjouter;
 	private JPanel panelTableauFiltres;
     private JTextFieldTheme txtRecherche;
@@ -97,7 +98,7 @@ public class VueEquipes extends JFrameTheme implements RecherchableVue<Equipe> {
 		panelLabelEquipe.setBackground(CharteGraphique.FOND);
 		panelLabelEquipe.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		lblEquipes = new JLabel("Equipes");
+		lblEquipes = new JLabelTheme("Equipes", 30, true);
 		lblEquipes.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEquipes.setFont(CharteGraphique.getPolice(30, true));
 		lblEquipes.setForeground(CharteGraphique.TEXTE);
