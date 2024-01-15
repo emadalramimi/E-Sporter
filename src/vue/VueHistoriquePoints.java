@@ -2,21 +2,17 @@ package vue;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import vue.theme.JButtonTheme.Types;
-import vue.theme.JFrameTheme;
 import vue.theme.JLabelTheme;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
 import vue.theme.JTableThemeImpression;
-import vue.theme.JTextFieldTheme;
 import vue.theme.LabelIcon;
 
 import java.awt.BorderLayout;
@@ -32,7 +28,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -46,20 +41,23 @@ import modele.metier.Pays;
 /**
  * IHM équipes
  */
-public class VueHistoriquePoints extends JFrameTheme implements RecherchableVue<Equipe> {
+public class VueHistoriquePoints extends RecherchableVue<Equipe> {
 	
+	private ControleurHistoriquePoints controleur;
 	private JTable tableEquipes;
 	private JTable tableHistoriquePoints;
 	private DefaultTableModel modelTableEquipes;
 	private DefaultTableModel modelTableHistoriquePoints;
 	private JPanel panel;
 	private JLabelTheme lblHistoriquePoints;
-    private JTextFieldTheme txtRecherche;
-    private JButtonTheme btnRecherche;
+
+	public VueHistoriquePoints() {
+		super();
+		super.setControleur(new ControleurHistoriquePoints(this));
+		this.controleur = (ControleurHistoriquePoints) super.getControleur();
+	}
 	
 	public void afficherVueHistoriquePoints(JPanel contentPane, VueBase vueBase) {
-		ControleurHistoriquePoints controleur = new ControleurHistoriquePoints(this);
-
 		// panel contient tous les éléments de la page
 		panel = new JPanel();
 		panel.setBackground(CharteGraphique.FOND);
@@ -98,7 +96,7 @@ public class VueHistoriquePoints extends JFrameTheme implements RecherchableVue<
 		
 		// btnImprimer, un bouton pour permettre l'ajout d'une équipe
 		JButtonTheme btnImprimer = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Imprimer l'historique sélectionné");
-		btnImprimer.addActionListener(controleur);
+		btnImprimer.addActionListener(this.controleur);
 		btnImprimer.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelImprimer.add(btnImprimer);
 		
@@ -112,16 +110,8 @@ public class VueHistoriquePoints extends JFrameTheme implements RecherchableVue<
 		panel.add(panelTableauFiltres, gbc_panelRecherche);
 		panelTableauFiltres.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		
-		// Champ de recherche
-		txtRecherche = new JTextFieldTheme(20);
-		txtRecherche.addKeyListener(controleur);
-		txtRecherche.setColumns(20);
-		panelTableauFiltres.add(txtRecherche);
-		
-		// Bouton de recherche
-		btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/actions/rechercher.png")));
-		btnRecherche.addActionListener(controleur);
-		panelTableauFiltres.add(btnRecherche);
+		// Panel de recherche
+		panelTableauFiltres.add(super.getPanelRecherche());
 		
 		JPanel panelTableaux = new JPanel();
 		panelTableaux.setBackground(CharteGraphique.FOND);
@@ -146,7 +136,7 @@ public class VueHistoriquePoints extends JFrameTheme implements RecherchableVue<
 		panelTableaux.add(scrollPaneTableEquipes, gbc_scrollPaneTableEquipes);
 
 		this.tableEquipes = new JTableTheme();
-		this.tableEquipes.getSelectionModel().addListSelectionListener(controleur);
+		this.tableEquipes.getSelectionModel().addListSelectionListener(this.controleur);
 		this.tableEquipes.setModel(this.modelTableEquipes);
 		scrollPaneTableEquipes.setViewportView(this.tableEquipes);
 		
@@ -190,7 +180,7 @@ public class VueHistoriquePoints extends JFrameTheme implements RecherchableVue<
 		gbc_panelTableaux.gridy = 2;
 		panel.add(panelTableaux, gbc_panelTableaux);
 		
-		this.remplirTableau(controleur.getEquipes());
+		this.remplirTableau(this.controleur.getEquipes());
 	}
 	
 	/**
@@ -227,45 +217,6 @@ public class VueHistoriquePoints extends JFrameTheme implements RecherchableVue<
 	        return label;
 	    }
 		
-	}
-	
-	/**
-	 * @param bouton
-	 * @return true si bouton est le bouton de recherche, false sinon
-	 */
-	@Override
-	public boolean estBoutonRecherche(JButton bouton) {
-		if(bouton instanceof JButtonTheme && bouton.getIcon() != null) {
-			String iconeRecherche = VueTournois.class.getResource("/images/actions/rechercher.png").toString();
-		    return bouton.getIcon().toString().equals(iconeRecherche);
-		}
-		return false;
-	}
-	
-	/**
-	 * @param champ
-	 * @return true si le champ est le champ de recherche, false sinon
-	 */
-	@Override
-	public boolean estChampRecherche(JTextField champ) {
-		return this.txtRecherche.equals(champ);
-	}
-
-	/**
-	 * Remet à zéro le champ de recherche
-	 */
-	@Override
-	public void resetChampRecherche() {
-		this.txtRecherche.setText("");
-	}
-	
-	/**
-	 * Retourne la requête de recherche tapée par l'utilisateur
-	 * @return la requête de recherche tapée par l'utilisateur
-	 */
-	@Override
-	public String getRequeteRecherche() {
-		return this.txtRecherche.getText().trim();
 	}
 
 	/**

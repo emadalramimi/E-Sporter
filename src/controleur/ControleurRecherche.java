@@ -8,15 +8,15 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 
 import modele.DAO.Recherchable;
-import vue.RecherchableVue;
+import vue.RecherchableVueInterface;
 import vue.theme.JFrameTheme;
 
 public class ControleurRecherche<T> extends KeyAdapter {
     
     private Recherchable<T> modele;
-    private RecherchableVue<T> vue;
+    private RecherchableVueInterface<T> vue;
 
-    public ControleurRecherche(Recherchable<T> modele, RecherchableVue<T> vue) {
+    public ControleurRecherche(Recherchable<T> modele, RecherchableVueInterface<T> vue) {
         this.modele = modele;
         this.vue = vue;
     }

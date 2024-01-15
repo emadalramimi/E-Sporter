@@ -10,11 +10,9 @@ import vue.theme.JLabelTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
-import vue.theme.JTextFieldTheme;
 import vue.theme.TableButtonsCellEditor;
 import vue.theme.TableButtonsPanel;
 import vue.theme.ThemeTableCellRenderer;
-import vue.theme.JButtonTheme.Types;
 import vue.theme.JComboBoxTheme;
 
 import java.awt.BorderLayout;
@@ -22,7 +20,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import java.util.List;
@@ -38,7 +35,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -50,12 +46,11 @@ import modele.metier.Tournoi.Notoriete;
 /**
  * Vue de la liste des tournois
  */
-public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi> {
+public class VueTournois extends RecherchableVue<Tournoi> {
 
 	private JTable table;
 	private DefaultTableModel model;
 	private JLabelTheme lblTournois;
-    private JTextFieldTheme txtRecherche;
 	private ControleurTournois controleur;
 	private VueSaisieTournoi vueSaisieTournoi;
 	private VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi;
@@ -64,9 +59,14 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 	private VueBase vueBase;
 	private JComboBoxTheme<String> cboxNotoriete;
 	private JComboBoxTheme<String> cboxStatuts;
+
+	public VueTournois() {
+		super();
+		super.setControleur(new ControleurTournois(this));
+		this.controleur = (ControleurTournois) super.getControleur();
+	}
 	
 	public void afficherVueTournois(JPanel contentPane, VueBase vueBase) {
-		this.controleur = new ControleurTournois(this);
 		this.vueBase = vueBase;
 		
 		// panel contient tous les éléments de la page
@@ -123,20 +123,8 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
 		panel.add(panelTableauFiltres, gbc_panelRecherche);
 		panelTableauFiltres.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		
-		// Champ de recherche
-		JPanel panelRecherche = new JPanel();
-		panelRecherche.setBackground(CharteGraphique.PRIMAIRE);
-		panelRecherche.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		txtRecherche = new JTextFieldTheme(20);
-		txtRecherche.addKeyListener(controleur);
-		txtRecherche.setColumns(20);
-		panelRecherche.add(txtRecherche);
-
-		// Bouton de recherche
-		JButtonTheme btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/actions/rechercher.png")));
-		btnRecherche.addActionListener(controleur);
-		panelRecherche.add(btnRecherche);
-		panelTableauFiltres.add(panelRecherche);
+		// Panel de recherche
+		panelTableauFiltres.add(super.getPanelRecherche());
 
 		// Création du panel contenant les filtres
 		JPanel panelChoixFiltres = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
@@ -319,47 +307,6 @@ public class VueTournois extends JFrameTheme implements RecherchableVue<Tournoi>
         
         return choix == 0;
     }
-	
-	/**
-	 * Fonction pour vérifier si le bouton est le bouton de recherche
-	 * @param bouton : le bouton à vérifier
-	 * @return true si bouton est le bouton de recherche, false sinon
-	 */
-	@Override
-	public boolean estBoutonRecherche(JButton bouton) {
-		if(bouton instanceof JButtonTheme && bouton.getIcon() != null) {
-			String iconeRecherche = VueTournois.class.getResource("/images/actions/rechercher.png").toString();
-		    return bouton.getIcon().toString().equals(iconeRecherche);
-		}
-		return false;
-	}
-	
-	/**
-	 * Fonction pour vérifier si le champ est le champ de recherche
-	 * @param champ : le champ à vérifier
-	 * @return true si le champ est le champ de recherche, false sinon
-	 */
-	@Override
-	public boolean estChampRecherche(JTextField champ) {
-		return this.txtRecherche.equals(champ);
-	}
-
-	/**
-	 * Remet à zéro le champ de recherche
-	 */
-	@Override
-	public void resetChampRecherche() {
-		this.txtRecherche.setText("");
-	}
-	
-	/**
-	 * Retourne la requête de recherche tapée par l'utilisateur
-	 * @return la requête de recherche tapée par l'utilisateur
-	 */
-	@Override
-	public String getRequeteRecherche() {
-		return this.txtRecherche.getText().trim();
-	}
 
 	/**
 	 * Remet à zéro les filtres

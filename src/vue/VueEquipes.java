@@ -2,12 +2,10 @@ package vue;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import vue.theme.TableButtonsPanel;
-import vue.theme.JButtonTheme.Types;
 import vue.theme.JFrameTheme;
 import vue.theme.JLabelTheme;
 import vue.theme.JOptionPaneTheme;
@@ -17,7 +15,6 @@ import vue.theme.JButtonTheme;
 import vue.theme.JComboBoxTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
-import vue.theme.JTextFieldTheme;
 import vue.theme.LabelIcon;
 
 import java.awt.BorderLayout;
@@ -37,7 +34,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -51,7 +47,7 @@ import modele.metier.Pays;
 /**
  * IHM équipes
  */
-public class VueEquipes extends JFrameTheme implements RecherchableVue<Equipe> {
+public class VueEquipes extends RecherchableVue<Equipe> {
 	
 	private JTable table;
 	private DefaultTableModel model;
@@ -62,17 +58,20 @@ public class VueEquipes extends JFrameTheme implements RecherchableVue<Equipe> {
 	private JLabelTheme lblEquipes;
 	private JPanel panelAjouter;
 	private JPanel panelTableauFiltres;
-    private JTextFieldTheme txtRecherche;
-    private JButtonTheme btnRecherche;
 	private JScrollPaneTheme scrollPaneEquipes;
 
 	private ControleurEquipes controleur;
 	private VueSaisieEquipe vueSaisieEquipe;
 	private VueJoueurs vueJoueurs;
 	private VueBase vueBase;
+
+	public VueEquipes() {
+		super();
+		super.setControleur(new ControleurEquipes(this));
+		this.controleur = (ControleurEquipes) super.getControleur();
+	}
 	
 	public void afficherVueEquipe(JPanel contentPane, VueBase vueBase) {
-		this.controleur = new ControleurEquipes(this);
 		this.vueBase = vueBase;
 		
 		// panel contient tous les éléments de la page
@@ -130,16 +129,8 @@ public class VueEquipes extends JFrameTheme implements RecherchableVue<Equipe> {
 		panel.add(panelTableauFiltres, gbc_panelRecherche);
 		panelTableauFiltres.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		
-		// Champ de recherche
-		txtRecherche = new JTextFieldTheme(20);
-		txtRecherche.addKeyListener(controleur);
-		txtRecherche.setColumns(20);
-		panelTableauFiltres.add(txtRecherche);
-		
-		// Bouton de recherche
-		btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/actions/rechercher.png")));
-		btnRecherche.addActionListener(controleur);
-		panelTableauFiltres.add(btnRecherche);
+		// Panel de recherche
+		panelTableauFiltres.add(super.getPanelRecherche());
 		
 		// Panel contenant les filtres
 		JPanel panelChoixFiltres = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
@@ -295,44 +286,6 @@ public class VueEquipes extends JFrameTheme implements RecherchableVue<Equipe> {
         
         return choix == 0;
     }
-	
-	/**
-	 * @param bouton
-	 * @return true si bouton est le bouton de recherche, false sinon
-	 */
-	@Override
-	public boolean estBoutonRecherche(JButton bouton) {
-		if(bouton instanceof JButtonTheme && bouton.getIcon() != null) {
-			String iconeRecherche = VueTournois.class.getResource("/images/actions/rechercher.png").toString();
-		    return bouton.getIcon().toString().equals(iconeRecherche);
-		}
-		return false;
-	}
-	
-	/**
-	 * @param champ
-	 * @return true si le champ est le champ de recherche, false sinon
-	 */
-	@Override
-	public boolean estChampRecherche(JTextField champ) {
-		return this.txtRecherche.equals(champ);
-	}
-
-	/**
-	 * Remet à zéro le champ de recherche
-	 */
-	@Override
-	public void resetChampRecherche() {
-		this.txtRecherche.setText("");
-	}
-	
-	/**
-	 * @return la requête de recherche tapée par l'utilisateur
-	 */
-	@Override
-	public String getRequeteRecherche() {
-		return this.txtRecherche.getText().trim();
-	}
 
 	@Override
 	public void resetFiltres() {
