@@ -13,6 +13,9 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import modele.metier.Palmares;
 
+/**
+ * Implémentation DAO pour la classe Palmares
+ */
 public class DAOPalmaresImpl implements DAOPalmares {
     
     private DAOEquipe daoEquipe;

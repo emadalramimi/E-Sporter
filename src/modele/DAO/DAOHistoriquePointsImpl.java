@@ -16,6 +16,9 @@ import java.util.stream.StreamSupport;
 
 import modele.metier.HistoriquePoints;
 
+/**
+ * Implémentation DAO pour la classe HistoriquePoints
+ */
 public class DAOHistoriquePointsImpl implements DAOHistoriquePoints {
     
     private DAOTournoi daoTournoi;
@@ -34,6 +37,12 @@ public class DAOHistoriquePointsImpl implements DAOHistoriquePoints {
 		throw new UnsupportedOperationException("Méthode non implémentée");
 	}
 
+    /**
+     * Ajoute un historiquePoints dans la BDD
+     * @param historiquePoints : historiquePoints à ajouter
+     * @return Retourne true si l'historiquePoints a été ajouté, false sinon
+     * @throws Exception Exception SQL
+     */
     @Override
     public boolean ajouter(HistoriquePoints historiquePoints) throws Exception {
         try {
@@ -68,6 +77,12 @@ public class DAOHistoriquePointsImpl implements DAOHistoriquePoints {
 		throw new UnsupportedOperationException("Méthode non implémentée");
 	}
     
+    /**
+     * Récupère tous les historiquePoints d'une équipe
+     * @param idEquipe Identifiant de l'équipe
+     * @return Liste des historiquePoints d'une équipe
+     * @throws Exception Erreur de lecture de la base de données
+     */
     @Override
     public List<HistoriquePoints> getParEquipe(int idEquipe) throws Exception {
 		PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from historiquePoints where idEquipe = ?");

@@ -17,14 +17,14 @@ import modele.metier.Poule;
 import modele.metier.Rencontre;
 
 /**
- * Modèle poule
+ * Implémentation DAO pour la classe Poule
  */
 public class DAOPouleImpl implements DAOPoule {
 	
 	private DAORencontre daoRencontre;
 
 	/**
-	 * Construit un modèle poule
+	 * Construit un objet Poule à partir d'un ResultSet
 	 */
 	public DAOPouleImpl() {
 		this.daoRencontre = new DAORencontreImpl();

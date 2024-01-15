@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import modele.metier.Tournoi;
 
+/** 
+ * Interface DAO pour la classe Tournoi
+ */
 public interface DAOTournoi extends DAO<Tournoi, Integer> {
     
     public Optional<Tournoi> getParIdentifiant(String identifiant) throws SQLException;
