@@ -1,8 +1,5 @@
 package modele;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,6 +12,14 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import modele.DAO.DAOEquipe;
+import modele.DAO.DAOEquipeImpl;
+import modele.DAO.DAOHistoriquePoints;
+import modele.DAO.DAOHistoriquePointsImpl;
+import modele.DAO.DAOPoule;
+import modele.DAO.DAOPouleImpl;
+import modele.DAO.DAOTournoi;
+import modele.DAO.DAOTournoiImpl;
 import modele.metier.EnumPoints;
 import modele.metier.Equipe;
 import modele.metier.HistoriquePoints;
@@ -23,57 +28,46 @@ import modele.metier.Rencontre;
 import modele.metier.StatistiquesEquipe;
 import modele.metier.Tournoi;
 
+/**
+ * Modèle servant à la clôture d'un tournoi et à la mise à jour du classement
+ */
 public class ModeleTournoiCloture {
 
-    private ModelePoule modelePoule;
-    private ModeleEquipe modeleEquipe;
-    private ModeleTournoi modeleTournoi;
-	private ModeleHistoriquePoints modeleHistoriquePoints;
+    private DAOPoule daoPoule;
+    private DAOEquipe daoEquipe;
+    private DAOTournoi daoTournoi;
+	private DAOHistoriquePoints daoHistoriquePoints;
+	private ModeleTournoi modeleTournoi;
 
     public ModeleTournoiCloture() {
-        this.modelePoule = new ModelePoule();
-        this.modeleEquipe = new ModeleEquipe();
-        this.modeleTournoi = new ModeleTournoi();
-		this.modeleHistoriquePoints = new ModeleHistoriquePoints();
+        this.daoPoule = new DAOPouleImpl();
+        this.daoEquipe = new DAOEquipeImpl();
+        this.daoTournoi = new DAOTournoiImpl();
+		this.daoHistoriquePoints = new DAOHistoriquePointsImpl();
+		this.modeleTournoi = new ModeleTournoi();
     }
 
+	/**
+	 * Met à jour le classement des équipes
+	 * @throws Exception Erreurs SQL ou de récupération d'équipes
+	 */
 	public void majClassements() throws Exception {
-        Map<Equipe, Integer> classementParEquipe = new HashMap<>();
-        for (Equipe equipe : this.modeleEquipe.getEquipesSaison()) {
-            classementParEquipe.put(equipe, 1000);
-        }
+        Map<Equipe, Integer> classementParEquipe = this.daoHistoriquePoints.getClassementParEquipe();
 
-        PreparedStatement psTotalPointsParEquipe = BDD.getConnexion().prepareStatement("select e.idEquipe, sum(hp.points) from equipe e, historiquePoints hp where e.idEquipe = hp.idEquipe and e.saison = ? group by e.idEquipe order by sum(hp.points) desc");
-		psTotalPointsParEquipe.setInt(1, LocalDate.now().getYear());
-		ResultSet rs = psTotalPointsParEquipe.executeQuery();
-
-        int classement = 0;
-        int pointsPrecedents = -1;
-        while (rs.next()) {
-            Equipe equipe = this.modeleEquipe.getParId(rs.getInt(1)).orElse(null);
-            int points = rs.getInt(2);
-
-            if (points != pointsPrecedents) {
-                classement++;
-            }
-
-            classementParEquipe.put(equipe, classement);
-            pointsPrecedents = points;
-        }
-
-        rs.close();
-
+		// Parcourt des équipes pour mettre à jour leur classement
         for(Equipe equipe : classementParEquipe.keySet()) {
             equipe.setClassement(classementParEquipe.get(equipe));
             
-            PreparedStatement psClassement = BDD.getConnexion().prepareStatement("update equipe set classement = ? where idEquipe = ?");
-            psClassement.setInt(1, classementParEquipe.get(equipe));
-            psClassement.setInt(2, equipe.getIdEquipe());
-            psClassement.executeUpdate();
-            psClassement.close();
+            this.daoEquipe.modifier(equipe);
         }
     }
     
+	/**
+	 * Clôture la poule actuelle du tournoi, si la poule est la finale, le tournoi est aussi clôturé
+	 * @param tournoi Le tournoi dont la poule actuelle est à clôturer
+	 * @throws IllegalArgumentException Si la poule est déjà clôturée ou si tous les matchs n'ont pas été joués
+	 * @throws Exception Erreurs SQL ou de récupération d'équipes
+	 */
     public void cloturerPoule(Tournoi tournoi) throws Exception {
 		Poule poule = tournoi.getPouleActuelle();
 
@@ -88,6 +82,8 @@ public class ModeleTournoiCloture {
 			}
 		}
 
+		// Clôture de la poule des qualifications si la poule n'est pas la finale (détermination des finalistes)
+		// Ou clôture de la poule finale si elle l'est (et donc clôture du tournoi + mise à jour classement)
 		if(poule.getEstFinale() == false) {
 			this.cloturerPouleQualifications(tournoi);
 		} else {
@@ -95,129 +91,54 @@ public class ModeleTournoiCloture {
 		}
 	}
 
+	/**
+	 * Clôture la poule des qualifications et crée la poule finale
+	 * @param tournoi Le tournoi dont la poule des qualifications (poule actuelle) est à cloturer
+	 * @throws Exception Erreurs SQL ou de récupération d'équipes
+	 * @throws IllegalArgumentException Si la poule qualifications est déjà clôturée
+	 */
 	private void cloturerPouleQualifications(Tournoi tournoi) throws Exception {
 		Poule poule = tournoi.getPouleActuelle();
 
-		// Récupération des points de toutes les équipes
+		if(poule.getEstFinale()) {
+			throw new IllegalArgumentException("Poule de qualifications déjà cloturée");
+		}
+
+		// Détermination des équipes pour la finale
+		// Il s'agit forcément d'un tableau de 2 équipes !
+		Equipe[] equipesSelectionnees = this.getEquipesSelectionneesPourFinale(tournoi);
+
+		this.daoPoule.cloturerPoule(poule);
+
+		// Création de la finale
+		List<Rencontre> rencontres = new LinkedList<>();
+		rencontres.add(new Rencontre(equipesSelectionnees));
+		Poule finale = new Poule(false, true, poule.getIdTournoi(), rencontres);
+		this.daoPoule.ajouter(finale);
+	}
+
+	/**
+	 * Détermine les équipes qui vont jouer la finale (meilleurs points ou world ranking si égal ou au hasard si égaux)
+	 * @param tournoi Le tournoi en question pour le calcul des points
+	 * @return Les équipes sélectionnées pour la finale, il s'agit forcément d'un tableau de 2 équipes
+	 * @throws Exception Erreurs SQL ou de récupération d'équipes
+	 */
+	private Equipe[] getEquipesSelectionneesPourFinale(Tournoi tournoi) throws Exception {
+		Poule poule = tournoi.getPouleActuelle();
+
+		// Récupération des points des matchs de toutes les équipes (3 gagné, 1 perdu)
 		Map<Equipe, StatistiquesEquipe> mapStatistiquesEquipes = this.modeleTournoi.getResultatsTournoi(tournoi).stream()
 			.collect(Collectors.toMap(StatistiquesEquipe::getEquipe, Function.identity()));
 
-		List<Equipe> listeEquipesSelectionnees = poule.getRencontres().stream()
+		// Tri des équipes par nombre de points décroissant puis par world ranking croissant
+		List<Equipe> equipesSelectionnees = poule.getRencontres().stream()
 			.flatMap(rencontre -> Arrays.stream(rencontre.getEquipes()))
 			.collect(Collectors.groupingBy(
 				Function.identity(),
 				Collectors.summingDouble(equipe -> mapStatistiquesEquipes.get(equipe).getPoints())
 			))
 			.entrySet().stream()
-			.sorted(Comparator.<Map.Entry<Equipe, Double>>comparingDouble(Map.Entry::getValue)
-				.thenComparing((entry1, entry2) -> Integer.compare(entry2.getKey().getWorldRanking(), entry1.getKey().getWorldRanking()))
-				.reversed())
 			.map(Map.Entry::getKey)
-			.collect(Collectors.toList());
-
-		// Nous sommes sûrs qu'equipesSelectionnees contient 2 équipes
-		Equipe[] equipesSelectionnees = selectionnerMeilleuresEquipes(listeEquipesSelectionnees, mapStatistiquesEquipes);
-
-		// Clôture de la poule à refactorer
-		PreparedStatement ps = BDD.getConnexion().prepareStatement("update poule set estCloturee = true where idPoule = ?");
-		ps.setInt(1, poule.getIdPoule());
-		ps.executeUpdate();
-		ps.close();
-
-		// Création de la finale
-		List<Rencontre> rencontres = new LinkedList<>();
-		rencontres.add(new Rencontre(equipesSelectionnees));
-		Poule finale = new Poule(false, true, poule.getIdTournoi(), rencontres);
-		this.modelePoule.ajouter(finale);
-	}
-
-	private void cloturerPouleFinale(Tournoi tournoi) throws Exception {
-		Poule poule = tournoi.getPouleActuelle();
-
-		Map<Equipe, Float> nbPointsParEquipe = new HashMap<>();
-
-		// Récupération de tous les matchs du tournoi
-		List<Rencontre> rencontresTournoi = tournoi.getPoules().stream()
-			.flatMap(pouleTournoi -> pouleTournoi.getRencontres().stream())
-			.collect(Collectors.toList());
-
-		// Nombre de points par match
-		for(Rencontre rencontre : rencontresTournoi) {
-			for(Equipe equipe : rencontre.getEquipes()) {
-				// Si l'équipe n'est pas dans la map, on l'ajoute
-				nbPointsParEquipe.putIfAbsent(equipe, 0F);
-
-				// Si l'équipe a gagné, on ajoute 25 points, sinon 15 point
-				if (equipe.getIdEquipe() == rencontre.getIdEquipeGagnante()) {
-					nbPointsParEquipe.put(equipe, nbPointsParEquipe.get(equipe) + EnumPoints.MATCH_VICTOIRE.getPoints());
-				} else {
-					nbPointsParEquipe.put(equipe, nbPointsParEquipe.get(equipe) + EnumPoints.MATCH_DEFAITE.getPoints());
-				}
-			}
-		}
-
-		// Trier par classement des équipes
-		// Convertir la map en une liste d'entrées (clé-valeur)
-		List<Map.Entry<Equipe, Float>> listePoints = new ArrayList<>(nbPointsParEquipe.entrySet());
-
-		// Trier la liste selon le nombre de points décroissant
-		listePoints.sort(Map.Entry.<Equipe, Float>comparingByValue().reversed());
-
-		for (int i = 0; i < listePoints.size(); i++) {
-			Map.Entry<Equipe, Float> entry = listePoints.get(i);
-
-			entry.setValue(entry.getValue() * 10F);
-
-			switch (i) {
-				case 0:
-					entry.setValue(entry.getValue() + EnumPoints.CLASSEMENT_PREMIER.getPoints());
-					break;
-				case 1:
-					entry.setValue(entry.getValue() + EnumPoints.CLASSEMENT_DEUXIEME.getPoints());
-					break;
-				case 2:
-					entry.setValue(entry.getValue() + EnumPoints.CLASSEMENT_TROISIEME.getPoints());
-					break;
-				case 3:
-					entry.setValue(entry.getValue() + EnumPoints.CLASSEMENT_QUATRIEME.getPoints());
-					break;
-			}
-
-			entry.setValue(entry.getValue() * tournoi.getNotoriete().getMultiplicateur());
-		}
-
-		Map<Equipe, Float> nbPointsParEquipeClasse = listePoints.stream()
-			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (ancienneValeur, nouvelleValeur) -> ancienneValeur, LinkedHashMap::new));
-
-		// Création des historiques de points
-		for (Map.Entry<Equipe, Float> entry : nbPointsParEquipeClasse.entrySet()) {
-			this.modeleHistoriquePoints.ajouter(new HistoriquePoints(entry.getValue(), tournoi, entry.getKey().getIdEquipe()));
-		}
-
-		this.majClassements();
-
-		// Fermeture de la poule et du tournoi
-		PreparedStatement psCloturePoule = BDD.getConnexion().prepareStatement("update poule set estCloturee = true where idPoule = ?");
-		psCloturePoule.setInt(1, poule.getIdPoule());
-		psCloturePoule.executeUpdate();
-		psCloturePoule.close();
-
-		PreparedStatement psClotureTournoi;
-		if(tournoi.getDateTimeFin() > System.currentTimeMillis() / 1000) {
-			psClotureTournoi = BDD.getConnexion().prepareStatement("update tournoi set estCloture = true, dateFin = ? where idTournoi = ?");
-			psClotureTournoi.setInt(1, (int) (System.currentTimeMillis() / 1000));
-			psClotureTournoi.setInt(2, tournoi.getIdTournoi());
-		} else {
-			psClotureTournoi = BDD.getConnexion().prepareStatement("update tournoi set estCloture = true where idTournoi = ?");
-			psClotureTournoi.setInt(1, tournoi.getIdTournoi());
-		}
-		psClotureTournoi.executeUpdate();
-		psClotureTournoi.close();
-	}
-
-	private Equipe[] selectionnerMeilleuresEquipes(List<Equipe> equipes, Map<Equipe, StatistiquesEquipe> mapStatistiquesEquipes) {
-		// Tri des équipes par points (ordre décroissant) puis par world ranking (ordre croissant)
-		List<Equipe> equipesSelectionnees = equipes.stream()
 			.sorted(Comparator.comparing((Equipe equipe) -> mapStatistiquesEquipes.get(equipe).getPoints())
 				.reversed()
 				.thenComparing(Equipe::getWorldRanking))
@@ -242,6 +163,115 @@ public class ModeleTournoiCloture {
 		}
 
 		return equipesSelectionnees.toArray(new Equipe[2]);
+	}
+
+	/**
+	 * Clôture la poule finale et le tournoi
+	 * @param tournoi Le tournoi dont la poule finale (poule actuelle) est à cloturer
+	 * @throws Exception Erreurs SQL ou de récupération d'équipes
+	 * @throws IllegalArgumentException Si la poule finale est déjà clôturée
+	 */
+	private void cloturerPouleFinale(Tournoi tournoi) throws Exception {
+		Poule poule = tournoi.getPouleActuelle();
+
+		if(poule.getEstCloturee() || tournoi.getEstCloture()) {
+			throw new IllegalArgumentException("Poule finale déjà cloturée");
+		}
+
+		// Obtention du nombre de points de chaque équipe (25 match gagné, 15 perdu)
+		Map<Equipe, Float> nbPointsParEquipe = this.getNombrePointsMatchsParEquipe(tournoi);
+
+		// Ajout du nombre de points de chaque équipe selon son classement (1er, 2e, 3e, 4e) et multiplication par notoriété
+		Map<Equipe, Float> nbPointsParEquipeClasse = this.getNombrePointsParClassement(nbPointsParEquipe, tournoi.getNotoriete());
+
+		// Création des historiques de points
+		for (Map.Entry<Equipe, Float> entry : nbPointsParEquipeClasse.entrySet()) {
+			this.daoHistoriquePoints.ajouter(new HistoriquePoints(entry.getValue(), tournoi, entry.getKey().getIdEquipe()));
+		}
+
+		// Mise à jour du classement des équipes
+		this.majClassements();
+
+		// Fermeture de la poule et du tournoi
+		this.daoPoule.cloturerPoule(poule);
+		this.daoTournoi.cloturerTournoi(tournoi);
+	}
+
+	/**
+	 * Retourne le nombre de points de chaque équipe selon le nombre de matchs gagnés ou perdus
+	 * @param tournoi Le tournoi en question pour le calcul des points
+	 * @return Le nombre de points de chaque équipe selon le nombre de matchs gagnés ou perdus
+	 */
+	private Map<Equipe, Float> getNombrePointsMatchsParEquipe(Tournoi tournoi) {
+		Map<Equipe, Float> nbPointsParEquipe = new HashMap<>();
+
+		// Récupération de tous les matchs du tournoi
+		List<Rencontre> rencontresTournoi = tournoi.getPoules().stream()
+			.flatMap(pouleTournoi -> pouleTournoi.getRencontres().stream())
+			.collect(Collectors.toList());
+
+		for(Rencontre rencontre : rencontresTournoi) {
+			for(Equipe equipe : rencontre.getEquipes()) {
+				// Si l'équipe n'est pas dans la map, on l'ajoute
+				nbPointsParEquipe.putIfAbsent(equipe, 0F);
+
+				// Si l'équipe a gagné, on ajoute 25 points, sinon 15 point
+				if (equipe.getIdEquipe() == rencontre.getIdEquipeGagnante()) {
+					nbPointsParEquipe.put(equipe, nbPointsParEquipe.get(equipe) + EnumPoints.MATCH_VICTOIRE.getPoints());
+				} else {
+					nbPointsParEquipe.put(equipe, nbPointsParEquipe.get(equipe) + EnumPoints.MATCH_DEFAITE.getPoints());
+				}
+			}
+		}
+
+		return nbPointsParEquipe;
+	}
+
+	/**
+	 * Retourne le nombre de points de chaque équipe selon son classement (1er, 2e, 3e, 4e) et multiplication par notoriété
+	 * @param nbPointsParEquipe Le nombre de points de chaque équipe selon le nombre de matchs gagnés ou perdus
+	 * @param notoriete La notoriété du tournoi
+	 * @return Le nombre de points de chaque équipe selon son classement (1er, 2e, 3e, 4e) et multiplication par notoriété
+	 */
+	private Map<Equipe, Float> getNombrePointsParClassement(Map<Equipe, Float> nbPointsParEquipe, Tournoi.Notoriete notoriete) {
+		// On convertit la map en une liste d'entrées (clé-valeur) pour la trier
+		List<Map.Entry<Equipe, Float>> listePoints = new ArrayList<>(nbPointsParEquipe.entrySet());
+
+		// On trie la liste selon le nombre de points décroissant
+		listePoints.sort(Map.Entry.<Equipe, Float>comparingByValue().reversed());
+
+		// On parcours la liste de points (triés)
+		for (int i = 0; i < listePoints.size(); i++) {
+			Map.Entry<Equipe, Float> entry = listePoints.get(i);
+
+			// On multiplie le nombre de points par 10
+			entry.setValue(entry.getValue() * 10F);
+
+			// Puis on ajoute des points selon le classement de l'équipe
+			switch (i) {
+				case 0:
+					entry.setValue(entry.getValue() + EnumPoints.CLASSEMENT_PREMIER.getPoints());
+					break;
+				case 1:
+					entry.setValue(entry.getValue() + EnumPoints.CLASSEMENT_DEUXIEME.getPoints());
+					break;
+				case 2:
+					entry.setValue(entry.getValue() + EnumPoints.CLASSEMENT_TROISIEME.getPoints());
+					break;
+				case 3:
+					entry.setValue(entry.getValue() + EnumPoints.CLASSEMENT_QUATRIEME.getPoints());
+					break;
+			}
+
+			// Finalement, on multiplie selon la notoriété
+			entry.setValue(entry.getValue() * notoriete.getMultiplicateur());
+		}
+
+		// On retransforme en map
+		Map<Equipe, Float> nbPointsParEquipeClasse = listePoints.stream()
+			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (ancienneValeur, nouvelleValeur) -> ancienneValeur, LinkedHashMap::new));
+
+		return nbPointsParEquipeClasse;
 	}
 
 }
