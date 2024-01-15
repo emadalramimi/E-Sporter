@@ -54,6 +54,10 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 	
 	/**
 	 * Effectue un traitement au clic d'un élément de la fenêtre
+	 * Quand on clique sur le bouton "Ajouter un arbitre" : on affiche la vue de saisie d'un arbitre
+	 * Quand on clique sur le bouton "Valider" : on ajoute le tournoi
+	 * Quand on clique sur le bouton "Modifier" : on modifie le tournoi
+	 * Quand on clique sur le bouton "Annuler" : on ferme la fenêtre
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {

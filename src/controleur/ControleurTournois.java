@@ -95,7 +95,13 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 	}
 	
 	/**
-	 * Quand on effectue une action sur un élément de VueTournois
+	 * Effectue un traitement au clic d'un élément de la fenêtre
+	 * Quand on clique sur le bouton "Ajouter" : on affiche la vue de saisie d'un tournoi
+	 * Quand on clique sur le bouton "Voir" : on affiche la vue de saisie d'un tournoi
+	 * Quand on clique sur le bouton "Modifier" : on affiche la vue de saisie d'un tournoi
+	 * Quand on clique sur le bouton "Supprimer" : on supprime le tournoi
+	 * Quand on clique sur le bouton "Rechercher" : on recherche les tournois
+	 * Quand on clique sur le bouton "Réinitialiser" : on réinitialise les filtres
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {

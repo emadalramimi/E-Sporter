@@ -112,7 +112,10 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
     }
 
     /**
-     * Quand on clique sur un bouton
+     * Effectue un traitement lors de la sélection d'un élément de la fenêtre
+     * Quand on clique sur le bouton "Clôturer la poule" : on clôture la poule
+     * Quand on clique sur le bouton "État des résultats" : on affiche la vue d'état des résultats du tournoi
+     * Quand on clique sur le bouton "Fermer" : on ferme la fenêtre
      */
     @Override
     public void actionPerformed(ActionEvent e) {

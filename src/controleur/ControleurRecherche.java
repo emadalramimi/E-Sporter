@@ -21,6 +21,9 @@ public class ControleurRecherche<T> extends KeyAdapter {
         this.vue = vue;
     }
 
+	/**
+	 * Quand on clique sur le bouton "Rechercher"
+	 */
 	public void traitementClicBoutonRecherche(ActionEvent e) {
 		if(e.getSource() instanceof JButton) {
 			JButton bouton = (JButton) e.getSource();
@@ -67,7 +70,7 @@ public class ControleurRecherche<T> extends KeyAdapter {
 
 	/**
 	 * Effectue une recherche de requête requeteRecherche
-	 * @param requeteRecherche
+	 * @param requeteRecherche  Requête de recherche
 	 */
 	private void rechercher(String requeteRecherche) {
 		try {
@@ -81,6 +84,10 @@ public class ControleurRecherche<T> extends KeyAdapter {
 		}
 	}
 
+	/**
+	 * Récupère le modèle
+	 * @return modele
+	 */
     public Recherchable<T> getModele() {
         return this.modele;
     }

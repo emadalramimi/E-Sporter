@@ -36,8 +36,8 @@ public class ControleurEtatResultatsTournoi implements ActionListener {
     }
 
     /**
-     * Quand on clique sur le bouton "Fermer"
-     * On ferme la fenêtre
+     * Quand on clique sur le bouton "Fermer" : on ferme la fenêtre
+     * Quand on clique sur le bouton "Imprimer" : on imprime les résultats du tournoi
      */
     @Override
     public void actionPerformed(ActionEvent e) {

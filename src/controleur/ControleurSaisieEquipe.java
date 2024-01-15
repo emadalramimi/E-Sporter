@@ -43,7 +43,11 @@ public class ControleurSaisieEquipe implements ActionListener {
 	}
 
 	/**
-	 * Au clic du bouton valider ou modifier
+	 * Effectue un traitement au clic d'un élément de la fenêtre
+	 * Quand on clique sur le bouton "Valider" : on ajoute l'équipe
+	 * Quand on clique sur le bouton "Modifier" : on modifie l'équipe
+	 * Quand on clique sur le bouton "Annuler" : on ferme la fenêtre
+	 * 
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {

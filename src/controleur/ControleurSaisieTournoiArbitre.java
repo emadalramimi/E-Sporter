@@ -33,6 +33,8 @@ public class ControleurSaisieTournoiArbitre implements ActionListener {
 
 	/**
 	 * Effectue un traitement au clic d'un élément de la fenêtre
+	 * Quand on clique sur le bouton "Ajouter l'arbitre" : on ajoute l'arbitre au tournoi
+	 * Quand on clique sur le bouton "Annuler" : on ferme la fenêtre
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {

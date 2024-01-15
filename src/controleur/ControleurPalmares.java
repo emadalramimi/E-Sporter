@@ -26,7 +26,10 @@ public class ControleurPalmares extends ControleurRecherche<Palmares> implements
         this.daoPalmares = new DAOPalmaresImpl();
         this.modeleImpression = new ModeleImpression();
     }
-
+    /**
+     * Méthode de gestion des événements de clic sur un bouton
+     * Quand on clique sur le bouton "Imprimer" : on imprime le palmarès
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         super.traitementClicBoutonRecherche(e);
@@ -42,6 +45,10 @@ public class ControleurPalmares extends ControleurRecherche<Palmares> implements
         }
     }
 
+    /**
+     * Méthode de récupération du classement des palmarès
+     * @return Palmarès classé
+     */
     public List<Palmares> getClassement() {
         try {
             return daoPalmares.getClassement();

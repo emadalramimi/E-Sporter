@@ -36,6 +36,9 @@ public class ControleurHistoriquePoints extends ControleurRecherche<Equipe> impl
         this.equipeSelectionnee = null;
     }
 
+    /**
+     * Méthode de gestion des événements de sélection d'une ligne du tableau des équipes
+     */
     @Override
     public void valueChanged(ListSelectionEvent e) {
         JTable tableEquipes = this.vue.getTableEquipes();
@@ -56,6 +59,11 @@ public class ControleurHistoriquePoints extends ControleurRecherche<Equipe> impl
         }
     }
 
+    /**
+     * Méthode de gestion des événements de clic sur les boutons
+     * Quand on clique sur le bouton "Imprimer l'historique sélectionné" : on imprime l'historique sélectionné
+     * Quand on clique sur le bouton "Fermer" : on ferme la fenêtre
+     */
     public void actionPerformed(ActionEvent e) {
 		super.traitementClicBoutonRecherche(e);
 
