@@ -140,8 +140,7 @@ public class Poule {
 	    return this.idPoule == poule.getIdPoule()
 	            && this.idTournoi == poule.getIdTournoi()
 	            && this.estCloturee == poule.getEstCloturee()
-	            && this.estFinale == poule.getEstFinale()
-	     	    && this.rencontres == poule.getRencontres();
+	            && this.estFinale == poule.getEstFinale();
 	}
 	
 	/**

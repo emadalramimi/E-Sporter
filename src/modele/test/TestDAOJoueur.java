@@ -13,15 +13,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import modele.ModeleEquipe;
-import modele.ModeleJoueur;
+import modele.DAO.DAOEquipe;
+import modele.DAO.DAOEquipeImpl;
+import modele.DAO.DAOJoueur;
+import modele.DAO.DAOJoueurImpl;
+
 import modele.metier.Equipe;
 import modele.metier.Joueur;
 import modele.metier.Pays;
 
-public class TestModeleJoueur {
+public class TestDAOJoueur {
 
-	private ModeleJoueur modele;
+	private DAOJoueur daoJoueur;
 
 	private Joueur joueur;
 	private Equipe equipe;
@@ -30,7 +33,7 @@ public class TestModeleJoueur {
 
 	@Before
 	public void setUp() throws Exception {
-		this.modele = new ModeleJoueur();
+		this.daoJoueur = new DAOJoueurImpl();
 		this.joueur = new Joueur(54, "Kévin", 1);
 		this.joueurs = new ArrayList<>(Arrays.asList(new Joueur(38, "joueur", 6), new Joueur(39, "joueur", 6),
 				new Joueur(40, "joueur", 6), new Joueur(41, "joueur", 6), new Joueur(42, "joueur", 6)));
@@ -39,9 +42,9 @@ public class TestModeleJoueur {
 
 	@Test
 	public void testGetTout() throws Exception {
-		assertNotNull(this.modele.getTout());
-		List<Joueur> listTest = this.modele.getTout();
-		assertEquals(listTest.size(), this.modele.getTout().size());
+		assertNotNull(this.daoJoueur.getTout());
+		List<Joueur> listTest = this.daoJoueur.getTout();
+		assertEquals(listTest.size(), this.daoJoueur.getTout().size());
 		List<Joueur> listJoueurs = new ArrayList<>();
 
 		for (int i = 0; i < listTest.size(); i++) {
@@ -57,40 +60,45 @@ public class TestModeleJoueur {
 
 	@Test
 	public void testGetParId() throws Exception {
-		this.modele.ajouter(this.joueur);
+		this.daoJoueur.ajouter(this.joueur);
 		assertNotNull(this.joueur);
-		Optional<Joueur> retrievedJoueur = this.modele.getParId(this.joueur.getIdJoueur());
+		Optional<Joueur> retrievedJoueur = this.daoJoueur.getParId(this.joueur.getIdJoueur());
 		assertEquals(this.joueur, retrievedJoueur.get());
 	}
 
 	@Test
 	public void testAjouterTrue() throws Exception {
-		assertTrue(this.modele.ajouter(this.joueur));
+		assertTrue(this.daoJoueur.ajouter(this.joueur));
 	}
 
 	@Test
 	public void testModifierTrue() throws Exception {
-		this.modele.ajouter(this.joueur);
-		assertTrue(this.modele.modifier(new Joueur(50, "joueurModif", 1)));
+		this.daoJoueur.ajouter(this.joueur);
+		assertTrue(this.daoJoueur.modifier(new Joueur(50, "joueurModif", 1)));
 	}
 
 	@Test
 	public void testSupprimerJoueursParEquipe() throws Exception {
-		assertTrue(this.modele.supprimerJoueursEquipe(this.equipe.getIdEquipe()));
+		assertTrue(this.daoJoueur.supprimerJoueursEquipe(this.equipe.getIdEquipe()));
+	}
+	
+	@Test (expected = UnsupportedOperationException.class)
+	public void testSupprimer() throws Exception {
+		daoJoueur.supprimer(joueur);
 	}
 
 	@Test
 	public void testGetListeJoueursParId() throws Exception {
-		ModeleEquipe modeleEquipe = new ModeleEquipe();
-		modeleEquipe.ajouter(this.equipe);
-		assertEquals(5, this.modele.getListeJoueursParId(this.equipe.getIdEquipe()).size());
-		assertEquals(this.modele.getListeJoueursParId(this.equipe.getIdEquipe()).toString(), this.joueurs.toString());
+		DAOEquipe daoEquipe = new DAOEquipeImpl();
+		daoEquipe.ajouter(this.equipe);
+		assertEquals(5, this.daoJoueur.getListeJoueursParId(this.equipe.getIdEquipe()).size());
+		assertEquals(this.daoJoueur.getListeJoueursParId(this.equipe.getIdEquipe()).toString(), this.joueurs.toString());
 	}
 
 	@After
 	public void tearsDown() throws Exception {
-		this.modele.supprimerJoueursEquipe(6);
-		ModeleEquipe modeleEquipe = new ModeleEquipe();
-		modeleEquipe.supprimer(this.equipe);
+		this.daoJoueur.supprimerJoueursEquipe(6);
+		DAOEquipe daoEquipe = new DAOEquipeImpl();
+		daoEquipe.supprimer(this.equipe);
 	}
 }

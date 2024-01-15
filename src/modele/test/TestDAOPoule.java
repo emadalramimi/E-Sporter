@@ -12,22 +12,23 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import modele.ModelePoule;
+import modele.DAO.DAOPoule;
+import modele.DAO.DAOPouleImpl;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
 import modele.metier.Pays;
 import modele.metier.Poule;
 import modele.metier.Rencontre;
 
-public class TestModelePoule {
+public class TestDAOPoule {
 
-	private ModelePoule modele;
+	private DAOPoule daoPoule;
 	private Poule poule;
 	private List<Rencontre> rencontres;
 
 	@Before
 	public void setUp() throws Exception {
-		this.modele = new ModelePoule();
+		this.daoPoule = new DAOPouleImpl();
 
 		List<Joueur> joueurs = new ArrayList<>(Arrays.asList(new Joueur(1, "Joueur1", 2), new Joueur(2, "Joueur2", 2),
 				new Joueur(3, "Joueur3", 2), new Joueur(4, "Joueur4", 2), new Joueur(5, "Joueur5", 2)));
@@ -42,10 +43,10 @@ public class TestModelePoule {
 
 	@Test
 	public void testGetTout() throws Exception {
-		assertNotNull(this.modele.getTout());
-		assertEquals(this.modele.getTout().size(), 2);
-		List<Poule> poules = this.modele.getTout();
-		assertEquals(this.modele.getTout().size(), poules.size());
+		assertNotNull(this.daoPoule.getTout());
+		assertEquals(this.daoPoule.getTout().size(), 12);
+		List<Poule> poules = this.daoPoule.getTout();
+		assertEquals(this.daoPoule.getTout().size(), poules.size());
 	}
 
 	/*
@@ -55,28 +56,38 @@ public class TestModelePoule {
 	 */
 	@Test
 	public void testAjouterTrue() throws Exception {
-		assertTrue(this.modele.ajouter(this.poule));
+		assertTrue(this.daoPoule.ajouter(this.poule));
 	}
 
 	@Test
 	public void testSupprimerTrue() throws Exception {
-		this.modele.ajouter(this.poule);
-		assertTrue(this.modele.supprimer(this.poule));
+		this.daoPoule.ajouter(this.poule);
+		assertTrue(this.daoPoule.supprimer(this.poule));
 	}
 
 	@Test
 	public void testGetPoulesTournoi() throws Exception {
 		List<Poule> listPoules = new ArrayList<>(Arrays.asList(new Poule(1, true, false, 1, this.rencontres),
 				new Poule(2, true, true, 1, this.rencontres)));
-		assertEquals(this.modele.getPoulesTournoi(this.poule.getIdTournoi()).toString(), listPoules.toString());
+		assertEquals(this.daoPoule.getPoulesTournoi(this.poule.getIdTournoi()), listPoules);
+	}
+	
+	@Test (expected = UnsupportedOperationException.class)
+	public void testGetParId() throws Exception {
+		daoPoule.getParId(0);
+	}
+	
+	@Test (expected = UnsupportedOperationException.class)
+	public void testModifier() throws Exception {
+		daoPoule.modifier(poule);
 	}
 
 	@After
 	public void tearsDown() throws Exception {
-		List<Integer> idAGarder = Arrays.asList(1, 2);
-		this.modele.getTout().stream().filter(poule -> !idAGarder.contains(poule.getIdPoule())).forEach(poule -> {
+		List<Integer> idAGarder = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+		this.daoPoule.getTout().stream().filter(poule -> !idAGarder.contains(poule.getIdPoule())).forEach(poule -> {
 			try {
-				this.modele.supprimer(poule);
+				this.daoPoule.supprimer(poule);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

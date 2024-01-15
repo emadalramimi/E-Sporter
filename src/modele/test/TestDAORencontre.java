@@ -10,46 +10,52 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import modele.ModeleArbitre;
-import modele.ModeleEquipe;
-import modele.ModelePoule;
-import modele.ModeleRencontre;
-import modele.ModeleTournoi;
 import modele.ModeleTournoiOuverture;
 import modele.ModeleUtilisateur;
+import modele.DAO.DAOArbitre;
+import modele.DAO.DAOArbitreImpl;
+import modele.DAO.DAOEquipe;
+import modele.DAO.DAOEquipeImpl;
+import modele.DAO.DAOPoule;
+import modele.DAO.DAOPouleImpl;
+import modele.DAO.DAORencontre;
+import modele.DAO.DAORencontreImpl;
+import modele.DAO.DAOTournoi;
+import modele.DAO.DAOTournoiImpl;
 import modele.exception.DroitsInsuffisantsException;
 import modele.exception.TournoiClotureException;
 import modele.exception.TournoiInexistantException;
 import modele.metier.Equipe;
+import modele.metier.Pays;
 import modele.metier.Poule;
 import modele.metier.Rencontre;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
-public class TestModeleRencontre {
+public class TestDAORencontre {
 
-	private ModeleRencontre modele;
-	private ModeleTournoi modeleTournoi;
+	private DAORencontre daoRencontre;
+	private DAOTournoi daoTournoi;
 	private ModeleTournoiOuverture modeleTournoiOuverture;
-	private ModelePoule modelePoule;
+	private DAOPoule daoPoule;
 	private ModeleUtilisateur modeleUtilisateur;
-	private ModeleEquipe modeleEquipe;
+	private DAOEquipe daoEquipe;
 	private Rencontre rencontre;
 	private int rencontresTotal;
 
 	@Before
 	public void setUp() throws Exception {
-		this.modele = new ModeleRencontre();
-		this.modeleTournoi = new ModeleTournoi();
+		this.daoRencontre = new DAORencontreImpl();
+		this.daoTournoi = new DAOTournoiImpl();
 		this.modeleTournoiOuverture = new ModeleTournoiOuverture();
-		this.modelePoule = new ModelePoule();
+		this.daoPoule = new DAOPouleImpl();
 		this.modeleUtilisateur = new ModeleUtilisateur();
-		this.rencontresTotal = this.modele.getTout().size();
+		this.rencontresTotal = this.daoRencontre.getTout().size();
 
-		this.modeleEquipe = new ModeleEquipe();
-		Equipe[] equipes = { this.modeleEquipe.getParId(1).get(), this.modeleEquipe.getParId(2).get(), };
+		this.daoEquipe = new DAOEquipeImpl();
+		Equipe[] equipes = { this.daoEquipe.getParId(1).get(), this.daoEquipe.getParId(2).get(), };
 
-		ModeleArbitre modeleArbitre = new ModeleArbitre();
+		DAOArbitre modeleArbitre = new DAOArbitreImpl();
 
 		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -71,56 +77,71 @@ public class TestModeleRencontre {
 
 		Tournoi tournoi = new Tournoi("tournoi", Notoriete.LOCAL, timestampDebut, timestampFin, "a", "m",
 				modeleArbitre.getTout());
-		this.modeleTournoi.ajouter(tournoi);
+		this.daoTournoi.ajouter(tournoi);
 
 		this.rencontre = new Rencontre(equipes);
 		List<Rencontre> rencontres = new ArrayList<>(Arrays.asList(this.rencontre));
 		Poule poule = new Poule(0, false, false, tournoi.getIdTournoi(), rencontres);
-		this.modelePoule.ajouter(poule);
+		this.daoPoule.ajouter(poule);
 
 		for (int i = 1; i < 5; i++)
-			this.modeleEquipe.inscrireEquipe(this.modeleEquipe.getParId(i).get(), tournoi);
+			this.daoEquipe.inscrireEquipe(this.daoEquipe.getParId(i).get(), tournoi);
 		this.modeleUtilisateur.connecter("admin", "mdp");
-		this.modeleTournoiOuverture.ouvrirTournoi(this.modeleTournoi.getParId(tournoi.getIdTournoi()).get());
+		this.modeleTournoiOuverture.ouvrirTournoi(this.daoTournoi.getParId(tournoi.getIdTournoi()).get());
+	}
+	
+	@Test (expected = UnsupportedOperationException.class)
+	public void testModifier() throws Exception {
+		daoRencontre.modifier(rencontre);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testAjouterTropEquipe() throws Exception {
+		Equipe[] equipes = { new Equipe("Equipe 1", Pays.ALGERIE, null),
+				new Equipe("Equipe 2", Pays.ALGERIE, null),
+				new Equipe("Equipe 3", Pays.ALGERIE, null)
+		};
+		Rencontre rencontre = new Rencontre(equipes);
+		daoRencontre.ajouter(rencontre);
 	}
 
 	@Test(expected = TournoiInexistantException.class)
 	public void testResetEquipeGagnanteTournoiExistePas() throws Exception {
-		Equipe[] equipes = { this.modeleEquipe.getParId(1).get(), this.modeleEquipe.getParId(2).get(), };
+		Equipe[] equipes = { this.daoEquipe.getParId(1).get(), this.daoEquipe.getParId(2).get(), };
 		Rencontre rencontreTest = new Rencontre(equipes);
-		this.modele.resetEquipeGagnante(rencontreTest);
+		this.daoRencontre.resetEquipeGagnante(rencontreTest);
 	}
 
 	@Test(expected = TournoiClotureException.class)
 	public void testResetEquipeGagnanteTournoiCloture() throws Exception {
-		this.modele.resetEquipeGagnante(this.modele.getParId(1).get());
+		this.daoRencontre.resetEquipeGagnante(this.daoRencontre.getParId(1).get());
 	}
 
 	@Test(expected = DroitsInsuffisantsException.class)
 	public void testResetEquipeGagnanteMauvaisUtilisateur() throws Exception {
-		this.modele.resetEquipeGagnante(this.rencontre);
+		this.daoRencontre.resetEquipeGagnante(this.rencontre);
 	}
 
 	@Test
 	public void testResetEquipeGagnante() throws Exception {
 		this.modeleUtilisateur.deconnecter();
 		this.modeleUtilisateur.connecter("a", "m");
-		this.modele.resetEquipeGagnante(this.rencontre);
+		this.daoRencontre.resetEquipeGagnante(this.rencontre);
 	}
 
 	@Test
 	public void testSetEquipeGagnante() throws Exception {
-		Equipe[] equipes = { this.modeleEquipe.getParId(1).get(), this.modeleEquipe.getParId(2).get(), };
+		Equipe[] equipes = { this.daoEquipe.getParId(1).get(), this.daoEquipe.getParId(2).get(), };
 		this.modeleUtilisateur.deconnecter();
 		this.modeleUtilisateur.connecter("a", "m");
-		this.modele.setEquipeGagnante(this.rencontre, equipes[0].getNom());
+		this.daoRencontre.setEquipeGagnante(this.rencontre, equipes[0].getNom());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetEquipeGagnanteInnexistant() throws Exception {
 		this.modeleUtilisateur.deconnecter();
 		this.modeleUtilisateur.connecter("a", "m");
-		this.modele.setEquipeGagnante(this.rencontre, "fausseEquipe");
+		this.daoRencontre.setEquipeGagnante(this.rencontre, "fausseEquipe");
 	}
 
 	@After
@@ -131,10 +152,10 @@ public class TestModeleRencontre {
 		for (int i = 1; i < this.rencontresTotal; i++) {
 			idREncontreAGarder.add(i);
 		}
-		this.modele.getTout().stream().filter(rencontre -> !idREncontreAGarder.contains(rencontre.getIdRencontre()))
+		this.daoRencontre.getTout().stream().filter(rencontre -> !idREncontreAGarder.contains(rencontre.getIdRencontre()))
 				.forEach(rencontre -> {
 					try {
-						this.modele.supprimer(rencontre);
+						this.daoRencontre.supprimer(rencontre);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -142,10 +163,10 @@ public class TestModeleRencontre {
 
 		// Réinitialise les tournoi
 		List<Integer> idTournoiAGarder = Arrays.asList(1, 2, 3, 4, 5, 6);
-		this.modeleTournoi.getTout().stream().filter(tournoi -> !idTournoiAGarder.contains(tournoi.getIdTournoi()))
+		this.daoTournoi.getTout().stream().filter(tournoi -> !idTournoiAGarder.contains(tournoi.getIdTournoi()))
 				.forEach(tournoi -> {
 					try {
-						this.modeleTournoi.supprimer(tournoi);
+						this.daoTournoi.supprimer(tournoi);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -153,10 +174,10 @@ public class TestModeleRencontre {
 
 		// Réinitialise les poules
 		List<Integer> idPouleAGarder = Arrays.asList(1, 2);
-		this.modelePoule.getTout().stream().filter(poule -> !idPouleAGarder.contains(poule.getIdPoule()))
+		this.daoPoule.getTout().stream().filter(poule -> !idPouleAGarder.contains(poule.getIdPoule()))
 				.forEach(poule -> {
 					try {
-						this.modelePoule.supprimer(poule);
+						this.daoPoule.supprimer(poule);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
