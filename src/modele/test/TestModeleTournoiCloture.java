@@ -58,6 +58,19 @@ public class TestModeleTournoiCloture {
 	private long getDateCourante() {
 		return (System.currentTimeMillis() / 1000);
 	}
+	@Test
+	public void testCloturerPouleFinale() throws Exception {
+		
+		modeleUtilisateur.connecter("arbitre", "mdp");
+		for (Rencontre rencontre : daoTournoi.getParIdentifiant("test").get().getPouleActuelle().getRencontres()) {
+			daoRencontre.setEquipeGagnante(rencontre, rencontre.getEquipes()[0].getNom());
+		}
+		modele.cloturerPoule(daoTournoi.getParIdentifiant("test").get());
+		
+		Rencontre finale = daoTournoi.getParIdentifiant("test").get().getPouleActuelle().getRencontres().get(0);
+		daoRencontre.setEquipeGagnante(finale, finale.getEquipes()[0].getNom());
+		//modele.cloturerPoule(modeleTournoi.getParNom("Tournoi").get(0));
+	}
 
 	// Réinitialise les tournoi
 		@After
