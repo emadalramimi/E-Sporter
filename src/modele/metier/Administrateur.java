@@ -14,9 +14,9 @@ public class Administrateur implements Utilisateur {
 	/**
 	 * Construit un administrateur
 	 * @param idAdministrateur	Clé primaire
-	 * @param nom				Nom
-	 * @param prenom			Prénom
-	 * @param identifiant		Identifiant de connexion
+	 * @param nom				Nom de l'administrateur
+	 * @param prenom			Prénom de l'administrateur
+	 * @param identifiant		Identifiant de connexion 
 	 * @param motDePasse		Mot de passe de connexion
 	 */
 	public Administrateur(int idAdministrateur, String nom, String prenom, String identifiant, String motDePasse) {
@@ -28,56 +28,56 @@ public class Administrateur implements Utilisateur {
 	}
 
 	/**
-	 * Retourne la clé primaire
-	 * @return Clé primaire
+	 * Retourne la clé primaire de l'administrateur
+	 * @return Clé primaire de l'administrateur
 	 */
 	public int getIdAdministrateur() {
 		return idAdministrateur;
 	}
 	
 	/**
-	 * Modifie la clé primaire
-	 * @param idAdministrateur clé primaire
+	 * Modifie la clé primaire de l'administrateur
+	 * @param idAdministrateur clé primaire de l'administrateur
 	 */
 	public void setIdAdministrateur(int idAdministrateur) {
 		this.idAdministrateur = idAdministrateur;
 	}
 
 	/**
-	 * Retourne le nom
-	 * @return Nom
+	 * Retourne le nom de l'administrateur
+	 * @return Nom de l'administrateur
 	 */
 	public String getNom() {
 		return nom;
 	}
 	
 	/**
-	 * Modifie le nom
-	 * @param nom Nom
+	 * Modifie le nom de l'administrateur
+	 * @param nom Nom de l'administrateur
 	 */
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
 	/**
-	 * Retourne le prénom
-	 * @return Prénom
+	 * Retourne le prénom de l'administrateur
+	 * @return Prénom de l'administrateur
 	 */
 	public String getPrenom() {
 		return prenom;
 	}
 	
 	/**
-	 * Modifie le prénom
-	 * @param prenom Prénom
+	 * Modifie le prénom de l'administrateur
+	 * @param prenom Prénom de l'administrateur
 	 */
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
 
 	/**
-	 * Retourne l'identifiant de connexion
-	 * @return Identifiant de connexion
+	 * Retourne l'identifiant de connexion de l'administrateur
+	 * @return Identifiant de connexion de l'administrateur
 	 */
 	@Override
 	public String getIdentifiant() {
@@ -85,8 +85,8 @@ public class Administrateur implements Utilisateur {
 	}
 	
 	/**
-	 * Modifie l'identifiant
-	 * @param identifiant Identifiant
+	 * Modifie l'identifiant de connexion
+	 * @param identifiant Identifiant de connexion
 	 */
 	@Override
 	public void setIdentifiant(String identifiant) {
@@ -94,6 +94,7 @@ public class Administrateur implements Utilisateur {
 	}
 
 	/**
+	 * Retourne le mot de passe de connexion de l'administrateur
 	 * @return Mot de passe de connexion
 	 */
 	@Override
@@ -102,20 +103,26 @@ public class Administrateur implements Utilisateur {
 	}
 	
 	/**
-	 * Modifie le mot de passe
-	 * @param motDePasse Mot de passe
+	 * Modifie le mot de passe de connexion
+	 * @param motDePasse Mot de passe de connexion
 	 */
 	@Override
 	public void setMotDePasse(String motDePasse) {
 		this.motDePasse = motDePasse;
 	}
 	
+	/**
+	 * Retourne le rôle de l'administrateur
+	 * @return Role.ADMINISTRATEUR (enum) de l'administrateur
+	 */
 	public Role getRole() {
 		return Role.ADMINISTRATEUR;
 	}
 	
 	/**
 	 * Retourne true si un Object o est égal à Administrateur (this), faux sinon
+	 * @param o Object à comparer
+	 * @return true si un Object o est égal à Administrateur (this), faux sinon
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -129,6 +136,10 @@ public class Administrateur implements Utilisateur {
 		return this.idAdministrateur == admin.getIdAdministrateur();
 	}
 	
+	/**
+	 * Retourne une représentation textuelle de l'administrateur
+	 * @return Représentation textuelle de l'administrateur
+	 */
 	@Override
 	public String toString() {
 		return "Administrateur [idAdministrateur=" + idAdministrateur + ", nom=" + nom + ", prenom=" + prenom
