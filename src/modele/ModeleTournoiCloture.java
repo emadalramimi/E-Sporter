@@ -27,6 +27,7 @@ import modele.metier.Poule;
 import modele.metier.Rencontre;
 import modele.metier.StatistiquesEquipe;
 import modele.metier.Tournoi;
+import modele.metier.Utilisateur;
 
 /**
  * Modèle servant à la clôture d'un tournoi et à la mise à jour du classement
@@ -71,6 +72,10 @@ public class ModeleTournoiCloture {
 	 * @throws Exception Erreurs SQL ou de récupération d'équipes
 	 */
     public void cloturerPoule(Tournoi tournoi) throws Exception {
+		if(ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ARBITRE) {
+			throw new IllegalArgumentException("Seul un arbitre peut clôturer une poule/un tournoi");
+		}
+
 		Poule poule = tournoi.getPouleActuelle();
 
 		if(poule.getEstCloturee()) {
