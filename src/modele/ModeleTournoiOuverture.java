@@ -30,7 +30,7 @@ public class ModeleTournoiOuverture {
     }
 
 	/**
-	 * Ouvre un tournoi
+	 * Ouvrir un tournoi en vérifiant les conditions
 	 * @param tournoi Tournoi à ouvrir
 	 * @throws Exception Exception SQL et IllegalArgumentException si le tournoi est déjà ouvert, si la date de fin du tournoi est passée, si le nombre d'équipes inscrites n'est pas compris entre 4 et 8 équipes, si le tournoi est cloturé ou si un tournoi est déjà ouvert
 	 */
@@ -61,7 +61,7 @@ public class ModeleTournoiOuverture {
 			}
 		}
 		Collections.shuffle(rencontres);
-		
+		 
 		Poule poule = new Poule(false, false, tournoi.getIdTournoi(), rencontres);
 		this.daoPoule.ajouter(poule);
 	}

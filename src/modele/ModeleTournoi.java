@@ -30,9 +30,6 @@ public class ModeleTournoi implements Recherchable<Tournoi> {
 	private DAOPoule daoPoule;
 	private DAOAdministrateur daoAdministrateur;
 
-	/**
-	 * Construit un modèle tournoi
-	 */
 	public ModeleTournoi() {
 		this.daoTournoi = new DAOTournoiImpl();
 		this.daoPoule = new DAOPouleImpl();
@@ -40,7 +37,7 @@ public class ModeleTournoi implements Recherchable<Tournoi> {
 	}
 
 	/**
-	 * Méthode pour récupérer les résultats d'un tournoi
+	 * Récupère les résultats d'un tournoi
 	 * @param tournoi Tournoi dont on veut récupérer les résultats
 	 * @return Retourne les résultats d'un tournoi
 	 */
@@ -71,7 +68,7 @@ public class ModeleTournoi implements Recherchable<Tournoi> {
 	}
 
 	/**
-	 * Méthode de recherche de tournois par nom
+	 * Recherche de tournois par nom
 	 * @param nom Nom du tournoi
 	 * @return Retourne les tournois par nom
 	 * @throws Exception Exception SQL
@@ -84,7 +81,7 @@ public class ModeleTournoi implements Recherchable<Tournoi> {
     }
 
 	/**
-	 * Méthode de recherche de tournois par filtrage
+	 * Recherche de tournois par filtrage
 	 * @param notoriete Notoriété du tournoi
 	 * @param statut Statut du tournoi
 	 * @return Retourne les tournois par filtrage
@@ -127,6 +124,12 @@ public class ModeleTournoi implements Recherchable<Tournoi> {
 		return tournois;
 	}
 
+	/**
+	 * Vérifie l'unicité d'un identifiant
+	 * @param identifiant Identifiant à vérifier
+	 * @return Retourne vrai si l'identifiant est unique, faux sinon
+	 * @throws SQLException Exception SQL
+	 */
 	public boolean verifierUniciteIdentifiant(String identifiant) throws SQLException {
 		return this.daoTournoi.getParIdentifiant(identifiant).isPresent()
 				|| this.daoAdministrateur.getParIdentifiant(identifiant).isPresent();
