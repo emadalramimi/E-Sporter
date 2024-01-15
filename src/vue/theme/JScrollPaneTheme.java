@@ -50,6 +50,9 @@ public class JScrollPaneTheme extends JScrollPane {
 
 		/**
 		 * Personnalisation de l'ascenseur de la scrollbar
+		 * @param g : graphique
+		 * @param c : composant
+		 * @param thumbBounds : rectangle de l'ascenseur
 		 */
 	    @Override
 	    protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
@@ -62,6 +65,8 @@ public class JScrollPaneTheme extends JScrollPane {
 
 	    /**
 	     * Suppression du bouton descendre
+		 * @param orientation : orientation du bouton
+		 * @return un bouton invisible
 	     */
 	    @Override
 	    protected JButton createDecreaseButton(int orientation) {
@@ -70,6 +75,8 @@ public class JScrollPaneTheme extends JScrollPane {
 
 	    /**
 	     * Suppression du bouton remonter
+		 * @param orientation : orientation du bouton
+		 * @return un bouton invisible
 	     */
 	    @Override
 	    protected JButton createIncreaseButton(int orientation) {

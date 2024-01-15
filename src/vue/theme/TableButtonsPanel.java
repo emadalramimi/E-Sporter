@@ -128,6 +128,7 @@ public class TableButtonsPanel extends JPanel implements TableCellRenderer {
 
         /**
          * Au pressage du clic de la souris, on active l'icone
+         * @param e : évènement de la souris
          */
         @Override
         public void mousePressed(MouseEvent e) {
@@ -136,6 +137,7 @@ public class TableButtonsPanel extends JPanel implements TableCellRenderer {
 
         /**
          * Au relachement du clic de la souris, on désactive l'icone
+         * @param e : évènement de la souris
          */
         @Override
         public void mouseExited(MouseEvent e) {
