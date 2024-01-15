@@ -1,5 +1,76 @@
 package modele.test;
 
-public class TestModeleTournoiCloture {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import modele.ModeleTournoi;
+import modele.ModeleTournoiCloture;
+import modele.ModeleTournoiOuverture;
+import modele.ModeleUtilisateur;
+import modele.DAO.DAOEquipe;
+import modele.DAO.DAOEquipeImpl;
+import modele.DAO.DAORencontre;
+import modele.DAO.DAOTournoi;
+import modele.DAO.DAOTournoiImpl;
+import modele.metier.Poule;
+import modele.metier.Rencontre;
+import modele.metier.Tournoi;
+import modele.metier.Tournoi.Notoriete;
+
+public class TestModeleTournoiCloture {
+	
+	private ModeleTournoiCloture modele;
+	private ModeleTournoi modeleTournoi;
+	private ModeleTournoiOuverture modeleTournoiOuverture;
+	private ModeleUtilisateur modeleUtilisateur;
+	
+	private DAOTournoi daoTournoi;
+	private DAOEquipe daoEquipe;
+	private DAORencontre daoRencontre;
+	
+	@Before
+	public void setUp() throws Exception {
+		this.modele = new ModeleTournoiCloture();
+		this.modeleTournoiOuverture = new ModeleTournoiOuverture();
+		this.modeleUtilisateur = new ModeleUtilisateur();
+		this.daoEquipe = new DAOEquipeImpl();
+		this.daoTournoi = new DAOTournoiImpl();
+		this.daoEquipe = new DAOEquipeImpl();
+		
+		Tournoi tournoiInit = new Tournoi("Tournoi", Notoriete.LOCAL,
+				getDateCourante()+3600, getDateCourante()+6600,
+				"test", "mdp", new ArrayList<>());
+		daoTournoi.ajouter(tournoiInit);
+		for (int i = 1; i < 5; i++) {
+			daoEquipe.inscrireEquipe(daoEquipe.getParId(i).get(), tournoiInit);
+		}
+		modeleTournoiOuverture.ouvrirTournoi(daoTournoi.getParIdentifiant("test").get());
+	}
+	
+	/*
+	 * Renvoie la date courante en secondes
+	 */
+	private long getDateCourante() {
+		return (System.currentTimeMillis() / 1000);
+	}
+
+	// Réinitialise les tournoi
+		@After
+		public void tearsDown() throws Exception {
+			if (modeleUtilisateur.getCompteCourant() != null) {
+				modeleUtilisateur.deconnecter();
+			}
+			
+			List<Integer> idAGarder = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6));
+			for (Tournoi tournoi : this.daoTournoi.getTout()) {
+				if (!idAGarder.contains(tournoi.getIdTournoi())) {
+					this.daoTournoi.supprimer(tournoi);
+				}
+			}
+		}
 }
