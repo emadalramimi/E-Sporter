@@ -47,7 +47,7 @@ public class VuePoule extends JFrameTheme {
 	
 	private VueTournois vueTournois;
 	
-	/*
+	/**
      * Constructeur de l'IHM pour la saisie d'un poule
      * @param vueTournois La vue principale des tournois
      * @param tournoi Le tournoi en cours

@@ -38,7 +38,7 @@ public class VueJoueurs extends JFrameTheme {
         
         contentPane = super.getContentPane();
         
-        // Titre
+        // Label de titre
         JLabelTheme lblTitre = new JLabelTheme("Liste des joueurs", 19, true);
 
         // Panel de titre
@@ -71,8 +71,7 @@ public class VueJoueurs extends JFrameTheme {
     }
     
     /**
-     * Retire la fenêtre de la liste des fenêtres enfant dans la fenêtre parente
-     * puis ferme la fenêtre courante
+     * Retire la fenêtre de la liste des fenêtres enfant dans la fenêtre parente puis ferme la fenêtre courante
      */
     @Override
     public void fermerFenetre() {

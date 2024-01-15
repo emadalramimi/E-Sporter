@@ -24,6 +24,9 @@ public class RecherchableVue<T> extends JFrameTheme implements RecherchableVueIn
     private JTextFieldTheme txtRecherche;
     private JButtonTheme btnRecherche;
 
+	/**
+	 * Construit une vue recherchable
+	 */
     public RecherchableVue() {
 		this.panelRecherche = new JPanel();
 		this.panelRecherche.setBackground(CharteGraphique.PRIMAIRE);
@@ -37,22 +40,35 @@ public class RecherchableVue<T> extends JFrameTheme implements RecherchableVueIn
 		this.panelRecherche.add(this.btnRecherche);
 	}
 
+	/**
+	 * Récupère le panel de recherche
+	 * @return le panel de recherche
+	 */
     public JPanel getPanelRecherche() {
 		return this.panelRecherche;
 	}
 
+	/**
+	 * Ajoute un contrôleur à la vue
+	 * @param controleur le contrôleur à ajouter
+	 */
     public void setControleur(EventListener controleur) {
         this.controleur = controleur;
 		this.txtRecherche.addKeyListener((KeyListener) controleur);
         this.btnRecherche.addActionListener((ActionListener) controleur);
     }
 
+	/**
+	 * Récupère le contrôleur de la vue
+	 * @return le contrôleur de la vue
+	 */
     public EventListener getControleur() {
         return this.controleur;
     }
 
     /**
-	 * @param bouton
+	 * Vérifie si le bouton est le bouton de recherche
+	 * @param bouton : bouton à vérifier
 	 * @return true si bouton est le bouton de recherche, false sinon
 	 */
 	@Override
@@ -65,7 +81,8 @@ public class RecherchableVue<T> extends JFrameTheme implements RecherchableVueIn
 	}
 	
 	/**
-	 * @param champ
+	 * Vérifie si le champ est le champ de recherche
+	 * @param champ : champ à vérifier
 	 * @return true si le champ est le champ de recherche, false sinon
 	 */
 	@Override

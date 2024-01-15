@@ -119,6 +119,7 @@ public class VueEquipes extends RecherchableVue<Equipe> {
 		btnAjouter.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelAjouter.add(btnAjouter);
 		
+		// panelTableauFiltres, le panel contenant le panelRecherche et le panelChoixFiltres
 		panelTableauFiltres = new JPanel();
 		panelTableauFiltres.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelRecherche = new GridBagConstraints();
@@ -287,6 +288,9 @@ public class VueEquipes extends RecherchableVue<Equipe> {
         return choix == 0;
     }
 
+	/**
+	 * Remet les filtres à leur état initial
+	 */
 	@Override
 	public void resetFiltres() {
 		this.cboxPays.setSelectedIndex(0);
@@ -328,6 +332,10 @@ public class VueEquipes extends RecherchableVue<Equipe> {
 		return comboBox.equals(this.cboxPays);
 	}
 
+	/**
+	 * Retourne le pays sélectionné dans la comboBox
+	 * @return le pays sélectionné dans la comboBox
+	 */
 	public Pays getPaysSelectionne() {
 		if(this.cboxPays.getSelectedIndex() == 0) {
 			return null;
@@ -335,6 +343,10 @@ public class VueEquipes extends RecherchableVue<Equipe> {
 		return Pays.valueOfNom(this.cboxPays.getSelectedItem().toString());
 	}
 
+	/**
+	 * Retourne vueBase
+	 * @return vueBase
+	 */
 	public VueBase getVueBase() {
 		return this.vueBase;
 	}

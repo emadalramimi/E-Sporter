@@ -46,7 +46,7 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 750, 450);
 
-		/*JPanel */contentPane = super.getContentPane();
+		contentPane = super.getContentPane();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		contentPane.setLayout(new BorderLayout(0, 20));
@@ -147,6 +147,10 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		contentPane.add(panelBoutons, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * Récupère la table des résultats pour l'impression
+	 * @return la table des résultats pour l'impression
+	 */
 	public JTableThemeImpression getTableImpression() {
 		JTableThemeImpression table = new JTableThemeImpression(this.table.getModel());
 

@@ -207,6 +207,7 @@ public class VueConnexion extends JFrameTheme {
 	}
 	
 	/**
+	 * Récupère le contenu du champ identifiant
 	 * @return contenu du champ identifiant
 	 */
 	public String getIdentifiant() {
@@ -217,6 +218,7 @@ public class VueConnexion extends JFrameTheme {
 	}
 	
 	/**
+	 * Récupère le contenu du champ mot de passe
 	 * @return contenu du champ mot de passe
 	 */
 	public String getMotDePasse() {

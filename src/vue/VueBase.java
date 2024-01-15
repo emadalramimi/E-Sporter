@@ -37,7 +37,6 @@ public class VueBase extends JFrameTheme {
 	
 	/**
 	 * Crée la VueBase
-	 * @throws Exception 
 	 */
 	public VueBase() {
 		this.controleurBase = new ControleurBase(this);

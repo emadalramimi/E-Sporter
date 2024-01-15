@@ -26,7 +26,7 @@ import controleur.ControleurInscriptionEquipesTournoiPopup;
 import controleur.ControleurSaisieTournoiArbitre;
 
 /**
- * Vue de la saisie d'un tournoi avec une liste d'équipes ou d'arbitres
+ * IHM de la saisie d'un tournoi avec une liste d'équipes ou d'arbitres
  */
 public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 
@@ -156,7 +156,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	    }
 
 		/**
-		 * Méthode pour afficher le nom de l'équipe ou de l'arbitre dans la ComboBox
+		 * Afficher le nom de l'équipe ou de l'arbitre dans la ComboBox
 		 * @param list : la liste
 		 * @param value : l'objet à afficher
 		 * @param index : l'index de l'objet
@@ -186,7 +186,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	}
 
 	 /**
-	  * Méthode pour récupérer l'équipe sélectionnée
+	  * Récupérer l'équipe sélectionnée
 	  * @return l'équipe sélectionnée
 	  * @throws IllegalArgumentException
 	  */
@@ -198,7 +198,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	}
 	
 	/**
-	 * Méthode pour récupérer l'arbitre sélectionné
+	 * Récupérer l'arbitre sélectionné
 	 * @return l'arbitre sélectionné
 	 * @throws IllegalArgumentException
 	 */

@@ -44,7 +44,7 @@ import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
 /**
- * Vue de la liste des tournois
+ * IHM de la liste des tournois
  */
 public class VueTournois extends RecherchableVue<Tournoi> {
 
@@ -92,6 +92,7 @@ public class VueTournois extends RecherchableVue<Tournoi> {
 		panelLabelTournois.setBackground(CharteGraphique.FOND);
 		panelLabelTournois.setLayout(new GridLayout(1, 0, 0, 0));
 		
+		// Label titre
 		lblTournois = new JLabelTheme("Tournois", 30, true);
 		lblTournois.setHorizontalAlignment(SwingConstants.LEFT);
 		panelLabelTournois.add(lblTournois);
@@ -282,7 +283,7 @@ public class VueTournois extends RecherchableVue<Tournoi> {
 	
 	/**
 	 * Retire une fenêtre enfant de la liste des fenêtres enfant dans VueBase
-	 * @param fenetre
+	 * @param fenetre : la fenêtre à retirer
 	 */
 	public void retirerFenetreEnfant(JFrameTheme fenetre) {
 		this.vueBase.retirerFenetreEnfant(fenetre);
@@ -367,6 +368,10 @@ public class VueTournois extends RecherchableVue<Tournoi> {
 		return comboBox.equals(this.cboxNotoriete) || comboBox.equals(this.cboxStatuts);
 	}
 
+	/**
+	 * Récupérer la notoriété sélectionnée dans la comboBox
+	 * @return la notoriété sélectionnée dans la comboBox
+	 */
 	public Notoriete getNotorieteSelectionnee() {
 		if(this.cboxNotoriete.getSelectedIndex() == 0) {
 			return null;
@@ -374,6 +379,10 @@ public class VueTournois extends RecherchableVue<Tournoi> {
 		return Notoriete.valueOfLibelle((String) this.cboxNotoriete.getSelectedItem());
 	}
 
+	/**
+	 * Récupérer le statut sélectionné dans la comboBox
+	 * @return le statut sélectionné dans la comboBox
+	 */
 	public ControleurTournois.Statut getStatutSelectionne() {
 		if(this.cboxStatuts.getSelectedIndex() == 0) {
 			return null;
@@ -381,6 +390,10 @@ public class VueTournois extends RecherchableVue<Tournoi> {
 		return ControleurTournois.Statut.valueOfLibelle((String) this.cboxStatuts.getSelectedItem());
 	}
 
+	/**
+	 * Récupérer le vueBase
+	 * @return vueBase
+	 */
 	public VueBase getVueBase() {
 		return this.vueBase;
 	}

@@ -70,7 +70,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		
 		contentPane.setBorder(new EmptyBorder(15,15,15,15));
 		
-        // Titre
+        // Label titre
 		JLabelTheme titre = new JLabelTheme("Ajouter une équipe", 30, true);
         titre.setHorizontalAlignment(SwingConstants.CENTER);
         getContentPane().add(titre, BorderLayout.NORTH);
@@ -258,8 +258,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 	}
 	
 	/**
-     * Retire la fenêtre de la liste des fenêtres enfant dans la fenêtre parente
-     * puis ferme la fenêtre courante
+     * Retire la fenêtre de la liste des fenêtres enfant dans la fenêtre parente puis ferme la fenêtre courante
      */
 	@Override
 	public void fermerFenetre() {
@@ -268,6 +267,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 	}
 	
 	/**
+	 * Récupère le nom de l'équipe renseigné
 	 * @return le nom renseigné
 	 */
 	public String getNomEquipe() {
@@ -275,6 +275,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 	}
 	
 	/**
+	 * Récupère le pays de l'équipe renseigné
 	 * @return le pays renseigné
 	 */
 	public String getPaysEquipe() {
@@ -282,6 +283,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 	}
 	
 	/**
+	 * Récupère la liste des pseudos des joueurs renseignés
 	 * @return la liste des pseudos des joueurs renseignés
 	 */
 	public List<String> getNomJoueurs() {

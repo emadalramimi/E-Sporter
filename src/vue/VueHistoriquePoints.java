@@ -135,6 +135,7 @@ public class VueHistoriquePoints extends RecherchableVue<Equipe> {
 		gbc_scrollPaneTableEquipes.gridy = 2;
 		panelTableaux.add(scrollPaneTableEquipes, gbc_scrollPaneTableEquipes);
 
+		// Création de la table des équipes
 		this.tableEquipes = new JTableTheme();
 		this.tableEquipes.getSelectionModel().addListSelectionListener(this.controleur);
 		this.tableEquipes.setModel(this.modelTableEquipes);
@@ -161,7 +162,8 @@ public class VueHistoriquePoints extends RecherchableVue<Equipe> {
 				return false;
 			}
 		};
-
+		
+		// Création de la table des historiques de points
 		JScrollPane scrollPaneHistoriquePoints2 = new JScrollPaneTheme();
 		GridBagConstraints gbc_scrollPaneHistoriquePoints2 = new GridBagConstraints();
 		gbc_scrollPaneHistoriquePoints2.fill = GridBagConstraints.BOTH;

@@ -7,6 +7,10 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * Interface des vues contenant une recherche
+ * @param <T> Type classe métier à rechercher
+ */
 public interface RecherchableVueInterface<T> {
 
 	public JPanel getPanelRecherche();

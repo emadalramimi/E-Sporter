@@ -42,7 +42,7 @@ import modele.metier.Palmares;
 import modele.metier.Pays;
 
 /**
- * IHM équipes
+ * IHM Palmarès
  */
 public class VuePalmares extends RecherchableVue<Palmares> {
 	
@@ -57,6 +57,11 @@ public class VuePalmares extends RecherchableVue<Palmares> {
 		this.controleur = (ControleurPalmares) super.getControleur();
 	}
 	
+	/**
+	 * Affiche la vue du palmarès
+	 * @param contentPane : le panel où afficher la vue
+	 * @param vueBase : la vue de base
+	 */
 	public void afficherVuePalmares(JPanel contentPane, VueBase vueBase) {
 		List<Palmares> podium = controleur.getClassement();
 
@@ -102,6 +107,7 @@ public class VuePalmares extends RecherchableVue<Palmares> {
 		btnImprimer.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelImprimer.add(btnImprimer);
 		
+		// panelPodium, le panel contenant les 3 premiers du classement
 		JPanel panelPodium = new JPanel();
 		panelPodium.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelPodium = new GridBagConstraints();
@@ -117,18 +123,19 @@ public class VuePalmares extends RecherchableVue<Palmares> {
 		gbl_panelPodium.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panelPodium.setLayout(gbl_panelPodium);
 
-		JLabel icon2 = new JLabel(new ImageIcon(VueTournois.class.getResource("/images/medailles/top2.png")));
-		GridBagConstraints gbc_lblIcon2 = new GridBagConstraints();
-		gbc_lblIcon2.gridx = 0;
-		gbc_lblIcon2.gridy = 0;
-		panelPodium.add(icon2, gbc_lblIcon2);
-
+		// Label podium et icônes des 3 premiers
 		JLabel icon1 = new JLabel(new ImageIcon(VueTournois.class.getResource("/images/medailles/top1.png")));
 		GridBagConstraints gbc_lblIcon = new GridBagConstraints();
 		gbc_lblIcon.anchor = GridBagConstraints.NORTH;
 		gbc_lblIcon.gridx = 1;
 		gbc_lblIcon.gridy = 0;
 		panelPodium.add(icon1, gbc_lblIcon);
+
+		JLabel icon2 = new JLabel(new ImageIcon(VueTournois.class.getResource("/images/medailles/top2.png")));
+		GridBagConstraints gbc_lblIcon2 = new GridBagConstraints();
+		gbc_lblIcon2.gridx = 0;
+		gbc_lblIcon2.gridy = 0;
+		panelPodium.add(icon2, gbc_lblIcon2);
 
 		JLabel icon3 = new JLabel(new ImageIcon(VueTournois.class.getResource("/images/medailles/top3.png")));
 		GridBagConstraints gbc_lblIcon_1 = new GridBagConstraints();
@@ -273,6 +280,12 @@ public class VuePalmares extends RecherchableVue<Palmares> {
 		
 	}
 
+	/**
+	 * Création du texte du podium
+	 * @param podium : le podium
+	 * @param classement : le classement du podium
+	 * @return le texte du podium
+	 */
 	private JTextArea textePodium(List<Palmares> podium, int classement) {
 		List<String> equipes = podium.stream()
 			.filter(p -> p.getEquipe().getClassement() == classement)
@@ -327,6 +340,10 @@ public class VuePalmares extends RecherchableVue<Palmares> {
 		this.table.setModel(this.model);
 	}
 
+	/**
+	 * Récupérer le tableau d'équipes pour l'impression
+	 * @return le tableau d'équipes
+	 */
 	public JTableThemeImpression getTableImpression() {
 		JTableThemeImpression table = new JTableThemeImpression(this.table.getModel());
 

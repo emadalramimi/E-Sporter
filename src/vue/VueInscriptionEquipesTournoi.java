@@ -219,14 +219,14 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 	}
 
 	/**
-	 * Méthode pour mettre à jour le titre de la fenêtre
+	 * Mettre à jour le titre de la fenêtre avec le nombre d'équipes inscrites
 	 */
 	private void majTitre() {
 		this.lblTitre.setText("Equipes inscrites (" + this.listModelEquipes.size() + ")");
 	}
 	
 	/**
-	 * Méthode pour récupérer la liste des équipes
+	 * Récupérer la liste des équipes
 	 * @return la liste des équipes inscrites
 	 */
 	public List<Equipe> getEquipes() {
@@ -238,7 +238,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 	}
 	
 	/**
-	 * Méthode pour afficher une boîte de dialogue de confirmation
+	 * Afficher une boîte de dialogue de confirmation
 	 * @param message : le message à afficher
 	 * @return true si l'utilisateur a cliqué sur Oui, false sinon
 	 */
@@ -259,7 +259,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
     }
 	
 	/**
-	 * Méthode pour afficher la fenêtre 
+	 * Afficher fenêtre de saisie d'une équipe
 	 * @param equipes : la liste des équipes inscrites
 	 */
 	public void afficherVueSaisieTournoiEquipe(Equipe[] equipes) {
@@ -275,7 +275,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 	}
 	
 	/**
-	 * Méthode pour désactiver le bouton inscrire une équipe
+	 * Activer ou désactiver le bouton inscrire une équipe
 	 * @param actif : true pour activer le bouton, false pour le désactiver
 	 */
 	public void setBtnInscrireEquipeActif(boolean actif) {
