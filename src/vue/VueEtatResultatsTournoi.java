@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -19,7 +21,6 @@ import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
 import vue.theme.JTableThemeImpression;
 
-import javax.swing.JLabel;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 
@@ -45,7 +46,7 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 750, 450);
 
-		/*JPanel */contentPane = super.getContentPane();
+		contentPane = super.getContentPane();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		contentPane.setLayout(new BorderLayout(0, 20));
@@ -66,9 +67,7 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		panelTitre.setLayout(gbl_panelTitre);
 
 		// Label titre
-		JLabel lblTitre = new JLabel("État des résultats du tournoi");
-		lblTitre.setFont(CharteGraphique.getPolice(19, true));
-		lblTitre.setForeground(CharteGraphique.TEXTE);
+		JLabelTheme lblTitre = new JLabelTheme("État des résultats du tournoi", 19, true);
 		GridBagConstraints gbc_lblTitre = new GridBagConstraints();
 		gbc_lblTitre.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblTitre.insets = new Insets(0, 0, 5, 5);
@@ -77,9 +76,7 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		panelTitre.add(lblTitre, gbc_lblTitre);
 
 		// Label tournoi
-		JLabel lblTournoi = new JLabel(tournoi.getNomTournoi());
-		lblTournoi.setFont(CharteGraphique.getPolice(16, false));
-		lblTournoi.setForeground(CharteGraphique.TEXTE);
+		JLabelTheme lblTournoi = new JLabelTheme(tournoi.getNomTournoi(), 16, false);
 		GridBagConstraints gbc_lblTournoi = new GridBagConstraints();
 		gbc_lblTournoi.insets = new Insets(0, 0, 0, 5);
 		gbc_lblTournoi.anchor = GridBagConstraints.NORTHWEST;
@@ -150,6 +147,10 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		contentPane.add(panelBoutons, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * Récupère la table des résultats pour l'impression
+	 * @return la table des résultats pour l'impression
+	 */
 	public JTableThemeImpression getTableImpression() {
 		JTableThemeImpression table = new JTableThemeImpression(this.table.getModel());
 

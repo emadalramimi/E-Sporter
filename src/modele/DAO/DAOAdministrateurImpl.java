@@ -9,10 +9,10 @@ import java.util.Optional;
 import modele.metier.Administrateur;
 
 /**
- * Modèle administrateur
+ * Implémentation DAO pour la classe Administrateur
  */
 public class DAOAdministrateurImpl implements DAOAdministrateur {
-	
+
 	@Override
 	public List<Administrateur> getTout() throws Exception {
 		throw new UnsupportedOperationException("Méthode non implémentée");

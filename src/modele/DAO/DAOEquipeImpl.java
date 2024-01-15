@@ -22,7 +22,7 @@ import modele.metier.Pays;
 import modele.metier.Tournoi;
 
 /**
- * Modèle équipe
+ * Implémentation DAO pour la classe Equipe
  */
 public class DAOEquipeImpl implements DAOEquipe {
 	
@@ -49,6 +49,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 
 	/**
+	 * Récupère une équipe depuis la BDD par sa clé primaire
 	 * @return Retourne une équipe depuis la BDD par sa clé primaire
 	 * @throws Exception Erreur SQL
 	 */
@@ -238,7 +239,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 	
 	/**
-	 * Méthode qui vérifie si une équipe est inscrite à un tournoi
+	 * Vérifie si une équipe est inscrite à un tournoi
 	 * @param equipe : l'équipe à vérifier
 	 * @return true si l'équipe est inscrite à un tournoi, false sinon
 	 * @throws Exception Erreur SQL
@@ -257,7 +258,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 	
 	/**
-	 * Méthode qui vérifie si une équipe est inscrite à un tournoi ouvert
+	 * Vérifie si une équipe est inscrite à un tournoi ouvert
 	 * @param equipe : l'équipe à vérifier
 	 * @return true si l'équipe est inscrite à un tournoi ouvert, false sinon
 	 * @throws Exception Erreur SQL
@@ -276,7 +277,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 
 	/**
-	 * Méthode qui inscrit une équipe à un tournoi
+	 * Inscrire une équipe à un tournoi
 	 * @param equipe : l'équipe à inscrire
 	 * @param tournoi : le tournoi auquel inscrire l'équipe
 	 * @throws Exception : si l'équipe est déjà inscrite au tournoi ou si l'équipe n'est pas de la saison courante
@@ -309,7 +310,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 	
 	/**
-	 * Méthode qui désinscrit une équipe d'un tournoi
+	 * Désinscrit une équipe d'un tournoi
 	 * @param equipe : l'équipe à désinscrire
 	 * @param tournoi : le tournoi duquel désinscrire l'équipe
 	 * @throws Exception : si l'équipe n'est pas inscrite au tournoi ou erreur SQL
@@ -339,7 +340,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 	
 	/**
-	 * Méthode qui récupère les équipes de la saison courante
+	 * Récupère les équipes de la saison courante
 	 * @return la liste des équipes de la saison courante
 	 * @throws Exception Erreur SQL
 	 */
@@ -351,7 +352,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 
 	/**
-	 * Méthode qui récupère les équipes de la saison courante sauf celles passées en paramètre
+	 * Récupère les équipes de la saison courante
 	 * @param equipesNonEligibles : les équipes qui ne doivent pas être récupérées
 	 * @return la liste des équipes de la saison courante
 	 * @throws Exception Erreur SQL
@@ -365,7 +366,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 
 	/**
-	 * Méthode de recherche d'équipes par filtrage
+	 * Récupère les équipes filtrées par pays
 	 * @param pays Pays de l'équipe
 	 * @return Retourne la liste des équipes filtrées par pays
 	 * @throws Exception Exception SQL
@@ -387,7 +388,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	 * Parcourt les équipes dans la base de données et les formate dans une liste
 	 * @param st Statement
 	 * @param rs ResultSet
-	 * @return Liste des équipes
+	 * @return Liste des équipes parcourues
 	 */
 	private List<Equipe> collect(Statement st, ResultSet rs) throws Exception {
 		Stream<Equipe> stream = StreamSupport.stream(

@@ -51,6 +51,9 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 	
 	/**
 	 * Effectue un traitement au clic d'un élément de la fenêtre
+	 * Quand on clique sur le bouton "Inscrire une équipe" : on affiche la vue de saisie d'une équipe
+	 * Quand on clique sur le bouton "Ouvrir le tournoi" : on ouvre le tournoi
+	 * Quand on clique sur le bouton "Fermer" : on ferme la fenêtre
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {

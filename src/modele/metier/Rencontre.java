@@ -34,6 +34,7 @@ public class Rencontre {
 	}
 	
 	/**
+	 * Retourne la clé primaire
 	 * @return Clé primaire
 	 */
 	public int getIdRencontre() {
@@ -49,6 +50,7 @@ public class Rencontre {
 	}
 
 	/**
+	 * Retourne la clé étrangère poule
 	 * @return Clé étrangère poule
 	 */
 	public int getIdPoule() {
@@ -64,6 +66,7 @@ public class Rencontre {
 	}
 
 	/**
+	 * Retourne la clé étrangère équipe gagnante
 	 * @return Clé étrangère équipe gagnante
 	 */
 	public int getIdEquipeGagnante() {
@@ -79,22 +82,25 @@ public class Rencontre {
 	}
 
 	/**
-	 * @return Clé étrangère Tableau d'équipes
+	 * Retourne liste d'équipes de la rencontre
+	 * @return liste d'équipes de la rencontre
 	 */
 	public Equipe[] getEquipes() {
 		return equipes;
 	}
 
 	/**
-	 * Modifie la clé étrangère tableau d'équipes
-	 * @param equipes
+	 * Modifie la liste d'équipes de la rencontre
+	 * @param equipes liste d'équipes de la rencontre à modifier
 	 */
 	public void setEquipes(Equipe[] equipes) {
 		this.equipes = equipes;
 	}
 	
 	/**
-	 * Retourne true si un Object o est égal à Rencontre (this), faux sinon
+	 * Méthode equals pour comparer deux rencontres
+	 * @param o Objet à comparer
+	 * @return Vrai si les deux rencontres sont égales, faux sinon
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -110,6 +116,10 @@ public class Rencontre {
 	     	    && Arrays.equals(this.equipes, rencontre.getEquipes());
 	}
 	
+	/**
+	 * Retourne une représentation textuelle de la rencontre
+	 * @return Chaîne de caractères représentant la rencontre
+	 */
 	@Override
 	public String toString() {
 		return "Rencontre [idRencontre=" + idRencontre

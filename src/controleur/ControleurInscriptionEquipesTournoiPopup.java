@@ -38,6 +38,8 @@ public class ControleurInscriptionEquipesTournoiPopup implements ActionListener 
 	
 	/**
 	 * Effectue un traitement au clic d'un élément de la fenêtre
+	 * Quand on clique sur le bouton "Ajouter l'équipe" : on ajoute l'équipe au tournoi
+	 * Quand on clique sur le bouton "Annuler" : on ferme la fenêtre
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {

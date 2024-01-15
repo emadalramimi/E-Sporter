@@ -1,11 +1,14 @@
 package modele;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import controleur.ControleurTournois;
+import modele.DAO.DAOAdministrateur;
+import modele.DAO.DAOAdministrateurImpl;
 import modele.DAO.DAOPoule;
 import modele.DAO.DAOPouleImpl;
 import modele.DAO.DAOTournoi;
@@ -25,17 +28,16 @@ public class ModeleTournoi implements Recherchable<Tournoi> {
 
 	private DAOTournoi daoTournoi;
 	private DAOPoule daoPoule;
+	private DAOAdministrateur daoAdministrateur;
 
-	/**
-	 * Construit un modèle tournoi
-	 */
 	public ModeleTournoi() {
 		this.daoTournoi = new DAOTournoiImpl();
 		this.daoPoule = new DAOPouleImpl();
+		this.daoAdministrateur = new DAOAdministrateurImpl();
 	}
 
 	/**
-	 * Méthode pour récupérer les résultats d'un tournoi
+	 * Récupère les résultats d'un tournoi
 	 * @param tournoi Tournoi dont on veut récupérer les résultats
 	 * @return Retourne les résultats d'un tournoi
 	 */
@@ -66,7 +68,7 @@ public class ModeleTournoi implements Recherchable<Tournoi> {
 	}
 
 	/**
-	 * Méthode de recherche de tournois par nom
+	 * Recherche de tournois par nom
 	 * @param nom Nom du tournoi
 	 * @return Retourne les tournois par nom
 	 * @throws Exception Exception SQL
@@ -79,7 +81,7 @@ public class ModeleTournoi implements Recherchable<Tournoi> {
     }
 
 	/**
-	 * Méthode de recherche de tournois par filtrage
+	 * Recherche de tournois par filtrage
 	 * @param notoriete Notoriété du tournoi
 	 * @param statut Statut du tournoi
 	 * @return Retourne les tournois par filtrage
@@ -122,4 +124,41 @@ public class ModeleTournoi implements Recherchable<Tournoi> {
 		return tournois;
 	}
 
+	/**
+	 * Vérifie l'unicité d'un identifiant
+	 * @param identifiant Identifiant à vérifier
+	 * @return Retourne vrai si l'identifiant est unique, faux sinon
+	 * @throws SQLException Exception SQL
+	 */
+	public boolean verifierUniciteIdentifiant(String identifiant) throws SQLException {
+		return this.daoTournoi.getParIdentifiant(identifiant).isPresent()
+				|| this.daoAdministrateur.getParIdentifiant(identifiant).isPresent();
+	}
+
+	/**
+	 * Vérifie si un tournoi est cloturé ou en cours
+	 * @param tournoi : tournoi
+	 * @return true si le tournoi est cloturé ou en cours, false sinon
+	 */
+	public boolean estTournoiEnCoursOuCloture(Tournoi tournoi) {
+		return this.getTimestamp() < tournoi.getDateTimeFin() && tournoi.getEstCloture() == true;
+	}
+
+	/**
+	 * Vérifie si un tournoi est cloturé
+	 * @param tournoi : tournoi
+	 * @return true si le tournoi est cloturé, false sinon
+	 */
+	public boolean estTournoiCloture(Tournoi tournoi) {
+		return this.getTimestamp() >= tournoi.getDateTimeDebut() && tournoi.getEstCloture();
+	}
+
+	/**
+	 * Retourne le timestamp en secondes
+	 * @return Timestamp en secondes
+	 */
+	private long getTimestamp() {
+		return System.currentTimeMillis() / 1000;
+	}
+	
 }

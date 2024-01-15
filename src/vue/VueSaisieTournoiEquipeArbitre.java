@@ -6,10 +6,10 @@ import javax.swing.ListCellRenderer;
 import modele.metier.Arbitre;
 import modele.metier.Equipe;
 import modele.metier.Tournoi;
-import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JComboBoxTheme;
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -26,7 +26,7 @@ import controleur.ControleurInscriptionEquipesTournoiPopup;
 import controleur.ControleurSaisieTournoiArbitre;
 
 /**
- * Vue de la saisie d'un tournoi avec une liste d'équipes ou d'arbitres
+ * IHM de la saisie d'un tournoi avec une liste d'équipes ou d'arbitres
  */
 public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 
@@ -82,18 +82,16 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 		contentPane.setLayout(gbl_contentPane);
 
 		// Label titre
-		JLabel lblTitre = null;
+		JLabelTheme lblTitre = null;
 		// Selon le type de la liste, on affiche un titre différent
 		switch(this.type) {
 		case EQUIPE:
-			lblTitre = new JLabel("Sélectionner une équipe");
+			lblTitre = new JLabelTheme("Sélectionner une équipe", 19, true);
 			break;
 		case ARBITRE:
-			lblTitre = new JLabel("Sélectionner un arbitre");
+			lblTitre = new JLabelTheme("Sélectionner un arbitre", 19, true);
 			break;
 		}
-		lblTitre.setForeground(CharteGraphique.TEXTE);
-		lblTitre.setFont(CharteGraphique.getPolice(19, true));
 		lblTitre.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_titre = new GridBagConstraints();
 		gbc_titre.gridwidth = 2;
@@ -158,7 +156,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	    }
 
 		/**
-		 * Méthode pour afficher le nom de l'équipe ou de l'arbitre dans la ComboBox
+		 * Afficher le nom de l'équipe ou de l'arbitre dans la ComboBox
 		 * @param list : la liste
 		 * @param value : l'objet à afficher
 		 * @param index : l'index de l'objet
@@ -188,7 +186,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	}
 
 	 /**
-	  * Méthode pour récupérer l'équipe sélectionnée
+	  * Récupérer l'équipe sélectionnée
 	  * @return l'équipe sélectionnée
 	  * @throws IllegalArgumentException
 	  */
@@ -200,7 +198,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	}
 	
 	/**
-	 * Méthode pour récupérer l'arbitre sélectionné
+	 * Récupérer l'arbitre sélectionné
 	 * @return l'arbitre sélectionné
 	 * @throws IllegalArgumentException
 	 */

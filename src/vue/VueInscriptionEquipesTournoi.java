@@ -10,6 +10,7 @@ import modele.metier.Tournoi;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.JScrollPaneTheme;
 
@@ -17,7 +18,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.DefaultListCellRenderer;
@@ -35,7 +35,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 
 	private JPanel contentPane;
 	private JButtonTheme btnInscrireEquipe;
-	private JLabel lblTitre;
+	private JLabelTheme lblTitre;
 	
 	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipe;
 	private Tournoi tournoi;
@@ -77,9 +77,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		panelTitre.setLayout(gbl_panelTitre);
 		
 		// Label titre
-		this.lblTitre = new JLabel();
-		this.lblTitre.setFont(CharteGraphique.getPolice(19, true));
-		this.lblTitre.setForeground(CharteGraphique.TEXTE);
+		this.lblTitre = new JLabelTheme("", 19, true);
 		GridBagConstraints gbc_lblTitre = new GridBagConstraints();
 		gbc_lblTitre.anchor = GridBagConstraints.NORTHWEST;
 		gbc_lblTitre.insets = new Insets(0, 0, 5, 5);
@@ -88,9 +86,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		panelTitre.add(this.lblTitre, gbc_lblTitre);
 		
 		// Label nom du tournoi
-		JLabel lblTournoi = new JLabel(tournoi.getNomTournoi());
-		lblTournoi.setFont(CharteGraphique.getPolice(16, false));
-		lblTournoi.setForeground(CharteGraphique.TEXTE);
+		JLabelTheme lblTournoi = new JLabelTheme(tournoi.getNomTournoi(), 16, false);
 		GridBagConstraints gbc_lblTournoi = new GridBagConstraints();
 		gbc_lblTournoi.insets = new Insets(0, 0, 0, 5);
 		gbc_lblTournoi.anchor = GridBagConstraints.NORTHWEST;
@@ -223,14 +219,14 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 	}
 
 	/**
-	 * Méthode pour mettre à jour le titre de la fenêtre
+	 * Mettre à jour le titre de la fenêtre avec le nombre d'équipes inscrites
 	 */
 	private void majTitre() {
 		this.lblTitre.setText("Equipes inscrites (" + this.listModelEquipes.size() + ")");
 	}
 	
 	/**
-	 * Méthode pour récupérer la liste des équipes
+	 * Récupérer la liste des équipes
 	 * @return la liste des équipes inscrites
 	 */
 	public List<Equipe> getEquipes() {
@@ -242,7 +238,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 	}
 	
 	/**
-	 * Méthode pour afficher une boîte de dialogue de confirmation
+	 * Afficher une boîte de dialogue de confirmation
 	 * @param message : le message à afficher
 	 * @return true si l'utilisateur a cliqué sur Oui, false sinon
 	 */
@@ -263,7 +259,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
     }
 	
 	/**
-	 * Méthode pour afficher la fenêtre 
+	 * Afficher fenêtre de saisie d'une équipe
 	 * @param equipes : la liste des équipes inscrites
 	 */
 	public void afficherVueSaisieTournoiEquipe(Equipe[] equipes) {
@@ -279,7 +275,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 	}
 	
 	/**
-	 * Méthode pour désactiver le bouton inscrire une équipe
+	 * Activer ou désactiver le bouton inscrire une équipe
 	 * @param actif : true pour activer le bouton, false pour le désactiver
 	 */
 	public void setBtnInscrireEquipeActif(boolean actif) {

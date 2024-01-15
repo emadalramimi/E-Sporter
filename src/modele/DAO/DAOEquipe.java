@@ -8,6 +8,9 @@ import modele.metier.Equipe;
 import modele.metier.Pays;
 import modele.metier.Tournoi;
 
+/**
+ * Interface DAO pour la classe Equipe
+ */
 public interface DAOEquipe extends DAO<Equipe, Integer> {
 
     public List<Equipe> getEquipesTournoi(int idTournoi);

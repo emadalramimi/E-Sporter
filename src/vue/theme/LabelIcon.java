@@ -15,10 +15,18 @@ public class LabelIcon {
         this.label = label;
     }
 
+    /**
+     * Retourne l'icone
+     * @return Icone
+     */
     public ImageIcon getIcon() {
         return this.icon;
     }
 
+    /**
+     * Retourne le texte
+     * @return Texte
+     */
     public String getText() {
         return this.label;
     }

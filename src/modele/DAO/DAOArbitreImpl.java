@@ -16,13 +16,14 @@ import java.util.stream.StreamSupport;
 import modele.metier.Arbitre;
 
 /**
- * Modèle arbitre
+ * Implémentation DAO pour la classe Arbitre
  */
 public class DAOArbitreImpl implements DAOArbitre {
 
 	/**
 	 * Récupère tous les arbitres
 	 * @return Liste des arbitres
+	 * @throws Exception Exception SQL
 	 */
 	@Override
 	public List<Arbitre> getTout() throws Exception {
@@ -60,7 +61,7 @@ public class DAOArbitreImpl implements DAOArbitre {
 	public boolean ajouter(Arbitre arbitre) throws Exception {
 		throw new UnsupportedOperationException("Méthode non implémentée");
 	}
-
+	
 	@Override
 	public boolean modifier(Arbitre arbitre) throws Exception {
 		throw new UnsupportedOperationException("Méthode non implémentée");
@@ -159,7 +160,12 @@ public class DAOArbitreImpl implements DAOArbitre {
 		
 		return stream.collect(Collectors.toList());
 	}
-
+	
+	/**
+	 * Construit un arbitre depuis un ResultSet
+	 * @param rs ResultSet à parcourir
+	 * @return Arbitre construit
+	 */
 	private Arbitre construireArbitre(ResultSet rs) throws SQLException {
 		return new Arbitre(
 			rs.getInt("idArbitre"),

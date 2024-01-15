@@ -17,9 +17,9 @@ public class Equipe implements Comparable<Equipe> {
 	private List<Joueur> joueurs;
 	
 	/**
-	 * Construit une équipe
+	 * Construit une équipe complète
 	 * @param idEquipe 		Clé primaire
-	 * @param nom 			Nom
+	 * @param nom 			Nom 
 	 * @param pays 			Pays
 	 * @param classement 	Classement
 	 * @param worldRanking 	World Ranking
@@ -37,7 +37,7 @@ public class Equipe implements Comparable<Equipe> {
 	}
 	
 	/**
-	 * Construit une équipe pour l'insertion en BDD
+	 * Construit une équipe sans clé primaire
 	 * @param nom 		Nom
 	 * @param pays 		Pays
 	 * @param joueurs 	Liste des joueurs
@@ -161,7 +161,9 @@ public class Equipe implements Comparable<Equipe> {
 	}
 	
 	/**
-	 * Retourne true si un Object o est égal à Equipe (this), faux sinon
+	 * Méthode de comparaison d'une équipe avec un autre objet
+	 * @param o Objet à comparer
+	 * @return true si un Object o est égal à Equipe (this), faux sinon
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -177,6 +179,7 @@ public class Equipe implements Comparable<Equipe> {
 
 	/**
 	 * Retourne le hashcode de l'équipe
+	 * @return Hashcode de l'équipe
 	 */
 	@Override
 	public int hashCode() {
@@ -185,12 +188,18 @@ public class Equipe implements Comparable<Equipe> {
 
 	/**
 	 * Compare l'équipe avec une autre équipe
+	 * @param equipe Équipe à comparer
+	 * @return 0 si les équipes sont égales, 1 si l'équipe est supérieure à l'équipe passée en paramètre, -1 sinon
 	 */
 	@Override
 	public int compareTo(Equipe equipe) {
 		return this.nom.compareTo(equipe.nom);
 	}
 
+	/**
+	 * Retourne une représentation textuelle de l'équipe
+	 * @return Représentation textuelle de l'équipe
+	 */
 	@Override
 	public String toString() {
 		return "Equipe [idEquipe=" + idEquipe + ", nom=" + nom + ", pays=" + pays + ", classement=" + classement

@@ -25,14 +25,14 @@ import modele.metier.Tournoi;
 import modele.metier.Utilisateur;
 
 /**
- * Modèle rencontre
+ * Implémentation DAO pour la classe Rencontre
  */
 public class DAORencontreImpl implements DAORencontre {
 
 	private DAOEquipe daoEquipe;
 
 	/**
-	 * Construit un modèle rencontre
+	 * Construit un objet Rencontre à partir d'un ResultSet
 	 */
 	public DAORencontreImpl() {
 		this.daoEquipe = new DAOEquipeImpl();
@@ -77,6 +77,7 @@ public class DAORencontreImpl implements DAORencontre {
 	/**
 	 * Récupère une rencontre depuis la BDD par sa clé primaire
 	 * @param idRencontre identifiant de la rencontre
+	 * @return Retourne une rencontre depuis la BDD par sa clé primaire
 	 * @throws Exception Exception SQL
 	 */
 	@Override
@@ -99,6 +100,7 @@ public class DAORencontreImpl implements DAORencontre {
 
 	/**
 	 * Ajoute la rencontre dans la BDD
+	 * @param rencontre Rencontre à ajouter
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 * @throws Exception Exception SQL et IllegalArgumentException si plus de 2 équipes
 	 */

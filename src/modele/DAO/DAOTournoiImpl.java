@@ -20,7 +20,7 @@ import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
 /**
- * Modèle tournoi
+ * Implémentation DAO pour la classe Tournoi
  */
 public class DAOTournoiImpl implements DAOTournoi {
 
@@ -28,9 +28,6 @@ public class DAOTournoiImpl implements DAOTournoi {
 	private DAOEquipe daoEquipe;
 	private DAOPoule daoPoule;
 
-	/**
-	 * Construit un modèle tournoi
-	 */
 	public DAOTournoiImpl() {
 		this.daoArbitre = new DAOArbitreImpl();
 		this.daoEquipe = new DAOEquipeImpl();
@@ -255,7 +252,7 @@ public class DAOTournoiImpl implements DAOTournoi {
 	}
 	
 	/**
-	 * Méthode pour récupérer un tournoi par son identifiant
+	 * Récupère un tournoi par son identifiant
 	 * @param identifiant Identifiant du tournoi
 	 * @return Retourne un tournoi depuis la BDD par son identifiant
 	 * @throws SQLException Exception SQL
@@ -279,7 +276,7 @@ public class DAOTournoiImpl implements DAOTournoi {
 	}
 
 	/**
-	 * Méthode pour récupérer un tournoi par identifiant d'une rencontre
+	 * Récupère un tournoi par identifiant d'une rencontre
 	 * @param idRencontre Identifiant de la rencontre
 	 * @return Retourne un tournoi depuis la BDD par identifiant d'une rencontre
 	 */
@@ -327,6 +324,11 @@ public class DAOTournoiImpl implements DAOTournoi {
 		ps.close();
 	}
 
+	/**
+	 * Ouvre le tournoi en BDD
+	 * @param tournoi Le tournoi à ouvrir
+	 * @throws SQLException Erreur SQL
+	 */
 	@Override
 	public void ouvrirTournoi(Tournoi tournoi) throws SQLException {
 		PreparedStatement ps;
@@ -342,6 +344,12 @@ public class DAOTournoiImpl implements DAOTournoi {
 		ps.close();
 	}
 
+	/**
+	 * Construit un tournoi depuis un ResultSet
+	 * @param rs ResultSet
+	 * @return Tournoi construit
+	 * @throws SQLException Exception SQL
+	 */
 	private Tournoi construireTournoi(ResultSet rs) throws SQLException {
 		return new Tournoi(
 			rs.getInt("idTournoi"),

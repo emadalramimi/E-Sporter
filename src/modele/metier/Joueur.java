@@ -78,7 +78,9 @@ public class Joueur {
 	}
 	
 	/**
-	 * Retourne true si un Object o est égal à Joueur (this), faux sinon
+	 * Méthode equals pour comparer deux joueurs
+	 * @param o Objet à comparer
+	 * @return Vrai si les deux joueurs sont égaux, faux sinon
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -94,6 +96,10 @@ public class Joueur {
 	            && this.idEquipe == joueur.getIdEquipe();
 	}
 
+	/**
+	 * Retourne une représentation textuelle du joueur
+	 * @return Chaîne de caractères représentant le joueur
+	 */
 	@Override
 	public String toString() {
 		return "Joueur [idJoueur=" + idJoueur + ", pseudo=" + pseudo + ", idEquipe=" + idEquipe + "]";

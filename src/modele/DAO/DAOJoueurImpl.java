@@ -17,7 +17,7 @@ import java.util.stream.StreamSupport;
 import modele.metier.Joueur;
 
 /**
- * Modèle joueur
+ * Implémentation DAO pour la classe Joueur
  */
 public class DAOJoueurImpl implements DAOJoueur {
 
@@ -84,6 +84,7 @@ public class DAOJoueurImpl implements DAOJoueur {
 
 	/**
 	 * Ajoute le joueur dans la BDD
+	 * @param joueur : joueur à ajouter
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 * @throws Exception Exception SQL
 	 */
@@ -138,6 +139,7 @@ public class DAOJoueurImpl implements DAOJoueur {
 
 	/**
 	 * Modifie le joueur dans la BDD
+	 * @param joueur : joueur à modifier
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 * @throws Exception Exception SQL
 	 */
@@ -222,6 +224,12 @@ public class DAOJoueurImpl implements DAOJoueur {
 		return joueurs;
 	}
 
+	/**
+	 * Construit un joueur à partir d'un ResultSet
+	 * @param rs : ResultSet
+	 * @return le joueur construit
+	 * @throws SQLException Exception SQL
+	 */
 	private Joueur construireJoueur(ResultSet rs) throws SQLException {
 		return new Joueur(
 			rs.getInt("idJoueur"),

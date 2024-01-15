@@ -5,6 +5,9 @@ import java.util.List;
 import modele.metier.Equipe;
 import modele.metier.Rencontre;
 
+/**
+ * Interface DAO pour la classe Rencontre
+ */
 public interface DAORencontre extends DAO<Rencontre, Integer> {
     
     public List<Rencontre> getRencontresPoules(int idPoule);

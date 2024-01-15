@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
+import modele.ModeleRencontre;
 import modele.ModeleTournoiCloture;
 import modele.DAO.DAOEquipe;
 import modele.DAO.DAOEquipeImpl;
@@ -35,6 +36,7 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
     private DAORencontre daoRencontre;
     private DAOEquipe daoEquipe;
     private ModeleTournoiCloture modeleTournoiCloture;
+    private ModeleRencontre modeleRencontre;
 
     /**
      * Constructeur du controleur de VuePoule
@@ -46,8 +48,9 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
         this.tournoi = tournoi;
         this.daoTournoi = new DAOTournoiImpl();
         this.daoRencontre = new DAORencontreImpl();
-        this.modeleTournoiCloture = new ModeleTournoiCloture();
         this.daoEquipe = new DAOEquipeImpl();
+        this.modeleTournoiCloture = new ModeleTournoiCloture();
+        this.modeleRencontre = new ModeleRencontre();
     }
 
     /**
@@ -74,11 +77,7 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
                 // Récupération de la rencontre
                 Rencontre rencontre;
                 try {
-                    rencontre = this.tournoi.getPoules().stream()
-                        .flatMap(poule -> poule.getRencontres().stream())
-                        .filter(r -> r.getIdRencontre() == idRencontre)
-                        .findFirst()
-                        .orElse(null);
+                    rencontre = this.modeleRencontre.getRencontreInMemory(this.tournoi, idRencontre);
                 } catch (Exception ex) {
                     this.vue.afficherPopupErreur("Une erreur est survenue lors de la récupération de la rencontre.");
                     throw new RuntimeException("Une erreur est survenue lors de la récupération de la rencontre.");
@@ -113,7 +112,10 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
     }
 
     /**
-     * Quand on clique sur un bouton
+     * Effectue un traitement lors de la sélection d'un élément de la fenêtre
+     * Quand on clique sur le bouton "Clôturer la poule" : on clôture la poule
+     * Quand on clique sur le bouton "État des résultats" : on affiche la vue d'état des résultats du tournoi
+     * Quand on clique sur le bouton "Fermer" : on ferme la fenêtre
      */
     @Override
     public void actionPerformed(ActionEvent e) {

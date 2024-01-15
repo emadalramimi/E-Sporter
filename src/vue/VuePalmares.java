@@ -2,22 +2,19 @@ package vue;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
 import vue.theme.JTableThemeImpression;
-import vue.theme.JTextFieldTheme;
 import vue.theme.LabelIcon;
 import vue.theme.ThemeTableCellRenderer;
-import vue.theme.JButtonTheme.Types;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -34,7 +31,6 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -46,19 +42,27 @@ import modele.metier.Palmares;
 import modele.metier.Pays;
 
 /**
- * IHM équipes
+ * IHM Palmarès
  */
-public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares> {
+public class VuePalmares extends RecherchableVue<Palmares> {
 	
+	private ControleurPalmares controleur;
 	private JTable table;
-	private JTextFieldTheme txtRecherche;
-	private JButton btnRecherche;
 	private JPanel panel;
 	private DefaultTableModel model;
+
+	public VuePalmares() {
+		super();
+		super.setControleur(new ControleurPalmares(this));
+		this.controleur = (ControleurPalmares) super.getControleur();
+	}
 	
+	/**
+	 * Affiche la vue du palmarès
+	 * @param contentPane : le panel où afficher la vue
+	 * @param vueBase : la vue de base
+	 */
 	public void afficherVuePalmares(JPanel contentPane, VueBase vueBase) {
-		ControleurPalmares controleur = new ControleurPalmares(this);
-		
 		List<Palmares> podium = controleur.getClassement();
 
 		// panel contient tous les éléments de la page
@@ -84,10 +88,8 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		panelLabelPalmares.setBackground(CharteGraphique.FOND);
 		panelLabelPalmares.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JLabel lblPalmares = new JLabel("Palmarès");
+		JLabelTheme lblPalmares = new JLabelTheme("Palmarès", 30, true);
 		lblPalmares.setHorizontalAlignment(SwingConstants.LEFT);
-		lblPalmares.setFont(CharteGraphique.getPolice(30, true));
-		lblPalmares.setForeground(CharteGraphique.TEXTE);
 		panelLabelPalmares.add(lblPalmares);
 
 		// panelImprimer, le panel contenant le bouton btnImprimer
@@ -101,10 +103,11 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		
 		// btnImprimer, un bouton pour permettre l'ajout d'une équipe
 		JButtonTheme btnImprimer = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Imprimer");
-		btnImprimer.addActionListener(controleur);
+		btnImprimer.addActionListener(this.controleur);
 		btnImprimer.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelImprimer.add(btnImprimer);
 		
+		// panelPodium, le panel contenant les 3 premiers du classement
 		JPanel panelPodium = new JPanel();
 		panelPodium.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelPodium = new GridBagConstraints();
@@ -120,18 +123,19 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		gbl_panelPodium.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panelPodium.setLayout(gbl_panelPodium);
 
-		JLabel icon2 = new JLabel(new ImageIcon(VueTournois.class.getResource("/images/medailles/top2.png")));
-		GridBagConstraints gbc_lblIcon2 = new GridBagConstraints();
-		gbc_lblIcon2.gridx = 0;
-		gbc_lblIcon2.gridy = 0;
-		panelPodium.add(icon2, gbc_lblIcon2);
-
+		// Label podium et icônes des 3 premiers
 		JLabel icon1 = new JLabel(new ImageIcon(VueTournois.class.getResource("/images/medailles/top1.png")));
 		GridBagConstraints gbc_lblIcon = new GridBagConstraints();
 		gbc_lblIcon.anchor = GridBagConstraints.NORTH;
 		gbc_lblIcon.gridx = 1;
 		gbc_lblIcon.gridy = 0;
 		panelPodium.add(icon1, gbc_lblIcon);
+
+		JLabel icon2 = new JLabel(new ImageIcon(VueTournois.class.getResource("/images/medailles/top2.png")));
+		GridBagConstraints gbc_lblIcon2 = new GridBagConstraints();
+		gbc_lblIcon2.gridx = 0;
+		gbc_lblIcon2.gridy = 0;
+		panelPodium.add(icon2, gbc_lblIcon2);
 
 		JLabel icon3 = new JLabel(new ImageIcon(VueTournois.class.getResource("/images/medailles/top3.png")));
 		GridBagConstraints gbc_lblIcon_1 = new GridBagConstraints();
@@ -171,16 +175,8 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		panel.add(panelTableauFiltres, gbc_panelRecherche);
 		panelTableauFiltres.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		
-		// Champ de recherche
-		txtRecherche = new JTextFieldTheme(20);
-		txtRecherche.addKeyListener(controleur);
-		txtRecherche.setColumns(20);
-		panelTableauFiltres.add(txtRecherche);
-		
-		// Bouton de recherche
-		btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/actions/rechercher.png")));
-		btnRecherche.addActionListener(controleur);
-		panelTableauFiltres.add(btnRecherche);
+		// Panel de recherche
+		panelTableauFiltres.add(super.getPanelRecherche());
 		
 		// Panel contenant les filtres
 		JPanel panelChoixFiltres = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
@@ -284,6 +280,12 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		
 	}
 
+	/**
+	 * Création du texte du podium
+	 * @param podium : le podium
+	 * @param classement : le classement du podium
+	 * @return le texte du podium
+	 */
 	private JTextArea textePodium(List<Palmares> podium, int classement) {
 		List<String> equipes = podium.stream()
 			.filter(p -> p.getEquipe().getClassement() == classement)
@@ -304,44 +306,6 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		textArea.setOpaque(false);
 	
 		return textArea;
-	}
-	
-	/**
-	 * @param bouton
-	 * @return true si bouton est le bouton de recherche, false sinon
-	 */
-	@Override
-	public boolean estBoutonRecherche(JButton bouton) {
-		if(bouton instanceof JButtonTheme && bouton.getIcon() != null) {
-			String iconeRecherche = VueTournois.class.getResource("/images/actions/rechercher.png").toString();
-		    return bouton.getIcon().toString().equals(iconeRecherche);
-		}
-		return false;
-	}
-	
-	/**
-	 * @param champ
-	 * @return true si le champ est le champ de recherche, false sinon
-	 */
-	@Override
-	public boolean estChampRecherche(JTextField champ) {
-		return this.txtRecherche.equals(champ);
-	}
-
-	/**
-	 * Remet à zéro le champ de recherche
-	 */
-	@Override
-	public void resetChampRecherche() {
-		this.txtRecherche.setText("");
-	}
-	
-	/**
-	 * @return la requête de recherche tapée par l'utilisateur
-	 */
-	@Override
-	public String getRequeteRecherche() {
-		return this.txtRecherche.getText().trim();
 	}
 
 	/**
@@ -376,6 +340,10 @@ public class VuePalmares extends JFrameTheme implements RecherchableVue<Palmares
 		this.table.setModel(this.model);
 	}
 
+	/**
+	 * Récupérer le tableau d'équipes pour l'impression
+	 * @return le tableau d'équipes
+	 */
 	public JTableThemeImpression getTableImpression() {
 		JTableThemeImpression table = new JTableThemeImpression(this.table.getModel());
 

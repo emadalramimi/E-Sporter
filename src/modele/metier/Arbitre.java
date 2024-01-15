@@ -11,9 +11,9 @@ public class Arbitre {
 	
 	/**
 	 * Construit un Arbitre
-	 * @param idArbitre	Clé primaire
-	 * @param nom		Nom
-	 * @param prenom	Prénom
+	 * @param idArbitre	Clé primaire 
+	 * @param nom		Nom de l'arbitre
+	 * @param prenom	Prénom de l'arbitre
 	 */
 	public Arbitre(int idArbitre, String nom, String prenom) {
 		this.idArbitre = idArbitre;
@@ -22,7 +22,7 @@ public class Arbitre {
 	}
 	
 	/**
-	 * Retourne la clé primaire
+	 * Retourne la clé primaire de l'arbitre
 	 * @return Clé primaire
 	 */
 	public int getIdArbitre() {
@@ -30,7 +30,7 @@ public class Arbitre {
 	}
 
 	/**
-	 * Modifie la clé primaire
+	 * Modifie la clé primaire de l'arbitre
 	 * @param idArbitre Clé primaire
 	 */
 	public void setIdArbitre(int idArbitre) {
@@ -38,15 +38,15 @@ public class Arbitre {
 	}
 
 	/**
-	 * Retourne le nom
-	 * @return Nom
+	 * Retourne le nom de l'arbitre
+	 * @return Nom 
 	 */
 	public String getNom() {
 		return this.nom;
 	}
 
 	/**
-	 * Modifie le nom
+	 * Modifie le nom de l'arbitre
 	 * @param nom Nom
 	 */
 	public void setNom(String nom) {
@@ -54,15 +54,15 @@ public class Arbitre {
 	}
 
 	/**
-	 * Retourne le prénom
-	 * @return Prénom
+	 * Retourne le prénom de l'arbitre
+	 * @return Prénom 
 	 */
 	public String getPrenom() {
 		return prenom;
 	}
 
 	/**
-	 * Modifie le prénom
+	 * Modifie le prénom de l'arbitre
 	 * @param prenom Prénom
 	 */
 	public void setPrenom(String prenom) {
@@ -72,6 +72,7 @@ public class Arbitre {
 	/**
 	 * Retourne vrai si l'arbitre est égal à l'objet passé en paramètre
 	 * @param o Objet à comparer
+	 * @return Vrai si l'arbitre est égal à l'objet passé en paramètre, faux sinon
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -85,6 +86,10 @@ public class Arbitre {
 	    return arbitre.getIdArbitre() == this.getIdArbitre();
 	}
 
+	/**
+	 * Retourne une représentation textuelle de l'arbitre
+	 * @return Chaine de caractère représentant l'arbitre
+	 */
 	@Override
 	public String toString() {
 		return "Arbitre [idArbitre=" + idArbitre + ", nom=" + nom + ", prenom=" + prenom + "]";

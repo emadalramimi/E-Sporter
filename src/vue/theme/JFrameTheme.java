@@ -159,6 +159,7 @@ public class JFrameTheme extends JFrame {
     }
 
     /**
+     * Retourne le contentPane pour le contenu de la fenêtre    
      * @return retourne le contentPane pour le contenu de la fenêtre
      */
     public JPanel getContentPane() {
@@ -214,6 +215,10 @@ public class JFrameTheme extends JFrame {
 		JOptionPaneTheme.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
 	}
 
+    /**
+     * Définit si la fenêtre est agrandissable ou non
+     * @param agrandissable true si la fenêtre est agrandissable, false sinon
+     */
     public void setAgrandissable(boolean agrandissable) {
         this.agrandissable = agrandissable;
         btnToggleAgrandir.setVisible(agrandissable);

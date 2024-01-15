@@ -11,9 +11,9 @@ import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import controleur.ControleurBase.Menus;
+import modele.ModeleTournoi;
 import modele.ModeleUtilisateur;
-import modele.DAO.DAOAdministrateur;
-import modele.DAO.DAOAdministrateurImpl;
 import modele.DAO.DAOArbitre;
 import modele.DAO.DAOArbitreImpl;
 import modele.DAO.DAOTournoi;
@@ -35,7 +35,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 	private Optional<Tournoi> tournoiOptionnel;
 	private DAOArbitre daoArbitre;
 	private DAOTournoi daoTournoi;
-	private DAOAdministrateur daoAdministrateur;
+	private ModeleTournoi modeleTournoi;
 	
 	/**
 	 * Constructeur du contrôleur de la vue de saisie d'un tournoi
@@ -49,11 +49,15 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 		this.tournoiOptionnel = tournoiOptionnel;
 		this.daoArbitre = new DAOArbitreImpl();
 		this.daoTournoi = new DAOTournoiImpl();
-		this.daoAdministrateur = new DAOAdministrateurImpl();
+		this.modeleTournoi = new ModeleTournoi();
 	}
 	
 	/**
 	 * Effectue un traitement au clic d'un élément de la fenêtre
+	 * Quand on clique sur le bouton "Ajouter un arbitre" : on affiche la vue de saisie d'un arbitre
+	 * Quand on clique sur le bouton "Valider" : on ajoute le tournoi
+	 * Quand on clique sur le bouton "Modifier" : on modifie le tournoi
+	 * Quand on clique sur le bouton "Annuler" : on ferme la fenêtre
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -137,13 +141,8 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 				}
 				this.vueSaisieTournoi.afficherPopupMessage("Le tournoi a bien été ajouté.");
 
-				// Mise à jour du tableau des tournois
-				try {
-					this.vueTournois.remplirTableau(this.daoTournoi.getTout());
-				} catch (Exception err) {
-					this.vueSaisieTournoi.afficherPopupErreur("Impossible de récupérer les tournois");
-					throw new RuntimeException("Impossible de récupérer les tournois", err);
-				}
+				// Mise à jour du tableau des tournois en rafraichissant l'onglet
+				this.vueTournois.getVueBase().changerOnglet(Menus.TOURNOIS);
 			} 
 			// Modification du tournoi au clic de modifier
 			else if (bouton.getText() == "Modifier") {
@@ -237,10 +236,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 	private void verifierUniciteIdentifiant(String identifiant) throws IllegalArgumentException {
 		// Vérification si l'identifiant est déjà utilisé par un arbitre ou un administrateur
 		try {
-			if (
-				this.daoTournoi.getParIdentifiant(identifiant).isPresent()
-				|| this.daoAdministrateur.getParIdentifiant(identifiant).isPresent()
-			) {
+			if (this.modeleTournoi.verifierUniciteIdentifiant(identifiant)) {
 				this.vueSaisieTournoi.afficherPopupErreur("Cet identifiant est déjà utilisé par un autre utilisateur.");
 				throw new IllegalArgumentException("Cet identifiant est déjà utilisé par un autre utilisateur.");
 			}

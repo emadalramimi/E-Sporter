@@ -93,6 +93,11 @@ public class StatistiquesEquipe implements Comparable<StatistiquesEquipe> {
         return String.format("%.2f", this.ratio*100) + " %";
     }
     
+    /**
+     * Méthode equals pour comparer deux statistiques d'équipe
+     * @param o Objet à comparer
+     * @return true si un Object o est égal à StatistiquesEquipe (this), faux sinon
+     */
     @Override
 	public boolean equals(Object o) {
 	    if (o == null) {
@@ -120,6 +125,10 @@ public class StatistiquesEquipe implements Comparable<StatistiquesEquipe> {
         return Float.compare(statistiquesEquipes.points, this.points);
     }
 
+    /**
+     * Retourne une représentation textuelle des statistiques d'une équipe
+     * @return Une chaîne de caractères représentant les statistiques d'une équipe
+     */
     @Override
 	public String toString() {
 		return "StatistiquesEquipe [equipe=" + equipe + ", nbMatchsJoues=" + nbMatchsJoues + ", nbMatchsGagnes=" + nbMatchsGagnes + ", ratio=" + ratio + ", points=" + points + "]";

@@ -12,8 +12,17 @@ import modele.metier.Equipe;
 import modele.metier.Tournoi;
 import vue.theme.JTableThemeImpression;
 
+/**
+ * Modèle impression des résultats
+ */
 public class ModeleImpression {
     
+    /**
+     * Imprimer état des résultats d'un tournoi
+     * @param table : table des résultats à imprimer
+     * @param tournoi : tournoi dont on veut imprimer l'état des résultats
+     * @throws PrinterException Erreur d'impression
+     */
     public void imprimerEtatResultatsTournoi(JTableThemeImpression table, Tournoi tournoi) throws PrinterException {
         // Création des formats pour l'en-tête 
         MessageFormat headerFormat = new MessageFormat("État des résultats du tournoi " + tournoi.getNomTournoi());
@@ -22,6 +31,11 @@ public class ModeleImpression {
         this.imprimer(table, headerFormat);
     }
 
+    /**
+     * Imprimer palmarès de la saison
+     * @param table : table des résultats à imprimer
+     * @throws PrinterException Erreur d'impression
+     */
     public void imprimerPalmares(JTableThemeImpression table) throws PrinterException {
         // Création des formats pour l'en-tête 
         MessageFormat headerFormat = new MessageFormat("Palmarès de la saison " + LocalDate.now().getYear());
@@ -39,10 +53,10 @@ public class ModeleImpression {
     }
 
      /**
-      * Imprime une JTableThemeImpression
+      * Imprimer une JTableThemeImpression
       * @param table : table à imprimer
-      * @param headerFormat : format de l'en-tête
-      * @param footerFormat : format du pied de page
+      * @param headerFormat : format de l'en-tête de la page
+      * @throws PrinterException Erreur d'impression
       */
     private void imprimer(JTableThemeImpression table, MessageFormat headerFormat) throws PrinterException {
         // Récupération de la date et heure actuelle

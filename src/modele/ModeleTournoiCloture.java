@@ -27,6 +27,7 @@ import modele.metier.Poule;
 import modele.metier.Rencontre;
 import modele.metier.StatistiquesEquipe;
 import modele.metier.Tournoi;
+import modele.metier.Utilisateur;
 
 /**
  * Modèle servant à la clôture d'un tournoi et à la mise à jour du classement
@@ -71,6 +72,10 @@ public class ModeleTournoiCloture {
 	 * @throws Exception Erreurs SQL ou de récupération d'équipes
 	 */
     public void cloturerPoule(Tournoi tournoi) throws Exception {
+		if(ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ARBITRE) {
+			throw new IllegalArgumentException("Seul un arbitre peut clôturer une poule/un tournoi");
+		}
+
 		Poule poule = tournoi.getPouleActuelle();
 
 		if(poule.getEstCloturee()) {
@@ -94,7 +99,7 @@ public class ModeleTournoiCloture {
 	}
 
 	/**
-	 * Clôture la poule des qualifications et crée la poule finale
+	 * Clôturer la poule des qualifications et créer la poule finale
 	 * @param tournoi Le tournoi dont la poule des qualifications (poule actuelle) est à cloturer
 	 * @throws Exception Erreurs SQL ou de récupération d'équipes
 	 * @throws IllegalArgumentException Si la poule qualifications est déjà clôturée
@@ -176,6 +181,7 @@ public class ModeleTournoiCloture {
 	private void cloturerPouleFinale(Tournoi tournoi) throws Exception {
 		Poule poule = tournoi.getPouleActuelle();
 
+		// Vérification que la poule n'est pas déjà clôturée
 		if(poule.getEstCloturee() || tournoi.getEstCloture()) {
 			throw new IllegalArgumentException("Poule finale déjà cloturée");
 		}

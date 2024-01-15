@@ -95,7 +95,13 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 	}
 	
 	/**
-	 * Quand on effectue une action sur un élément de VueTournois
+	 * Effectue un traitement au clic d'un élément de la fenêtre
+	 * Quand on clique sur le bouton "Ajouter" : on affiche la vue de saisie d'un tournoi
+	 * Quand on clique sur le bouton "Voir" : on affiche la vue de saisie d'un tournoi
+	 * Quand on clique sur le bouton "Modifier" : on affiche la vue de saisie d'un tournoi
+	 * Quand on clique sur le bouton "Supprimer" : on supprime le tournoi
+	 * Quand on clique sur le bouton "Rechercher" : on recherche les tournois
+	 * Quand on clique sur le bouton "Réinitialiser" : on réinitialise les filtres
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -127,7 +133,7 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 			// Traitement différent en fonction du bouton
 			switch (bouton.getType()) {
 				case VOIR:
-					if (this.estTournoiCloture(tournoi)) {
+					if (this.modeleTournoi.estTournoiEnCoursOuCloture(tournoi)) {
 						// Seul un administrateur peut inscrire une équipe à un tournoi
 						if(ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ADMINISTRATEUR) {
 							this.vue.afficherPopupErreur("Seul un administrateur peut inscrire une équipe à un tournoi.");
@@ -139,8 +145,6 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 					} else if (tournoi.getEstCloture() == true) {
 						// Le tournoi est cloturé : affichage de l'état des résultats du tournoi
 						this.vue.afficherVueEtatResultatsTournoi(tournoi);
-						// this.vue.afficherPopupErreur("Le tournoi est cloturé.");
-						// throw new RuntimeException("Tournoi cloturé");
 					} else {
 						// Le tournoi est en cours : affichage de la vue de poule en cours
 						this.vue.afficherVuePoule(tournoi);
@@ -154,7 +158,7 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 					}
 
 					// Si le tournoi est en cours ou cloturé, impossible de le modifier
-					if (!this.estTournoiCloture(tournoi)) {
+					if (!this.modeleTournoi.estTournoiEnCoursOuCloture(tournoi)) {
 						this.vue.afficherPopupErreur("Le tournoi est en cours ou cloturé, impossible de le modifier.");
 						throw new RuntimeException("Tournoi en cours ou cloturé, impossible de le modifier");
 					}
@@ -172,7 +176,7 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 
 					// Si le tournoi est cloturé, impossible de le supprimer
 					// Important : on peut supprimer un tournoi ouvert ou en phase d'inscription
-					if (System.currentTimeMillis() / 1000 >= tournoi.getDateTimeDebut() && tournoi.getEstCloture()) {
+					if (this.modeleTournoi.estTournoiCloture(tournoi)) {
 						this.vue.afficherPopupErreur("Le tournoi est cloturé, impossible de le supprimer.");
 						throw new RuntimeException("Tournoi est cloturé, impossible de le supprimer");
 					}
@@ -246,14 +250,5 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 		}
 		return null;
 	}
-	
-	/**
-	 * Vérifie si un tournoi est cloturé
-	 * @param tournoi : tournoi
-	 * @return true si le tournoi est cloturé, false sinon
-	 */
-	private boolean estTournoiCloture(Tournoi tournoi) {
-		return System.currentTimeMillis() / 1000 < tournoi.getDateTimeFin() && tournoi.getEstCloture() == true;
-	}
-	
+
 }

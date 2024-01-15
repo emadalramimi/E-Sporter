@@ -12,11 +12,11 @@ import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JComboBoxTheme;
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
 import vue.theme.JTextFieldTheme;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -39,11 +39,11 @@ public class VueSaisieEquipe extends JFrameTheme {
 	private JPanel contentPane;
 	private JPanel panelEquipe;
 	private JPanel panelJoueurs;
-	private JLabel lblNom;
+	private JLabelTheme lblNom;
 	private JTextField txtNom;
-	private JLabel lblPays;
+	private JLabelTheme lblPays;
 	private JComboBoxTheme<String> cboxPays;
-	private JLabel lblJoueurs;
+	private JLabelTheme lblJoueurs;
 	private JTextField txtJoueur1;
 	private JTextField txtJoueur2;
 	private JTextField txtJoueur3;
@@ -70,11 +70,9 @@ public class VueSaisieEquipe extends JFrameTheme {
 		
 		contentPane.setBorder(new EmptyBorder(15,15,15,15));
 		
-        // Titre
-		JLabel titre = new JLabel("Ajouter une équipe");
+        // Label titre
+		JLabelTheme titre = new JLabelTheme("Ajouter une équipe", 30, true);
         titre.setHorizontalAlignment(SwingConstants.CENTER);
-        titre.setFont(CharteGraphique.getPolice(30, true));
-        titre.setForeground(CharteGraphique.TEXTE);
         getContentPane().add(titre, BorderLayout.NORTH);
 		
 		// Panel centre
@@ -104,9 +102,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		panelEquipe.setLayout(gbl_panelEquipe);
 		
 		// Label nom de l'équipe
-		lblNom = new JLabel("Nom de l'équipe");
-		lblNom.setForeground(CharteGraphique.TEXTE);
-		lblNom.setFont(CharteGraphique.getPolice(19, true));
+		lblNom = new JLabelTheme("Nom de l'équipe", 19, true);
 		GridBagConstraints gbc_lblNom = new GridBagConstraints();
 		gbc_lblNom.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNom.gridx = 0;
@@ -124,9 +120,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		txtNom.setColumns(10);
 		
 		// Label pays de l'équipe
-		lblPays = new JLabel("Pays de l'équipe");
-		lblPays.setForeground(CharteGraphique.TEXTE);
-		lblPays.setFont(CharteGraphique.getPolice(19, true));
+		lblPays = new JLabelTheme("Pays de l'équipe", 19, true);
 		GridBagConstraints gbc_lblPays = new GridBagConstraints();
 		gbc_lblPays.insets = new Insets(0, 0, 5, 0);
 		gbc_lblPays.gridx = 0;
@@ -159,9 +153,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		panelJoueurs.setLayout(gbl_panelJoueurs);
 		
 		// Label titre des joueurs
-		lblJoueurs = new JLabel("Pseudo des joueurs");
-		lblJoueurs.setForeground(CharteGraphique.TEXTE);
-		lblJoueurs.setFont(CharteGraphique.getPolice(19, true));
+		lblJoueurs = new JLabelTheme("Pseudo des joueurs", 19, true);
 		GridBagConstraints gbc_lblJoueurs = new GridBagConstraints();
 		gbc_lblJoueurs.insets = new Insets(0, 0, 5, 0);
 		gbc_lblJoueurs.gridx = 0;
@@ -266,8 +258,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 	}
 	
 	/**
-     * Retire la fenêtre de la liste des fenêtres enfant dans la fenêtre parente
-     * puis ferme la fenêtre courante
+     * Retire la fenêtre de la liste des fenêtres enfant dans la fenêtre parente puis ferme la fenêtre courante
      */
 	@Override
 	public void fermerFenetre() {
@@ -276,6 +267,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 	}
 	
 	/**
+	 * Récupère le nom de l'équipe renseigné
 	 * @return le nom renseigné
 	 */
 	public String getNomEquipe() {
@@ -283,6 +275,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 	}
 	
 	/**
+	 * Récupère le pays de l'équipe renseigné
 	 * @return le pays renseigné
 	 */
 	public String getPaysEquipe() {
@@ -290,6 +283,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 	}
 	
 	/**
+	 * Récupère la liste des pseudos des joueurs renseignés
 	 * @return la liste des pseudos des joueurs renseignés
 	 */
 	public List<String> getNomJoueurs() {

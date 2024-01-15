@@ -86,7 +86,7 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	private List<Arbitre> arbitres;
 	
 	/**
-	 * Construit un tournoi
+	 * Construit un tournoi complet
 	 * @param idTournoi 	Clé primaire
 	 * @param nomTournoi 	Nom
 	 * @param notoriete 	Notoriété
@@ -113,7 +113,7 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	}
 	
 	/**
-	 * Construit un tournoi pour l'insertion en BDD
+	 * Construit un tournoi vide
 	 * Pas d'équipe et poule car inscription des équipes et création des poules après
 	 * @param nomTournoi 	Nom
 	 * @param notoriete 	Notoriété
@@ -134,6 +134,7 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	}
 
 	/**
+	 * Retourne la clé primaire
 	 * @return Clé primaire
 	 */
 	public int getIdTournoi() {
@@ -149,7 +150,8 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	}
 
 	/**
-	 * @return NomTournoi
+	 * Retourne le nom du tournoi
+	 * @return nomTournoi 
 	 */
 	public String getNomTournoi() {
 		return nomTournoi;
@@ -164,6 +166,7 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	}
 
 	/**
+	 * Retourne la notoriété
 	 * @return Notoriete
 	 */
 	public Notoriete getNotoriete() {
@@ -179,6 +182,7 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	}
 
 	/**
+	 * Retourne la date de début
 	 * @return dateTimeDebut
 	 */
 	public long getDateTimeDebut() {
@@ -194,6 +198,7 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	}
 
 	/**
+	 * Retourne la date de fin
 	 * @return dateTimeFin
 	 */
 	public long getDateTimeFin() {
@@ -209,7 +214,8 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	}
 
 	/**
-	 * @return EstCloturee
+	 * Retourne si le tournoi est cloturé
+	 * @return si le tournoi est cloturé
 	 */
 	public boolean getEstCloture() {
 		return estCloture;
@@ -224,6 +230,7 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	}
 
 	/**
+	 * Retourne l'identifiant
 	 * @return Identifiant
 	 */
 	@Override
@@ -241,6 +248,7 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	}
 
 	/**
+	 * Retourne le mot de passe
 	 * @return MotDePasse
 	 */
 	@Override
@@ -266,6 +274,7 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	}
 	
 	/**
+	 * Retourne la liste des poules
 	 * @return Liste des poules
 	 */
 	public List<Poule> getPoules() {
@@ -282,6 +291,7 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 
 	/**
 	 * Retourne la poule actuelle du tournoi
+	 * @return Poule actuelle
 	 */
 	public Poule getPouleActuelle() {
 		for (Poule poule : this.poules) {
@@ -341,7 +351,9 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 	}
 	
 	/**
-	 * Retourne true si un Object o est égal à Tournoi (this), faux sinon
+	 * Méthode equals pour comparer deux tournois
+	 * @param o Objet à comparer
+	 * @return Vrai si les deux tournois sont égaux, faux sinon
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -357,6 +369,8 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 
 	/**
 	 * Compare le tournoi avec un autre tournoi
+	 * @param tournoi Tournoi à comparer
+	 * @return -1 si le tournoi actuel vient avant le tournoi fourni, 0 si les deux tournois sont égaux, 1 si le tournoi fourni vient avant le tournoi actuel
 	 */
 	@Override
 	public int compareTo(Tournoi tournoi) {
@@ -385,6 +399,10 @@ public class Tournoi implements Utilisateur, Comparable<Tournoi> {
 		}
 	}
 
+	/**
+	 * Retourne une représentation textuelle du tournoi
+	 * @return Représentation textuelle du tournoi
+	 */
 	@Override
 	public String toString() {
 		return "Tournoi [idTournoi=" + idTournoi + ", nomTournoi=" + nomTournoi + ", notoriete=" + notoriete

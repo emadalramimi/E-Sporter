@@ -14,6 +14,8 @@ import javax.swing.border.EmptyBorder;
 import modele.metier.Joueur;
 import vue.theme.CharteGraphique;
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
+
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -36,10 +38,8 @@ public class VueJoueurs extends JFrameTheme {
         
         contentPane = super.getContentPane();
         
-        // Titre
-        JLabel lblTitre = new JLabel("Liste des joueurs");
-        lblTitre.setForeground(CharteGraphique.TEXTE);
-        lblTitre.setFont(CharteGraphique.getPolice(19, true));
+        // Label de titre
+        JLabelTheme lblTitre = new JLabelTheme("Liste des joueurs", 19, true);
 
         // Panel de titre
         JPanel titrePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -71,8 +71,7 @@ public class VueJoueurs extends JFrameTheme {
     }
     
     /**
-     * Retire la fenêtre de la liste des fenêtres enfant dans la fenêtre parente
-     * puis ferme la fenêtre courante
+     * Retire la fenêtre de la liste des fenêtres enfant dans la fenêtre parente puis ferme la fenêtre courante
      */
     @Override
     public void fermerFenetre() {

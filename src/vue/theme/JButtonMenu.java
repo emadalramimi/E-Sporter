@@ -62,6 +62,7 @@ public class JButtonMenu extends JButton {
 	
 	/**
 	 * Enlève la couleur de fond de base de Swing au clic
+	 * @param g : Graphics de Swing
 	 */
 	@Override
     protected void paintComponent(Graphics g) {

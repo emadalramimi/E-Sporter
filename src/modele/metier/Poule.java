@@ -44,6 +44,7 @@ public class Poule {
 	}
 	
 	/**
+	 * Retourne la clé primaire
 	 * @return Clé primaire
 	 */
 	public int getIdPoule() {
@@ -59,6 +60,7 @@ public class Poule {
 	}
 
 	/**
+	 * Vérifie si la poule est cloturée
 	 * @return EstCloturee
 	 */
 	public boolean getEstCloturee() {
@@ -74,6 +76,7 @@ public class Poule {
 	}
 
 	/**
+	 * Vérifie si la poule est une finale
 	 * @return EstFinale
 	 */
 	public boolean getEstFinale() {
@@ -89,6 +92,7 @@ public class Poule {
 	}
 
 	/**
+	 * Retourne la clé étrangère tournoi associée
 	 * @return Clé étrangère tournoi
 	 */
 	public int getIdTournoi() {
@@ -97,13 +101,14 @@ public class Poule {
 
 	/**
 	 * Modifie la clé étrangère tournoi
-	 * @param idTournoi
+	 * @param idTournoi Clé étrangère tournoi associée
 	 */
 	public void setIdTournoi(int idTournoi) {
 		this.idTournoi = idTournoi;
 	}
 
 	/**
+	 * Retourne la liste des rencontres
 	 * @return Liste des rencontres
 	 */
 	public List<Rencontre> getRencontres() {
@@ -112,14 +117,16 @@ public class Poule {
 
 	/**
 	 * Modifier la liste des rencontres
-	 * @param rencontres
+	 * @param rencontres Liste des rencontres
 	 */
 	public void setRencontres(List<Rencontre> rencontres) {
 		this.rencontres = rencontres;
 	}
 	
 	/**
-	 * Retourne true si un Object o est égal à Poule (this), faux sinon
+	 * Méthode equals pour comparer deux poules
+	 * @param o Objet à comparer
+	 * @return Vrai si les deux poules sont égales, faux sinon
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -136,6 +143,10 @@ public class Poule {
 	            && this.estFinale == poule.getEstFinale();
 	}
 	
+	/**
+	 * Retourne une représentation textuelle de la poule
+	 * @return Représentation textuelle de la poule
+	 */
 	@Override
 	public String toString() {
 		return "Poule [idPoule=" + idPoule 

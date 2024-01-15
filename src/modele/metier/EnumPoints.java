@@ -1,5 +1,8 @@
 package modele.metier;
 
+/**
+ * Enumération des points
+ */
 public enum EnumPoints {
 
     POULE_MATCH_VICTOIRE(3),
@@ -15,10 +18,18 @@ public enum EnumPoints {
 
     private int points;
 
+    /**
+     * Construit une énumération de points
+     * @param points Nombre de points
+     */
     EnumPoints(int points) {
         this.points = points;
     }
 
+    /**
+     * Retourne le nombre de points
+     * @return Nombre de points
+     */
     public int getPoints() {
         return points;
     }

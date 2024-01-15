@@ -37,7 +37,6 @@ public class VueBase extends JFrameTheme {
 	
 	/**
 	 * Crée la VueBase
-	 * @throws Exception 
 	 */
 	public VueBase() {
 		this.controleurBase = new ControleurBase(this);
@@ -260,9 +259,7 @@ public class VueBase extends JFrameTheme {
 		panelMenuDroite.add(this.lblUtilisateur, gbc_lblUtilisateur);
 		
 		// Label du bouton déconnexion
-		JLabel lblDeconnexion = new JLabel("Déconnexion");
-		lblDeconnexion.setForeground(CharteGraphique.TEXTE);
-		lblDeconnexion.setFont(CharteGraphique.getPolice(11, false));
+		JLabelTheme lblDeconnexion = new JLabelTheme("Déconnexion", 11, false);
 		GridBagConstraints gbc_lblDeconnexion = new GridBagConstraints();
 		gbc_lblDeconnexion.anchor = GridBagConstraints.NORTH;
 		gbc_lblDeconnexion.gridx = 1;
@@ -307,6 +304,14 @@ public class VueBase extends JFrameTheme {
 		// Mise à jour de l'affichage
 		this.contenu.revalidate();
 	    this.contenu.repaint();
+	}
+
+	/**
+	 * Affiche la fenêtre
+	 */
+	public void afficher() {
+		this.setLocationRelativeTo(null);
+		this.setVisible(true);
 	}
 	
 	/**
