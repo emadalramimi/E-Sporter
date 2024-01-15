@@ -127,7 +127,7 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 			// Traitement différent en fonction du bouton
 			switch (bouton.getType()) {
 				case VOIR:
-					if (this.modeleTournoi.estTournoiCloture(tournoi)) {
+					if (this.modeleTournoi.estTournoiEnCoursOuCloture(tournoi)) {
 						// Seul un administrateur peut inscrire une équipe à un tournoi
 						if(ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ADMINISTRATEUR) {
 							this.vue.afficherPopupErreur("Seul un administrateur peut inscrire une équipe à un tournoi.");
@@ -152,7 +152,7 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 					}
 
 					// Si le tournoi est en cours ou cloturé, impossible de le modifier
-					if (!this.modeleTournoi.estTournoiCloture(tournoi)) {
+					if (!this.modeleTournoi.estTournoiEnCoursOuCloture(tournoi)) {
 						this.vue.afficherPopupErreur("Le tournoi est en cours ou cloturé, impossible de le modifier.");
 						throw new RuntimeException("Tournoi en cours ou cloturé, impossible de le modifier");
 					}
@@ -244,5 +244,5 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 		}
 		return null;
 	}
-	
+
 }

@@ -132,8 +132,30 @@ public class ModeleTournoi implements Recherchable<Tournoi> {
 				|| this.daoAdministrateur.getParIdentifiant(identifiant).isPresent();
 	}
 
-	public boolean estTournoiCloture(Tournoi tournoi) {
-		return System.currentTimeMillis() / 1000 >= tournoi.getDateTimeDebut() && tournoi.getEstCloture();
+	/**
+	 * Vérifie si un tournoi est cloturé ou en cours
+	 * @param tournoi : tournoi
+	 * @return true si le tournoi est cloturé ou en cours, false sinon
+	 */
+	public boolean estTournoiEnCoursOuCloture(Tournoi tournoi) {
+		return this.getTimestamp() < tournoi.getDateTimeFin() && tournoi.getEstCloture() == true;
 	}
 
+	/**
+	 * Vérifie si un tournoi est cloturé
+	 * @param tournoi : tournoi
+	 * @return true si le tournoi est cloturé, false sinon
+	 */
+	public boolean estTournoiCloture(Tournoi tournoi) {
+		return this.getTimestamp() >= tournoi.getDateTimeDebut() && tournoi.getEstCloture();
+	}
+
+	/**
+	 * Retourne le timestamp en secondes
+	 * @return Timestamp en secondes
+	 */
+	private long getTimestamp() {
+		return System.currentTimeMillis() / 1000;
+	}
+	
 }

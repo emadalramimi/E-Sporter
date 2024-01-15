@@ -11,6 +11,7 @@ import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import controleur.ControleurBase.Menus;
 import modele.ModeleTournoi;
 import modele.ModeleUtilisateur;
 import modele.DAO.DAOArbitre;
@@ -136,13 +137,8 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 				}
 				this.vueSaisieTournoi.afficherPopupMessage("Le tournoi a bien été ajouté.");
 
-				// Mise à jour du tableau des tournois
-				try {
-					this.vueTournois.remplirTableau(this.daoTournoi.getTout());
-				} catch (Exception err) {
-					this.vueSaisieTournoi.afficherPopupErreur("Impossible de récupérer les tournois");
-					throw new RuntimeException("Impossible de récupérer les tournois", err);
-				}
+				// Mise à jour du tableau des tournois en rafraichissant l'onglet
+				this.vueTournois.getVueBase().changerOnglet(Menus.TOURNOIS);
 			} 
 			// Modification du tournoi au clic de modifier
 			else if (bouton.getText() == "Modifier") {
