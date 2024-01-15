@@ -1,6 +1,5 @@
 package vue;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import vue.theme.JLabelTheme;
 import vue.theme.CharteGraphique;
+import vue.theme.ImageTableCellRenderer;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
@@ -16,9 +16,7 @@ import vue.theme.JTableThemeImpression;
 import vue.theme.LabelIcon;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 
-import javax.swing.JLabel;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.List;
@@ -29,7 +27,6 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -117,17 +114,6 @@ public class VueHistoriquePoints extends RecherchableVue<Equipe> {
 		panelTableaux.setBackground(CharteGraphique.FOND);
 		panelTableaux.setLayout(new GridLayout(1, 2, 20, 0));
 
-		// Tableau des équipes
-		this.modelTableEquipes = new DefaultTableModel(
-			new Object[][] {}, 
-			new String[] {"ID", "Pays", "Nom"}
-		) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-
 		JScrollPane scrollPaneTableEquipes = new JScrollPaneTheme();
 		GridBagConstraints gbc_scrollPaneTableEquipes = new GridBagConstraints();
 		gbc_scrollPaneTableEquipes.fill = GridBagConstraints.BOTH;
@@ -135,35 +121,21 @@ public class VueHistoriquePoints extends RecherchableVue<Equipe> {
 		gbc_scrollPaneTableEquipes.gridy = 2;
 		panelTableaux.add(scrollPaneTableEquipes, gbc_scrollPaneTableEquipes);
 
-		// Création de la table des équipes
-		this.tableEquipes = new JTableTheme();
+		// Tableau d'équipes
+		this.tableEquipes = new JTableTheme(
+			new String[] {"ID", "Pays", "Nom"},
+			null
+		);
 		this.tableEquipes.getSelectionModel().addListSelectionListener(this.controleur);
-		this.tableEquipes.setModel(this.modelTableEquipes);
+		this.modelTableEquipes = (DefaultTableModel) this.tableEquipes.getModel();
+
 		scrollPaneTableEquipes.setViewportView(this.tableEquipes);
 		
 		// Règles d'affichage du drapeau du pays
 		TableColumn paysColumn = tableEquipes.getColumnModel().getColumn(1);
 	    paysColumn.setCellRenderer(new ImageTableCellRenderer());
-		
-		// Masquage de la colonne ID (sert pour obtenir l'HistoriquePoints d'une ligne dont un bouton est cliqué)
-		TableColumn idColumn = tableEquipes.getColumnModel().getColumn(0);
-		idColumn.setMinWidth(1); // 1px pour garder la bordure
-		idColumn.setMaxWidth(1);
-		idColumn.setWidth(1);
-		idColumn.setPreferredWidth(1);
 
 		// Tableau des historiques de points
-		this.modelTableHistoriquePoints = new DefaultTableModel(
-			new Object[][] {}, 
-			new String[] {"Tournoi", "Points"}
-		) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-		
-		// Création de la table des historiques de points
 		JScrollPane scrollPaneHistoriquePoints2 = new JScrollPaneTheme();
 		GridBagConstraints gbc_scrollPaneHistoriquePoints2 = new GridBagConstraints();
 		gbc_scrollPaneHistoriquePoints2.fill = GridBagConstraints.BOTH;
@@ -171,11 +143,13 @@ public class VueHistoriquePoints extends RecherchableVue<Equipe> {
 		gbc_scrollPaneHistoriquePoints2.gridy = 2;
 		panelTableaux.add(scrollPaneHistoriquePoints2, gbc_scrollPaneHistoriquePoints2);
 
-		this.tableHistoriquePoints = new JTableTheme();
-		this.tableHistoriquePoints.setModel(this.modelTableHistoriquePoints);
+		this.tableHistoriquePoints = new JTableTheme(
+			new String[] {"Tournoi", "Points"},
+			null
+		);
+		this.modelTableHistoriquePoints = (DefaultTableModel) this.tableHistoriquePoints.getModel();
 		scrollPaneHistoriquePoints2.setViewportView(this.tableHistoriquePoints);
 
-		//panelTableauFiltres.add(panelTableaux);
 		GridBagConstraints gbc_panelTableaux = new GridBagConstraints();
 		gbc_panelTableaux.fill = GridBagConstraints.BOTH;
 		gbc_panelTableaux.gridx = 0;
@@ -183,42 +157,6 @@ public class VueHistoriquePoints extends RecherchableVue<Equipe> {
 		panel.add(panelTableaux, gbc_panelTableaux);
 		
 		this.remplirTableau(this.controleur.getEquipes());
-	}
-	
-	/**
-	 * Classe interne pour afficher les drapeaux
-	 */
-	private static class ImageTableCellRenderer extends DefaultTableCellRenderer {
-		
-		@Override
-	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-			// Affichage du label et de l'icone à gauche
-	        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
-	        LabelIcon labelIcon = (LabelIcon) value;
-	        setIcon(labelIcon.getIcon());
-	        setText(labelIcon.getText());
-	        
-	        // Couleur de fond des cellules alternantes
- 			if(row % 2 == 0) {
- 				this.setBackground(CharteGraphique.FOND_SECONDAIRE);
- 			} else {
- 				this.setBackground(CharteGraphique.FOND);
- 			}
- 			
- 			// Bordure de la cellule du tableau
- 			setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, CharteGraphique.BORDURE));
- 			
- 			// Police
- 			this.setFont(CharteGraphique.getPolice(16, false));
- 			this.setForeground(CharteGraphique.TEXTE);
- 			
- 			// Centrer les textes dans toutes les cellules
-			this.setHorizontalAlignment(CENTER);
-			this.setVerticalAlignment(CENTER);
-	        
-	        return label;
-	    }
-		
 	}
 
 	/**

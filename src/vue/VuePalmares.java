@@ -1,6 +1,5 @@
 package vue;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import vue.theme.JLabelTheme;
 import vue.theme.CharteGraphique;
+import vue.theme.ImageTableCellRenderer;
 import vue.theme.JButtonTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
@@ -32,7 +32,6 @@ import java.awt.GridBagLayout;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -189,21 +188,13 @@ public class VuePalmares extends RecherchableVue<Palmares> {
 		gbc_scrollPaneEquipes.gridx = 0;
 		gbc_scrollPaneEquipes.gridy = 3;
 		panel.add(scrollPaneEquipes, gbc_scrollPaneEquipes);
-				
-		// Création du modèle du tableau avec désactivation de l'édition
-		this.model = new DefaultTableModel(
-			new Object[][] {}, 
-			new String[] {"Classement", "Pays", "Equipe", "Points"}
-		) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-			
+		
 		// Tableau de palmarès
-		this.table = new JTableTheme();
-		this.table.setModel(model);
+		this.table = new JTableTheme(
+			new String[] {"Classement", "Pays", "Equipe", "Points"},
+			null
+		);
+		this.model = (DefaultTableModel) this.table.getModel();
 
 		// Règles d'affichage du drapeau du pays
 		TableColumn paysColumn = table.getColumnModel().getColumn(1);
@@ -242,42 +233,6 @@ public class VuePalmares extends RecherchableVue<Palmares> {
 			return this;
 		}
 
-	}
-	
-	/**
-	 * Classe interne pour afficher les drapeaux
-	 */
-	private static class ImageTableCellRenderer extends DefaultTableCellRenderer {
-		
-		@Override
-	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-			// Affichage du label et de l'icone à gauche
-	        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
-	        LabelIcon labelIcon = (LabelIcon) value;
-	        setIcon(labelIcon.getIcon());
-	        setText(labelIcon.getText());
-	        
-	        // Couleur de fond des cellules alternantes
- 			if(row % 2 == 0) {
- 				this.setBackground(CharteGraphique.FOND_SECONDAIRE);
- 			} else {
- 				this.setBackground(CharteGraphique.FOND);
- 			}
- 			
- 			// Bordure de la cellule du tableau
- 			setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, CharteGraphique.BORDURE));
- 			
- 			// Police
- 			this.setFont(CharteGraphique.getPolice(16, false));
- 			this.setForeground(CharteGraphique.TEXTE);
- 			
- 			// Centrer les textes dans toutes les cellules
-			this.setHorizontalAlignment(CENTER);
-			this.setVerticalAlignment(CENTER);
-	        
-	        return label;
-	    }
-		
 	}
 
 	/**

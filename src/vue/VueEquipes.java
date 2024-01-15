@@ -1,16 +1,14 @@
 package vue;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import vue.theme.TableButtonsPanel;
 import vue.theme.JFrameTheme;
 import vue.theme.JLabelTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.CharteGraphique;
-import vue.theme.TableButtonsCellEditor;
+import vue.theme.ImageTableCellRenderer;
 import vue.theme.JButtonTheme;
 import vue.theme.JComboBoxTheme;
 import vue.theme.JScrollPaneTheme;
@@ -18,10 +16,8 @@ import vue.theme.JTableTheme;
 import vue.theme.LabelIcon;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.util.List;
@@ -35,7 +31,6 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -154,79 +149,20 @@ public class VueEquipes extends RecherchableVue<Equipe> {
 		gbc_scrollPaneEquipes.gridy = 2;
 		panel.add(scrollPaneEquipes, gbc_scrollPaneEquipes);
 		
-		// Création du modèle du tableau avec désactivation de l'édition
-		this.model = new DefaultTableModel(
-			new Object[][] {}, 
-			new String[] {"ID", "Nom", "Pays", "World Ranking", "Actions"}
-		) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				if(column != table.getColumnCount() - 1) {
-					return false;
-				}
-				return true;
-			}
-		};
-		
 		// Tableau d'équipes
-		table = new JTableTheme();
-		table.setModel(model);
-		
-		// Ajouter buttons dans la derniere colonne
-		TableColumn buttonColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
-		buttonColumn.setCellRenderer(new TableButtonsPanel(table, controleur));
-		buttonColumn.setCellEditor(new TableButtonsCellEditor(controleur));
+		table = new JTableTheme(
+			new String[] {"ID", "Nom", "Pays", "World Ranking", "Actions"},
+			controleur
+		);
+		this.model = (DefaultTableModel) table.getModel();
 		
 		// Règles d'affichage du drapeau du pays
 		TableColumn paysColumn = table.getColumnModel().getColumn(2);
 	    paysColumn.setCellRenderer(new ImageTableCellRenderer());
 		
-		// Masquage de la colonne ID (sert pour obtenir l'Equipe d'une ligne dont un bouton est cliqué)
-		TableColumn idColumn = table.getColumnModel().getColumn(0);
-		idColumn.setMinWidth(1); // 1px pour garder la bordure
-		idColumn.setMaxWidth(1);
-		idColumn.setWidth(1);
-		idColumn.setPreferredWidth(1);
-		
 		this.remplirTableau(this.controleur.getEquipes());
 		
 		scrollPaneEquipes.setViewportView(table);
-	}
-	
-	/**
-	 * Classe interne pour afficher les drapeaux
-	 */
-	private static class ImageTableCellRenderer extends DefaultTableCellRenderer {
-		
-		@Override
-	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-			// Affichage du label et de l'icone à gauche
-	        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
-	        LabelIcon labelIcon = (LabelIcon) value;
-	        setIcon(labelIcon.getIcon());
-	        setText(labelIcon.getText());
-	        
-	        // Couleur de fond des cellules alternantes
- 			if(row % 2 == 0) {
- 				this.setBackground(CharteGraphique.FOND_SECONDAIRE);
- 			} else {
- 				this.setBackground(CharteGraphique.FOND);
- 			}
- 			
- 			// Bordure de la cellule du tableau
- 			setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, CharteGraphique.BORDURE));
- 			
- 			// Police
- 			this.setFont(CharteGraphique.getPolice(16, false));
- 			this.setForeground(CharteGraphique.TEXTE);
- 			
- 			// Centrer les textes dans toutes les cellules
-			this.setHorizontalAlignment(CENTER);
-			this.setVerticalAlignment(CENTER);
-	        
-	        return label;
-	    }
-		
 	}
 	
 	/**

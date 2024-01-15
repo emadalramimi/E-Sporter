@@ -10,8 +10,6 @@ import vue.theme.JLabelTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
-import vue.theme.TableButtonsCellEditor;
-import vue.theme.TableButtonsPanel;
 import vue.theme.ThemeTableCellRenderer;
 import vue.theme.JComboBoxTheme;
 
@@ -37,7 +35,6 @@ import java.awt.GridBagLayout;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 import controleur.ControleurTournois;
 import modele.metier.Tournoi;
@@ -154,40 +151,17 @@ public class VueTournois extends RecherchableVue<Tournoi> {
 		gbc_scrollPaneTournois.gridy = 2;
 		panel.add(scrollPaneTournois, gbc_scrollPaneTournois);
 		
-		// Création du modèle du tableau avec désactivation de l'édition
-		this.model = new DefaultTableModel(
-			new Object[][] {}, 
-			new String[] {"ID", "Statut", "Nom", "Niveau", "Date de début", "Date de fin", "Actions"}
-		) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				if(column != table.getColumnCount() - 1) {
-					return false;
-				}
-				return true;
-			}
-		};
-		
 		// Tableau de tournois
-		table = new JTableTheme();
-		table.setModel(model);
-		table.getColumnModel().getColumn(1).setCellRenderer(new StatutCellRenderer());
-		
-		// Ajouter buttons dans la derniere colonne
-		TableColumn buttonColumn = this.table.getColumnModel().getColumn(table.getColumnCount() - 1);
-		buttonColumn.setCellRenderer(new TableButtonsPanel(table, controleur));
-		buttonColumn.setCellEditor(new TableButtonsCellEditor(controleur));
-		
-		// Masquage de la colonne ID (sert pour obtenir le Tournois d'une ligne dont un bouton est cliqué)
-		TableColumn idColumn = table.getColumnModel().getColumn(0);
-		idColumn.setMinWidth(1); // 1px pour garder la bordure
-		idColumn.setMaxWidth(1);
-		idColumn.setWidth(1);
-		idColumn.setPreferredWidth(1);
-		
-		this.remplirTableau(this.controleur.getTournois());
+		this.table = new JTableTheme(
+			new String[] {"ID", "Statut", "Nom", "Niveau", "Date de début", "Date de fin", "Actions"},
+			controleur
+		);
+		this.model = (DefaultTableModel) table.getModel();
+		this.table.getColumnModel().getColumn(1).setCellRenderer(new StatutCellRenderer());
 		
 		scrollPaneTournois.setViewportView(table);
+
+		this.remplirTableau(this.controleur.getTournois());
 	}
 	
 	private class StatutCellRenderer extends ThemeTableCellRenderer {

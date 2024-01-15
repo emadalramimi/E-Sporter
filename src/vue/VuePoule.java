@@ -177,21 +177,12 @@ public class VuePoule extends JFrameTheme {
 		panelTableau.add(scrollPane, BorderLayout.CENTER);
 
 		// Création de la table
-		this.table = new JTableTheme();
+		this.table = new JTableTheme(
+			new String[] { "ID", "Match", "Équipe 1", "Équipe 2" },
+			null
+		);
 		this.table.addMouseListener(controleur);
-		this.table.setBackground(CharteGraphique.FOND);
-		this.table.setFont(CharteGraphique.getPolice(16, false));
-
-		// Création du model de la table
-		DefaultTableModel model = new DefaultTableModel(
-			new Object[][] {}, 
-			new String[] { "ID", "Match", "Équipe 1", "Équipe 2" }
-		) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
 
 		this.isActif = new boolean[poule.getRencontres().size()][4];
 
@@ -218,13 +209,6 @@ public class VuePoule extends JFrameTheme {
 			}
 		}
 		this.table.setModel(model);
-
-		// Masquage de la colonne ID (sert pour obtenir la Poule d'une ligne dont un bouton est cliqué)
-		TableColumn idColumn = this.table.getColumnModel().getColumn(0);
-		idColumn.setMinWidth(1); // 1px pour garder la bordure
-		idColumn.setMaxWidth(1);
-		idColumn.setWidth(1);
-		idColumn.setPreferredWidth(1);
 		
 		// Création du renderer pour les colonnes "Equipe 1" et "Equipe 2"
 		ThemeTableCellRenderer renderer = new ThemeTableCellRenderer() {

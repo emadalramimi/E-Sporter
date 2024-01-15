@@ -94,18 +94,11 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		panelTableau.add(scrollPane, BorderLayout.CENTER);
 
 		// Création de la table
-		this.table = new JTableTheme();
-
-		// Création du modèle de la table
-		DefaultTableModel model = new DefaultTableModel(
-			new Object[][] {}, 
-			new String[] { "Équipe", "Matchs joués", "Matchs gagnés", "Ratio", "Points" }
-		) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
+		this.table = new JTableTheme(
+			new String[] { "Équipe", "Matchs joués", "Matchs gagnés", "Ratio", "Points" },
+			null
+		);
+		DefaultTableModel model = (DefaultTableModel) this.table.getModel();
 
 		// Ajout des lignes
 		for (StatistiquesEquipe statistiquesEquipe : controleur.getResultatsTournoi(tournoi)) {

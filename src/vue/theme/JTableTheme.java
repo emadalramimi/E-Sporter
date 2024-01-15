@@ -1,9 +1,11 @@
 package vue.theme;
 
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -17,7 +19,7 @@ public class JTableTheme extends JTable {
 	/**
 	 * JTable personnalisé au thème E-sporter
 	 */
-	public JTableTheme() {
+	public JTableTheme(String[] colonnes, ActionListener controleurBtnColumn) {
 		// Mettre en place le Renderer personnalisé pour toutes les lignes (dont titre)
 		JTableHeader header = this.getTableHeader();
 		header.setDefaultRenderer(new ThemeTableCellRenderer());
@@ -29,6 +31,33 @@ public class JTableTheme extends JTable {
 
 		// Pour qu'une seule ligne à la fois soit sélectionnée
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		// Définition du modèle et de la non-éditabilité des cellules (si controleurBtnColumn != null)
+		this.setModel(new DefaultTableModel(
+			new Object[][] {}, 
+			colonnes
+		) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+                return controleurBtnColumn != null && column == this.getColumnCount() - 1;
+			}
+		});
+
+		// Si les boutons d'action sont à ajouter dans la dernière colonne
+        if(controleurBtnColumn != null) {
+            TableColumn buttonColumn = this.getColumnModel().getColumn(this.getColumnCount() - 1);
+            buttonColumn.setCellRenderer(new TableButtonsPanel(this, controleurBtnColumn));
+            buttonColumn.setCellEditor(new TableButtonsCellEditor(controleurBtnColumn));
+        }
+
+		// Si la première colonne est ID, la cacher
+        if(colonnes[0].equals("ID")) {
+            TableColumn idColumn = this.getColumnModel().getColumn(0);
+            idColumn.setMinWidth(1); // 1px pour garder la bordure
+            idColumn.setMaxWidth(1);
+            idColumn.setWidth(1);
+            idColumn.setPreferredWidth(1);
+        }
 	}
 	
 	@Override
