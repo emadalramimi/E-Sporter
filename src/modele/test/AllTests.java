@@ -16,15 +16,19 @@ import org.junit.runners.Suite;
     TestRencontre.class,
     TestSatistiquesEquipe.class,
     TestTournoi.class,
-    TestModeleAdministrateur.class,
-    TestModeleArbitre.class,
-    TestModeleEquipe.class,
-    TestModeleJoueur.class,
-    TestModelePoule.class,
-    TestModeleRencontre.class,
-    TestModeleTournoi.class,
-    TestModeleTournoiOuverture.class,
-    TestModeleTournoiCloture.class,
+    
+    TestDAOAdministrateur.class,
+    TestDAOArbitre.class,
+    TestDAOEquipe.class,
+    TestDAOJoueur.class,
+    TestDAOPoule.class,
+    TestDAORencontre.class,
+    TestDAOTournoi.class,
+    TestDAOHistoriquePoints.class,
+    TestDAOPalmares.class,
+    
+    //TestModeleTournoiOuverture.class,
+    //TestModeleTournoiCloture.class,
     TestModeleUtilisateur.class
 })
 

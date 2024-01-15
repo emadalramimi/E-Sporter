@@ -5,23 +5,24 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import modele.ModeleAdministrateur;
+import modele.DAO.DAOAdministrateur;
+import modele.DAO.DAOAdministrateurImpl;
 import modele.metier.Administrateur;
 
-public class TestModeleAdministrateur {
+public class TestDAOAdministrateur {
 
-	private ModeleAdministrateur modeleAdministrateur;
+	private DAOAdministrateur daoAdministrateur;
 	private Administrateur adminToAdd;
 
 	@Before
 	public void setUp() {
-		this.modeleAdministrateur = new ModeleAdministrateur();
+		this.daoAdministrateur = new DAOAdministrateurImpl();
 		this.adminToAdd = new Administrateur(1, "Istrateur", "Admin", "admin", "mdp");
 	}
 
 	@Test
 	public void testGetParIdentifiant() throws Exception {
-		assertEquals(this.modeleAdministrateur.getParIdentifiant(this.adminToAdd.getIdentifiant()).get(),
+		assertEquals(this.daoAdministrateur.getParIdentifiant(this.adminToAdd.getIdentifiant()).get(),
 				this.adminToAdd);
 	}
 }
