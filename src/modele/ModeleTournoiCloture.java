@@ -94,7 +94,7 @@ public class ModeleTournoiCloture {
 	}
 
 	/**
-	 * Clôture la poule des qualifications et crée la poule finale
+	 * Clôturer la poule des qualifications et créer la poule finale
 	 * @param tournoi Le tournoi dont la poule des qualifications (poule actuelle) est à cloturer
 	 * @throws Exception Erreurs SQL ou de récupération d'équipes
 	 * @throws IllegalArgumentException Si la poule qualifications est déjà clôturée
@@ -176,6 +176,7 @@ public class ModeleTournoiCloture {
 	private void cloturerPouleFinale(Tournoi tournoi) throws Exception {
 		Poule poule = tournoi.getPouleActuelle();
 
+		// Vérification que la poule n'est pas déjà clôturée
 		if(poule.getEstCloturee() || tournoi.getEstCloture()) {
 			throw new IllegalArgumentException("Poule finale déjà cloturée");
 		}

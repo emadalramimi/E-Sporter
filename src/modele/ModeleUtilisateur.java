@@ -55,19 +55,19 @@ public class ModeleUtilisateur {
 
 	    Utilisateur utilisateur = null;
 	    try {
-			// Cherche l'utilisateur dans la base de données
+			// Chercher l'utilisateur dans la base de données
 	        utilisateur = chercherUtilisateur(identifiant);
 	    } catch (SQLException e) {
 	        throw new IllegalStateException("Erreur lors de la connexion", e);
 	    }
 
-		// Vérifie que l'utilisateur existe et que le mot de passe est correct
+		// Vérifier que l'utilisateur existe et que le mot de passe est correct
 	    validerUtilisateur(utilisateur, motDePasse);
 	    compteCourant = utilisateur;
 	}
 	
 	/**
-	 * Déconnecte l'utilisateur
+	 * Déconnecter l'utilisateur
 	 * @throws IllegalArgumentException si l'administrateur est déjà déconnecté
 	 */
 	public void deconnecter() throws IllegalStateException {
@@ -78,7 +78,7 @@ public class ModeleUtilisateur {
 	}
 	
 	/**
-	 * Récupère l'utilisateur actuellement connecté
+	 * Récupèrer l'utilisateur actuellement connecté
 	 * @return l'utilisateur actuellement connecté
 	 */
 	public static Utilisateur getCompteCourant() {
@@ -86,7 +86,7 @@ public class ModeleUtilisateur {
 	}
 	
 	/**
-	 * Vérifie si le mot de passe fourni correspond au mot de passe chiffré
+	 * Vérifier si le mot de passe fourni correspond au mot de passe chiffré
 	 * @param motDePasse Mot de passe à vérifier
 	 * @param motDePasseChiffre Mot de passe chiffré à comparer
 	 * @return true si le mot de passe correspond, false sinon
@@ -97,7 +97,7 @@ public class ModeleUtilisateur {
     }
 
 	/**
-	 * Cherche un utilisateur par son identifiant
+	 * Chercher un utilisateur par son identifiant
 	 * @param identifiant Identifiant de l'utilisateur
 	 * @return Utilisateur trouvé
 	 * @throws SQLException Erreur SQL
@@ -112,7 +112,7 @@ public class ModeleUtilisateur {
     }
 
 	/**
-	 * Valide un utilisateur
+	 * Valider un utilisateur
 	 * @param utilisateur Utilisateur à valider
 	 * @param motDePasse Mot de passe de l'utilisateur
 	 * @throws IllegalArgumentException si l'utilisateur n'existe pas ou si le mot de passe est incorrect ou si l'utilisateur est un arbitre et que le tournoi est clôturé

@@ -10,6 +10,9 @@ import modele.DAO.DAOHistoriquePoints;
 import modele.DAO.DAOHistoriquePointsImpl;
 import modele.metier.Equipe;
 
+/**
+ * Modèle historique des points
+ */
 public class ModeleHistoriquePoints {
 
     private DAOEquipe daoEquipe;
@@ -20,6 +23,11 @@ public class ModeleHistoriquePoints {
         this.daoHistoriquePoints = new DAOHistoriquePointsImpl();
     }
     
+    /**
+     * Récupère le classement de toutes les équipes de la saison
+     * @return le classement de toutes les équipes de la saison
+     * @throws Exception Erreur SQL
+     */
     public Map<Equipe, Integer> getClassementParEquipe() throws Exception {
         // Initialisation du classement de toutes les équipes à 1000
 		Map<Equipe, Integer> classementParEquipe = new HashMap<>();
