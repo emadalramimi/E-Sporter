@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import javax.swing.JButton;
 
+import modele.ModeleEquipe;
 import modele.DAO.DAOEquipe;
 import modele.DAO.DAOEquipeImpl;
 import modele.metier.Equipe;
@@ -25,6 +26,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 	private VueSaisieEquipe vueSaisieEquipe;
 	private VueEquipes vueEquipes;
 	private DAOEquipe daoEquipe;
+	private ModeleEquipe modeleEquipe;
 	private Optional<Equipe> equipeOptionnel;
 	
 	/**
@@ -37,6 +39,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 		this.vueSaisieEquipe = vueSaisieEquipes;
 		this.vueEquipes = vueEquipes;
 		this.equipeOptionnel = equipeOptionnel;
+		this.modeleEquipe = new ModeleEquipe();
 		this.daoEquipe = new DAOEquipeImpl();
 	}
 
@@ -111,7 +114,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 				
 				// Modification de l'équipe et affichage d'un message de succès/erreur
 				try {
-					this.daoEquipe.modifier(equipe);
+					this.modeleEquipe.modifier(equipe);
 				} catch (Exception err) {
 					this.vueSaisieEquipe.afficherPopupErreur("Une erreur est survenue lors de la modification de l'équipe.");
 					throw new RuntimeException("Erreur dans la modification de l'équipe", err);
