@@ -15,6 +15,7 @@ import modele.metier.Utilisateur;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonMenu;
 import vue.theme.JFrameTheme;
+import vue.theme.JLabelTheme;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -172,9 +173,7 @@ public class VueBase extends JFrameTheme {
 		panelMenuCentre.add(btnPalmares, gbc_btnPalmares);
 		
 		// Label du bouton tournois
-		JLabel lblTournois = new JLabel("Tournois");
-		lblTournois.setForeground(CharteGraphique.TEXTE);
-		lblTournois.setFont(CharteGraphique.getPolice(11, false));
+		JLabelTheme lblTournois = new JLabelTheme("Tournois", 11, false);
 		GridBagConstraints gbc_lblTournois = new GridBagConstraints();
 		gbc_lblTournois.anchor = GridBagConstraints.NORTH;
 		gbc_lblTournois.insets = new Insets(0, 0, 0, 10);
@@ -183,9 +182,7 @@ public class VueBase extends JFrameTheme {
 		panelMenuCentre.add(lblTournois, gbc_lblTournois);
 		
 		// Label du bouton équipes
-		JLabel lblEquipes = new JLabel("Équipes");
-		lblEquipes.setForeground(CharteGraphique.TEXTE);
-		lblEquipes.setFont(CharteGraphique.getPolice(11, false));
+		JLabelTheme lblEquipes = new JLabelTheme("Équipes", 11, false);
 		GridBagConstraints gbc_lblEquipes = new GridBagConstraints();
 		gbc_lblEquipes.anchor = GridBagConstraints.NORTH;
 		gbc_lblEquipes.insets = new Insets(0, 0, 0, 10);
@@ -194,9 +191,7 @@ public class VueBase extends JFrameTheme {
 		panelMenuCentre.add(lblEquipes, gbc_lblEquipes);
 		
 		// Label du bouton historique
-		JLabel lblHistorique = new JLabel("Historique");
-		lblHistorique.setForeground(CharteGraphique.TEXTE);
-		lblHistorique.setFont(CharteGraphique.getPolice(11, false));
+		JLabelTheme lblHistorique = new JLabelTheme("Historique", 11, false);
 		GridBagConstraints gbc_lblHistorique = new GridBagConstraints();
 		gbc_lblHistorique.anchor = GridBagConstraints.NORTH;
 		gbc_lblHistorique.insets = new Insets(0, 0, 0, 10);
@@ -205,9 +200,7 @@ public class VueBase extends JFrameTheme {
 		panelMenuCentre.add(lblHistorique, gbc_lblHistorique);
 		
 		// Label du bouton palmarès
-		JLabel lblPalmares = new JLabel("Palmarès");
-		lblPalmares.setForeground(CharteGraphique.TEXTE);
-		lblPalmares.setFont(CharteGraphique.getPolice(11, false));
+		JLabelTheme lblPalmares = new JLabelTheme("Palmarès", 11, false);
 		GridBagConstraints gbc_lblPalmares = new GridBagConstraints();
 		gbc_lblPalmares.anchor = GridBagConstraints.NORTH;
 		gbc_lblPalmares.gridx = 4;
@@ -258,9 +251,7 @@ public class VueBase extends JFrameTheme {
 		panelMenuDroite.add(btnDeconnexion, gbc_btnDeconnexion);
 		
 		// Label du bouton utilisateur
-		this.lblUtilisateur = new JLabel("");
-		this.lblUtilisateur.setForeground(CharteGraphique.TEXTE);
-		this.lblUtilisateur.setFont(CharteGraphique.getPolice(11, false));
+		this.lblUtilisateur = new JLabelTheme("", 11, false);
 		GridBagConstraints gbc_lblUtilisateur = new GridBagConstraints();
 		gbc_lblUtilisateur.anchor = GridBagConstraints.NORTH;
 		gbc_lblUtilisateur.insets = new Insets(0, 0, 0, 10);
