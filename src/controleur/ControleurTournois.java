@@ -9,8 +9,9 @@ import java.util.Optional;
 
 import javax.swing.JButton;
 
-import modele.ModeleTournoi;
 import modele.ModeleUtilisateur;
+import modele.DAO.DAOTournoi;
+import modele.DAO.DAOTournoiImpl;
 import modele.metier.Tournoi;
 import modele.metier.Utilisateur;
 import vue.VueTournois;
@@ -78,16 +79,16 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 	}
 
 	private VueTournois vue;
-	private ModeleTournoi modeleTournoi;
+	private DAOTournoi daoTournoi;
 	
 	/**
 	 * Constructeur du controleur de VueTournois
 	 * @param vue : vueTournois
 	 */
 	public ControleurTournois(VueTournois vue) {
-		super(new ModeleTournoi(), vue);
+		super(new DAOTournoiImpl(), vue);
 		this.vue = vue;
-		this.modeleTournoi = (ModeleTournoi) super.getModele();
+		this.daoTournoi = (DAOTournoiImpl) super.getModele();
 	}
 	
 	/**
@@ -105,7 +106,7 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 			int idTournoi = bouton.getIdElement();
 			Optional<Tournoi> tournoiOptionnel;
 			try {
-				tournoiOptionnel = this.modeleTournoi.getParId(idTournoi);
+				tournoiOptionnel = this.daoTournoi.getParId(idTournoi);
 			} catch(Exception err) {
 				this.vue.afficherPopupErreur("Une erreur est survenue lors de la récupération du tournoi");
 				throw new RuntimeException("Une erreur est survenue lors de la récupération du tournoi");
@@ -177,7 +178,7 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 					if(this.vue.afficherConfirmationSuppression()) {
 						// Supprime l'équipe, affiche un message d'équipe supprimée et met à jour le tableau sur VueEquipes
 						try {
-							this.modeleTournoi.supprimer(tournoi);
+							this.daoTournoi.supprimer(tournoi);
 						} catch (Exception err) {
 							this.vue.afficherPopupErreur("Une erreur est survenue lors de la suppression du tournoi.");
 							throw new RuntimeException("Erreur dans la suppression du tournoi", err);
@@ -221,7 +222,7 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 
 			if (this.vue.estCboxFiltre(comboBox)) {
 			 	try {
-					this.vue.remplirTableau(this.modeleTournoi.getParFiltrage(this.vue.getNotorieteSelectionnee(), this.vue.getStatutSelectionne()));
+					this.vue.remplirTableau(this.daoTournoi.getParFiltrage(this.vue.getNotorieteSelectionnee(), this.vue.getStatutSelectionne()));
 				} catch (Exception err) {
 					this.vue.afficherPopupErreur("Une erreur est survenue");
 					throw new RuntimeException("Erreur dans la récupération des tournois");
@@ -236,7 +237,7 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 	 */
 	public List<Tournoi> getTournois() {
 		try {
-			return this.modeleTournoi.getTout();
+			return this.daoTournoi.getTout();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

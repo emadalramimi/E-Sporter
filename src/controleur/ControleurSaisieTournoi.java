@@ -11,10 +11,13 @@ import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import modele.ModeleAdministrateur;
-import modele.ModeleArbitre;
-import modele.ModeleTournoi;
 import modele.ModeleUtilisateur;
+import modele.DAO.DAOAdministrateur;
+import modele.DAO.DAOAdministrateurImpl;
+import modele.DAO.DAOArbitre;
+import modele.DAO.DAOArbitreImpl;
+import modele.DAO.DAOTournoi;
+import modele.DAO.DAOTournoiImpl;
 import modele.metier.Arbitre;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
@@ -30,9 +33,9 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 	private VueSaisieTournoi vueSaisieTournoi;
 	private VueTournois vueTournois;
 	private Optional<Tournoi> tournoiOptionnel;
-	private ModeleArbitre modeleArbitre;
-	private ModeleTournoi modeleTournoi;
-	private ModeleAdministrateur modeleAdministrateur;
+	private DAOArbitre daoArbitre;
+	private DAOTournoi daoTournoi;
+	private DAOAdministrateur daoAdministrateur;
 	
 	/**
 	 * Constructeur du contrôleur de la vue de saisie d'un tournoi
@@ -44,9 +47,9 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 		this.vueSaisieTournoi = vueSaisieTournoi;
 		this.vueTournois = vueTournois;
 		this.tournoiOptionnel = tournoiOptionnel;
-		this.modeleArbitre = new ModeleArbitre();
-		this.modeleTournoi = new ModeleTournoi();
-		this.modeleAdministrateur = new ModeleAdministrateur();
+		this.daoArbitre = new DAOArbitreImpl();
+		this.daoTournoi = new DAOTournoiImpl();
+		this.daoAdministrateur = new DAOAdministrateurImpl();
 	}
 	
 	/**
@@ -127,7 +130,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 				
 				// Ajout du tournoi et affichage d'un message de succès/erreur
 				try {
-					modeleTournoi.ajouter(tournoi);
+					this.daoTournoi.ajouter(tournoi);
 				} catch (Exception err) {
 					this.vueSaisieTournoi.afficherPopupErreur("Impossible d'ajouter le tournoi");
 					throw new RuntimeException("Impossible d'ajouter le tournoi", err);
@@ -136,7 +139,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 
 				// Mise à jour du tableau des tournois
 				try {
-					this.vueTournois.remplirTableau(this.modeleTournoi.getTout());
+					this.vueTournois.remplirTableau(this.daoTournoi.getTout());
 				} catch (Exception err) {
 					this.vueSaisieTournoi.afficherPopupErreur("Impossible de récupérer les tournois");
 					throw new RuntimeException("Impossible de récupérer les tournois", err);
@@ -169,7 +172,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 
 				// Modification du tournoi et affichage d'un message de succès/erreur
 				try {
-					this.modeleTournoi.modifier(tournoi);
+					this.daoTournoi.modifier(tournoi);
 				} catch (Exception err) {
 					this.vueSaisieTournoi.afficherPopupErreur("Une erreur est survenue lors de la modification du tournoi.");
 					throw new RuntimeException("Erreur dans la modification du tournoi", err);
@@ -178,7 +181,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 
 				// Mise à jour du tableau des tournois
 				try {
-					this.vueTournois.remplirTableau(this.modeleTournoi.getTout());
+					this.vueTournois.remplirTableau(this.daoTournoi.getTout());
 				} catch (Exception err) {
 					this.vueSaisieTournoi.afficherPopupErreur("Impossible de récupérer les tournois");
 					throw new RuntimeException("Impossible de récupérer les tournois", err);
@@ -219,7 +222,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 	 */
 	public Arbitre[] getArbitresEligibles() {
 		try {
-			return modeleArbitre.getTableauArbitres(this.vueSaisieTournoi.getArbitres());
+			return this.daoArbitre.getTableauArbitres(this.vueSaisieTournoi.getArbitres());
 		} catch (Exception e) {
 			this.vueSaisieTournoi.afficherPopupErreur("Impossible de récupérer les arbitres");
 			throw new RuntimeException(e);
@@ -235,8 +238,8 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 		// Vérification si l'identifiant est déjà utilisé par un arbitre ou un administrateur
 		try {
 			if (
-				this.modeleTournoi.getParIdentifiant(identifiant).isPresent()
-				|| this.modeleAdministrateur.getParIdentifiant(identifiant).isPresent()
+				this.daoTournoi.getParIdentifiant(identifiant).isPresent()
+				|| this.daoAdministrateur.getParIdentifiant(identifiant).isPresent()
 			) {
 				this.vueSaisieTournoi.afficherPopupErreur("Cet identifiant est déjà utilisé par un autre utilisateur.");
 				throw new IllegalArgumentException("Cet identifiant est déjà utilisé par un autre utilisateur.");

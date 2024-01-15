@@ -9,9 +9,11 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import modele.ModeleEquipe;
-import modele.ModeleHistoriquePoints;
 import modele.ModeleImpression;
+import modele.DAO.DAOEquipe;
+import modele.DAO.DAOEquipeImpl;
+import modele.DAO.DAOHistoriquePoints;
+import modele.DAO.DAOHistoriquePointsImpl;
 import modele.metier.Equipe;
 import vue.VueHistoriquePoints;
 import vue.theme.JTableThemeImpression;
@@ -19,16 +21,16 @@ import vue.theme.JTableThemeImpression;
 public class ControleurHistoriquePoints extends ControleurRecherche<Equipe> implements ActionListener, ListSelectionListener {
     
     private VueHistoriquePoints vue;
-    private ModeleEquipe modeleEquipe;
-    private ModeleHistoriquePoints modeleHistoriquePoints;
+    private DAOEquipe daoEquipe;
+    private DAOHistoriquePoints daoHistoriquePoints;
     private ModeleImpression modeleImpression;
     private Equipe equipeSelectionnee;
 
     public ControleurHistoriquePoints(VueHistoriquePoints vue) {
-		super(new ModeleEquipe(), vue);
+		super(new DAOEquipeImpl(), vue);
 		this.vue = vue;
-		this.modeleEquipe = (ModeleEquipe) super.getModele();
-        this.modeleHistoriquePoints = new ModeleHistoriquePoints();
+		this.daoEquipe = (DAOEquipe) super.getModele();
+        this.daoHistoriquePoints = new DAOHistoriquePointsImpl();
         this.modeleImpression = new ModeleImpression();
         this.equipeSelectionnee = null;
     }
@@ -39,13 +41,13 @@ public class ControleurHistoriquePoints extends ControleurRecherche<Equipe> impl
         if(e.getSource() == tableEquipes.getSelectionModel() && !e.getValueIsAdjusting()) {
             int idEquipe = (int) tableEquipes.getValueAt(tableEquipes.getSelectedRow(), 0);
             try {
-                this.equipeSelectionnee = this.modeleEquipe.getParId(idEquipe).orElse(null);
+                this.equipeSelectionnee = this.daoEquipe.getParId(idEquipe).orElse(null);
             } catch(Exception err) {
                 this.vue.afficherPopupErreur("Une erreur est survenue lors de la récupération de l'équipe sélectionnée");
                 throw new RuntimeException(err);
             }
             try {
-                this.vue.remplirTableauHistoriquePoints(this.modeleHistoriquePoints.getParEquipe(idEquipe));
+                this.vue.remplirTableauHistoriquePoints(this.daoHistoriquePoints.getParEquipe(idEquipe));
             } catch(Exception err) {
                 this.vue.afficherPopupErreur("Une erreur est survenue lors de la récupération des historiques de points de l'équipe");
                 throw new RuntimeException(err);
@@ -83,7 +85,7 @@ public class ControleurHistoriquePoints extends ControleurRecherche<Equipe> impl
 	 */
     public List<Equipe> getEquipes() {
         try {
-            return this.modeleEquipe.getEquipesSaison();
+            return this.daoEquipe.getEquipesSaison();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

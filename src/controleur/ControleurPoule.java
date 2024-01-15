@@ -7,10 +7,13 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
-import modele.ModeleEquipe;
-import modele.ModeleRencontre;
-import modele.ModeleTournoi;
 import modele.ModeleTournoiCloture;
+import modele.DAO.DAOEquipe;
+import modele.DAO.DAOEquipeImpl;
+import modele.DAO.DAORencontre;
+import modele.DAO.DAORencontreImpl;
+import modele.DAO.DAOTournoi;
+import modele.DAO.DAOTournoiImpl;
 import modele.exception.DroitsInsuffisantsException;
 import modele.exception.TournoiClotureException;
 import modele.exception.TournoiInexistantException;
@@ -28,10 +31,10 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
     
     private VuePoule vue;
     private Tournoi tournoi;
-    private ModeleTournoi modeleTournoi;
+    private DAOTournoi daoTournoi;
+    private DAORencontre daoRencontre;
+    private DAOEquipe daoEquipe;
     private ModeleTournoiCloture modeleTournoiCloture;
-    private ModeleRencontre modeleRencontre;
-    private ModeleEquipe modeleEquipe;
 
     /**
      * Constructeur du controleur de VuePoule
@@ -41,10 +44,10 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
     public ControleurPoule(VuePoule vue, Tournoi tournoi) {
         this.vue = vue;
         this.tournoi = tournoi;
-        this.modeleTournoi = new ModeleTournoi();
+        this.daoTournoi = new DAOTournoiImpl();
+        this.daoRencontre = new DAORencontreImpl();
         this.modeleTournoiCloture = new ModeleTournoiCloture();
-        this.modeleRencontre = new ModeleRencontre();
-        this.modeleEquipe = new ModeleEquipe();
+        this.daoEquipe = new DAOEquipeImpl();
     }
 
     /**
@@ -87,14 +90,14 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
 
                 try {
                     // Si la rencontre cliquée est la même que la rencontre actuellement active
-                    Equipe equipeGagnante = this.modeleEquipe.getParId(rencontre.getIdEquipeGagnante()).orElse(null);
+                    Equipe equipeGagnante = this.daoEquipe.getParId(rencontre.getIdEquipeGagnante()).orElse(null);
 
                     // Si l'équipe sélectionnée est celle qui est déjà gagnante, on la retire, sinon, on l'ajoute
                     if(equipeGagnante != null && equipeGagnante.getNom().equals(nomEquipe)) {
-                        this.modeleRencontre.resetEquipeGagnante(rencontre);
+                        this.daoRencontre.resetEquipeGagnante(rencontre);
                         this.vue.resetGagnant(ligne, col);
                     } else {
-                        this.modeleRencontre.setEquipeGagnante(rencontre, nomEquipe);
+                        this.daoRencontre.setEquipeGagnante(rencontre, nomEquipe);
                         this.vue.toggleGagnant(ligne, col);
                     }
                 } catch (TournoiInexistantException | TournoiClotureException | DroitsInsuffisantsException ex) {
@@ -125,7 +128,7 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
                         this.vue.afficherPopupMessage("La poule a été clôturée.");
                     } else {
                         this.vue.afficherPopupMessage("Le tournoi a été clôturé.");
-                        this.vue.getVueTournois().remplirTableau(this.modeleTournoi.getTout());
+                        this.vue.getVueTournois().remplirTableau(this.daoTournoi.getTout());
                     }
 
                     this.vue.fermerFenetre();

@@ -9,8 +9,10 @@ import java.util.Optional;
 
 import javax.swing.JButton;
 
-import modele.ModeleEquipe;
-import modele.ModeleJoueur;
+import modele.DAO.DAOEquipe;
+import modele.DAO.DAOEquipeImpl;
+import modele.DAO.DAOJoueur;
+import modele.DAO.DAOJoueurImpl;
 import modele.ModeleUtilisateur;
 import modele.metier.Equipe;
 import modele.metier.Utilisateur;
@@ -25,18 +27,18 @@ import vue.theme.JComboBoxTheme;
 public class ControleurEquipes extends ControleurRecherche<Equipe> implements ItemListener, ActionListener {
 
 	private VueEquipes vue;
-	private ModeleEquipe modeleEquipe;
-	private ModeleJoueur modeleJoueur;
+	private DAOEquipe daoEquipe;
+	private DAOJoueur daoJoueur;
 	
 	/**
 	 * Constructeur du controleur de VueEquipes
 	 * @param vue : vueEquipes
 	 */
 	public ControleurEquipes(VueEquipes vue) {
-		super(new ModeleEquipe(), vue);
+		super(new DAOEquipeImpl(), vue);
 		this.vue = vue;
-		this.modeleEquipe = (ModeleEquipe) super.getModele();
-		this.modeleJoueur = new ModeleJoueur();
+		this.daoEquipe = (DAOEquipe) super.getModele();
+		this.daoJoueur = new DAOJoueurImpl();
 	}
 	
 	/**
@@ -54,7 +56,7 @@ public class ControleurEquipes extends ControleurRecherche<Equipe> implements It
 			int idEquipe = bouton.getIdElement();
 			Optional<Equipe> equipeOptionnel;
 			try {
-				equipeOptionnel = this.modeleEquipe.getParId(idEquipe);
+				equipeOptionnel = this.daoEquipe.getParId(idEquipe);
 			} catch(Exception err) {
 				this.vue.afficherPopupErreur("Une erreur est survenue : équipe inexistante.");
 				throw new RuntimeException("Equipe inexistante");
@@ -64,7 +66,7 @@ public class ControleurEquipes extends ControleurRecherche<Equipe> implements It
 			switch(bouton.getType()) {
 				case VOIR:
 					// Afficher la liste des joueurs
-					this.vue.afficherVueJoueurs(this.modeleJoueur.getListeJoueursParId(idEquipe));
+					this.vue.afficherVueJoueurs(this.daoJoueur.getListeJoueursParId(idEquipe));
 
 					break;
 				case MODIFIER:
@@ -82,7 +84,7 @@ public class ControleurEquipes extends ControleurRecherche<Equipe> implements It
 
 					// Si l'équipe est déjà inscrite dans un tournoi ouvert, impossible de la supprimer
 					try {
-						if (this.modeleEquipe.estEquipeInscriteUnTournoiOuvert(equipeOptionnel.get())) {
+						if (this.daoEquipe.estEquipeInscriteUnTournoiOuvert(equipeOptionnel.get())) {
 							this.vue.afficherPopupErreur("Impossible de modifier l'équipe : elle est inscrite à un tournoi actuellement ouvert.");
 							throw new RuntimeException("Equipe inscrite dans un tournoi actuellement ouvert");
 						}
@@ -112,7 +114,7 @@ public class ControleurEquipes extends ControleurRecherche<Equipe> implements It
 
 					// Si l'équipe est déjà inscrite dans un tournoi, impossible de la supprimer
 					try {
-						if (this.modeleEquipe.estEquipeInscriteUnTournoi(equipe)) {
+						if (this.daoEquipe.estEquipeInscriteUnTournoi(equipe)) {
 							this.vue.afficherPopupErreur("Impossible de supprimer l'équipe : elle est ou a été inscrite à un tournoi en cours ou clôturé.");
 							throw new RuntimeException("Equipe inscrite dans un tournoi");
 						}
@@ -124,7 +126,7 @@ public class ControleurEquipes extends ControleurRecherche<Equipe> implements It
 					if(this.vue.afficherConfirmationSuppression()) {
 						// Supprime l'équipe, affiche un message d'équipe supprimée et met à jour le tableau sur VueEquipes
 						try {
-							this.modeleEquipe.supprimer(equipe);
+							this.daoEquipe.supprimer(equipe);
 						} catch (Exception err) {
 							this.vue.afficherPopupErreur("Une erreur est survenue dans la suppression de l'équipe.");
 							throw new RuntimeException("Erreur dans la suppression de l'équipe");
@@ -169,7 +171,7 @@ public class ControleurEquipes extends ControleurRecherche<Equipe> implements It
 
 			if (this.vue.estCboxPays(comboBox) && e.getStateChange() == ItemEvent.SELECTED) {
 			 	try {
-					this.vue.remplirTableau(this.modeleEquipe.getParFiltrage(this.vue.getPaysSelectionne()));
+					this.vue.remplirTableau(this.daoEquipe.getParFiltrage(this.vue.getPaysSelectionne()));
 				} catch (Exception err) {
 					this.vue.afficherPopupErreur("Une erreur est survenue");
 					throw new RuntimeException("Erreur dans la récupération des tournois");
@@ -184,7 +186,7 @@ public class ControleurEquipes extends ControleurRecherche<Equipe> implements It
 	 */
 	public List<Equipe> getEquipes() {
 		try {
-			return this.modeleEquipe.getEquipesSaison();
+			return this.daoEquipe.getEquipesSaison();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

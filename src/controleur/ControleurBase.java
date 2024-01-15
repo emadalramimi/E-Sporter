@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import modele.ModeleUtilisateur;
+import modele.DAO.BDD;
 import vue.VueBase;
 import vue.VueConnexion;
 import vue.theme.JButtonMenu;
@@ -83,6 +84,10 @@ public class ControleurBase extends MouseAdapter {
 		}
 		this.boutonActif = boutonActif;
 		boutonActif.activerIconeBouton(true);
+	}
+
+	public void fermerConnexionBDD() {
+		BDD.fermerConnexion();
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package modele;
+package modele.DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +19,7 @@ import modele.metier.Joueur;
 /**
  * Modèle joueur
  */
-public class ModeleJoueur implements DAO<Joueur, Integer> {
+public class DAOJoueurImpl implements DAOJoueur {
 
 	/**
 	 * Récupère tous les joueurs
@@ -40,7 +40,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
                         if (!rs.next()) {
                             return false;
                         }
-                        action.accept(ModeleJoueur.this.construireJoueur(rs));
+                        action.accept(DAOJoueurImpl.this.construireJoueur(rs));
                         return true;
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
@@ -174,6 +174,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 * @throws Exception Exception SQL
 	 */
+	@Override
 	public boolean supprimerJoueursEquipe(int idEquipe) throws Exception {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from joueur where idEquipe = ?");
@@ -198,6 +199,7 @@ public class ModeleJoueur implements DAO<Joueur, Integer> {
 	 * @param idEquipe : identifiant de l'équipe
 	 * @return la liste des joueurs appartenant à l'équipe idEquipe
 	 */
+	@Override
 	public List<Joueur> getListeJoueursParId(int idEquipe) {
 		List<Joueur> joueurs = new ArrayList<>();
 		try {

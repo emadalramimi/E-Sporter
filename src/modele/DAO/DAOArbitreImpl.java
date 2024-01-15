@@ -1,4 +1,4 @@
-package modele;
+package modele.DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +18,7 @@ import modele.metier.Arbitre;
 /**
  * Modèle arbitre
  */
-public class ModeleArbitre implements DAO<Arbitre, Integer> {
+public class DAOArbitreImpl implements DAOArbitre {
 
 	/**
 	 * Récupère tous les arbitres
@@ -76,6 +76,7 @@ public class ModeleArbitre implements DAO<Arbitre, Integer> {
 	 * @param idTournoi Identifiant du tournoi
 	 * @return Liste des arbitres affectés
 	 */
+	@Override
 	public List<Arbitre> getArbitresTournoi(int idTournoi) {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from arbitre, arbitrer where arbitre.idArbitre = arbitrer.idArbitre and arbitrer.idTournoi = ?");
@@ -92,7 +93,7 @@ public class ModeleArbitre implements DAO<Arbitre, Integer> {
 	                        if (!rs.next()) {
 	                            return false;
 	                        }
-	                        action.accept(ModeleArbitre.this.construireArbitre(rs));
+	                        action.accept(DAOArbitreImpl.this.construireArbitre(rs));
 	                        return true;
 	                    } catch (SQLException e) {
 	                        throw new RuntimeException(e);
@@ -119,6 +120,7 @@ public class ModeleArbitre implements DAO<Arbitre, Integer> {
 	 * @return Liste des arbitres non affectés
 	 * @throws Exception Erreur SQL
 	 */
+	@Override
 	public Arbitre[] getTableauArbitres(List<Arbitre> arbitresNonEligibles) throws Exception {
 		return this.getTout().stream()
 				.filter(e -> !arbitresNonEligibles.contains(e))
@@ -140,7 +142,7 @@ public class ModeleArbitre implements DAO<Arbitre, Integer> {
                         if (!rs.next()) {
                             return false;
                         }
-                        action.accept(ModeleArbitre.this.construireArbitre(rs));
+                        action.accept(DAOArbitreImpl.this.construireArbitre(rs));
                         return true;
                     } catch (SQLException e) {
                         throw new RuntimeException(e);

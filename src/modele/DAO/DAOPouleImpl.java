@@ -1,4 +1,4 @@
-package modele;
+package modele.DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,15 +19,15 @@ import modele.metier.Rencontre;
 /**
  * Modèle poule
  */
-public class ModelePoule implements DAO<Poule, Integer> {
+public class DAOPouleImpl implements DAOPoule {
 	
-	private ModeleRencontre modeleRencontre;
+	private DAORencontre daoRencontre;
 
 	/**
 	 * Construit un modèle poule
 	 */
-	public ModelePoule() {
-		this.modeleRencontre = new ModeleRencontre();
+	public DAOPouleImpl() {
+		this.daoRencontre = new DAORencontreImpl();
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class ModelePoule implements DAO<Poule, Integer> {
                 			rs.getBoolean("estCloturee"),
                 			rs.getBoolean("estFinale"),
                 			rs.getInt("idTournoi"),
-                			ModelePoule.this.modeleRencontre.getRencontresPoules(rs.getInt("idPoule"))
+                			DAOPouleImpl.this.daoRencontre.getRencontresPoules(rs.getInt("idPoule"))
                         ));
                         return true;
                     } catch (Exception e) {
@@ -100,9 +100,10 @@ public class ModelePoule implements DAO<Poule, Integer> {
 
 			for (Rencontre rencontre : poule.getRencontres()) {
 				rencontre.setIdPoule(idPoule);
-				this.modeleRencontre.ajouter(rencontre);
+				this.daoRencontre.ajouter(rencontre);
 			}
 			
+			BDD.getConnexion().commit();
 			return true;
 		} catch (SQLException e) {
 			try {
@@ -154,7 +155,7 @@ public class ModelePoule implements DAO<Poule, Integer> {
 		try {
 			// Supprime les rencontres de la poule
 			for (Rencontre rencontre : poule.getRencontres()) {
-				this.modeleRencontre.supprimer(rencontre);
+				this.daoRencontre.supprimer(rencontre);
 			}
 			
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from poule where idPoule = ?");
@@ -178,6 +179,7 @@ public class ModelePoule implements DAO<Poule, Integer> {
 	 * @param idTournoi Identifiant du tournoi
 	 * @return Liste des poules du tournoi
 	 */
+	@Override
 	public List<Poule> getPoulesTournoi(int idTournoi) {
 		try {
 			List<Poule> poules = this.getTout().stream()
@@ -188,6 +190,19 @@ public class ModelePoule implements DAO<Poule, Integer> {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+    /**
+	 * Clôture la poule en BDD
+	 * @param poule La poule à clôturer
+	 * @throws SQLException Erreur SQL
+	 */
+    @Override
+	public void cloturerPoule(Poule poule) throws SQLException {
+		PreparedStatement ps = BDD.getConnexion().prepareStatement("update poule set estCloturee = true where idPoule = ?");
+		ps.setInt(1, poule.getIdPoule());
+		ps.executeUpdate();
+		ps.close();
 	}
 	
 }

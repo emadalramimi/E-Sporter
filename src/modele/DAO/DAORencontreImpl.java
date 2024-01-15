@@ -1,4 +1,4 @@
-package modele;
+package modele.DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import modele.ModeleUtilisateur;
 import modele.exception.DroitsInsuffisantsException;
 import modele.exception.TournoiClotureException;
 import modele.exception.TournoiInexistantException;
@@ -26,15 +27,15 @@ import modele.metier.Utilisateur;
 /**
  * Modèle rencontre
  */
-public class ModeleRencontre implements DAO<Rencontre, Integer> {
+public class DAORencontreImpl implements DAORencontre {
 
-	private ModeleEquipe modeleEquipe;
+	private DAOEquipe daoEquipe;
 
 	/**
 	 * Construit un modèle rencontre
 	 */
-	public ModeleRencontre() {
-		this.modeleEquipe = new ModeleEquipe();
+	public DAORencontreImpl() {
+		this.daoEquipe = new DAOEquipeImpl();
 	}
 	
 	/**
@@ -56,7 +57,7 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 	                    if (!rs.next()) {
 	                        return false;
 	                    }
-	                    action.accept(ModeleRencontre.this.construireRencontre(rs));
+	                    action.accept(DAORencontreImpl.this.construireRencontre(rs));
 	                    return true;
 	                } catch (SQLException e) {
 	                    throw new RuntimeException(e);
@@ -201,6 +202,7 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 	 * @param idPoule : identifiant de la poule
 	 * @return la liste des rencontres appartenant à la poule idPoule
 	 */
+	@Override
 	public List<Rencontre> getRencontresPoules(int idPoule) {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from rencontre where idPoule = ?");
@@ -226,6 +228,7 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 	 * @param idRencontre Identifiant de la rencontre
 	 * @return Liste des équipes de la rencontre
 	 */
+	@Override
 	public Equipe[] getEquipesRencontre(int idRencontre) {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("select * from equipe, jouer where jouer.idEquipe = equipe.idEquipe and jouer.idRencontre = ?");
@@ -241,7 +244,7 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 								if (!rs.next()) {
 									return false;
 								}
-								action.accept(ModeleRencontre.this.modeleEquipe.construireEquipe(rs));
+								action.accept(DAORencontreImpl.this.daoEquipe.construireEquipe(rs));
 								return true;
 							} catch (SQLException e) {
 								throw new RuntimeException(e);
@@ -269,6 +272,7 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 	 * @param nomEquipe Nom de l'équipe gagnante
 	 * @throws Exception Exception SQL et IllegalArgumentException si l'équipe n'existe pas
 	 */
+	@Override
 	public void setEquipeGagnante(Rencontre rencontre, String nomEquipe) throws Exception {
 		// Gestion des exceptions dans une méthode externe
 		this.checkMiseAJourScore(rencontre);
@@ -315,6 +319,7 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 	 * @param rencontre Rencontre à mettre à jour
 	 * @throws Exception Exception SQL
 	 */
+	@Override
 	public void resetEquipeGagnante(Rencontre rencontre) throws Exception {
 		// Gestion des exceptions dans une méthode externe
 		this.checkMiseAJourScore(rencontre);
@@ -348,7 +353,8 @@ public class ModeleRencontre implements DAO<Rencontre, Integer> {
 	 * @throws DroitsInsuffisantsException Seuls les arbitres peut affecter le résultat d'une rencontre
 	 */
 	private void checkMiseAJourScore(Rencontre rencontre) throws Exception {
-		Tournoi tournoi = new ModeleTournoi().getTournoiRencontre(rencontre.getIdRencontre()).orElse(null);
+		DAOTournoi daoTournoi = new DAOTournoiImpl();
+		Tournoi tournoi = daoTournoi.getTournoiRencontre(rencontre.getIdRencontre()).orElse(null);
 		if (tournoi == null) {
 			throw new TournoiInexistantException("Le tournoi n'existe pas");
 		}

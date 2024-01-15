@@ -16,7 +16,7 @@ public class ModeleImpression {
     
     public void imprimerEtatResultatsTournoi(JTableThemeImpression table, Tournoi tournoi) throws PrinterException {
         // Création des formats pour l'en-tête 
-        MessageFormat headerFormat = new MessageFormat("État des résultats du Palmarès " + tournoi.getNomTournoi());
+        MessageFormat headerFormat = new MessageFormat("État des résultats du tournoi " + tournoi.getNomTournoi());
        
         // Impression de la table
         this.imprimer(table, headerFormat);
@@ -24,7 +24,7 @@ public class ModeleImpression {
 
     public void imprimerPalmares(JTableThemeImpression table) throws PrinterException {
         // Création des formats pour l'en-tête 
-        MessageFormat headerFormat = new MessageFormat("État des résultats de la saison " + LocalDate.now().getYear());
+        MessageFormat headerFormat = new MessageFormat("Palmarès de la saison " + LocalDate.now().getYear());
 
         // Impression de la table
         this.imprimer(table, headerFormat);
@@ -45,8 +45,6 @@ public class ModeleImpression {
       * @param footerFormat : format du pied de page
       */
     private void imprimer(JTableThemeImpression table, MessageFormat headerFormat) throws PrinterException {
-        System.out.println(table);
-
         // Récupération de la date et heure actuelle
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY à HH:mm");
         String currentDateTime = LocalDateTime.now().format(formatter);

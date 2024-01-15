@@ -2,6 +2,10 @@ package modele;
 
 import java.sql.SQLException;
 
+import modele.DAO.DAOAdministrateur;
+import modele.DAO.DAOAdministrateurImpl;
+import modele.DAO.DAOTournoi;
+import modele.DAO.DAOTournoiImpl;
 import modele.metier.Tournoi;
 import modele.metier.Utilisateur;
 
@@ -11,15 +15,15 @@ import modele.metier.Utilisateur;
 public class ModeleUtilisateur {
 
 	private static Utilisateur compteCourant;
-	private ModeleAdministrateur modeleAdministrateur;
-	private ModeleTournoi modeleTournoi;
+	private DAOAdministrateur daoAdministrateur;
+	private DAOTournoi daoTournoi;
 	
 	/**
 	 * Construit un modèle utilisateur
 	 */
 	public ModeleUtilisateur() {
-		this.modeleAdministrateur = new ModeleAdministrateur();
-		this.modeleTournoi = new ModeleTournoi();
+		this.daoAdministrateur = new DAOAdministrateurImpl();
+		this.daoTournoi = new DAOTournoiImpl();
 	}
 
 	/**
@@ -99,10 +103,10 @@ public class ModeleUtilisateur {
 	 * @throws SQLException Erreur SQL
 	 */
     private Utilisateur chercherUtilisateur(String identifiant) throws SQLException {
-        Utilisateur utilisateur = this.modeleAdministrateur.getParIdentifiant(identifiant).orElse(null);
+        Utilisateur utilisateur = this.daoAdministrateur.getParIdentifiant(identifiant).orElse(null);
 		// Si l'utilisateur n'est pas un administrateur, on cherche dans les tournois
         if (utilisateur == null) {
-            utilisateur = modeleTournoi.getParIdentifiant(identifiant).orElse(null);
+            utilisateur = daoTournoi.getParIdentifiant(identifiant).orElse(null);
         }
         return utilisateur;
     }

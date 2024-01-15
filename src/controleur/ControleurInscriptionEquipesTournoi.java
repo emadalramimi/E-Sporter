@@ -8,9 +8,11 @@ import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import modele.ModeleEquipe;
-import modele.ModeleTournoi;
 import modele.ModeleTournoiOuverture;
+import modele.DAO.DAOEquipe;
+import modele.DAO.DAOEquipeImpl;
+import modele.DAO.DAOTournoi;
+import modele.DAO.DAOTournoiImpl;
 import modele.exception.DatesTournoiException;
 import modele.exception.OuvertureTournoiException;
 import modele.exception.TournoiDejaOuvertException;
@@ -28,8 +30,8 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 	private VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi;
 	private VueTournois vueTournois;
 	private Tournoi tournoi;
-	private ModeleEquipe modeleEquipe;
-	private ModeleTournoi modeleTournoi;
+	private DAOEquipe daoEquipe;
+	private DAOTournoi daoTournoi;
 	private ModeleTournoiOuverture modeleTournoiOuverture;
 	
 	/**
@@ -42,8 +44,8 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 		this.vueInscriptionEquipesTournoi = vueInscriptionEquipesTournoi;
 		this.vueTournois = vueTournois;
 		this.tournoi = tournoi;
-		this.modeleEquipe = new ModeleEquipe();
-		this.modeleTournoi = new ModeleTournoi();
+		this.daoEquipe = new DAOEquipeImpl();
+		this.daoTournoi = new DAOTournoiImpl();
 		this.modeleTournoiOuverture = new ModeleTournoiOuverture();
 	}
 	
@@ -93,7 +95,7 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 					this.modeleTournoiOuverture.ouvrirTournoi(this.tournoi);
 					this.vueTournois.afficherPopupMessage("Le tournoi a été ouvert avec succès");
 					// On met à jour le tableau des tournois
-					this.vueTournois.remplirTableau(this.modeleTournoi.getTout());
+					this.vueTournois.remplirTableau(this.daoTournoi.getTout());
 					this.vueInscriptionEquipesTournoi.fermerFenetre();
 				} catch (OuvertureTournoiException | DatesTournoiException | TournoiDejaOuvertException | IllegalArgumentException ex) {
 					// Récupération des erreurs IllegalArgumentException et affichage de leur message
@@ -128,7 +130,7 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 					try {
 						// On désinscrit l'équipe, on la supprime de la liste des équipes inscrites et on la supprime du tournoi
 						Equipe equipe = (Equipe) liste.getSelectedValue();
-						this.modeleEquipe.desinscrireEquipe(equipe, this.tournoi);
+						this.daoEquipe.desinscrireEquipe(equipe, this.tournoi);
 						this.tournoi.removeEquipe(equipe);
 						this.vueInscriptionEquipesTournoi.supprimerEquipe(equipe);
 						liste.clearSelection();
@@ -150,7 +152,7 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 	 */
 	public Equipe[] getEquipesEligibles() {
 		try {
-			return this.modeleEquipe.getTableauEquipes(this.vueInscriptionEquipesTournoi.getEquipes());
+			return this.daoEquipe.getTableauEquipes(this.vueInscriptionEquipesTournoi.getEquipes());
 		} catch (Exception e) {
 			this.vueInscriptionEquipesTournoi.afficherPopupErreur("Impossible de récupérer les équipes");
 			throw new RuntimeException(e);

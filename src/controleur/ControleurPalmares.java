@@ -8,20 +8,21 @@ import java.util.List;
 import javax.swing.JButton;
 
 import modele.ModeleImpression;
-import modele.ModelePalmares;
+import modele.DAO.DAOPalmares;
+import modele.DAO.DAOPalmaresImpl;
 import modele.metier.Palmares;
 import vue.VuePalmares;
 
 public class ControleurPalmares extends ControleurRecherche<Palmares> implements ActionListener {
     
     private VuePalmares vue;
-    private ModelePalmares modelePalmares;
+    private DAOPalmares daoPalmares;
     private ModeleImpression modeleImpression;
 
     public ControleurPalmares(VuePalmares vue) {
-        super(new ModelePalmares(), vue);
+        super(new DAOPalmaresImpl(), vue);
         this.vue = vue;
-        this.modelePalmares = (ModelePalmares) super.getModele();
+        this.daoPalmares = (DAOPalmares) super.getModele();
         this.modeleImpression = new ModeleImpression();
     }
 
@@ -42,7 +43,7 @@ public class ControleurPalmares extends ControleurRecherche<Palmares> implements
 
     public List<Palmares> getClassement() {
         try {
-            return modelePalmares.getClassement();
+            return daoPalmares.getClassement();
         } catch (Exception e) {
             e.printStackTrace();
             return null;

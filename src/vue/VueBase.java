@@ -8,7 +8,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import controleur.ControleurBase;
-import modele.BDD;
 import modele.ModeleUtilisateur;
 import modele.metier.Administrateur;
 import modele.metier.Tournoi;
@@ -324,7 +323,7 @@ public class VueBase extends JFrameTheme {
 	 */
 	@Override
 	public void fermerFenetre() {
-		BDD.fermerConnexion();
+		this.controleurBase.fermerConnexionBDD();
 		super.fermerFenetre();
 	}
 	

@@ -1,4 +1,4 @@
-package modele;
+package modele.DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,15 +11,14 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
 import modele.metier.Palmares;
 
-public class ModelePalmares implements Recherchable<Palmares> {
+public class DAOPalmaresImpl implements DAOPalmares {
     
-    private ModeleEquipe modeleEquipe;
+    private DAOEquipe daoEquipe;
 
-    public ModelePalmares() {
-        this.modeleEquipe = new ModeleEquipe();
+    public DAOPalmaresImpl() {
+        this.daoEquipe = new DAOEquipeImpl();
     }
 
 	/**
@@ -27,6 +26,7 @@ public class ModelePalmares implements Recherchable<Palmares> {
 	 * @return Liste de tous les équipes
 	 * @throws Exception Erreur SQL
 	 */
+    @Override
 	public List<Palmares> getClassement() throws Exception {
 		PreparedStatement ps = BDD.getConnexion().prepareStatement("select e.*, coalesce((select sum(hp.points) from historiquePoints hp where hp.idEquipe = e.idEquipe), 0) as points from equipe e where e.saison = ? order by e.classement asc");
 		ps.setInt(1, LocalDate.now().getYear());
@@ -42,7 +42,7 @@ public class ModelePalmares implements Recherchable<Palmares> {
                         }
                         try {
                             action.accept(new Palmares(
-                                ModelePalmares.this.modeleEquipe.construireEquipe(rs),
+                                DAOPalmaresImpl.this.daoEquipe.construireEquipe(rs),
                                 rs.getFloat("points")
                             ));
                         } catch (Exception e) {

@@ -5,7 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import modele.ModeleArbitre;
+import modele.DAO.DAOArbitre;
+import modele.DAO.DAOArbitreImpl;
 import vue.VueSaisieTournoi;
 import vue.VueSaisieTournoiEquipeArbitre;
 
@@ -17,6 +18,7 @@ public class ControleurSaisieTournoiArbitre implements ActionListener {
 
 	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipeArbitre;
 	private VueSaisieTournoi vueSaisieTournoi;
+	private DAOArbitre daoArbitre;
 	
 	/**
 	 * Constructeur du contrôleur de la vue de saisie d'un tournoi
@@ -26,6 +28,7 @@ public class ControleurSaisieTournoiArbitre implements ActionListener {
 	public ControleurSaisieTournoiArbitre(VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipeArbitre, VueSaisieTournoi vueSaisieTournoi) {
 		this.vueSaisieTournoiEquipeArbitre = vueSaisieTournoiEquipeArbitre;
 		this.vueSaisieTournoi = vueSaisieTournoi;
+		this.daoArbitre = new DAOArbitreImpl();
 	}
 
 	/**
@@ -40,10 +43,10 @@ public class ControleurSaisieTournoiArbitre implements ActionListener {
 			case "Ajouter l'arbitre":
 				// On récupère l'arbitre saisi et on l'ajoute au tournoi
 				this.vueSaisieTournoi.ajouterArbitre(this.vueSaisieTournoiEquipeArbitre.getArbitre());
-				ModeleArbitre modeleArbitre = new ModeleArbitre();
+				
 				try {
 					// On vérifie que le nombre maximal d'arbitres n'est pas atteint
-					if (modeleArbitre.getTableauArbitres(this.vueSaisieTournoi.getArbitres()).length == 0) {
+					if (this.daoArbitre.getTableauArbitres(this.vueSaisieTournoi.getArbitres()).length == 0) {
 						this.vueSaisieTournoi.setBtnAjouterArbitreActif(false);
 					} else {
 						this.vueSaisieTournoi.setBtnAjouterArbitreActif(true);

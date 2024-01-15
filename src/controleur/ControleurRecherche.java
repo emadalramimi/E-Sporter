@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
-import modele.Recherchable;
+import modele.DAO.Recherchable;
 import vue.RecherchableVue;
 import vue.theme.JFrameTheme;
 

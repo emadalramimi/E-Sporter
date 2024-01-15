@@ -8,7 +8,8 @@ import java.util.Optional;
 
 import javax.swing.JButton;
 
-import modele.ModeleEquipe;
+import modele.DAO.DAOEquipe;
+import modele.DAO.DAOEquipeImpl;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
 import modele.metier.Pays;
@@ -23,7 +24,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 
 	private VueSaisieEquipe vueSaisieEquipe;
 	private VueEquipes vueEquipes;
-	private ModeleEquipe modeleEquipe;
+	private DAOEquipe daoEquipe;
 	private Optional<Equipe> equipeOptionnel;
 	
 	/**
@@ -36,7 +37,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 		this.vueSaisieEquipe = vueSaisieEquipes;
 		this.vueEquipes = vueEquipes;
 		this.equipeOptionnel = equipeOptionnel;
-		this.modeleEquipe = new ModeleEquipe();
+		this.daoEquipe = new DAOEquipeImpl();
 	}
 
 	/**
@@ -72,7 +73,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 				
 				// Ajout de l'équipe dans la base de données
 				try {
-					modeleEquipe.ajouter(equipe);
+					daoEquipe.ajouter(equipe);
 				} catch (Exception ex) {
 					this.vueSaisieEquipe.afficherPopupErreur("Une erreur est survenue lors de l'ajout de l'équipe.");
 					throw new RuntimeException("Erreur dans l'ajout de l'équipe", ex);
@@ -81,7 +82,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 				// Message de confirmation et mise à jour du tableau
 				this.vueSaisieEquipe.afficherPopupMessage("L'équipe a bien été ajoutée.");
 				try {
-					this.vueEquipes.remplirTableau(this.modeleEquipe.getEquipesSaison());
+					this.vueEquipes.remplirTableau(this.daoEquipe.getEquipesSaison());
 				} catch (Exception err) {
 					this.vueSaisieEquipe.afficherPopupErreur("Impossible de récupérer les équipes");
 					throw new RuntimeException("Impossible de récupérer les équipes", err);
@@ -110,7 +111,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 				
 				// Modification de l'équipe et affichage d'un message de succès/erreur
 				try {
-					this.modeleEquipe.modifier(equipe);
+					this.daoEquipe.modifier(equipe);
 				} catch (Exception err) {
 					this.vueSaisieEquipe.afficherPopupErreur("Une erreur est survenue lors de la modification de l'équipe.");
 					throw new RuntimeException("Erreur dans la modification de l'équipe", err);
@@ -120,7 +121,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 				
 				// Mise à jour du tableau
 				try {
-					this.vueEquipes.remplirTableau(this.modeleEquipe.getEquipesSaison());
+					this.vueEquipes.remplirTableau(this.daoEquipe.getEquipesSaison());
 				} catch (Exception err) {
 					this.vueSaisieEquipe.afficherPopupErreur("Impossible de récupérer les équipes");
 					throw new RuntimeException("Impossible de récupérer les équipes", err);
