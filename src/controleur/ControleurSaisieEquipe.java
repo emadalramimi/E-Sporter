@@ -2,7 +2,6 @@ package controleur;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,10 +67,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 			if(bouton.getText() == "Valider") {
 				
 				// Créer des instances de Joueur pour chaque pseudo de joueur renseigné
-				List<Joueur> joueurs = new ArrayList<>();
-				for (String nomJoueur : nomsJoueurs) {
-					joueurs.add(new Joueur(nomJoueur));
-				}
+				List<Joueur> joueurs = this.modeleEquipe.creerJoueurs(nomsJoueurs);
 				Equipe equipe = new Equipe(nom, Pays.valueOfNom(pays), joueurs);
 				
 				// Ajout de l'équipe dans la base de données
@@ -102,19 +98,9 @@ public class ControleurSaisieEquipe implements ActionListener {
 					throw new RuntimeException("Equipe inexistante");
 				}
 				
-				// Modification des champs
-				equipe.setNom(nom);
-				equipe.setPays(Pays.valueOfNom(pays));
-				
-				// Récupération des joueurs saisis et mise à jour des joueurs de l'équipe
-				List<Joueur> joueursEquipe = equipe.getJoueurs();
-				for(int i = 0; i < joueursEquipe.size(); i++) {
-					joueursEquipe.get(i).setPseudo(nomsJoueurs.get(i));
-				}
-				
 				// Modification de l'équipe et affichage d'un message de succès/erreur
 				try {
-					this.modeleEquipe.modifier(equipe);
+					this.modeleEquipe.modifier(equipe, nom, Pays.valueOfNom(pays), nomsJoueurs);
 				} catch (Exception err) {
 					this.vueSaisieEquipe.afficherPopupErreur("Une erreur est survenue lors de la modification de l'équipe.");
 					throw new RuntimeException("Erreur dans la modification de l'équipe", err);
@@ -131,9 +117,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 				}
 			}
 			
-			// TODO SI FILTRE/RECHERCHE réappliquer ici
 			this.vueEquipes.resetChampRecherche();
-
 			this.vueSaisieEquipe.fermerFenetre();
 		} else if(bouton.getText() == "Annuler") {
 			this.vueSaisieEquipe.fermerFenetre();

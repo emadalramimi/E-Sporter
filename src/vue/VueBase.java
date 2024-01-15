@@ -306,6 +306,14 @@ public class VueBase extends JFrameTheme {
 		this.contenu.revalidate();
 	    this.contenu.repaint();
 	}
+
+	/**
+	 * Affiche la fenêtre
+	 */
+	public void afficher() {
+		this.setLocationRelativeTo(null);
+		this.setVisible(true);
+	}
 	
 	/**
 	 * Ferme la fenêtre

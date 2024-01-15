@@ -1,11 +1,14 @@
 package modele;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import controleur.ControleurTournois;
+import modele.DAO.DAOAdministrateur;
+import modele.DAO.DAOAdministrateurImpl;
 import modele.DAO.DAOPoule;
 import modele.DAO.DAOPouleImpl;
 import modele.DAO.DAOTournoi;
@@ -25,6 +28,7 @@ public class ModeleTournoi implements Recherchable<Tournoi> {
 
 	private DAOTournoi daoTournoi;
 	private DAOPoule daoPoule;
+	private DAOAdministrateur daoAdministrateur;
 
 	/**
 	 * Construit un modèle tournoi
@@ -32,6 +36,7 @@ public class ModeleTournoi implements Recherchable<Tournoi> {
 	public ModeleTournoi() {
 		this.daoTournoi = new DAOTournoiImpl();
 		this.daoPoule = new DAOPouleImpl();
+		this.daoAdministrateur = new DAOAdministrateurImpl();
 	}
 
 	/**
@@ -120,6 +125,15 @@ public class ModeleTournoi implements Recherchable<Tournoi> {
 		}
 
 		return tournois;
+	}
+
+	public boolean verifierUniciteIdentifiant(String identifiant) throws SQLException {
+		return this.daoTournoi.getParIdentifiant(identifiant).isPresent()
+				|| this.daoAdministrateur.getParIdentifiant(identifiant).isPresent();
+	}
+
+	public boolean estTournoiCloture(Tournoi tournoi) {
+		return System.currentTimeMillis() / 1000 >= tournoi.getDateTimeDebut() && tournoi.getEstCloture();
 	}
 
 }

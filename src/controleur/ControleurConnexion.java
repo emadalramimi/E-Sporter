@@ -95,13 +95,9 @@ public class ControleurConnexion extends KeyAdapter implements ActionListener {
 				
 				// Fermeture de la page de connexion et ouverture de l'espace administrateur/arbitre
 				vue.fermerFenetre();
-				try {
-					VueBase frame = new VueBase();
-					frame.setLocationRelativeTo(null);
-					frame.setVisible(true);
-				} catch (Exception err) {
-					err.printStackTrace();
-				}
+
+				VueBase vueBase = new VueBase();
+				vueBase.afficher();
 			} catch (IllegalArgumentException | IllegalStateException ex) {
 				vue.afficherPopupErreur(ex.getMessage());
 			} catch (RuntimeException err) {

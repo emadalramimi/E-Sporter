@@ -1,5 +1,6 @@
 package modele;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,6 +9,8 @@ import modele.DAO.DAOEquipeImpl;
 import modele.DAO.Recherchable;
 import modele.exception.InscriptionEquipeTournoiException;
 import modele.metier.Equipe;
+import modele.metier.Joueur;
+import modele.metier.Pays;
 
 public class ModeleEquipe implements Recherchable<Equipe> {
 
@@ -17,12 +20,30 @@ public class ModeleEquipe implements Recherchable<Equipe> {
         this.daoEquipe = new DAOEquipeImpl();
     }
 
-	public boolean modifier(Equipe equipe) throws Exception {
+	public boolean modifier(Equipe equipe, String nom, Pays pays, List<String> nomsJoueurs) throws Exception {
 		if (this.daoEquipe.estEquipeInscriteUnTournoiOuvert(equipe)) {
 			throw new InscriptionEquipeTournoiException("Cette équipe est inscrite à un tournoi actuellement ouvert.");
 		}
+	
+		// Modification des champs
+		equipe.setNom(nom);
+		equipe.setPays(pays);
+		
+		// Récupération des joueurs saisis et mise à jour des joueurs de l'équipe
+		List<Joueur> joueursEquipe = equipe.getJoueurs();
+		for(int i = 0; i < joueursEquipe.size(); i++) {
+			joueursEquipe.get(i).setPseudo(nomsJoueurs.get(i));
+		}
 
 		return this.daoEquipe.modifier(equipe);
+	}
+
+	public List<Joueur> creerJoueurs(List<String> nomsJoueurs) {
+		List<Joueur> joueurs = new ArrayList<>();
+		for (String nomJoueur : nomsJoueurs) {
+			joueurs.add(new Joueur(nomJoueur));
+		}
+		return joueurs;
 	}
 
 	/**

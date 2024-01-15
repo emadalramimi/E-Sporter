@@ -33,7 +33,7 @@ public class ControleurPalmares extends ControleurRecherche<Palmares> implements
 
         JButton bouton = (JButton) e.getSource();
 
-        if(bouton.getText()=="Imprimer") {
+        if(bouton.getText() == "Imprimer") {
             try {
                 this.modeleImpression.imprimerPalmares(this.vue.getTableImpression());
             } catch(PrinterException err) {

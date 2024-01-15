@@ -11,9 +11,8 @@ import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import modele.ModeleTournoi;
 import modele.ModeleUtilisateur;
-import modele.DAO.DAOAdministrateur;
-import modele.DAO.DAOAdministrateurImpl;
 import modele.DAO.DAOArbitre;
 import modele.DAO.DAOArbitreImpl;
 import modele.DAO.DAOTournoi;
@@ -35,7 +34,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 	private Optional<Tournoi> tournoiOptionnel;
 	private DAOArbitre daoArbitre;
 	private DAOTournoi daoTournoi;
-	private DAOAdministrateur daoAdministrateur;
+	private ModeleTournoi modeleTournoi;
 	
 	/**
 	 * Constructeur du contrôleur de la vue de saisie d'un tournoi
@@ -49,7 +48,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 		this.tournoiOptionnel = tournoiOptionnel;
 		this.daoArbitre = new DAOArbitreImpl();
 		this.daoTournoi = new DAOTournoiImpl();
-		this.daoAdministrateur = new DAOAdministrateurImpl();
+		this.modeleTournoi = new ModeleTournoi();
 	}
 	
 	/**
@@ -237,10 +236,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 	private void verifierUniciteIdentifiant(String identifiant) throws IllegalArgumentException {
 		// Vérification si l'identifiant est déjà utilisé par un arbitre ou un administrateur
 		try {
-			if (
-				this.daoTournoi.getParIdentifiant(identifiant).isPresent()
-				|| this.daoAdministrateur.getParIdentifiant(identifiant).isPresent()
-			) {
+			if (this.modeleTournoi.verifierUniciteIdentifiant(identifiant)) {
 				this.vueSaisieTournoi.afficherPopupErreur("Cet identifiant est déjà utilisé par un autre utilisateur.");
 				throw new IllegalArgumentException("Cet identifiant est déjà utilisé par un autre utilisateur.");
 			}
