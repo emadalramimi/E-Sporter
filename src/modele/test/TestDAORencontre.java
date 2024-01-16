@@ -149,7 +149,7 @@ public class TestDAORencontre {
 		this.modeleUtilisateur.deconnecter();
 		// Réinitialise les rencontres
 		List<Integer> idREncontreAGarder = new ArrayList<>();
-		for (int i = 1; i < this.rencontresTotal; i++) {
+		for (int i = 1; i < 42; i++) {
 			idREncontreAGarder.add(i);
 		}
 		this.daoRencontre.getTout().stream().filter(rencontre -> !idREncontreAGarder.contains(rencontre.getIdRencontre()))
@@ -173,7 +173,7 @@ public class TestDAORencontre {
 				});
 
 		// Réinitialise les poules
-		List<Integer> idPouleAGarder = Arrays.asList(1, 2);
+		List<Integer> idPouleAGarder = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
 		this.daoPoule.getTout().stream().filter(poule -> !idPouleAGarder.contains(poule.getIdPoule()))
 				.forEach(poule -> {
 					try {
