@@ -77,11 +77,13 @@ public class ModeleTournoiCloture {
 		}
 
 		Poule poule = tournoi.getPouleActuelle();
-
+		
+		/*				IMPOSSIBLE
 		if(poule.getEstCloturee()) {
 			throw new IllegalArgumentException("La poule est déjà cloturée");
 		}
-
+		*/
+		
 		// Vérification que tous les matchs ont été joués (0 = aucun gagnant)
 		for(Rencontre rencontre : poule.getRencontres()) {
 			if(rencontre.getIdEquipeGagnante() == 0) {
@@ -106,11 +108,12 @@ public class ModeleTournoiCloture {
 	 */
 	private void cloturerPouleQualifications(Tournoi tournoi) throws Exception {
 		Poule poule = tournoi.getPouleActuelle();
-
+		
+		/*			IMPOSSIBLE
 		if(poule.getEstFinale()) {
 			throw new IllegalArgumentException("Poule de qualifications déjà cloturée");
 		}
-
+		*/
 		// Détermination des équipes pour la finale
 		// Il s'agit forcément d'un tableau de 2 équipes !
 		Equipe[] equipesSelectionnees = this.getEquipesSelectionneesPourFinale(tournoi);

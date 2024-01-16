@@ -30,9 +30,6 @@ public class StatistiquesEquipe implements Comparable<StatistiquesEquipe> {
         if(equipe == null) {
             throw new IllegalArgumentException("L'équipe ne peut pas être nulle");
         }
-        if(points < 0) {
-            throw new IllegalArgumentException("Le nombre de points ne peut pas être négatif");
-        }
 
         this.equipe = equipe;
         this.nbMatchsJoues = nbMatchsJoues;
