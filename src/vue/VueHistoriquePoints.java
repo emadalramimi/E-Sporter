@@ -121,16 +121,12 @@ public class VueHistoriquePoints extends RecherchableVue<Equipe> {
 		gbc_scrollPaneTableEquipes.gridy = 2;
 		panelTableaux.add(scrollPaneTableEquipes, gbc_scrollPaneTableEquipes);
 
-<<<<<<< Updated upstream
-		// Création de la table des équipes
-		this.tableEquipes = new JTableTheme();
-=======
 		// Tableau d'équipes
 		this.tableEquipes = new JTableTheme(
 			new String[] {"ID", "Pays", "Nom"},
 			null
 		);
->>>>>>> Stashed changes
+
 		this.tableEquipes.getSelectionModel().addListSelectionListener(this.controleur);
 		this.modelTableEquipes = (DefaultTableModel) this.tableEquipes.getModel();
 
@@ -141,20 +137,6 @@ public class VueHistoriquePoints extends RecherchableVue<Equipe> {
 	    paysColumn.setCellRenderer(new ImageTableCellRenderer());
 
 		// Tableau des historiques de points
-<<<<<<< Updated upstream
-		this.modelTableHistoriquePoints = new DefaultTableModel(
-			new Object[][] {}, 
-			new String[] {"Tournoi", "Points"}
-		) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-		
-		// Création de la table des historiques de points
-=======
->>>>>>> Stashed changes
 		JScrollPane scrollPaneHistoriquePoints2 = new JScrollPaneTheme();
 		GridBagConstraints gbc_scrollPaneHistoriquePoints2 = new GridBagConstraints();
 		gbc_scrollPaneHistoriquePoints2.fill = GridBagConstraints.BOTH;
