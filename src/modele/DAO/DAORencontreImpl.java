@@ -119,14 +119,14 @@ public class DAORencontreImpl implements DAORencontre {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into rencontre values (?, ?, NULL)");
 			ps.setInt(1, rencontre.getIdRencontre());
 			ps.setInt(2, rencontre.getIdPoule());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 			
 			for (int i = 0; i < equipes.length; i++) {
 				ps = BDD.getConnexion().prepareStatement("insert into jouer values (?, ?)");
 				ps.setInt(1, equipes[i].getIdEquipe());
 				ps.setInt(2, rencontre.getIdRencontre());
-				ps.execute();
+				ps.executeUpdate();
 				ps.close();
 			}
 			
@@ -180,12 +180,12 @@ public class DAORencontreImpl implements DAORencontre {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from jouer where idRencontre = ?");
 			ps.setInt(1, rencontre.getIdRencontre());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 
 			ps = BDD.getConnexion().prepareStatement("delete from rencontre where idRencontre = ?");
 			ps.setInt(1, rencontre.getIdRencontre());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 			
 			return true;

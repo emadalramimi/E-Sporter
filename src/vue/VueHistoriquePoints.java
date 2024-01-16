@@ -126,6 +126,7 @@ public class VueHistoriquePoints extends RecherchableVue<Equipe> {
 			new String[] {"ID", "Pays", "Nom"},
 			null
 		);
+
 		this.tableEquipes.getSelectionModel().addListSelectionListener(this.controleur);
 		this.modelTableEquipes = (DefaultTableModel) this.tableEquipes.getModel();
 

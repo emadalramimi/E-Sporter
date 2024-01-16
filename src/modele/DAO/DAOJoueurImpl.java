@@ -98,7 +98,7 @@ public class DAOJoueurImpl implements DAOJoueur {
 			ps.setInt(1, joueur.getIdJoueur());
 			ps.setString(2, joueur.getPseudo());
 			ps.setInt(3, joueur.getIdEquipe());
-			ps.execute();
+			ps.executeUpdate();
 			
 			ps.close();
 			BDD.getConnexion().commit();
@@ -181,7 +181,7 @@ public class DAOJoueurImpl implements DAOJoueur {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from joueur where idEquipe = ?");
 			ps.setInt(1, idEquipe);
-			ps.execute();
+			ps.executeUpdate();
 			
 			ps.close();
 			BDD.getConnexion().commit();

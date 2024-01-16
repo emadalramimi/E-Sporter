@@ -119,7 +119,7 @@ public class DAOTournoiImpl implements DAOTournoi {
 			ps.setBoolean(6, tournoi.getEstCloture());
 			ps.setString(7, tournoi.getIdentifiant());
 			ps.setString(8, tournoi.getMotDePasse());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 
 			// Ajout des arbitres du tournoi
@@ -127,7 +127,7 @@ public class DAOTournoiImpl implements DAOTournoi {
 				ps = BDD.getConnexion().prepareStatement("insert into arbitrer values (?, ?)");
 				ps.setInt(1, tournoi.getIdTournoi());
 				ps.setInt(2, arbitre.getIdArbitre());
-				ps.execute();
+				ps.executeUpdate();
 				ps.close();
 			}
 
@@ -221,12 +221,12 @@ public class DAOTournoiImpl implements DAOTournoi {
 		try {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from arbitrer where idTournoi = ?");
 			ps.setInt(1, tournoi.getIdTournoi());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 
 			ps = BDD.getConnexion().prepareStatement("delete from participer where idTournoi = ?");
 			ps.setInt(1, tournoi.getIdTournoi());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 			
 			// Supprimer les poules
@@ -236,7 +236,7 @@ public class DAOTournoiImpl implements DAOTournoi {
 
 			ps = BDD.getConnexion().prepareStatement("delete from tournoi where idTournoi = ?");
 			ps.setInt(1, tournoi.getIdTournoi());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 
 			BDD.getConnexion().commit();

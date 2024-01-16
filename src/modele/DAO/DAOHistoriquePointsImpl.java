@@ -52,7 +52,7 @@ public class DAOHistoriquePointsImpl implements DAOHistoriquePoints {
             ps.setFloat(1, historiquePoints.getPoints());
             ps.setInt(2, historiquePoints.getTournoi().getIdTournoi());
             ps.setInt(3, historiquePoints.getIdEquipe());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 			
 			connection.commit();
