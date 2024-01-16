@@ -21,6 +21,7 @@ import modele.DAO.DAOJoueurImpl;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
 import modele.metier.Pays;
+import modele.metier.Tournoi;
 
 public class TestDAOJoueur {
 
@@ -97,8 +98,13 @@ public class TestDAOJoueur {
 
 	@After
 	public void tearsDown() throws Exception {
-		this.daoJoueur.supprimerJoueursEquipe(6);
 		DAOEquipe daoEquipe = new DAOEquipeImpl();
-		daoEquipe.supprimer(this.equipe);
+		List<Integer> idAGarder = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6));
+		for (Equipe equipe : daoEquipe.getTout()) {
+			if (!idAGarder.contains(equipe.getIdEquipe())) {
+				this.daoJoueur.supprimerJoueursEquipe(6);
+				daoEquipe.supprimer(equipe);
+			}
+		}
 	}
 }

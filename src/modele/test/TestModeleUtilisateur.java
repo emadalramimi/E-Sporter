@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,8 +17,6 @@ public class TestModeleUtilisateur {
 	@Before
 	public void setUp() {
 		this.modeleUtilisateur = new ModeleUtilisateur();
-		if (ModeleUtilisateur.getCompteCourant() != null)
-			this.modeleUtilisateur.deconnecter();
 	}
 
 	@Test
@@ -89,5 +88,11 @@ public class TestModeleUtilisateur {
 	@Test
 	public void testGetCompteCourant() {
 		assertEquals(ModeleUtilisateur.getCompteCourant(), null);
+	}
+	
+	@After
+	public void tearsDown() {
+		if (ModeleUtilisateur.getCompteCourant() != null)
+			this.modeleUtilisateur.deconnecter();
 	}
 }

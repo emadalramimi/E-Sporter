@@ -19,6 +19,7 @@ import modele.metier.Joueur;
 import modele.metier.Pays;
 import modele.metier.Poule;
 import modele.metier.Rencontre;
+import modele.metier.Tournoi;
 
 public class TestDAOPoule {
 
@@ -38,7 +39,7 @@ public class TestDAOPoule {
 		Equipe[] equipes = { equipeA, equipeB };
 		this.rencontres = new ArrayList<>(
 				Arrays.asList(new Rencontre(1, 1000, 10000, equipes), new Rencontre(2, 1050, 10050, equipes)));
-		this.poule = new Poule(1, false, false, 1, this.rencontres);
+		this.poule = new Poule(false, false, 2, rencontres);
 	}
 
 	@Test
@@ -69,7 +70,8 @@ public class TestDAOPoule {
 	public void testGetPoulesTournoi() throws Exception {
 		List<Poule> listPoules = new ArrayList<>(Arrays.asList(new Poule(1, true, false, 1, this.rencontres),
 				new Poule(2, true, true, 1, this.rencontres)));
-		assertEquals(this.daoPoule.getPoulesTournoi(this.poule.getIdTournoi()), listPoules);
+		System.out.println(this.daoPoule.getPoulesTournoi(1));
+		assertEquals(this.daoPoule.getPoulesTournoi(1), listPoules);
 	}
 	
 	@Test (expected = UnsupportedOperationException.class)
@@ -84,14 +86,12 @@ public class TestDAOPoule {
 
 	@After
 	public void tearsDown() throws Exception {
-		List<Integer> idAGarder = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-		this.daoPoule.getTout().stream().filter(poule -> !idAGarder.contains(poule.getIdPoule())).forEach(poule -> {
-			try {
+		List<Integer> idAGarder = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
+		for (Poule poule : this.daoPoule.getTout()) {
+			if (!idAGarder.contains(poule.getIdPoule())) {
 				this.daoPoule.supprimer(poule);
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
-		});
+		}
 	}
 
 }
