@@ -95,7 +95,7 @@ public class DAOPouleImpl implements DAOPoule {
 			ps.setBoolean(2, poule.getEstCloturee());
 			ps.setBoolean(3, poule.getEstFinale());
 			ps.setInt(4, poule.getIdTournoi());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 
 			for (Rencontre rencontre : poule.getRencontres()) {
@@ -160,7 +160,7 @@ public class DAOPouleImpl implements DAOPoule {
 			
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from poule where idPoule = ?");
 			ps.setInt(1, poule.getIdPoule());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 			
 			return true;

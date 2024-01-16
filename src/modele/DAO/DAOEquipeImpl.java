@@ -104,7 +104,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 			ps.setInt(4, equipe.getClassement());
 			ps.setInt(5, equipe.getWorldRanking());
 			ps.setString(6, equipe.getSaison());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 			
 			// On ajoute les joueurs de l'équipe
@@ -199,7 +199,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 			this.daoJoueur.supprimerJoueursEquipe(equipe.getIdEquipe());
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from equipe where idEquipe = ?");
 			ps.setInt(1, equipe.getIdEquipe());
-			ps.execute();
+			ps.executeUpdate();
 			
 			BDD.getConnexion().commit();
 			ps.close();
@@ -295,7 +295,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("insert into participer values (?, ?)");
 			ps.setInt(1, tournoi.getIdTournoi());
 			ps.setInt(2, equipe.getIdEquipe());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 
 			BDD.getConnexion().commit();
@@ -325,7 +325,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from participer where idTournoi = ? and idEquipe = ?");
 			ps.setInt(1, tournoi.getIdTournoi());
 			ps.setInt(2, equipe.getIdEquipe());
-			ps.execute();
+			ps.executeUpdate();
 			ps.close();
 
 			BDD.getConnexion().commit();
