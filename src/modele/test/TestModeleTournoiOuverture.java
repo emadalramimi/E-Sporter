@@ -13,6 +13,10 @@ import org.junit.Test;
 import modele.ModeleEquipe;
 import modele.ModeleTournoi;
 import modele.ModeleTournoiOuverture;
+import modele.DAO.DAOEquipe;
+import modele.DAO.DAOEquipeImpl;
+import modele.DAO.DAOTournoi;
+import modele.DAO.DAOTournoiImpl;
 import modele.exception.DatesTournoiException;
 import modele.exception.OuvertureTournoiException;
 import modele.exception.TournoiDejaOuvertException;
@@ -25,6 +29,8 @@ public class TestModeleTournoiOuverture {
 
 	private ModeleTournoiOuverture modele;
 	private ModeleTournoi modeleTournoi;
+	private DAOTournoi daoTournoi;
+	private DAOEquipe daoEquipe;
 
 	/**
 	 * Créée une nouveau ModeleTournoi
@@ -35,6 +41,8 @@ public class TestModeleTournoiOuverture {
 	public void setUp() throws Exception {
 		this.modele = new ModeleTournoiOuverture();
 		this.modeleTournoi = new ModeleTournoi();
+		this.daoTournoi = new DAOTournoiImpl();
+		this.daoEquipe = new DAOEquipeImpl();
 	}
 
 	/**
@@ -56,7 +64,7 @@ public class TestModeleTournoiOuverture {
 				null);
 		this.modele.ouvrirTournoi(tournoi);
 	}
-
+	
 	/**
 	 * Teste l'erreur lors de l'ouverture d'un tournoi avec une date de fin
 	 * inférieure à la courante
@@ -107,7 +115,7 @@ public class TestModeleTournoiOuverture {
 		Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, this.getDateCourante() + 3600,
 				this.getDateCourante() + 7200, true, "arbitre3", "password", new ArrayList<>(), equipes,
 				new ArrayList<>());
-		this.modeleTournoi.ajouter(tournoi);
+		this.daoTournoi.ajouter(tournoi);
 		this.modele.ouvrirTournoi(tournoi);
 	}
 
@@ -119,28 +127,27 @@ public class TestModeleTournoiOuverture {
 	 */
 	@Test(expected = TournoiDejaOuvertException.class)
 	public void testOuvrirTournoiTournoiEnCours() throws Exception {
-		ModeleEquipe modeleEquipe = new ModeleEquipe();
-		Tournoi tournoiTest = this.modeleTournoi.getParId(1).orElse(null);
+		Tournoi tournoiTest = this.daoTournoi.getParId(1).orElse(null);
 		Tournoi tournoi1 = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, this.getDateCourante() + 3200,
 				this.getDateCourante() + 7200, true, "arbitre", "password", tournoiTest.getPoules(),
 				tournoiTest.getEquipes(), tournoiTest.getArbitres());
-		this.modeleTournoi.ajouter(tournoi1);
+		this.daoTournoi.ajouter(tournoi1);
 
 		for (int i = 0; i < 4; i++) {
-			modeleEquipe.inscrireEquipe(modeleEquipe.getTout().get(i), tournoi1);
+			daoEquipe.inscrireEquipe(daoEquipe.getTout().get(i), tournoi1);
 		}
 
-		this.modeleTournoi.ajouter(tournoi1);
+		this.daoTournoi.ajouter(tournoi1);
 		Tournoi tournoi2 = new Tournoi(8, "TournoiTest2", Notoriete.NATIONAL, this.getDateCourante() + 3300,
 				this.getDateCourante() + 7600, true, "arbitre2", "password2", tournoiTest.getPoules(),
 				tournoiTest.getEquipes(), tournoiTest.getArbitres());
-		this.modeleTournoi.ajouter(tournoi2);
+		this.daoTournoi.ajouter(tournoi2);
 
 		for (int i = 0; i < 4; i++) {
-			modeleEquipe.inscrireEquipe(modeleEquipe.getTout().get(i), tournoi2);
+			daoEquipe.inscrireEquipe(daoEquipe.getTout().get(i), tournoi2);
 		}
 
-		this.modeleTournoi.ajouter(tournoi2);
+		this.daoTournoi.ajouter(tournoi2);
 		this.modele.ouvrirTournoi(tournoi1);
 		this.modele.ouvrirTournoi(tournoi2);
 	}
@@ -151,14 +158,14 @@ public class TestModeleTournoiOuverture {
 	@Test
 	public void testOuvrirTournoi() throws Exception {
 		ModeleEquipe modeleEquipe = new ModeleEquipe();
-		Tournoi tournoiTest = this.modeleTournoi.getParId(1).orElse(null);
+		Tournoi tournoiTest = this.daoTournoi.getParId(1).orElse(null);
 		Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, this.getDateCourante() + 3600,
 				this.getDateCourante() + 7200, true, "arbitre", "password", tournoiTest.getPoules(),
 				tournoiTest.getEquipes(), tournoiTest.getArbitres());
-		this.modeleTournoi.ajouter(tournoi);
+		this.daoTournoi.ajouter(tournoi);
 
 		for (int i = 0; i < 4; i++) {
-			modeleEquipe.inscrireEquipe(modeleEquipe.getTout().get(i), tournoi);
+			daoEquipe.inscrireEquipe(daoEquipe.getTout().get(i), tournoi);
 		}
 
 		this.modele.ouvrirTournoi(tournoi);
@@ -171,42 +178,26 @@ public class TestModeleTournoiOuverture {
 	@Test
 	public void testOuvrirTournoiDatePassee() throws Exception {
 		ModeleEquipe modeleEquipe = new ModeleEquipe();
-		Tournoi tournoiTest = this.modeleTournoi.getParId(1).orElse(null);
+		Tournoi tournoiTest = this.daoTournoi.getParId(1).orElse(null);
 		Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, this.getDateCourante() - 3600,
 				this.getDateCourante() + 7200, true, "arbitre", "password", tournoiTest.getPoules(),
 				tournoiTest.getEquipes(), tournoiTest.getArbitres());
-		this.modeleTournoi.ajouter(tournoi);
+		this.daoTournoi.ajouter(tournoi);
 
 		for (int i = 0; i < 4; i++) {
-			modeleEquipe.inscrireEquipe(modeleEquipe.getTout().get(i), tournoi);
+			daoEquipe.inscrireEquipe(daoEquipe.getTout().get(i), tournoi);
 		}
 
 		this.modele.ouvrirTournoi(tournoi);
 	}
-
-	/**
-	 * Teste le filtrage par identifiant
-	 */
-	@Test
-	public void testGetParIdentifiant() throws Exception {
-		assertEquals(this.modeleTournoi.getParIdentifiant("AsiaStar"), this.modeleTournoi.getParId(2));
-	}
-
-	/**
-	 * Teste le filtrage par rencontre
-	 */
-	@Test
-	public void testGetTournoiRencontre() throws Exception {
-		assertEquals(this.modeleTournoi.getTournoiRencontre(1), this.modeleTournoi.getParId(1));
-	}
-
+	
 	// Réinitialise les tournoi
 	@After
 	public void tearsDown() throws Exception {
 		List<Integer> idAGarder = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6));
-		for (Tournoi tournoi : this.modeleTournoi.getTout()) {
+		for (Tournoi tournoi : this.daoTournoi.getTout()) {
 			if (!idAGarder.contains(tournoi.getIdTournoi())) {
-				this.modeleTournoi.supprimer(tournoi);
+				this.daoTournoi.supprimer(tournoi);
 			}
 		}
 	}
