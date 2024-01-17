@@ -23,6 +23,7 @@ public class ControleurRecherche<T> extends KeyAdapter {
 
 	/**
 	 * Quand on clique sur le bouton "Rechercher"
+	 * @param e Action Event
 	 */
 	public void traitementClicBoutonRecherche(ActionEvent e) {
 		if(e.getSource() instanceof JButton) {

@@ -54,7 +54,6 @@ public class ModeleEquipe implements Recherchable<Equipe> {
 	 * Créer liste des joueurs d'une équipe
 	 * @param nomsJoueurs : noms des joueurs de l'équipe
 	 * @return la liste des joueurs de l'équipe
-	 * @throws Exception Erreur SQL
 	 */
 	public List<Joueur> creerJoueurs(List<String> nomsJoueurs) {
 		List<Joueur> joueurs = new ArrayList<>();

@@ -139,7 +139,7 @@ public class VueHistoriquePoints extends SuperVueListe<Equipe> {
 
 	/**
 	 * Remplit/met à jour le tableau d'historique points
-	 * @param equipes : liste des historiques points à mettre dans le tableau
+	 * @param historiquePoints : liste des historiques points à mettre dans le tableau
 	 */
 	public void remplirTableauHistoriquePoints(List<HistoriquePoints> historiquePoints) {
 		// Vider le tableau

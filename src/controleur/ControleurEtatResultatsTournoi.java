@@ -26,7 +26,7 @@ public class ControleurEtatResultatsTournoi implements ActionListener {
 
     /**
      * Constructeur du controleur de VueEtatResultatsTournoi
-     * @param vue : vueEtatResultatsTournoi
+     * @param vue : vueEtatResultatsTournoi VueEtatResultatsTournoi
      */
     public ControleurEtatResultatsTournoi(VueEtatResultatsTournoi vue, Tournoi tournoi) {
         this.vue = vue;

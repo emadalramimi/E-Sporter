@@ -259,7 +259,6 @@ public class VueBase extends JFrameTheme {
 	/**
 	 * Change l'onglet actuel
 	 * @param menu : onglet à charger
-	 * @throws Exception 
 	 */
 	public void changerOnglet(ControleurBase.Menus menu) {
 		// Si le menu dispose d'un onglet attribué

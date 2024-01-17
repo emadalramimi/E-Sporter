@@ -171,7 +171,7 @@ public class DAORencontreImpl implements DAORencontre {
 
 	/**
 	 * Supprime la rencontre dans la BDD
-	 * @param tournoi Rencontre à supprimer
+	 * @param rencontre Rencontre à supprimer
 	 * @return true si l'opération s'est bien déroulée, false sinon
 	 * @throws Exception Exception SQL
 	 */

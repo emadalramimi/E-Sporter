@@ -213,8 +213,8 @@ public class VuePalmares extends SuperVueListe<Palmares> {
 	}
 
 	/**
-	 * Remplit/met à jour le tableau d'équipes
-	 * @param equipes : liste des équipes à mettre dans le tableau
+	 * Remplit/met à jour le tableau du palmares
+	 * @param palmares : liste des palamres à mettre dans le tableau
 	 */
 	@Override
 	public void remplirTableau(List<Palmares> palmares) {
