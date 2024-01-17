@@ -294,7 +294,7 @@ public class VueTournois extends SuperVueListe<Tournoi> {
 	}
 
 	/**
-	 * Récupérer la notoriété sélectionnée dans la comboBox
+	 * Retourne la notoriété sélectionnée dans la comboBox
 	 * @return la notoriété sélectionnée dans la comboBox
 	 */
 	public Notoriete getNotorieteSelectionnee() {
@@ -305,7 +305,7 @@ public class VueTournois extends SuperVueListe<Tournoi> {
 	}
 
 	/**
-	 * Récupérer le statut sélectionné dans la comboBox
+	 * Retourne le statut sélectionné dans la comboBox
 	 * @return le statut sélectionné dans la comboBox
 	 */
 	public ControleurTournois.Statut getStatutSelectionne() {
@@ -316,7 +316,7 @@ public class VueTournois extends SuperVueListe<Tournoi> {
 	}
 
 	/**
-	 * Récupérer le vueBase
+	 * Retourne vueBase
 	 * @return vueBase
 	 */
 	public VueBase getVueBase() {

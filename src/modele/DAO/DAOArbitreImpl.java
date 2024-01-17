@@ -21,7 +21,7 @@ import modele.metier.Arbitre;
 public class DAOArbitreImpl implements DAOArbitre {
 
 	/**
-	 * Récupère tous les arbitres
+	 * Retourne la liste de tous les arbitres
 	 * @return Liste des arbitres
 	 * @throws Exception Exception SQL
 	 */
@@ -34,7 +34,7 @@ public class DAOArbitreImpl implements DAOArbitre {
 	}
 
 	/**
-	 * Récupère un arbitre depuis la BDD par sa clé primaire
+	 * Recherche un arbitre par son identifiant
 	 * @param idArbitre : identifiant de l'arbitre
 	 * @return Retourne un arbitre depuis la BDD par sa clé primaire
 	 * @throws Exception Exception SQL
@@ -73,7 +73,7 @@ public class DAOArbitreImpl implements DAOArbitre {
 	}
 	
 	/**
-	 * Récupère les arbitres affectés à un tournoi
+	 * Recherche une liste d'arbitres par leur tournoi
 	 * @param idTournoi Identifiant du tournoi
 	 * @return Liste des arbitres affectés
 	 */
@@ -116,7 +116,7 @@ public class DAOArbitreImpl implements DAOArbitre {
 	}
 	
 	/**
-	 * Récupère les arbitres qui ne sont pas déjà affectés à un tournoi
+	 * Retourne la liste des arbitres non affectés à un tournoi
 	 * @param arbitresNonEligibles Liste des arbitres déjà affectés
 	 * @return Liste des arbitres non affectés
 	 * @throws Exception Erreur SQL

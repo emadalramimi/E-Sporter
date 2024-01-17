@@ -85,7 +85,7 @@ public class ControleurRecherche<T> extends KeyAdapter {
 	}
 
 	/**
-	 * Récupère le modèle
+	 * Retourne le modèle
 	 * @return modele
 	 */
     public Recherchable<T> getModele() {

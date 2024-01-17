@@ -26,7 +26,7 @@ public class CharteGraphique {
 	public final static Color BRONZE = new Color(205, 127, 50);
 	
 	/**
-	 * Récupère la police générale du logiciel
+	 * Retourne la police générale du logiciel
 	 * @param taille Taille de la police
 	 * @param estGras True pour afficher une police grasse, false sinon
 	 * @return la police générale du logiciel

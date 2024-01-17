@@ -493,7 +493,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 	}
 	
 	/**
-	 * Méthodes pour récupérer les valeurs des champs du formulaire
+	 * Retourne le contenu du champ nom du tournoi
 	 * @return La valeur du champ
 	 */
 	public String getNomTournoi() {
@@ -501,7 +501,7 @@ public class VueSaisieTournoi extends JFrameTheme {
     }
 
 	/**
-	 * Méthode pour récupérer la date et l'heure d'un champ
+	 * Retourne la date et l'heure sous forme de timestamp en secondes
 	 * @param date La date
 	 * @param heure L'heure
 	 * @param minute Les minutes
@@ -524,7 +524,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 	}
 	
 	/**
-	 * Méthodes pour récupérer les valeurs des champs du date et huere Debut
+	 * Retourne la date et l'heure de début sous forme de timestamp en secondes 
 	 * @return La valeur du champ
 	 */
 	public long getDateTimeDebut() {
@@ -539,7 +539,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 	}
 
 	/**
-	 * Méthodes pour récupérer les valeurs des champs du date et heure Fin
+	 * Retourne la date et l'heure de fin sous forme de timestamp en secondes
 	 * @return La valeur du champ
 	 */
 	public long getDateTimeFin() {
@@ -554,7 +554,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 	}
 
 	/**
-	 * Méthodes pour récupérer l'indentifiant
+	 * Retourne l'identifiant de l'arbitre 
 	 * @return La valeur du champ
 	 */
     public String getIdentifiant() {
@@ -562,7 +562,7 @@ public class VueSaisieTournoi extends JFrameTheme {
     }
 
 	/**
-	 * Méthodes pour récupérer le mot de passe
+	 * Retourne le mot de passe de l'arbitre
 	 * @return La valeur du champ
 	 */
     public String getMotDePasse() {
@@ -570,7 +570,7 @@ public class VueSaisieTournoi extends JFrameTheme {
     }
     
 	/**
-	 * Méthodes pour récupérer la notoriété
+	 * Retourne la notoriété du tournoi
 	 * @return La valeur du champ
 	 */
 	public Notoriete getNotoriete() {
@@ -621,7 +621,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 	}
 	
 	/**
-	 * Récupérer la liste des arbitres
+	 * Retourner la liste des arbitres sélectionnés
 	 * @return La liste des arbitres
 	 */
 	public List<Arbitre> getArbitres() {

@@ -281,7 +281,7 @@ public class VuePoule extends JFrameTheme {
 	}
 
 	/*
-	 * Méthode permettant de récupérer la ligne de la rencontre cliquée
+	 * Retourne la ligne de la rencontre cliquée
 	 * @return La ligne de la rencontre cliquée
 	 */
 	public void toggleGagnant(int ligne, int col) {

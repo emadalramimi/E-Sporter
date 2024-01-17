@@ -150,7 +150,7 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 	}
 	
 	/**
-	 * Récupère les équipes éligibles (non inscrites au tournoi)
+	 * Retourne un tableau des équipes éligibles (non inscrites au tournoi)
 	 * @return Tableau des équipes éligibles
 	 */
 	public Equipe[] getEquipesEligibles() {

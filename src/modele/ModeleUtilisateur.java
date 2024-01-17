@@ -78,7 +78,7 @@ public class ModeleUtilisateur {
 	}
 	
 	/**
-	 * Récupèrer l'utilisateur actuellement connecté
+	 * Retourne l'utilisateur actuellement connecté
 	 * @return l'utilisateur actuellement connecté
 	 */
 	public static Utilisateur getCompteCourant() {

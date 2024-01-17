@@ -46,7 +46,7 @@ public class ControleurPalmares extends ControleurRecherche<Palmares> implements
     }
 
     /**
-     * Méthode de récupération du classement des palmarès
+     * Retourne les palmarès classés
      * @return Palmarès classé
      */
     public List<Palmares> getClassement() {

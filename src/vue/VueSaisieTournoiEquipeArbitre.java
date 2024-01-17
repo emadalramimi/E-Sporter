@@ -185,7 +185,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	}
 
 	 /**
-	  * Récupérer l'équipe sélectionnée
+	  * Retourne l'équipe sélectionnée
 	  * @return l'équipe sélectionnée
 	  * @throws IllegalArgumentException
 	  */
@@ -197,7 +197,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	}
 	
 	/**
-	 * Récupérer l'arbitre sélectionné
+	 * Retourne l'arbitre sélectionné
 	 * @return l'arbitre sélectionné
 	 * @throws IllegalArgumentException
 	 */

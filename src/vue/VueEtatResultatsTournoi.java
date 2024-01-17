@@ -139,7 +139,7 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 	}
 
 	/**
-	 * Récupère la table des résultats pour l'impression
+	 * Retourne la table des résultats pour l'impression
 	 * @return la table des résultats pour l'impression
 	 */
 	public JTableThemeImpression getTableImpression() {

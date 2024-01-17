@@ -25,7 +25,7 @@ public class DAOPalmaresImpl implements DAOPalmares {
     }
 
 	/**
-	 * Récupère toutes les équipes
+	 * Retourne la liste de tous les équipes
 	 * @return Liste de tous les équipes
 	 * @throws Exception Erreur SQL
 	 */

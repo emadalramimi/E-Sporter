@@ -239,8 +239,8 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 	}
 
 	/**
-	 * Récupère tous les tournois
-	 * @return tous les tournois
+	 * Retourne une liste de tous les tournois
+	 * @return Tous les tournois
 	 */
 	public List<Tournoi> getTournois() {
 		try {

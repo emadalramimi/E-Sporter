@@ -36,7 +36,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 
 	/**
-	 * Récupère toutes les équipes
+	 * Retourne la liste de toutes les équipes
 	 * @return Liste de tous les équipes
 	 * @throws Exception Erreur SQL
 	 */
@@ -49,7 +49,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 
 	/**
-	 * Récupère une équipe depuis la BDD par sa clé primaire
+	 * Recherche une équipe par son identifiant
 	 * @return Retourne une équipe depuis la BDD par sa clé primaire
 	 * @throws Exception Erreur SQL
 	 */
@@ -126,7 +126,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 	
 	/**
-	 * Récupère le prochain identifiant d'équipe
+	 * Retourne le prochain identifiant d'équipe
 	 * @return Identifiant d'équipe
 	 */
 	private int getNextValId() {
@@ -215,7 +215,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 
 	/**
-	 * Récupère les équipes inscrites à un tournoi
+	 * Recherche une liste d'équipes par le tournoi auquel elles sont inscrites
 	 * @param idTournoi Identifiant du tournoi
 	 * @return Liste des équipes inscrites
 	 */
@@ -340,7 +340,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 	
 	/**
-	 * Récupère les équipes de la saison courante
+	 * Retourne les équipes de la saison courante
 	 * @return la liste des équipes de la saison courante
 	 * @throws Exception Erreur SQL
 	 */
@@ -352,7 +352,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 
 	/**
-	 * Récupère les équipes de la saison courante
+	 * Retourne les équipes de la saison courante
 	 * @param equipesNonEligibles : les équipes qui ne doivent pas être récupérées
 	 * @return la liste des équipes de la saison courante
 	 * @throws Exception Erreur SQL
@@ -366,7 +366,7 @@ public class DAOEquipeImpl implements DAOEquipe {
 	}
 
 	/**
-	 * Récupère les équipes filtrées par pays
+	 * Recherche de tournois par filtrage
 	 * @param pays Pays de l'équipe
 	 * @return Retourne la liste des équipes filtrées par pays
 	 * @throws Exception Exception SQL

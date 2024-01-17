@@ -58,7 +58,7 @@ public class ControleurEtatResultatsTournoi implements ActionListener {
     }
 
     /**
-     * Récupère les résultats d'un tournoi
+     * Retourne les résultats d'un tournoi sous forme de StatistiquesEquipe
      * @param tournoi : tournoi
      * @return les résultats d'un tournoi sous forme de StatistiquesEquipe
      * @see StatistiquesEquipe

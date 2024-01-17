@@ -125,7 +125,7 @@ public class SuperVueListe<T> extends JFrameTheme implements RecherchableVue<T> 
 	}
 
 	/**
-	 * Récupère le panel de recherche
+	 * Retourne le panel de recherche
 	 * @return le panel de recherche
 	 */
     public JPanel getPanelRecherche() {
@@ -143,7 +143,7 @@ public class SuperVueListe<T> extends JFrameTheme implements RecherchableVue<T> 
     }
 
 	/**
-	 * Récupère le contrôleur de la vue
+	 * Retourne le contrôleur de la vue
 	 * @return le contrôleur de la vue
 	 */
     public EventListener getControleur() {

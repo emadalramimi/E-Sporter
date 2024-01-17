@@ -224,7 +224,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 	}
 	
 	/**
-	 * Récupérer la liste des équipes
+	 * Retourne la liste des équipes inscrites
 	 * @return la liste des équipes inscrites
 	 */
 	public List<Equipe> getEquipes() {

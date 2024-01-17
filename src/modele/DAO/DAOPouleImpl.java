@@ -31,7 +31,7 @@ public class DAOPouleImpl implements DAOPoule {
 	}
 
 	/**
-	 * Récupère toutes les poules
+	 * Retourne la liste de toutes les poules
 	 * @return Liste de toutes les poules
 	 * @throws Exception Exception SQL
 	 */

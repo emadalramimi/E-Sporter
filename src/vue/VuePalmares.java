@@ -245,7 +245,7 @@ public class VuePalmares extends SuperVueListe<Palmares> {
 	}
 
 	/**
-	 * Récupérer le tableau d'équipes pour l'impression
+	 * Retourne le tableau d'équipes pour l'impression
 	 * @return le tableau d'équipes
 	 */
 	public JTableThemeImpression getTableImpression() {

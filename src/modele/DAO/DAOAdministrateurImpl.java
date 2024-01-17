@@ -39,7 +39,7 @@ public class DAOAdministrateurImpl implements DAOAdministrateur {
 	}
 
     /**
-	 * Récupère un administrateur par son identifiant
+	 * Recherche un administrateur par son identifiant
 	 * @param identifiant Identifiant de l'administrateur
 	 * @return Administrateur s'il existe
 	 * @throws SQLException Exception SQL

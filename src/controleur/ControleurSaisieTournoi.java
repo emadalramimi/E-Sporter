@@ -216,7 +216,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 	}
 	
 	/**
-	 * Récupère les arbitres éligibles (non assignés au tournoi)
+	 * Retourne les arbitres éligibles (non assignés au tournoi)
 	 * @return Arbitres éligibles
 	 */
 	public Arbitre[] getArbitresEligibles() {

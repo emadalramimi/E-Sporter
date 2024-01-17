@@ -65,7 +65,7 @@ public class ModeleEquipe implements Recherchable<Equipe> {
 	}
 
 	/**
-	 * Récupère les équipes contenant la variable nom dans leur nom d'équipe
+	 * Retourne la liste des équipes par nom
 	 * @param nom : contenu dans le nom d'une équipe
 	 * @return la liste des équipes contenant la variable nom dans leur nom d'équipe
 	 * @throws Exception Erreur SQL

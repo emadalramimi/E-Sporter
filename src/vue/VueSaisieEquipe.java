@@ -259,7 +259,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 	}
 	
 	/**
-	 * Récupère le nom de l'équipe renseigné
+	 * Retourne le nom de l'équipe renseigné
 	 * @return le nom renseigné
 	 */
 	public String getNomEquipe() {
@@ -267,7 +267,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 	}
 	
 	/**
-	 * Récupère le pays de l'équipe renseigné
+	 * Retourne le pays de l'équipe renseigné
 	 * @return le pays renseigné
 	 */
 	public String getPaysEquipe() {
@@ -275,7 +275,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 	}
 	
 	/**
-	 * Récupère la liste des pseudos des joueurs renseignés
+	 * Retourne la liste des pseudos des joueurs renseignés
 	 * @return la liste des pseudos des joueurs renseignés
 	 */
 	public List<String> getNomJoueurs() {

@@ -78,7 +78,7 @@ public class DAOHistoriquePointsImpl implements DAOHistoriquePoints {
 	}
     
     /**
-     * Récupère tous les historiquePoints d'une équipe
+     * Retourne la liste des historiquePoints d'une équipe
      * @param idEquipe Identifiant de l'équipe
      * @return Liste des historiquePoints d'une équipe
      * @throws Exception Erreur de lecture de la base de données

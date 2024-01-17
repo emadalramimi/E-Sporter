@@ -35,7 +35,7 @@ public class DAOTournoiImpl implements DAOTournoi {
 	}
 
 	/**
-	 * Récupère tous les tournois
+	 * Retourne la liste de tous les tournois
 	 * @return Liste de tous les tournois
 	 * @throws Exception Exception SQL
 	 */
@@ -72,7 +72,7 @@ public class DAOTournoiImpl implements DAOTournoi {
 	}
 
 	/**
-	 * Récupère un tournoi par son identifiant
+	 * Retourne un tournoi depuis la BDD par sa clé primaire
 	 * @return Retourne un tournoi depuis la BDD par sa clé primaire
 	 * @throws Exception Exception SQL
 	 */
@@ -144,7 +144,7 @@ public class DAOTournoiImpl implements DAOTournoi {
 	}
 	
 	/**
-	 * Récupère le prochain identifiant unique de tournoi
+	 * Retourne le prochain identifiant unique de tournoi
 	 * @return le prochain identifiant unique de tournoi
 	 * @throws Exception Exception SQL
 	 */
@@ -252,7 +252,7 @@ public class DAOTournoiImpl implements DAOTournoi {
 	}
 	
 	/**
-	 * Récupère un tournoi par son identifiant
+	 * Retourne un tournoi depuis la BDD par son identifiant
 	 * @param identifiant Identifiant du tournoi
 	 * @return Retourne un tournoi depuis la BDD par son identifiant
 	 * @throws SQLException Exception SQL
@@ -276,7 +276,7 @@ public class DAOTournoiImpl implements DAOTournoi {
 	}
 
 	/**
-	 * Récupère un tournoi par identifiant d'une rencontre
+	 * Retourne un tournoi depuis la BDD par identifiant d'une rencontre
 	 * @param idRencontre Identifiant de la rencontre
 	 * @return Retourne un tournoi depuis la BDD par identifiant d'une rencontre
 	 */

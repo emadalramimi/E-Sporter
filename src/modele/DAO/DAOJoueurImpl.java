@@ -22,7 +22,7 @@ import modele.metier.Joueur;
 public class DAOJoueurImpl implements DAOJoueur {
 
 	/**
-	 * Récupère tous les joueurs
+	 * Retourne la liste de tous les joueurs
 	 * @return Liste de tous les joueurs
 	 * @throws Exception Exception SQL
 	 */
@@ -59,7 +59,7 @@ public class DAOJoueurImpl implements DAOJoueur {
 	}
 
 	/**
-	 * Récupère un joueur depuis la BDD par sa clé primaire
+	 * Retourne un joueur depuis la BDD par sa clé primaire
 	 * @param idJoueur : identifiant du joueur
 	 * @return Retourne un joueur depuis la BDD par sa clé primaire
 	 * @throws Exception Exception SQL
@@ -114,7 +114,7 @@ public class DAOJoueurImpl implements DAOJoueur {
 	}
 	
 	/**
-	 * Méthode privée pour récupérer le prochain identifiant unique de joueur
+	 * Retourne le prochain identifiant unique de joueur
 	 * @return le prochain identifiant unique de joueur
 	 */
 	private int getNextValId() {
@@ -197,7 +197,7 @@ public class DAOJoueurImpl implements DAOJoueur {
 	}
 
 	/**
-	 * Récupère la liste des joueurs appartenant à l'équipe idEquipe
+	 * Retourne la liste des joueurs appartenant à l'équipe idEquipe
 	 * @param idEquipe : identifiant de l'équipe
 	 * @return la liste des joueurs appartenant à l'équipe idEquipe
 	 */

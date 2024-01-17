@@ -24,7 +24,7 @@ public class ModeleHistoriquePoints {
     }
     
     /**
-     * Récupère le classement de toutes les équipes de la saison
+     * Retourne le classement de toutes les équipes de la saison
      * @return le classement de toutes les équipes de la saison
      * @throws Exception Erreur SQL
      */
