@@ -33,8 +33,6 @@ import java.util.Vector;
 public class VueEtatResultatsTournoi extends JFrameTheme {
 
 	private JTableTheme table;
-	
-	private JPanel contentPane;
 
 	/**
      * Constructeur de l'IHM pour l'état des résultats d'un tournoi
@@ -46,7 +44,7 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 750, 450);
 
-		contentPane = super.getContentPane();
+		JPanel contentPane = super.getContentPane();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		contentPane.setLayout(new BorderLayout(0, 20));

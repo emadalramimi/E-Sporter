@@ -7,6 +7,9 @@ import java.util.List;
 
 import modele.ModeleUtilisateur;
 import modele.DAO.BDD;
+import modele.metier.Administrateur;
+import modele.metier.Tournoi;
+import modele.metier.Utilisateur;
 import vue.VueBase;
 import vue.VueConnexion;
 import vue.theme.JButtonMenu;
@@ -46,6 +49,8 @@ public class ControleurBase extends MouseAdapter {
 	private JButtonMenu boutonActif;
 	private VueBase vue;
 	private ModeleUtilisateur modeleUtilisateur;
+	private String nomUtilisateur;
+	private String nomUtilisateurTooltip;
 	
 	/**
 	 * Constructeur du controleur
@@ -56,6 +61,16 @@ public class ControleurBase extends MouseAdapter {
 		this.boutonActif = null;
 		this.vue = vue;
 		this.modeleUtilisateur = new ModeleUtilisateur();
+
+		Utilisateur compteCourant = ModeleUtilisateur.getCompteCourant();
+		if(compteCourant.getRole() == Utilisateur.Role.ADMINISTRATEUR) {
+			Administrateur administrateurCourant = (Administrateur) compteCourant;
+			this.nomUtilisateur = administrateurCourant.getPrenom();
+			this.nomUtilisateurTooltip = administrateurCourant.getPrenom() + " " + administrateurCourant.getNom();
+		} else if(compteCourant.getRole() == Utilisateur.Role.ARBITRE) {
+			this.nomUtilisateur = "Arbitre";
+			this.nomUtilisateurTooltip = ((Tournoi) compteCourant).getNomTournoi();
+		}
 	}
 
 	/**
@@ -86,8 +101,27 @@ public class ControleurBase extends MouseAdapter {
 		boutonActif.activerIconeBouton(true);
 	}
 
+	/**
+	 * Ferme la connexion à la base de données
+	 */
 	public void fermerConnexionBDD() {
 		BDD.fermerConnexion();
+	}
+
+	/**
+	 * Retourne le nom d'utilisateur actuel
+	 * @return Nom d'utilisateur actuel
+	 */
+	public String getNomUtilisateur() {
+		return this.nomUtilisateur;
+	}
+
+	/**
+	 * Retourne le nom d'utilisateur actuel pour tooltip
+	 * @return Nom d'utilisateur actuel pour tooltip
+	 */
+	public String getNomUtilisateurTooltip() {
+		return this.nomUtilisateurTooltip;
 	}
 
 	/**

@@ -4,9 +4,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
 
-import vue.theme.JLabelTheme;
 import vue.theme.CharteGraphique;
 import vue.theme.ImageTableCellRenderer;
 import vue.theme.JButtonTheme;
@@ -18,15 +16,12 @@ import vue.theme.LabelIcon;
 import java.awt.BorderLayout;
 
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.util.List;
 import java.util.Vector;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -38,15 +33,13 @@ import modele.metier.Pays;
 /**
  * IHM équipes
  */
-public class VueHistoriquePoints extends RecherchableVue<Equipe> {
+public class VueHistoriquePoints extends SuperVueListe<Equipe> {
 	
 	private ControleurHistoriquePoints controleur;
 	private JTable tableEquipes;
 	private JTable tableHistoriquePoints;
 	private DefaultTableModel modelTableEquipes;
 	private DefaultTableModel modelTableHistoriquePoints;
-	private JPanel panel;
-	private JLabelTheme lblHistoriquePoints;
 
 	public VueHistoriquePoints() {
 		super();
@@ -55,60 +48,19 @@ public class VueHistoriquePoints extends RecherchableVue<Equipe> {
 	}
 	
 	public void afficherVueHistoriquePoints(JPanel contentPane, VueBase vueBase) {
-		// panel contient tous les éléments de la page
-		panel = new JPanel();
-		panel.setBackground(CharteGraphique.FOND);
-		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
-		contentPane.add(panel, BorderLayout.CENTER);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{1020, 0};
-		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 1.0};
-		panel.setLayout(gbl_panel);
-		
-		// panelLabelHistoriquePoints, le panel contenant le label lblHistoriquePoints
-		JPanel panelLabelHistoriquePoints = new JPanel();
-		GridBagConstraints gbc_panelLabelHistoriquePoints = new GridBagConstraints();
-		gbc_panelLabelHistoriquePoints.anchor = GridBagConstraints.NORTH;
-		gbc_panelLabelHistoriquePoints.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panelLabelHistoriquePoints.insets = new Insets(0, 0, 20, 0);
-		gbc_panelLabelHistoriquePoints.gridx = 0;
-		gbc_panelLabelHistoriquePoints.gridy = 0;
-		panel.add(panelLabelHistoriquePoints, gbc_panelLabelHistoriquePoints);
-		panelLabelHistoriquePoints.setBackground(CharteGraphique.FOND);
-		panelLabelHistoriquePoints.setLayout(new GridLayout(1, 0, 0, 0));
-		
-		lblHistoriquePoints = new JLabelTheme("Historique des points", 30, true);
-		lblHistoriquePoints.setHorizontalAlignment(SwingConstants.LEFT);
-		panelLabelHistoriquePoints.add(lblHistoriquePoints);
-
-		// panelImprimer, le panel contenant le bouton btnImprimer
-		JPanel panelImprimer = new JPanel();
-		panelImprimer.setBackground(CharteGraphique.FOND);
-		FlowLayout flowLayout = (FlowLayout) panelImprimer.getLayout();
-		flowLayout.setVgap(0);
-		flowLayout.setHgap(0);
-		flowLayout.setAlignment(FlowLayout.RIGHT);
-		panelLabelHistoriquePoints.add(panelImprimer);
-		
 		// btnImprimer, un bouton pour permettre l'ajout d'une équipe
 		JButtonTheme btnImprimer = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Imprimer l'historique sélectionné");
 		btnImprimer.addActionListener(this.controleur);
-		btnImprimer.setHorizontalAlignment(SwingConstants.RIGHT);
-		panelImprimer.add(btnImprimer);
+
+		JPanel panelCorps = super.getPanelCorps();
 		
-		JPanel panelTableauFiltres = new JPanel();
+		JPanel panelTableauFiltres = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		panelTableauFiltres.setBackground(CharteGraphique.FOND);
-		GridBagConstraints gbc_panelRecherche = new GridBagConstraints();
-		gbc_panelRecherche.insets = new Insets(0, 0, 20, 0);
-		gbc_panelRecherche.fill = GridBagConstraints.BOTH;
-		gbc_panelRecherche.gridx = 0;
-		gbc_panelRecherche.gridy = 1;
-		panel.add(panelTableauFiltres, gbc_panelRecherche);
-		panelTableauFiltres.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		
 		// Panel de recherche
 		panelTableauFiltres.add(super.getPanelRecherche());
+
+		panelCorps.add(panelTableauFiltres, BorderLayout.NORTH);
 		
 		JPanel panelTableaux = new JPanel();
 		panelTableaux.setBackground(CharteGraphique.FOND);
@@ -151,13 +103,11 @@ public class VueHistoriquePoints extends RecherchableVue<Equipe> {
 		this.modelTableHistoriquePoints = (DefaultTableModel) this.tableHistoriquePoints.getModel();
 		scrollPaneHistoriquePoints2.setViewportView(this.tableHistoriquePoints);
 
-		GridBagConstraints gbc_panelTableaux = new GridBagConstraints();
-		gbc_panelTableaux.fill = GridBagConstraints.BOTH;
-		gbc_panelTableaux.gridx = 0;
-		gbc_panelTableaux.gridy = 2;
-		panel.add(panelTableaux, gbc_panelTableaux);
+		panelCorps.add(panelTableaux, BorderLayout.CENTER);
 		
 		this.remplirTableau(this.controleur.getEquipes());
+
+		super.afficherVue(contentPane, "Historique des points", btnImprimer, panelCorps);
 	}
 
 	/**

@@ -4,9 +4,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
 
-import vue.theme.JLabelTheme;
 import vue.theme.CharteGraphique;
 import vue.theme.ImageTableCellRenderer;
 import vue.theme.JButtonTheme;
@@ -21,7 +19,6 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 
 import javax.swing.JLabel;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.List;
 import java.util.Vector;
@@ -31,7 +28,6 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -43,11 +39,10 @@ import modele.metier.Pays;
 /**
  * IHM Palmarès
  */
-public class VuePalmares extends RecherchableVue<Palmares> {
+public class VuePalmares extends SuperVueListe<Palmares> {
 	
 	private ControleurPalmares controleur;
 	private JTable table;
-	private JPanel panel;
 	private DefaultTableModel model;
 
 	public VuePalmares() {
@@ -64,63 +59,22 @@ public class VuePalmares extends RecherchableVue<Palmares> {
 	public void afficherVuePalmares(JPanel contentPane, VueBase vueBase) {
 		List<Palmares> podium = controleur.getClassement();
 
-		// panel contient tous les éléments de la page
-		panel = new JPanel();
-		panel.setBackground(CharteGraphique.FOND);
-		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
-		contentPane.add(panel, BorderLayout.CENTER);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{1020, 0};
-		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0};
-		panel.setLayout(gbl_panel);
-		
-		// panelLabelHistoriquePoints, le panel contenant le label lblHistoriquePoints
-		JPanel panelLabelPalmares = new JPanel();
-		GridBagConstraints gbc_panelLabelPalmares = new GridBagConstraints();
-		gbc_panelLabelPalmares.anchor = GridBagConstraints.NORTH;
-		gbc_panelLabelPalmares.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panelLabelPalmares.insets = new Insets(0, 0, 20, 0);
-		gbc_panelLabelPalmares.gridx = 0;
-		gbc_panelLabelPalmares.gridy = 0;
-		panel.add(panelLabelPalmares, gbc_panelLabelPalmares);
-		panelLabelPalmares.setBackground(CharteGraphique.FOND);
-		panelLabelPalmares.setLayout(new GridLayout(1, 0, 0, 0));
-		
-		JLabelTheme lblPalmares = new JLabelTheme("Palmarès", 30, true);
-		lblPalmares.setHorizontalAlignment(SwingConstants.LEFT);
-		panelLabelPalmares.add(lblPalmares);
-
-		// panelImprimer, le panel contenant le bouton btnImprimer
-		JPanel panelImprimer = new JPanel();
-		panelImprimer.setBackground(CharteGraphique.FOND);
-		FlowLayout flowLayout = (FlowLayout) panelImprimer.getLayout();
-		flowLayout.setVgap(0);
-		flowLayout.setHgap(0);
-		flowLayout.setAlignment(FlowLayout.RIGHT);
-		panelLabelPalmares.add(panelImprimer);
-		
 		// btnImprimer, un bouton pour permettre l'ajout d'une équipe
 		JButtonTheme btnImprimer = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Imprimer");
 		btnImprimer.addActionListener(this.controleur);
-		btnImprimer.setHorizontalAlignment(SwingConstants.RIGHT);
-		panelImprimer.add(btnImprimer);
 		
+		JPanel panelCorps = super.getPanelCorps();
+
 		// panelPodium, le panel contenant les 3 premiers du classement
 		JPanel panelPodium = new JPanel();
 		panelPodium.setBackground(CharteGraphique.FOND);
-		GridBagConstraints gbc_panelPodium = new GridBagConstraints();
-		gbc_panelPodium.insets = new Insets(0, 0, 20, 0);
-		gbc_panelPodium.fill = GridBagConstraints.VERTICAL;
-		gbc_panelPodium.gridx = 0;
-		gbc_panelPodium.gridy = 1;
-		panel.add(panelPodium, gbc_panelPodium);
 		GridBagLayout gbl_panelPodium = new GridBagLayout();
 		gbl_panelPodium.columnWidths = new int[] {200, 200, 200};
 		gbl_panelPodium.rowHeights = new int[]{141, 0, 0};
 		gbl_panelPodium.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panelPodium.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panelPodium.setLayout(gbl_panelPodium);
+		panelCorps.add(panelPodium, BorderLayout.NORTH);
 
 		// Label podium et icônes des 3 premiers
 		JLabel icon1 = new JLabel(new ImageIcon(VueTournois.class.getResource("/images/medailles/top1.png")));
@@ -163,16 +117,13 @@ public class VuePalmares extends RecherchableVue<Palmares> {
 		gbc_lblTop3.gridy = 1;
 		panelPodium.add(lblTop3, gbc_lblTop3);
 		
+		JPanel panelTableau = super.getPanelCorps();
+		panelCorps.add(panelTableau, BorderLayout.CENTER);
+
 		// JPanel de recherche
-		JPanel panelTableauFiltres = new JPanel();
+		JPanel panelTableauFiltres = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		panelTableauFiltres.setBackground(CharteGraphique.FOND);
-		GridBagConstraints gbc_panelRecherche = new GridBagConstraints();
-		gbc_panelRecherche.insets = new Insets(0, 0, 20, 0);
-		gbc_panelRecherche.fill = GridBagConstraints.BOTH;
-		gbc_panelRecherche.gridx = 0;
-		gbc_panelRecherche.gridy = 2;
-		panel.add(panelTableauFiltres, gbc_panelRecherche);
-		panelTableauFiltres.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		panelTableau.add(panelTableauFiltres, BorderLayout.NORTH);
 		
 		// Panel de recherche
 		panelTableauFiltres.add(super.getPanelRecherche());
@@ -183,11 +134,7 @@ public class VuePalmares extends RecherchableVue<Palmares> {
 		
 		// ScrollPane englobant le tableau
 		JScrollPaneTheme scrollPaneEquipes = new JScrollPaneTheme();
-		GridBagConstraints gbc_scrollPaneEquipes = new GridBagConstraints();
-		gbc_scrollPaneEquipes.fill = GridBagConstraints.BOTH;
-		gbc_scrollPaneEquipes.gridx = 0;
-		gbc_scrollPaneEquipes.gridy = 3;
-		panel.add(scrollPaneEquipes, gbc_scrollPaneEquipes);
+		panelTableau.add(scrollPaneEquipes, BorderLayout.CENTER);
 		
 		// Tableau de palmarès
 		this.table = new JTableTheme(
@@ -207,6 +154,8 @@ public class VuePalmares extends RecherchableVue<Palmares> {
 		scrollPaneEquipes.setViewportView(this.table);
 
 		this.remplirTableau(podium);
+
+		super.afficherVue(contentPane, "Palmarès", btnImprimer, panelCorps);
 	}
 
 	/**

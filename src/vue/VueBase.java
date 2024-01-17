@@ -8,10 +8,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import controleur.ControleurBase;
-import modele.ModeleUtilisateur;
-import modele.metier.Administrateur;
-import modele.metier.Tournoi;
-import modele.metier.Utilisateur;
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonMenu;
 import vue.theme.JFrameTheme;
@@ -58,18 +54,11 @@ public class VueBase extends JFrameTheme {
 		this.changerOnglet(ControleurBase.Menus.TOURNOIS);
 		
 		// Affichage de l'utilisateur courant
-		Utilisateur compteCourant = ModeleUtilisateur.getCompteCourant();
-		if(compteCourant.getRole() == Utilisateur.Role.ADMINISTRATEUR) {
-			Administrateur administrateurCourant = (Administrateur) compteCourant;
-			this.lblUtilisateur.setText(administrateurCourant.getPrenom());
-			String description = administrateurCourant.getPrenom() + " " + administrateurCourant.getNom();
-			this.lblUtilisateur.setToolTipText(description);
-			this.btnUtilisateur.setToolTipText(description);
-		} else if(compteCourant.getRole() == Utilisateur.Role.ARBITRE) {
-			this.lblUtilisateur.setText("Arbitre");
-			Tournoi tournoiCourant = (Tournoi) compteCourant;
-			this.lblUtilisateur.setToolTipText(tournoiCourant.getNomTournoi());
-		}
+		String nomUtilisateur = controleurBase.getNomUtilisateur();
+		String nomUtilisateurTooltip = controleurBase.getNomUtilisateurTooltip();
+		this.lblUtilisateur.setText(nomUtilisateur);
+		this.lblUtilisateur.setToolTipText(nomUtilisateurTooltip);
+		this.btnUtilisateur.setToolTipText(nomUtilisateurTooltip);
 	}
 	
 	/**
@@ -282,12 +271,12 @@ public class VueBase extends JFrameTheme {
 		// Ouvrir l'onglet en fonction du menu
 		switch(menu) {
 		case TOURNOIS:
-			VueTournois vueTournois = new VueTournois();
+			VueTournois vueTournois = new VueTournois();//METTRE THIS ICI URGENT TODO
 			vueTournois.afficherVueTournois(this.contenu, this);
 			break;
 		case EQUIPES:
-			VueEquipes vueEquipe = new VueEquipes();
-			vueEquipe.afficherVueEquipe(this.contenu, this);
+			VueEquipes vueEquipe = new VueEquipes(this);
+			vueEquipe.afficherVueEquipe(this.contenu);
 			break;
 		case HISTORIQUE:
 			VueHistoriquePoints vueHistoriquePoints = new VueHistoriquePoints();

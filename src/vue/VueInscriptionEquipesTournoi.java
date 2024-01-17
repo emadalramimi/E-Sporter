@@ -32,16 +32,14 @@ import java.util.List;
  * Vue de l'inscription des équipes à un tournoi
  */
 public class VueInscriptionEquipesTournoi extends JFrameTheme {
-
-	private JPanel contentPane;
-	private JButtonTheme btnInscrireEquipe;
-	private JLabelTheme lblTitre;
-	
-	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipe;
-	private Tournoi tournoi;
 	
 	private DefaultListModel<Equipe> listModelEquipes;
 	private JList<Equipe> listeEquipes;
+	private JLabelTheme lblTitre;
+
+	private JButtonTheme btnInscrireEquipe;
+	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiEquipe;
+	private Tournoi tournoi;
 
 	/**
      * Constructeur de l'IHM pour inscrire des équipes à un tournoi
@@ -56,7 +54,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 602, 384);
 		
-		contentPane = super.getContentPane();
+		JPanel contentPane = super.getContentPane();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		contentPane.setLayout(new BorderLayout(0, 20));

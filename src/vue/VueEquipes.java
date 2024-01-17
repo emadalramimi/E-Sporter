@@ -2,10 +2,8 @@ package vue;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import vue.theme.JFrameTheme;
-import vue.theme.JLabelTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.CharteGraphique;
 import vue.theme.ImageTableCellRenderer;
@@ -23,14 +21,9 @@ import javax.swing.JOptionPane;
 import java.util.List;
 import java.util.Optional;
 import java.util.Vector;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -42,88 +35,39 @@ import modele.metier.Pays;
 /**
  * IHM équipes
  */
-public class VueEquipes extends RecherchableVue<Equipe> {
+public class VueEquipes extends SuperVueListe<Equipe> {
 	
 	private JTable table;
 	private DefaultTableModel model;
 	private JButtonTheme btnAjouter;
 	private JComboBoxTheme<String> cboxPays;
-	private JPanel panel;
-	private JPanel panelLabelEquipe;
-	private JLabelTheme lblEquipes;
-	private JPanel panelAjouter;
-	private JPanel panelTableauFiltres;
-	private JScrollPaneTheme scrollPaneEquipes;
 
 	private ControleurEquipes controleur;
 	private VueSaisieEquipe vueSaisieEquipe;
 	private VueJoueurs vueJoueurs;
 	private VueBase vueBase;
 
-	public VueEquipes() {
+	public VueEquipes(VueBase vueBase) {
 		super();
 		super.setControleur(new ControleurEquipes(this));
 		this.controleur = (ControleurEquipes) super.getControleur();
+		this.vueBase = vueBase;
 	}
 	
-	public void afficherVueEquipe(JPanel contentPane, VueBase vueBase) {
-		this.vueBase = vueBase;
-		
-		// panel contient tous les éléments de la page
-		panel = new JPanel();
-		panel.setBackground(CharteGraphique.FOND);
-		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
-		contentPane.add(panel, BorderLayout.CENTER);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{1020, 0};
-		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 1.0};
-		panel.setLayout(gbl_panel);
-		
-		// panelLabelEquipe, le panel contenant le label lblEquipes
-		panelLabelEquipe = new JPanel();
-		GridBagConstraints gbc_panelLabelEquipe = new GridBagConstraints();
-		gbc_panelLabelEquipe.anchor = GridBagConstraints.NORTH;
-		gbc_panelLabelEquipe.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panelLabelEquipe.insets = new Insets(0, 0, 20, 0);
-		gbc_panelLabelEquipe.gridx = 0;
-		gbc_panelLabelEquipe.gridy = 0;
-		panel.add(panelLabelEquipe, gbc_panelLabelEquipe);
-		panelLabelEquipe.setBackground(CharteGraphique.FOND);
-		panelLabelEquipe.setLayout(new GridLayout(1, 0, 0, 0));
-		
-		lblEquipes = new JLabelTheme("Equipes", 30, true);
-		lblEquipes.setHorizontalAlignment(SwingConstants.LEFT);
-		lblEquipes.setFont(CharteGraphique.getPolice(30, true));
-		lblEquipes.setForeground(CharteGraphique.TEXTE);
-		panelLabelEquipe.add(lblEquipes);
-		
-		// panelAjouter, le panel contenant le bouton btnAjouter
-		panelAjouter = new JPanel();
-		panelAjouter.setBackground(CharteGraphique.FOND);
-		FlowLayout flowLayout = (FlowLayout) panelAjouter.getLayout();
-		flowLayout.setVgap(0);
-		flowLayout.setHgap(0);
-		flowLayout.setAlignment(FlowLayout.RIGHT);
-		panelLabelEquipe.add(panelAjouter);
-		
+	public void afficherVueEquipe(JPanel contentPane) {
 		// btnAjouter, un bouton pour permettre l'ajout d'une équipe
 		btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
 		btnAjouter.setIcon(new ImageIcon(VueEquipes.class.getResource("/images/buttons/ajouter.png")));
 		btnAjouter.addActionListener(controleur);
-		btnAjouter.setHorizontalAlignment(SwingConstants.RIGHT);
-		panelAjouter.add(btnAjouter);
-		
+
+		JPanel panelCorps = super.getPanelCorps();
+
 		// panelTableauFiltres, le panel contenant le panelRecherche et le panelChoixFiltres
-		panelTableauFiltres = new JPanel();
+		JPanel panelTableauFiltres = new JPanel();
 		panelTableauFiltres.setBackground(CharteGraphique.FOND);
-		GridBagConstraints gbc_panelRecherche = new GridBagConstraints();
-		gbc_panelRecherche.insets = new Insets(0, 0, 20, 0);
-		gbc_panelRecherche.fill = GridBagConstraints.BOTH;
-		gbc_panelRecherche.gridx = 0;
-		gbc_panelRecherche.gridy = 1;
-		panel.add(panelTableauFiltres, gbc_panelRecherche);
 		panelTableauFiltres.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
+		panelCorps.add(panelTableauFiltres, BorderLayout.NORTH);
 		
 		// Panel de recherche
 		panelTableauFiltres.add(super.getPanelRecherche());
@@ -142,12 +86,7 @@ public class VueEquipes extends RecherchableVue<Equipe> {
 		panelTableauFiltres.add(panelChoixFiltres);
 		
 		// ScrollPane englobant le tableau
-		scrollPaneEquipes = new JScrollPaneTheme();
-		GridBagConstraints gbc_scrollPaneEquipes = new GridBagConstraints();
-		gbc_scrollPaneEquipes.fill = GridBagConstraints.BOTH;
-		gbc_scrollPaneEquipes.gridx = 0;
-		gbc_scrollPaneEquipes.gridy = 2;
-		panel.add(scrollPaneEquipes, gbc_scrollPaneEquipes);
+		JScrollPaneTheme scrollPaneEquipes = new JScrollPaneTheme();
 		
 		// Tableau d'équipes
 		table = new JTableTheme(
@@ -163,6 +102,10 @@ public class VueEquipes extends RecherchableVue<Equipe> {
 		this.remplirTableau(this.controleur.getEquipes());
 		
 		scrollPaneEquipes.setViewportView(table);
+
+		panelCorps.add(scrollPaneEquipes, BorderLayout.CENTER);
+
+		super.afficherVue(contentPane, "Équipes", btnAjouter, panelCorps);
 	}
 	
 	/**

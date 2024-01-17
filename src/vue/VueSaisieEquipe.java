@@ -36,22 +36,14 @@ import javax.swing.JButton;
  */
 public class VueSaisieEquipe extends JFrameTheme {
 
-	private JPanel contentPane;
-	private JPanel panelEquipe;
-	private JPanel panelJoueurs;
-	private JLabelTheme lblNom;
 	private JTextField txtNom;
-	private JLabelTheme lblPays;
 	private JComboBoxTheme<String> cboxPays;
-	private JLabelTheme lblJoueurs;
 	private JTextField txtJoueur1;
 	private JTextField txtJoueur2;
 	private JTextField txtJoueur3;
 	private JTextField txtJoueur4;
 	private JTextField txtJoueur5;
-	private JPanel panelAnnuler;
 	private JButton btnAnnuler;
-	private JPanel panelValider;
 	private JButton btnValider;
 	
 	private VueEquipes vueEquipes;
@@ -66,7 +58,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 812, 526);
 		
-		contentPane = super.getContentPane();
+		JPanel contentPane = super.getContentPane();
 		
 		contentPane.setBorder(new EmptyBorder(15,15,15,15));
 		
@@ -87,7 +79,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		panelCentre.setLayout(gbl_panelCentre);
 		
 		// Panel équipe
-		panelEquipe = new JPanel();
+		JPanel panelEquipe = new JPanel();
 		panelEquipe.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelEquipe = new GridBagConstraints();
 		gbc_panelEquipe.insets = new Insets(50, 0, 50, 25);
@@ -102,7 +94,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		panelEquipe.setLayout(gbl_panelEquipe);
 		
 		// Label nom de l'équipe
-		lblNom = new JLabelTheme("Nom de l'équipe", 19, true);
+		JLabelTheme lblNom = new JLabelTheme("Nom de l'équipe", 19, true);
 		GridBagConstraints gbc_lblNom = new GridBagConstraints();
 		gbc_lblNom.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNom.gridx = 0;
@@ -120,7 +112,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		txtNom.setColumns(10);
 		
 		// Label pays de l'équipe
-		lblPays = new JLabelTheme("Pays de l'équipe", 19, true);
+		JLabelTheme lblPays = new JLabelTheme("Pays de l'équipe", 19, true);
 		GridBagConstraints gbc_lblPays = new GridBagConstraints();
 		gbc_lblPays.insets = new Insets(0, 0, 5, 0);
 		gbc_lblPays.gridx = 0;
@@ -137,7 +129,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		panelEquipe.add(cboxPays, gbc_txtEquipe);
 		
 		// Panel joueurs
-		panelJoueurs = new JPanel();
+		JPanel panelJoueurs = new JPanel();
 		panelJoueurs.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelJoueurs = new GridBagConstraints();
 		gbc_panelJoueurs.insets = new Insets(50, 25, 50, 0);
@@ -153,7 +145,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		panelJoueurs.setLayout(gbl_panelJoueurs);
 		
 		// Label titre des joueurs
-		lblJoueurs = new JLabelTheme("Pseudo des joueurs", 19, true);
+		JLabelTheme lblJoueurs = new JLabelTheme("Pseudo des joueurs", 19, true);
 		GridBagConstraints gbc_lblJoueurs = new GridBagConstraints();
 		gbc_lblJoueurs.insets = new Insets(0, 0, 5, 0);
 		gbc_lblJoueurs.gridx = 0;
@@ -210,7 +202,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		txtJoueur5.setColumns(10);
 		
 		// Panel du bouton annuler
-		panelAnnuler = new JPanel();
+		JPanel panelAnnuler = new JPanel();
 		panelAnnuler.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelAnnuler = new GridBagConstraints();
 		gbc_panelAnnuler.anchor = GridBagConstraints.NORTHEAST;
@@ -225,7 +217,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		panelAnnuler.add(btnAnnuler);
 		
 		// Panel du bouton valider
-		panelValider = new JPanel();
+		JPanel panelValider = new JPanel();
 		panelValider.setBackground(CharteGraphique.FOND);
 		GridBagConstraints gbc_panelAjouter = new GridBagConstraints();
 		gbc_panelAjouter.anchor = GridBagConstraints.NORTHWEST;

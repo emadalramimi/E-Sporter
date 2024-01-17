@@ -65,7 +65,6 @@ public class VueSaisieTournoi extends JFrameTheme {
 	
 	private JList<Arbitre> listeArbitres;
 	private DefaultListModel<Arbitre> listModelArbitres;
-	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiArbitre;
 	private JTextFieldTheme txtNom;
 	private JTextFieldTheme txtIdentifiantArbitres;
 	private JPasswordFieldTheme motDePasseArbitres;
@@ -77,6 +76,8 @@ public class VueSaisieTournoi extends JFrameTheme {
 	private JSpinner spinnerHeuresFin;
 	private JSpinner spinnerMinutesFin;
 	private JButtonTheme btnAjouterArbitre;
+
+	private VueSaisieTournoiEquipeArbitre vueSaisieTournoiArbitre;
 
 	/**
      * Constructeur de l'IHM pour la saisie d'un tournoi

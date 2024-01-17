@@ -25,8 +25,7 @@ import java.awt.FlowLayout;
  * IHM liste de joueurs d'une équipe
  */
 public class VueJoueurs extends JFrameTheme {
-	
-    private JPanel contentPane;
+
     private VueEquipes vue;
     
     public VueJoueurs(List<Joueur> joueurs, VueEquipes vue) {
@@ -36,7 +35,7 @@ public class VueJoueurs extends JFrameTheme {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 400, 210);
         
-        contentPane = super.getContentPane();
+        JPanel contentPane = super.getContentPane();
         
         // Label de titre
         JLabelTheme lblTitre = new JLabelTheme("Liste des joueurs", 19, true);

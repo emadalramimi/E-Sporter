@@ -30,7 +30,6 @@ import controleur.ControleurSaisieTournoiArbitre;
  */
 public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 
-	private JPanel contentPane;
 	private JComboBoxTheme<?> comboBox;
 	private Type type;
 	private Equipe[] equipes;
@@ -74,7 +73,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 		setDefaultCloseOperation(JFrameTheme.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 300, 180);
 
-		contentPane = super.getContentPane();
+		JPanel contentPane = super.getContentPane();
 		
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0};

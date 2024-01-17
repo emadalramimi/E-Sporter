@@ -1,12 +1,10 @@
 package vue;
 
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import vue.theme.CharteGraphique;
 import vue.theme.JButtonTheme;
 import vue.theme.JFrameTheme;
-import vue.theme.JLabelTheme;
 import vue.theme.JOptionPaneTheme;
 import vue.theme.JScrollPaneTheme;
 import vue.theme.JTableTheme;
@@ -24,16 +22,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.TimeZone;
 import java.util.Vector;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import controleur.ControleurTournois;
@@ -43,19 +36,19 @@ import modele.metier.Tournoi.Notoriete;
 /**
  * IHM de la liste des tournois
  */
-public class VueTournois extends RecherchableVue<Tournoi> {
+public class VueTournois extends SuperVueListe<Tournoi> {
 
 	private JTable table;
 	private DefaultTableModel model;
-	private JLabelTheme lblTournois;
+	private JComboBoxTheme<String> cboxNotoriete;
+	private JComboBoxTheme<String> cboxStatuts;
+
 	private ControleurTournois controleur;
 	private VueSaisieTournoi vueSaisieTournoi;
 	private VueInscriptionEquipesTournoi vueInscriptionEquipesTournoi;
 	private VueEtatResultatsTournoi vueEtatResultatsTournoi;
 	private VuePoule vuePoule;
 	private VueBase vueBase;
-	private JComboBoxTheme<String> cboxNotoriete;
-	private JComboBoxTheme<String> cboxStatuts;
 
 	public VueTournois() {
 		super();
@@ -66,60 +59,17 @@ public class VueTournois extends RecherchableVue<Tournoi> {
 	public void afficherVueTournois(JPanel contentPane, VueBase vueBase) {
 		this.vueBase = vueBase;
 		
-		// panel contient tous les éléments de la page
-		JPanel panel = new JPanel();
-		panel.setBackground(CharteGraphique.FOND);
-		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
-		contentPane.add(panel, BorderLayout.CENTER);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{1020, 0};
-		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 1.0};
-		panel.setLayout(gbl_panel);
-		
-		// panelLabelTournois, le panel contenant le label lblEquipes
-		JPanel panelLabelTournois = new JPanel();
-		GridBagConstraints gbc_panelLabelTournois = new GridBagConstraints();
-		gbc_panelLabelTournois.anchor = GridBagConstraints.NORTH;
-		gbc_panelLabelTournois.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panelLabelTournois.insets = new Insets(0, 0, 20, 0);
-		gbc_panelLabelTournois.gridx = 0;
-		gbc_panelLabelTournois.gridy = 0;
-		panel.add(panelLabelTournois, gbc_panelLabelTournois);
-		panelLabelTournois.setBackground(CharteGraphique.FOND);
-		panelLabelTournois.setLayout(new GridLayout(1, 0, 0, 0));
-		
-		// Label titre
-		lblTournois = new JLabelTheme("Tournois", 30, true);
-		lblTournois.setHorizontalAlignment(SwingConstants.LEFT);
-		panelLabelTournois.add(lblTournois);
-		
-		// panelAjouter, le panel contenant le bouton btnAjouter
-		JPanel panelAjouter = new JPanel();
-		panelAjouter.setBackground(CharteGraphique.FOND);
-		FlowLayout flowLayout = (FlowLayout) panelAjouter.getLayout();
-		flowLayout.setVgap(0);
-		flowLayout.setHgap(0);
-		flowLayout.setAlignment(FlowLayout.RIGHT);
-		panelLabelTournois.add(panelAjouter);
-		
 		// btnAjouter, un bouton pour permettre l'ajout d'une équipe
 		JButtonTheme btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
 		btnAjouter.setIcon(new ImageIcon(VueTournois.class.getResource("/images/buttons/ajouter.png")));
 		btnAjouter.addActionListener(controleur);
-		btnAjouter.setHorizontalAlignment(SwingConstants.RIGHT);
-		panelAjouter.add(btnAjouter);
 		
+		JPanel panelCorps = super.getPanelCorps();
+
 		// panelTableauFiltres, le panel contenant le champ de recherche et les filtres
-		JPanel panelTableauFiltres = new JPanel();
+		JPanel panelTableauFiltres = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		panelTableauFiltres.setBackground(CharteGraphique.FOND);
-		GridBagConstraints gbc_panelRecherche = new GridBagConstraints();
-		gbc_panelRecherche.insets = new Insets(0, 0, 20, 0);
-		gbc_panelRecherche.fill = GridBagConstraints.BOTH;
-		gbc_panelRecherche.gridx = 0;
-		gbc_panelRecherche.gridy = 1;
-		panel.add(panelTableauFiltres, gbc_panelRecherche);
-		panelTableauFiltres.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		panelCorps.add(panelTableauFiltres, BorderLayout.NORTH);
 		
 		// Panel de recherche
 		panelTableauFiltres.add(super.getPanelRecherche());
@@ -145,11 +95,7 @@ public class VueTournois extends RecherchableVue<Tournoi> {
 		
 		// ScrollPane englobant le tableau
 		JScrollPaneTheme scrollPaneTournois = new JScrollPaneTheme();
-		GridBagConstraints gbc_scrollPaneTournois = new GridBagConstraints();
-		gbc_scrollPaneTournois.fill = GridBagConstraints.BOTH;
-		gbc_scrollPaneTournois.gridx = 0;
-		gbc_scrollPaneTournois.gridy = 2;
-		panel.add(scrollPaneTournois, gbc_scrollPaneTournois);
+		panelCorps.add(scrollPaneTournois, BorderLayout.CENTER);
 		
 		// Tableau de tournois
 		this.table = new JTableTheme(
@@ -162,11 +108,15 @@ public class VueTournois extends RecherchableVue<Tournoi> {
 		scrollPaneTournois.setViewportView(table);
 
 		this.remplirTableau(this.controleur.getTournois());
+
+		super.afficherVue(contentPane, "Tournois", btnAjouter, panelCorps);
 	}
 	
 	private class StatutCellRenderer extends ThemeTableCellRenderer {
+
 		/**
-		 * Méthode pour afficher le statut d'un tournoi dans le tableau
+		 * Méthode pour personnaliser l'affichage du statut dans le tableau
+		 * Phase d'inscriptions : bleu, Ouvert : vert, Clôturé : rouge
 		 */
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -189,6 +139,7 @@ public class VueTournois extends RecherchableVue<Tournoi> {
 
 			return this;
 		}
+
 	}
 	
 	/**
