@@ -99,11 +99,11 @@ public class VueEquipes extends SuperVueListe<Equipe> {
 		TableColumn paysColumn = table.getColumnModel().getColumn(2);
 	    paysColumn.setCellRenderer(new ImageTableCellRenderer());
 		
-		this.remplirTableau(this.controleur.getEquipes());
-		
 		scrollPaneEquipes.setViewportView(table);
 
 		panelCorps.add(scrollPaneEquipes, BorderLayout.CENTER);
+
+		this.remplirTableau(this.controleur.getEquipes());
 
 		super.afficherVue(contentPane, "Équipes", btnAjouter, panelCorps);
 	}

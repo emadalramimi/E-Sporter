@@ -136,12 +136,30 @@ public class ModeleTournoi implements Recherchable<Tournoi> {
 	}
 
 	/**
+	 * Vérifie si un tournoi est cloturé ou en cours
+	 * @param tournoi Tournoi à vérifier
+	 * @return True si le tournoi est cloturé ou en cours, false sinon
+	 */
+	public boolean estTournoiEnCoursOuCloture(Tournoi tournoi) {
+		return this.getTimestamp() < tournoi.getDateTimeFin() && tournoi.getEstCloture() == true;
+	}
+
+	/**
 	 * Vérifie si un tournoi est cloturé
 	 * @param tournoi Tournoi à vérifier
-	 * @return Retourne vrai si le tournoi est cloturé, faux sinon
+	 * @return True si le tournoi est cloturé, false sinon
 	 */
 	public boolean estTournoiCloture(Tournoi tournoi) {
-		return System.currentTimeMillis() / 1000 >= tournoi.getDateTimeDebut() && tournoi.getEstCloture();
+		return this.getTimestamp() >= tournoi.getDateTimeDebut() && tournoi.getEstCloture();
 	}
+
+	/**
+	 * Retourne le timestamp en secondes
+	 * @return Timestamp en secondes
+	 */
+	private long getTimestamp() {
+		return System.currentTimeMillis() / 1000;
+	}
+
 
 }
