@@ -14,7 +14,7 @@ import vue.theme.JTableThemeImpression;
 import vue.theme.LabelIcon;
 
 import java.awt.BorderLayout;
-
+import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.util.List;
 import java.util.Vector;
@@ -78,8 +78,8 @@ public class VueHistoriquePoints extends SuperVueListe<Equipe> {
 			new String[] {"ID", "Pays", "Nom"},
 			null
 		);
-
 		this.tableEquipes.getSelectionModel().addListSelectionListener(this.controleur);
+		this.tableEquipes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		this.modelTableEquipes = (DefaultTableModel) this.tableEquipes.getModel();
 
 		scrollPaneTableEquipes.setViewportView(this.tableEquipes);
