@@ -70,7 +70,6 @@ public class TestDAOPoule {
 	public void testGetPoulesTournoi() throws Exception {
 		List<Poule> listPoules = new ArrayList<>(Arrays.asList(new Poule(1, true, false, 1, this.rencontres),
 				new Poule(2, true, true, 1, this.rencontres)));
-		System.out.println(this.daoPoule.getPoulesTournoi(1));
 		assertEquals(this.daoPoule.getPoulesTournoi(1), listPoules);
 	}
 	

@@ -15,11 +15,13 @@ import modele.ModeleUtilisateur;
 
 import modele.DAO.DAOEquipe;
 import modele.DAO.DAOEquipeImpl;
+import modele.DAO.DAOPoule;
+import modele.DAO.DAOPouleImpl;
 import modele.DAO.DAORencontre;
 import modele.DAO.DAORencontreImpl;
 import modele.DAO.DAOTournoi;
 import modele.DAO.DAOTournoiImpl;
-
+import modele.metier.Poule;
 import modele.metier.Rencontre;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
@@ -83,7 +85,7 @@ public class TestModeleTournoiCloture {
 		}
 		modele.cloturerPoule(modeleTournoi.getParNom("Tournoi").get(0));
 	}
-	/*	
+
 	@Test
 	public void testCloturerPouleFinale() throws Exception {
 		
@@ -97,19 +99,37 @@ public class TestModeleTournoiCloture {
 		daoRencontre.setEquipeGagnante(finale, finale.getEquipes()[0].getNom());
 		modele.cloturerPoule(modeleTournoi.getParNom("Tournoi").get(0));
 	}
-*/
-	// Réinitialise les tournoi
+
+	// Réinitialise les rencontres, les poules et les tournoi
 		@After
 		public void tearsDown() throws Exception {
 			if (ModeleUtilisateur.getCompteCourant() != null) {
 				modeleUtilisateur.deconnecter();
 			}
 			
-			List<Integer> idAGarder = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6));
-			for (Tournoi tournoi : this.daoTournoi.getTout()) {
-				if (!idAGarder.contains(tournoi.getIdTournoi())) {
-					this.daoTournoi.supprimer(tournoi);
+			List<Integer> idAGarderRencontre = new ArrayList<>();
+			for (int i=1;i<43;i++) {
+				idAGarderRencontre.add(i);
+			}
+			for (Rencontre rencontre : this.daoRencontre.getTout()) {
+				if (!idAGarderRencontre.contains(rencontre.getIdRencontre())) {
+					this.daoRencontre.supprimer(rencontre);
 				}
 			}
+			
+			List<Integer> idAGarderTournoi = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6));
+			for (Tournoi tournoi : this.daoTournoi.getTout()) {
+				if (!idAGarderTournoi.contains(tournoi.getIdTournoi())) {
+					this.daoTournoi.supprimer(tournoi);
+				}
+			}	
+			
+			DAOPoule daoPoule = new DAOPouleImpl();
+			List<Integer> idAGarderPoule = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
+			for (Poule poule : daoPoule.getTout()) {
+				if (!idAGarderPoule.contains(poule.getIdPoule())) {
+					daoPoule.supprimer(poule);
+				}
+			}		
 		}
 }
