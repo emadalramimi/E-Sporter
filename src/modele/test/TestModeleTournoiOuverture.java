@@ -1,7 +1,5 @@
 package modele.test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,8 +8,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import modele.ModeleEquipe;
-import modele.ModeleTournoi;
 import modele.ModeleTournoiOuverture;
 import modele.DAO.DAOEquipe;
 import modele.DAO.DAOEquipeImpl;
@@ -28,7 +24,6 @@ import modele.metier.Tournoi.Notoriete;
 public class TestModeleTournoiOuverture {
 
 	private ModeleTournoiOuverture modele;
-	private ModeleTournoi modeleTournoi;
 	private DAOTournoi daoTournoi;
 	private DAOEquipe daoEquipe;
 
@@ -40,7 +35,6 @@ public class TestModeleTournoiOuverture {
 	@Before
 	public void setUp() throws Exception {
 		this.modele = new ModeleTournoiOuverture();
-		this.modeleTournoi = new ModeleTournoi();
 		this.daoTournoi = new DAOTournoiImpl();
 		this.daoEquipe = new DAOEquipeImpl();
 	}
@@ -157,7 +151,6 @@ public class TestModeleTournoiOuverture {
 	 */
 	@Test
 	public void testOuvrirTournoi() throws Exception {
-		ModeleEquipe modeleEquipe = new ModeleEquipe();
 		Tournoi tournoiTest = this.daoTournoi.getParId(1).orElse(null);
 		Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, this.getDateCourante() + 3600,
 				this.getDateCourante() + 7200, true, "arbitre", "password", tournoiTest.getPoules(),
@@ -177,7 +170,6 @@ public class TestModeleTournoiOuverture {
 	 */
 	@Test
 	public void testOuvrirTournoiDatePassee() throws Exception {
-		ModeleEquipe modeleEquipe = new ModeleEquipe();
 		Tournoi tournoiTest = this.daoTournoi.getParId(1).orElse(null);
 		Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, this.getDateCourante() - 3600,
 				this.getDateCourante() + 7200, true, "arbitre", "password", tournoiTest.getPoules(),

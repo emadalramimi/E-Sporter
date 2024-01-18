@@ -21,7 +21,6 @@ import modele.DAO.DAOJoueurImpl;
 import modele.metier.Equipe;
 import modele.metier.Joueur;
 import modele.metier.Pays;
-import modele.metier.Tournoi;
 
 public class TestDAOJoueur {
 

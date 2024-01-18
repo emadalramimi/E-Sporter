@@ -45,10 +45,10 @@ public class TestModeleTournoi {
 	@Test
 	public void testGetResultatsTournoi() throws Exception {
 		List<StatistiquesEquipe> statistiques = new ArrayList<>(Arrays.asList(
-				new StatistiquesEquipe(daoEquipe.getParId(1).get(), 4, 4),
-				new StatistiquesEquipe(daoEquipe.getParId(4).get(), 4, 2),
-				new StatistiquesEquipe(daoEquipe.getParId(3).get(), 3, 1),
-				new StatistiquesEquipe(daoEquipe.getParId(2).get(), 3, 0)));
+			new StatistiquesEquipe(daoEquipe.getParId(1).get(), 4, 4),
+			new StatistiquesEquipe(daoEquipe.getParId(4).get(), 4, 2),
+			new StatistiquesEquipe(daoEquipe.getParId(3).get(), 3, 1),
+			new StatistiquesEquipe(daoEquipe.getParId(2).get(), 3, 0)));
 		assertEquals(modele.getResultatsTournoi(daoTournoi.getParId(1).get()), statistiques);
 	}
 	
@@ -104,7 +104,6 @@ public class TestModeleTournoi {
 	            this.getDateCourante() + 1000, false, "Identifiant", "mdp",
 	            this.daoTournoi.getParId(1).orElse(null).getPoules(), this.daoTournoi.getParId(1).orElse(null).getEquipes(),
 	            arbitres);
-	    Tournoi tournoiTest = this.daoTournoi.getParId(1).orElse(null);
 	    this.daoTournoi.ajouter(tournoi);
 	    for (int i = 0; i < 4; i++) {
 	        this.daoEquipe.inscrireEquipe(this.daoEquipe.getTout().get(i), tournoi);

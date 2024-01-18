@@ -78,11 +78,9 @@ public class ModeleTournoiCloture {
 
 		Poule poule = tournoi.getPouleActuelle();
 		
-		/*				IMPOSSIBLE
 		if(poule.getEstCloturee()) {
 			throw new IllegalArgumentException("La poule est déjà cloturée");
 		}
-		*/
 		
 		// Vérification que tous les matchs ont été joués (0 = aucun gagnant)
 		for(Rencontre rencontre : poule.getRencontres()) {
@@ -104,16 +102,10 @@ public class ModeleTournoiCloture {
 	 * Clôturer la poule des qualifications et créer la poule finale
 	 * @param tournoi Le tournoi dont la poule des qualifications (poule actuelle) est à cloturer
 	 * @throws Exception Erreurs SQL ou de récupération d'équipes
-	 * @throws IllegalArgumentException Si la poule qualifications est déjà clôturée
 	 */
 	private void cloturerPouleQualifications(Tournoi tournoi) throws Exception {
 		Poule poule = tournoi.getPouleActuelle();
 		
-		/*			IMPOSSIBLE
-		if(poule.getEstFinale()) {
-			throw new IllegalArgumentException("Poule de qualifications déjà cloturée");
-		}
-		*/
 		// Détermination des équipes pour la finale
 		// Il s'agit forcément d'un tableau de 2 équipes !
 		Equipe[] equipesSelectionnees = this.getEquipesSelectionneesPourFinale(tournoi);
@@ -133,7 +125,7 @@ public class ModeleTournoiCloture {
 	 * @return Les équipes sélectionnées pour la finale, il s'agit forcément d'un tableau de 2 équipes
 	 * @throws Exception Erreurs SQL ou de récupération d'équipes
 	 */
-	private Equipe[] getEquipesSelectionneesPourFinale(Tournoi tournoi) throws Exception {
+	public Equipe[] getEquipesSelectionneesPourFinale(Tournoi tournoi) {
 		Poule poule = tournoi.getPouleActuelle();
 
 		// Récupération des points des matchs de toutes les équipes (3 gagné, 1 perdu)
@@ -179,15 +171,9 @@ public class ModeleTournoiCloture {
 	 * Clôture la poule finale et le tournoi
 	 * @param tournoi Le tournoi dont la poule finale (poule actuelle) est à cloturer
 	 * @throws Exception Erreurs SQL ou de récupération d'équipes
-	 * @throws IllegalArgumentException Si la poule finale est déjà clôturée
 	 */
 	private void cloturerPouleFinale(Tournoi tournoi) throws Exception {
 		Poule poule = tournoi.getPouleActuelle();
-
-		// Vérification que la poule n'est pas déjà clôturée
-		if(poule.getEstCloturee() || tournoi.getEstCloture()) {
-			throw new IllegalArgumentException("Poule finale déjà cloturée");
-		}
 
 		// Obtention du nombre de points de chaque équipe (25 match gagné, 15 perdu)
 		Map<Equipe, Float> nbPointsParEquipe = this.getNombrePointsMatchsParEquipe(tournoi);
@@ -213,7 +199,7 @@ public class ModeleTournoiCloture {
 	 * @param tournoi Le tournoi en question pour le calcul des points
 	 * @return Le nombre de points de chaque équipe selon le nombre de matchs gagnés ou perdus
 	 */
-	private Map<Equipe, Float> getNombrePointsMatchsParEquipe(Tournoi tournoi) {
+	public Map<Equipe, Float> getNombrePointsMatchsParEquipe(Tournoi tournoi) {
 		Map<Equipe, Float> nbPointsParEquipe = new HashMap<>();
 
 		// Récupération de tous les matchs du tournoi
@@ -244,7 +230,7 @@ public class ModeleTournoiCloture {
 	 * @param notoriete La notoriété du tournoi
 	 * @return Le nombre de points de chaque équipe selon son classement (1er, 2e, 3e, 4e) et multiplication par notoriété
 	 */
-	private Map<Equipe, Float> getNombrePointsParClassement(Map<Equipe, Float> nbPointsParEquipe, Tournoi.Notoriete notoriete) {
+	public Map<Equipe, Float> getNombrePointsParClassement(Map<Equipe, Float> nbPointsParEquipe, Tournoi.Notoriete notoriete) {
 		// On convertit la map en une liste d'entrées (clé-valeur) pour la trier
 		List<Map.Entry<Equipe, Float>> listePoints = new ArrayList<>(nbPointsParEquipe.entrySet());
 

@@ -7,8 +7,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import modele.DAO.DAOEquipe;
-import modele.DAO.DAOEquipeImpl;
 import modele.DAO.DAOHistoriquePoints;
 import modele.DAO.DAOHistoriquePointsImpl;
 import modele.DAO.DAOTournoi;
@@ -54,7 +52,6 @@ public class TestDAOHistoriquePoints {
 	
 	@Test
 	public void testGetParEquipe() throws Exception {
-		DAOEquipe daoEquipe = new DAOEquipeImpl();
 		assertEquals(daoHistoriquePoints.getParEquipe(2).size(),6);
 	}
 	

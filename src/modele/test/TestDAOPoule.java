@@ -19,7 +19,6 @@ import modele.metier.Joueur;
 import modele.metier.Pays;
 import modele.metier.Poule;
 import modele.metier.Rencontre;
-import modele.metier.Tournoi;
 
 public class TestDAOPoule {
 

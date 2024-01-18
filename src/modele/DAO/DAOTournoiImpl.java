@@ -219,11 +219,13 @@ public class DAOTournoiImpl implements DAOTournoi {
 		}
 
 		try {
+			// Supprimer les arbitres
 			PreparedStatement ps = BDD.getConnexion().prepareStatement("delete from arbitrer where idTournoi = ?");
 			ps.setInt(1, tournoi.getIdTournoi());
 			ps.executeUpdate();
 			ps.close();
 
+			// Supprimer participer
 			ps = BDD.getConnexion().prepareStatement("delete from participer where idTournoi = ?");
 			ps.setInt(1, tournoi.getIdTournoi());
 			ps.executeUpdate();
@@ -234,6 +236,13 @@ public class DAOTournoiImpl implements DAOTournoi {
 				this.daoPoule.supprimer(poule);
 			}
 
+			// Supprimer les historique points
+			ps = BDD.getConnexion().prepareStatement("delete from historiquePoints where idTournoi = ?");
+			ps.setInt(1, tournoi.getIdTournoi());
+			ps.executeUpdate();
+			ps.close();
+
+			// Supprimer le tournoi
 			ps = BDD.getConnexion().prepareStatement("delete from tournoi where idTournoi = ?");
 			ps.setInt(1, tournoi.getIdTournoi());
 			ps.executeUpdate();

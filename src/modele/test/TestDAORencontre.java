@@ -41,7 +41,6 @@ public class TestDAORencontre {
 	private ModeleUtilisateur modeleUtilisateur;
 	private DAOEquipe daoEquipe;
 	private Rencontre rencontre;
-	private int rencontresTotal;
 
 	@Before
 	public void setUp() throws Exception {
@@ -50,7 +49,6 @@ public class TestDAORencontre {
 		this.modeleTournoiOuverture = new ModeleTournoiOuverture();
 		this.daoPoule = new DAOPouleImpl();
 		this.modeleUtilisateur = new ModeleUtilisateur();
-		this.rencontresTotal = this.daoRencontre.getTout().size();
 
 		this.daoEquipe = new DAOEquipeImpl();
 		Equipe[] equipes = { this.daoEquipe.getParId(1).get(), this.daoEquipe.getParId(2).get(), };

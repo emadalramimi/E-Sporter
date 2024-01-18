@@ -1,8 +1,12 @@
 package modele.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,6 +25,10 @@ import modele.DAO.DAORencontre;
 import modele.DAO.DAORencontreImpl;
 import modele.DAO.DAOTournoi;
 import modele.DAO.DAOTournoiImpl;
+import modele.metier.Arbitre;
+import modele.metier.EnumPoints;
+import modele.metier.Equipe;
+import modele.metier.Pays;
 import modele.metier.Poule;
 import modele.metier.Rencontre;
 import modele.metier.Tournoi;
@@ -88,7 +96,6 @@ public class TestModeleTournoiCloture {
 
 	@Test
 	public void testCloturerPouleFinale() throws Exception {
-		
 		modeleUtilisateur.connecter("arbitre", "mdp");
 		for (Rencontre rencontre : modeleTournoi.getParNom("Tournoi").get(0).getPouleActuelle().getRencontres()) {
 			daoRencontre.setEquipeGagnante(rencontre, rencontre.getEquipes()[0].getNom());
@@ -100,36 +107,120 @@ public class TestModeleTournoiCloture {
 		modele.cloturerPoule(modeleTournoi.getParNom("Tournoi").get(0));
 	}
 
-	// Réinitialise les rencontres, les poules et les tournoi
-		@After
-		public void tearsDown() throws Exception {
-			if (ModeleUtilisateur.getCompteCourant() != null) {
-				modeleUtilisateur.deconnecter();
-			}
+	@Test
+	public void testGetNombrePointsParClassement() {
+		Equipe equipe1 = new Equipe(1, "Equipe 1", Pays.FRANCE, 1, 1, "2024", new ArrayList<>());
+		Equipe equipe2 = new Equipe(2, "Equipe 2", Pays.FRANCE, 2, 2, "2024", new ArrayList<>());
+		Equipe equipe3 = new Equipe(3, "Equipe 3", Pays.FRANCE, 3, 3, "2024", new ArrayList<>());
+		Equipe equipe4 = new Equipe(4, "Equipe 4", Pays.FRANCE, 4, 4, "2024", new ArrayList<>());
+		Equipe equipe5 = new Equipe(5, "Equipe 5", Pays.FRANCE, 5, 5, "2024", new ArrayList<>());
+
+		for(Notoriete notoriete : Notoriete.values()) {
+			Map<Equipe, Float> nbPointsParEquipe = new HashMap<>();
+			nbPointsParEquipe.put(equipe1, 50F);
+			nbPointsParEquipe.put(equipe2, 40F);
+			nbPointsParEquipe.put(equipe3, 30F);
+			nbPointsParEquipe.put(equipe4, 20F);
+			nbPointsParEquipe.put(equipe5, 10F);
 			
-			List<Integer> idAGarderRencontre = new ArrayList<>();
-			for (int i=1;i<43;i++) {
-				idAGarderRencontre.add(i);
-			}
-			for (Rencontre rencontre : this.daoRencontre.getTout()) {
-				if (!idAGarderRencontre.contains(rencontre.getIdRencontre())) {
-					this.daoRencontre.supprimer(rencontre);
-				}
-			}
+			Map<Equipe, Float> nbPointsParEquipeClasse = modele.getNombrePointsParClassement(nbPointsParEquipe, notoriete);
+
+			float ptsAttendusEquipe1 = 50F * 10F;
+			ptsAttendusEquipe1 += EnumPoints.CLASSEMENT_PREMIER.getPoints();
+			ptsAttendusEquipe1 *= notoriete.getMultiplicateur();
+
+			float ptsAttendusEquipe2 = 40F * 10F;
+			ptsAttendusEquipe2 += EnumPoints.CLASSEMENT_DEUXIEME.getPoints();
+			ptsAttendusEquipe2 *= notoriete.getMultiplicateur();
+
+			float ptsAttendusEquipe3 = 30F * 10F;
+			ptsAttendusEquipe3 += EnumPoints.CLASSEMENT_TROISIEME.getPoints();
+			ptsAttendusEquipe3 *= notoriete.getMultiplicateur();
+
+			float ptsAttendusEquipe4 = 20F * 10F;
+			ptsAttendusEquipe4 += EnumPoints.CLASSEMENT_QUATRIEME.getPoints();
+			ptsAttendusEquipe4 *= notoriete.getMultiplicateur();
+
+			float ptsAttendusEquipe5 = 10F * 10F;
+			ptsAttendusEquipe5 *= notoriete.getMultiplicateur();
 			
-			List<Integer> idAGarderTournoi = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6));
-			for (Tournoi tournoi : this.daoTournoi.getTout()) {
-				if (!idAGarderTournoi.contains(tournoi.getIdTournoi())) {
-					this.daoTournoi.supprimer(tournoi);
-				}
-			}	
-			
-			DAOPoule daoPoule = new DAOPouleImpl();
-			List<Integer> idAGarderPoule = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
-			for (Poule poule : daoPoule.getTout()) {
-				if (!idAGarderPoule.contains(poule.getIdPoule())) {
-					daoPoule.supprimer(poule);
-				}
-			}		
+			assertEquals(ptsAttendusEquipe1, (float) nbPointsParEquipeClasse.get(equipe1), 0.1F);
+			assertEquals(ptsAttendusEquipe2, (float) nbPointsParEquipeClasse.get(equipe2), 0.1F);
+			assertEquals(ptsAttendusEquipe3, (float) nbPointsParEquipeClasse.get(equipe3), 0.1F);
+			assertEquals(ptsAttendusEquipe4, (float) nbPointsParEquipeClasse.get(equipe4), 0.1F);
+			assertEquals(ptsAttendusEquipe5, (float) nbPointsParEquipeClasse.get(equipe5), 0.1F);
 		}
+	}
+
+	@Test
+	public void testGetNombrePointsMatchsParEquipe() {
+		// Création des équipes
+		Equipe equipe1 = new Equipe(1, "Equipe 1", Pays.FRANCE, 1, 1, "2024", new ArrayList<>());
+		Equipe equipe2 = new Equipe(2, "Equipe 2", Pays.FRANCE, 2, 2, "2024", new ArrayList<>());
+
+		// Création des rencontres
+		Rencontre rencontre1 = new Rencontre(1, 1, equipe1.getIdEquipe(), new Equipe[]{equipe1, equipe2}); // equipe1 gagne
+		rencontre1.setIdEquipeGagnante(1);
+		Rencontre rencontre2 = new Rencontre(2, 1, equipe2.getIdEquipe(), new Equipe[]{equipe1, equipe2}); // equipe2 gagne
+		rencontre2.setIdEquipeGagnante(2);
+
+		// Création des poules
+		Poule poule = new Poule(true, false, 1, Arrays.asList(rencontre1, rencontre2));
+
+		Rencontre rencontre3 = new Rencontre(3, 1, equipe1.getIdEquipe(), new Equipe[]{equipe1, equipe2}); // equipe1 gagne
+		rencontre3.setIdEquipeGagnante(1);
+
+		Poule poule2 = new Poule(false, true, 2, Arrays.asList(rencontre3));
+
+		// Création du tournoi
+		Tournoi tournoi = new Tournoi(
+			"TournoiTest",
+			Notoriete.NATIONAL,
+			System.currentTimeMillis() / 1000 + 3600,
+			System.currentTimeMillis() / 1000 + 7200,
+			"arbitre",
+			"password",
+			Arrays.asList(new Arbitre(1, "Willem", "Miled"))
+		);
+		tournoi.setPoules(Arrays.asList(poule, poule2));
+
+		Map<Equipe, Float> nbPointsParEquipe = modele.getNombrePointsMatchsParEquipe(tournoi);
+
+		assertEquals(EnumPoints.MATCH_VICTOIRE.getPoints() * 2 + EnumPoints.MATCH_DEFAITE.getPoints(), nbPointsParEquipe.get(equipe1), 0.1F);
+		assertEquals(EnumPoints.MATCH_VICTOIRE.getPoints() + EnumPoints.MATCH_DEFAITE.getPoints() * 2, nbPointsParEquipe.get(equipe2), 0.1F);
+	}
+
+	// Réinitialise les rencontres, les poules et les tournoi
+	@After
+	public void tearsDown() throws Exception {
+		if (ModeleUtilisateur.getCompteCourant() != null) {
+			modeleUtilisateur.deconnecter();
+		}
+		
+		List<Integer> idAGarderRencontre = new ArrayList<>();
+		for (int i=1;i<43;i++) {
+			idAGarderRencontre.add(i);
+		}
+		for (Rencontre rencontre : this.daoRencontre.getTout()) {
+			if (!idAGarderRencontre.contains(rencontre.getIdRencontre())) {
+				this.daoRencontre.supprimer(rencontre);
+			}
+		}
+		
+		List<Integer> idAGarderTournoi = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6));
+		for (Tournoi tournoi : this.daoTournoi.getTout()) {
+			if (!idAGarderTournoi.contains(tournoi.getIdTournoi())) {
+				this.daoTournoi.supprimer(tournoi);
+			}
+		}	
+		
+		DAOPoule daoPoule = new DAOPouleImpl();
+		List<Integer> idAGarderPoule = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
+		for (Poule poule : daoPoule.getTout()) {
+			if (!idAGarderPoule.contains(poule.getIdPoule())) {
+				daoPoule.supprimer(poule);
+			}
+		}
+	}
+
 }
