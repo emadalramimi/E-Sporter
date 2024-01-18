@@ -5,8 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import modele.ModelePalmares;
-import modele.DAO.DAOPalmares;
-import modele.DAO.DAOPalmaresImpl;
+import modele.DAO.DAOEquipeImpl;
 import modele.test.SuperTest;
 
 /**
@@ -16,6 +15,7 @@ import modele.test.SuperTest;
 public class TestModelePalmares extends SuperTest {
 
 	private ModelePalmares modele;
+	private DAOEquipeImpl daoEquipe;
 	
 	/**
 	 * Teste la méthode getClassement() de la classe ModelePalmares
@@ -25,8 +25,9 @@ public class TestModelePalmares extends SuperTest {
 	@Test
 	public void testGetClassement() throws Exception {
 		modele = new ModelePalmares();
-		DAOPalmares daoPalmares = new DAOPalmaresImpl();
-		assertEquals(daoPalmares.getClassement().get(0).getEquipe(), modele.getParNom("CFO").get(0).getEquipe());
+		daoEquipe = new DAOEquipeImpl();
+		assertEquals(modele.getParNom("CFO Academy").get(0).getEquipe(), 
+		daoEquipe.getTout().stream().filter(equipe -> equipe.getNom().equals("CFO Academy")).findFirst().get());
 	}
 
 }
