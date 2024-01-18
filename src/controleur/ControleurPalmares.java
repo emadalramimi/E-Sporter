@@ -14,6 +14,10 @@ import modele.DAO.DAOPalmaresImpl;
 import modele.metier.Palmares;
 import vue.VuePalmares;
 
+/**
+ * Contrôleur du palmarès
+ * @see VuePalmares
+ */
 public class ControleurPalmares extends ControleurRecherche<Palmares> implements ActionListener {
     
     private VuePalmares vue;

@@ -1,6 +1,8 @@
 unnamed package
 controleur
 modele
+modele.DAO
+modele.exception
 modele.metier
 vue
 vue.theme

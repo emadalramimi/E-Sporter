@@ -123,7 +123,6 @@ public class ModeleTournoiCloture {
 	 * Détermine les équipes qui vont jouer la finale (meilleurs points ou world ranking si égal ou au hasard si égaux)
 	 * @param tournoi Le tournoi en question pour le calcul des points
 	 * @return Les équipes sélectionnées pour la finale, il s'agit forcément d'un tableau de 2 équipes
-	 * @throws Exception Erreurs SQL ou de récupération d'équipes
 	 */
 	public Equipe[] getEquipesSelectionneesPourFinale(Tournoi tournoi) {
 		Poule poule = tournoi.getPouleActuelle();

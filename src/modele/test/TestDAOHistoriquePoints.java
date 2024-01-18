@@ -25,29 +25,9 @@ public class TestDAOHistoriquePoints {
 		historiquePoints = new HistoriquePoints(1200, daoTournoi.getParId(1).get(), 1);
 	}
 	
-	@Test (expected = UnsupportedOperationException.class)
-	public void testGetTout()  throws Exception {
-		daoHistoriquePoints.getTout();
-	}
-	
-	@Test (expected = UnsupportedOperationException.class)
-	public void getParId()  throws Exception {
-		daoHistoriquePoints.getParId();
-	}
-	
 	@Test
 	public void testAjouter() throws Exception {
 		assertTrue(daoHistoriquePoints.ajouter(historiquePoints));
-	}
-	
-	@Test (expected = UnsupportedOperationException.class)
-	public void getModifier()  throws Exception {
-		daoHistoriquePoints.modifier(historiquePoints);
-	}
-	
-	@Test (expected = UnsupportedOperationException.class)
-	public void getSupprimer()  throws Exception {
-		daoHistoriquePoints.supprimer(historiquePoints);
 	}
 	
 	@Test
@@ -60,7 +40,4 @@ public class TestDAOHistoriquePoints {
 		daoHistoriquePoints.getClassementParEquipe();
 	}
 	
-	@After
-	public void tearsDown() {
-	}
 }

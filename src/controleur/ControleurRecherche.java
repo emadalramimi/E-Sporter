@@ -11,6 +11,10 @@ import modele.DAO.Recherchable;
 import vue.RecherchableVue;
 import vue.theme.JFrameTheme;
 
+/**
+ * Contrôleur contenant les fonctions de recherche
+ * @param <T> Type de l'objet à rechercher
+ */
 public class ControleurRecherche<T> extends KeyAdapter {
     
     private Recherchable<T> modele;
