@@ -3,7 +3,6 @@ package modele.test.modele;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.After;
@@ -22,12 +21,19 @@ import modele.metier.Pays;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
-public class TestModeleEquipe {
+/**
+ * Classe de test du modele Equipe
+ * @see ModeleEquipe
+ */
+public class TestModeleEquipe extends TestModele {
 	
 	private ModeleEquipe modele;
 	private DAOEquipe daoEquipe;
 	private DAOTournoi daoTournoi;
 
+	/**
+	 * Configure l'environnement de test avant chaque cas de test.
+	 */
 	@Before
 	public void setUp() {
 		this.modele = new ModeleEquipe();
@@ -36,14 +42,12 @@ public class TestModeleEquipe {
 	}
 	
 	/**
-	 * Renvoie la date courante en secondes
+	 * Teste la méthode modifier() de la classe ModeleEquipe.
+	 * @throws Exception si une erreur se produit pendant le test
 	 */
-	private long getDateCourante() {
-		return (System.currentTimeMillis() / 1000);
-	}
-	
 	@Test
 	public void testModifier() throws Exception {
+		// Cas de test 1
 		Equipe equipeInit = daoEquipe.getParId(1).get();
 		List<String> nomsEquipe = new ArrayList<>();
 		for (Joueur joueur:equipeInit.getJoueurs()) {
@@ -54,14 +58,25 @@ public class TestModeleEquipe {
 		modele.modifier(daoEquipe.getParId(1).get(), "Autre", Pays.FRANCE, nomsEquipe);
 		assertEquals(daoEquipe.getParId(1).get(), equipeTest);
 		
+		// Cas de test 2
 		modele.modifier(daoEquipe.getParId(1).get(), "CFO Academy", Pays.TAIWAN, nomsEquipe);
 	}
 	
+	/**
+	 * Teste la méthode modifier() de la classe ModeleEquipe lorsque l'équipe est déjà inscrite à un tournoi.
+	 * @throws Exception si une erreur se produit pendant le test
+	 */
 	@Test (expected = InscriptionEquipeTournoiException.class)
 	public void testModifierEquipeInscrite() throws Exception {
-		Tournoi tournoi = new Tournoi("Test", Notoriete.LOCAL,
-				this.getDateCourante()+3600, this.getDateCourante()+6600,
-				"Arbitre", "mdp", new ArrayList<>());
+		Tournoi tournoi = new Tournoi(
+			"Test",
+			Notoriete.LOCAL,
+			this.getDateCourante() + 3600,
+			this.getDateCourante() + 6600,
+			"Arbitre",
+			"mdp",
+			new ArrayList<>()
+		);
 		daoTournoi.ajouter(tournoi);
 		daoEquipe.inscrireEquipe(daoEquipe.getParId(1).get(), tournoi);
 		
@@ -74,6 +89,10 @@ public class TestModeleEquipe {
 		modele.modifier(daoEquipe.getParId(1).get(), "Nom", Pays.AFRIQUE_DU_SUD, nomsEquipe);
 	}
 	
+	/**
+	 * Teste la méthode creerJoueurs() de la classe ModeleEquipe.
+	 * @throws Exception si une erreur se produit pendant le test
+	 */
 	@Test
 	public void testCreerJoueurs() throws Exception {
 		Equipe equipeInit = daoEquipe.getParId(1).get();
@@ -86,19 +105,22 @@ public class TestModeleEquipe {
 		}
 	}
 	
+	/**
+	 * Teste la méthode getParNom() de la classe ModeleEquipe.
+	 * @throws Exception si une erreur se produit pendant le test
+	 */
 	@Test
 	public void testGetParNom() throws Exception {
 		assertEquals(daoEquipe.getParId(1).get(), modele.getParNom("CFO Academy").get(0));
 	}
-	
-	// Réinitialise les tournoi
-		@After
-		public void tearsDown() throws Exception {
-			List<Integer> idAGarder = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6));
-			for (Tournoi tournoi : this.daoTournoi.getTout()) {
-				if (!idAGarder.contains(tournoi.getIdTournoi())) {
-					this.daoTournoi.supprimer(tournoi);
-				}
-			}
-		}
+
+	/**
+	 * Effectue les opérations de nettoyage après chaque cas de test.
+	 * @throws Exception si une erreur se produit pendant le nettoyage
+	 */
+	@After
+	public void tearDown() throws Exception {
+		this.nettoyerTournois();
+	}
+
 }

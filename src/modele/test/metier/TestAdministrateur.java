@@ -8,7 +8,7 @@ import org.junit.Test;
 import modele.metier.Administrateur;
 import modele.metier.Utilisateur.Role;
 
-public class TestAdmin {
+public class TestAdministrateur {
 
 	private Administrateur admin;
 

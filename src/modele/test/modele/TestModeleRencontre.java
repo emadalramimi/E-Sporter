@@ -11,9 +11,19 @@ import modele.DAO.DAORencontreImpl;
 import modele.DAO.DAOTournoi;
 import modele.DAO.DAOTournoiImpl;
 
-public class TestModeleRencontre {
+/**
+ * Classe de test pour le modèle Rencontre
+ * @see ModeleRencontre
+ */
+public class TestModeleRencontre extends TestModele {
 
 	private ModeleRencontre modele;
+
+	/**
+	 * Teste la méthode getRencontreInMemory() de la classe ModeleRencontre
+	 * @throws Exception si une erreur se produit pendant le test
+	 * @see ModeleRencontre#getRencontreInMemory()
+	 */
 	@Test
 	public void testGetRencontreInMemory() throws Exception {
 		modele = new ModeleRencontre();
@@ -22,4 +32,5 @@ public class TestModeleRencontre {
 		assertEquals(modele.getRencontreInMemory(daoTournoi.getParId(1).get(), 1), daoRencontre.getParId(1).get());
 		assertNotEquals(modele.getRencontreInMemory(daoTournoi.getParId(1).get(), 100), daoRencontre.getParId(1).get());
 	}
+
 }

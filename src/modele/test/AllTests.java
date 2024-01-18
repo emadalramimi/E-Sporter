@@ -15,7 +15,7 @@ import modele.test.DAO.TestDAOPoule;
 import modele.test.DAO.TestDAORencontre;
 import modele.test.DAO.TestDAOTournoi;
 
-import modele.test.metier.TestAdmin;
+import modele.test.metier.TestAdministrateur;
 import modele.test.metier.TestArbitre;
 import modele.test.metier.TestEquipe;
 import modele.test.metier.TestJoueur;
@@ -37,7 +37,7 @@ import modele.test.modele.TestModeleUtilisateur;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-    TestAdmin.class,
+    TestAdministrateur.class,
     TestArbitre.class,
     TestEquipe.class,
     TestJoueur.class,

@@ -25,12 +25,19 @@ import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 import controleur.ControleurTournois;
 
-public class TestModeleTournoi {
+/**
+ * Classe de test pour le modèle Tournoi
+ * @see ModeleTournoi
+ */
+public class TestModeleTournoi extends TestModele {
 	
 	private ModeleTournoi modele;
 	private DAOTournoi daoTournoi;
 	private DAOEquipe daoEquipe;
 	
+	/**
+	 * Configure l'environnement de test avant chaque cas de test
+	 */
 	@Before
 	public void setUp() {
 		modele = new ModeleTournoi();
@@ -39,27 +46,36 @@ public class TestModeleTournoi {
 	}
 	
 	/**
-	 * Renvoie la date courante en secondes
+	 * Teste la méthode getResultatsTournoi() de la classe ModeleTournoi
+	 * @throws Exception si une erreur se produit pendant le test
+	 * @see ModeleTournoi#getResultatsTournoi(Tournoi)
 	 */
-	private long getDateCourante() {
-		return (System.currentTimeMillis() / 1000);
-	}
-	
 	@Test
 	public void testGetResultatsTournoi() throws Exception {
 		List<StatistiquesEquipe> statistiques = new ArrayList<>(Arrays.asList(
 			new StatistiquesEquipe(daoEquipe.getParId(1).get(), 4, 4),
 			new StatistiquesEquipe(daoEquipe.getParId(4).get(), 4, 2),
 			new StatistiquesEquipe(daoEquipe.getParId(3).get(), 3, 1),
-			new StatistiquesEquipe(daoEquipe.getParId(2).get(), 3, 0)));
+			new StatistiquesEquipe(daoEquipe.getParId(2).get(), 3, 0))
+		);
 		assertEquals(modele.getResultatsTournoi(daoTournoi.getParId(1).get()), statistiques);
 	}
 	
+	/**
+	 * Teste la méthode getParNom() de la classe ModeleTournoi
+	 * @throws Exception si une erreur se produit pendant le test
+	 * @see ModeleTournoi#getParNom(String)
+	 */
 	@Test
 	public void testParNom() throws Exception {
 		assertEquals(modele.getParNom("PCL 2023").get(0), daoTournoi.getParId(1).get());
 	}
 	
+	/**
+	 * Teste la méthode getParFiltrage() de la classe ModeleTournoi avec notoriété null
+	 * @throws Exception si une erreur se produit pendant le test
+	 * @see ModeleTournoi#getParFiltrage(Notoriete, ControleurTournois.Statut)
+	 */
 	@Test
 	public void testGetParFiltrageNotorieteNull() throws Exception {
 	    List<Tournoi> tournois = daoTournoi.getTout();
@@ -72,6 +88,8 @@ public class TestModeleTournoi {
 
 	/**
 	 * Teste le filtrage avec une notoriété non null et un statut null
+	 * @throws Exception si une erreur se produit pendant le test
+	 * @see ModeleTournoi#getParFiltrage(Notoriete, ControleurTournois.Statut)
 	 */
 	@Test
 	public void testGetParFiltrageStatutNull() throws Exception {
@@ -82,8 +100,11 @@ public class TestModeleTournoi {
 	        assertEquals(tournois.get(i), this.modele.getParFiltrage(Notoriete.NATIONAL, null).get(i));
 	    }
 	}
+
 	/**
 	 * Teste le filtrage avec une notoriété et un statut cloturé
+	 * @throws Exception si une erreur se produit pendant le test
+	 * @see ModeleTournoi#getParFiltrage(Notoriete, ControleurTournois.Statut)
 	 */
 	@Test
 	public void testGetParFiltrageCloture() throws Exception {
@@ -98,44 +119,69 @@ public class TestModeleTournoi {
 	
 	/**
 	 * Teste le filtrage avec une notoriété et un statut ouvert
+	 * @throws Exception si une erreur se produit pendant le test
+	 * @see ModeleTournoi#getParFiltrage(Notoriete, ControleurTournois.Statut)
 	 */
 	@Test
 	public void testGetParFiltrageOuvert() throws Exception {
 	    Arbitre arbitre = new Arbitre(1, "Willem", "Miled");
 	    List<Arbitre> arbitres = new ArrayList<>(Arrays.asList(arbitre));
-	    Tournoi tournoi = new Tournoi(1, "Tournoi1", Notoriete.INTERNATIONAL, this.getDateCourante() + 500,
-	            this.getDateCourante() + 1000, false, "Identifiant", "mdp",
-	            this.daoTournoi.getParId(1).orElse(null).getPoules(), this.daoTournoi.getParId(1).orElse(null).getEquipes(),
-	            arbitres);
+	    Tournoi tournoi = new Tournoi(
+			1,
+			"Tournoi1",
+			Notoriete.INTERNATIONAL,
+			this.getDateCourante() + 500,
+	    	this.getDateCourante() + 1000,
+			false,
+			"Identifiant",
+			"mdp",
+	        this.daoTournoi.getParId(1).orElse(null).getPoules(),
+			this.daoTournoi.getParId(1).orElse(null).getEquipes(),
+	        arbitres
+		);
+
 	    this.daoTournoi.ajouter(tournoi);
+
 	    for (int i = 0; i < 4; i++) {
 	        this.daoEquipe.inscrireEquipe(this.daoEquipe.getTout().get(i), tournoi);
 	    }
+
 	    ModeleTournoiOuverture modeleTournoiOuverture = new ModeleTournoiOuverture();
 	    modeleTournoiOuverture.ouvrirTournoi(tournoi);
+
 	    List<Tournoi> tournois = new ArrayList<>();
 	    tournois.add(tournoi);
+
 	    assertEquals(tournois.size(), this.modele.getParFiltrage(Notoriete.INTERNATIONAL, ControleurTournois.Statut.OUVERT).size());
         assertEquals(tournois.get(0), this.modele.getParFiltrage(Notoriete.INTERNATIONAL, ControleurTournois.Statut.OUVERT).get(0));
 	}
 	
 	/**
 	 * Teste le filtrage avec une notoriété et un statut en phase d'inscriptions
+	 * @throws Exception si une erreur se produit pendant le test
+	 * @see ModeleTournoi#getParFiltrage(Notoriete, ControleurTournois.Statut)
 	 */
 	@Test
 	public void testGetParFiltrageInscription() throws Exception {
 	    Tournoi tournoiTest = this.daoTournoi.getParId(1).orElse(null);
 	    Tournoi tournoi = new Tournoi(7, "TournoiTest", Notoriete.NATIONAL, this.getDateCourante() + 3600, this.getDateCourante() + 7200, true, "arbitre", "password", tournoiTest.getPoules(), tournoiTest.getEquipes(), tournoiTest.getArbitres());
-	    this.daoTournoi.ajouter(tournoi);
-	    List<Tournoi> tournois = new ArrayList<>();
-	    tournois.add(tournoi);
-	    assertEquals(tournois.size(), this.modele.getParFiltrage(Notoriete.NATIONAL, ControleurTournois.Statut.PHASE_INSCRIPTIONS).size());
 	    
+		this.daoTournoi.ajouter(tournoi);
+	    
+		List<Tournoi> tournois = new ArrayList<>();
+	    tournois.add(tournoi);
+	    
+		assertEquals(tournois.size(), this.modele.getParFiltrage(Notoriete.NATIONAL, ControleurTournois.Statut.PHASE_INSCRIPTIONS).size());
 	    for (int i = 0; i < tournois.size(); i++) {
 	        assertEquals(tournois.get(i), this.modele.getParFiltrage(Notoriete.NATIONAL, ControleurTournois.Statut.PHASE_INSCRIPTIONS).get(i));
 	    }
 	}
 	
+	/**
+	 * Teste la méthode verifierUniciteIdentifiant() de la classe ModeleTournoi
+	 * @throws SQLException si une erreur se produit pendant le test
+	 * @see ModeleTournoi#verifierUniciteIdentifiant(String)
+	 */
 	@Test
 	public void TestVerifierUniciteIdentifiant() throws SQLException {
 		assertTrue(modele.verifierUniciteIdentifiant("Pcl2023"));
@@ -143,6 +189,11 @@ public class TestModeleTournoi {
 		assertFalse(modele.verifierUniciteIdentifiant("Inconnu"));
 	}
 	
+	/**
+	 * Teste la méthode estTournoiEnCoursOuCloture() de la classe ModeleTournoi
+	 * @throws Exception si une erreur se produit pendant le test
+	 * @see ModeleTournoi#estTournoiEnCoursOuCloture(Tournoi)
+	 */
 	@Test
 	public void TestEstTournoiEnCoursOuCloture() throws Exception {
 		Tournoi tournoiTest = daoTournoi.getParId(1).orElse(null);
@@ -165,6 +216,11 @@ public class TestModeleTournoi {
 		assertFalse(modele.estTournoiEnCoursOuCloture(tournoiTest));
 	}
 	
+	/**
+	 * Teste la méthode estTournoiCloture() de la classe ModeleTournoi
+	 * @throws Exception si une erreur se produit pendant le test
+	 * @see ModeleTournoi#estTournoiCloture(Tournoi)
+	 */
 	@Test
 	public void TestEstTournoiCloture() throws Exception {
 		Tournoi tournoiTest = daoTournoi.getParId(1).orElse(null);
@@ -187,14 +243,13 @@ public class TestModeleTournoi {
 		assertFalse(modele.estTournoiCloture(tournoiTest));
 	}
 	
-	// Réinitialise les tournoi
+	/**
+	 * Nettoie les tournois
+	 * @throws Exception si le nettoyage se passe mal
+	 */
 	@After
-	public void tearsDown() throws Exception {
-		List<Integer> idAGarder = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6));
-		for (Tournoi tournoi : this.daoTournoi.getTout()) {
-			if (!idAGarder.contains(tournoi.getIdTournoi())) {
-				this.daoTournoi.supprimer(tournoi);
-			}
-		}
+	public void tearDown() throws Exception {
+		this.nettoyerTournois();
 	}
+
 }

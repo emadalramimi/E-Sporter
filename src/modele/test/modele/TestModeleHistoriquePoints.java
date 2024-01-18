@@ -13,23 +13,40 @@ import modele.DAO.DAOEquipe;
 import modele.DAO.DAOEquipeImpl;
 import modele.metier.Equipe;
 
-public class TestModeleHistoriquePoints {
+/**
+ * Classe de test pour le modèle HistoriquePoints
+ * @see ModeleHistoriquePoints
+ */
+public class TestModeleHistoriquePoints extends TestModele {
 	
 	private ModeleHistoriquePoints modele;
 	
+	/**
+	 * Configure l'environnement de test avant chaque cas de test
+	 */
 	@Before
 	public void setUp(){
 		modele = new ModeleHistoriquePoints();
 	}
 	
+	/**
+	 * Teste la méthode getClassementParEquipe() de la classe ModeleHistoriquePoint
+	 * @throws Exception si une erreur se produit pendant le test
+	 * @see ModeleHistoriquePoints#getClassementParEquipe()
+	 */
 	@Test
 	public void testGetClassementParEquipe() throws Exception {
 		DAOEquipe daoEquipe = new DAOEquipeImpl();
 		Map<Equipe, Integer> classement = new HashMap<>();
-        classement.put(daoEquipe.getParId(3).get(), 3);
-        classement.put(daoEquipe.getParId(1).get(), 1);
-        classement.put(daoEquipe.getParId(4).get(), 2);
-        classement.put(daoEquipe.getParId(2).get(), 4);
+
+		// Ajouter les équipes et leurs points correspondants au classement
+		classement.put(daoEquipe.getParId(3).get(), 3);
+		classement.put(daoEquipe.getParId(1).get(), 1);
+		classement.put(daoEquipe.getParId(4).get(), 2);
+		classement.put(daoEquipe.getParId(2).get(), 4);
+		
+		// Vérifier si le classement retourné par le modèle correspond au classement attendu
 		assertEquals(modele.getClassementParEquipe(),classement);
 	}
+
 }
