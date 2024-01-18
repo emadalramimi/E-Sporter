@@ -6,6 +6,7 @@ import modele.DAO.DAOAdministrateur;
 import modele.DAO.DAOAdministrateurImpl;
 import modele.DAO.DAOTournoi;
 import modele.DAO.DAOTournoiImpl;
+import modele.exception.IdentifiantOuMdpIncorrectsException;
 import modele.metier.Tournoi;
 import modele.metier.Utilisateur;
 
@@ -45,10 +46,9 @@ public class ModeleUtilisateur {
 	 * Connecte un utilisateur avec son couple identifiant/mot de passe s'il existe
 	 * @param identifiant Identifiant de l'utilisateur
 	 * @param motDePasse Mot de passe de l'utilisateur
-	 * @throws IllegalArgumentException si l'identifiant et/ou le mot de passe sont incorrects
-	 * @throws IllegalStateException si un utilisateur est déjà connecté
+	 * @throws Exception 
 	 */
-	public void connecter(String identifiant, String motDePasse) throws IllegalArgumentException, IllegalStateException {
+	public void connecter(String identifiant, String motDePasse) throws Exception {
 	    if (compteCourant != null) {
             throw new IllegalStateException("Un utilisateur est déjà connecté");
         }
@@ -117,9 +117,9 @@ public class ModeleUtilisateur {
 	 * @param motDePasse Mot de passe de l'utilisateur
 	 * @throws IllegalArgumentException si l'utilisateur n'existe pas ou si le mot de passe est incorrect ou si l'utilisateur est un arbitre et que le tournoi est clôturé
 	 */
-	private void validerUtilisateur(Utilisateur utilisateur, String motDePasse) throws IllegalArgumentException {
+	private void validerUtilisateur(Utilisateur utilisateur, String motDePasse) throws Exception {
 		if (utilisateur == null || !this.verifierMotDePasse(motDePasse, utilisateur.getMotDePasse())) {
-			throw new IllegalArgumentException("Identifiant et/ou mot de passe incorrects.");
+			throw new IdentifiantOuMdpIncorrectsException("Identifiant et/ou mot de passe incorrects.");
 		}
 		if (utilisateur.getRole() == Utilisateur.Role.ARBITRE && ((Tournoi) utilisateur).getEstCloture() == true) {
 			throw new IllegalArgumentException("Vous ne pouvez pas vous connecter sur un tournoi en phase d'inscriptions ou clôturé.");

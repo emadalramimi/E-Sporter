@@ -8,9 +8,22 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import modele.ModeleTournoi;
+import modele.ModeleTournoiOuverture;
 import modele.ModeleUtilisateur;
+import modele.DAO.DAOEquipe;
+import modele.DAO.DAOEquipeImpl;
+import modele.DAO.DAOTournoi;
+import modele.DAO.DAOTournoiImpl;
+import modele.exception.IdentifiantOuMdpIncorrectsException;
+import modele.metier.Tournoi;
+import modele.metier.Tournoi.Notoriete;
 
-public class TestModeleUtilisateur {
+/**
+ * Classe de test pour la classe modèle ModeleUtilisateur.
+ * @see ModeleUtilisateur
+ */
+public class TestModeleUtilisateur extends TestModele {
 
 	private ModeleUtilisateur modeleUtilisateur;
 
@@ -18,16 +31,19 @@ public class TestModeleUtilisateur {
 	public void setUp() {
 		this.modeleUtilisateur = new ModeleUtilisateur();
 	}
-
+	
+	/**
+	 * Teste le chiffrement du mot de passe d'un utilisateur
+	 */
 	@Test
 	public void testChiffrerMotDePasse() {
 		String motDePasse = "mdp";
 		assertNotEquals(ModeleUtilisateur.chiffrerMotDePasse(motDePasse), motDePasse);
 	}
 
-	/*
-	 * Test l'erreur IllegalArgumentException lorsqu'on essaie de se connecter si
-	 * l'on l'est déjà
+	/**
+	 * Test la connexion multiple d'un même utilisateur
+	 * @throws Exception lors de la deuxième exception
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void testConnexionDejaConnecte() throws Exception {
@@ -35,18 +51,18 @@ public class TestModeleUtilisateur {
 		this.modeleUtilisateur.connecter("admin", "mdp");
 	}
 
-	/*
-	 * Test l'erreur IdentifiantOuMdpIncorrectsException lorsqu'on essaie de se
-	 * connecter et que l'identifiant est invalide
+	/**
+	 * Teste la connection avec un login invalide
+	 * @throws IdentifiantOuMdpIncorrectsException
 	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testConnexionIdentifiantInvalide() throws Exception {
+	@Test(expected = IdentifiantOuMdpIncorrectsException.class)
+	public void testConnexionIdentifiantInvalide() throws IdentifiantOuMdpIncorrectsException {
 		this.modeleUtilisateur.connecter("fauxadmin", "mdp");
 	}
 
-	/*
-	 * Test l'erreur IdentifiantOuMdpIncorrectsException lorsqu'on essaie de se
-	 * connecter et que le mot de passe est invalide
+	/**
+	 * Teste la connection avec un mot de passe invalide
+	 * @throws IdentifiantOuMdpIncorrectsException
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testConnexionMotDePasseInvalide() throws Exception {
@@ -94,9 +110,46 @@ public class TestModeleUtilisateur {
 	public void testValiderUtilisateurArbitreCloture() throws IllegalArgumentException {
 		this.modeleUtilisateur.connecter("Pcl2023", "$Pcl2023");
 	}
-	@After
-	public void tearsDown() {
-		if (ModeleUtilisateur.getCompteCourant() != null)
-			this.modeleUtilisateur.deconnecter();
+	
+	@Test
+	public void testValiderUtilisateurArbitre() throws Exception {
+		ModeleTournoi modeleTournoi = new ModeleTournoi();
+		ModeleTournoiOuverture modeleTournoiOuverture = new ModeleTournoiOuverture();
+		DAOTournoi daoTournoi = new DAOTournoiImpl();
+		DAOEquipe daoEquipe = new DAOEquipeImpl();
+		
+		Tournoi tournoiTest = daoTournoi.getParId(1).orElse(null);
+		Tournoi tournoi = new Tournoi(
+			7, 
+			"TournoiTest", 
+			Notoriete.NATIONAL, 
+			this.getDateCourante() + 3600,
+			this.getDateCourante() + 7200, 
+			true, 
+			"arbitre", 
+			"password", 
+			tournoiTest.getPoules(),
+			tournoiTest.getEquipes(), 
+			tournoiTest.getArbitres()
+		);
+		
+		daoTournoi.ajouter(tournoi);
+
+		for (int i = 0; i < 4; i++) {
+			daoEquipe.inscrireEquipe(daoEquipe.getTout().get(i), tournoi);
+		}
+
+		modeleTournoiOuverture.ouvrirTournoi(tournoi);
+		this.modeleUtilisateur.connecter("arbitre", "password");
 	}
+	
+	@After
+	public void tearsDown() throws Exception {
+		if (ModeleUtilisateur.getCompteCourant() != null) {
+			this.modeleUtilisateur.deconnecter();
+		}
+		
+		this.nettoyerTournois();
+	}
+
 }
