@@ -19,6 +19,10 @@ import modele.metier.Equipe;
 import vue.VueHistoriquePoints;
 import vue.theme.JTableThemeImpression;
 
+/**
+ * Contrôleur de l'historique des points
+ * @see VueHistoriquePoints
+ */
 public class ControleurHistoriquePoints extends ControleurRecherche<Equipe> implements ActionListener, ListSelectionListener {
     
     private VueHistoriquePoints vue;

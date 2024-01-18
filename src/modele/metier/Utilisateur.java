@@ -5,6 +5,9 @@ package modele.metier;
  */
 public interface Utilisateur {
 	
+	/**
+	 * Rôles des utilisateurs
+	 */
 	public enum Role {
 		ADMINISTRATEUR,
 		ARBITRE

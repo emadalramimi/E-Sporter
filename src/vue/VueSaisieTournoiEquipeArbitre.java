@@ -36,7 +36,9 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 	private Arbitre[] arbitres;
 	private ActionListener controleur;
 	
-	// Enum pour savoir si on affiche une liste d'équipes ou d'arbitres
+	/**
+	 * Variantes de la fenêtre : équipes ou arbitres
+	 */
 	public enum Type {
 		EQUIPE,
 		ARBITRE
