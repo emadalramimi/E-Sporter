@@ -15,6 +15,10 @@ import modele.metier.Joueur;
 import modele.metier.Pays;
 import modele.metier.Rencontre;
 
+/**
+ * Classe de tests de la classe Rencontre.
+ * @see modele.metier.Rencontre
+ */
 public class TestRencontre {
 
 	private Rencontre rencontre;

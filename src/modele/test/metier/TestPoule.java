@@ -15,6 +15,10 @@ import modele.metier.Pays;
 import modele.metier.Poule;
 import modele.metier.Rencontre;
 
+/**
+ * Classe de tests de la classe Poule.
+ * @see modele.metier.Poule
+ */
 public class TestPoule {
 
 	private List<Joueur> joueurs;

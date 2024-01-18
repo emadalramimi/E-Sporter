@@ -10,12 +10,13 @@ import modele.DAO.DAORencontre;
 import modele.DAO.DAORencontreImpl;
 import modele.DAO.DAOTournoi;
 import modele.DAO.DAOTournoiImpl;
+import modele.test.SuperTest;
 
 /**
  * Classe de test pour le modèle Rencontre
  * @see ModeleRencontre
  */
-public class TestModeleRencontre extends TestModele {
+public class TestModeleRencontre extends SuperTest {
 
 	private ModeleRencontre modele;
 

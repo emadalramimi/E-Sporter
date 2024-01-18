@@ -14,8 +14,17 @@ import modele.DAO.DAOPalmares;
 import modele.DAO.DAOPalmaresImpl;
 import modele.metier.Palmares;
 
+/**
+ * Classe de tests de la classe DAOPalmares.
+ * @see modele.DAO.DAOPalmares
+ */
 public class TestDAOPalmares {
 	
+	/**
+	 * Teste la récupération du classement des équipes.
+	 * @throws Exception
+	 * @see modele.DAO.DAOPalmares#getClassement()
+	 */
 	@Test
 	public void testGetClassement() throws Exception {
 		DAOPalmares daoPalmares = new DAOPalmaresImpl();

@@ -1,4 +1,4 @@
-package modele.test.modele;
+package modele.test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,11 +11,11 @@ import modele.metier.Tournoi;
 /**
  * Super-classe de test de modele
  */
-public class TestModele {
+public class SuperTest {
 
     private DAOTournoi daoTournoi;
 
-    public TestModele() {
+    public SuperTest() {
         this.daoTournoi = new DAOTournoiImpl();
     }
     

@@ -7,6 +7,10 @@ import org.junit.Test;
 
 import modele.metier.Joueur;
 
+/**
+ * Classe de tests de la classe Joueur.
+ * @see modele.metier.Joueur
+ */
 public class TestJoueur {
 
 	private Joueur joueur1;

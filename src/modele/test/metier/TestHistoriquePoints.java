@@ -11,6 +11,10 @@ import modele.metier.HistoriquePoints;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
+/**
+ * Classe de tests de la classe HistoriquePoints.
+ * @see modele.metier.HistoriquePoints
+ */
 public class TestHistoriquePoints {
 
 	private HistoriquePoints historique;

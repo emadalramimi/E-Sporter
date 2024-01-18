@@ -8,6 +8,10 @@ import org.junit.Test;
 import modele.metier.Administrateur;
 import modele.metier.Utilisateur.Role;
 
+/**
+ * Classe de tests de la classe Administrateur.
+ * @see modele.metier.Administrateur
+ */
 public class TestAdministrateur {
 
 	private Administrateur admin;

@@ -34,12 +34,13 @@ import modele.metier.Poule;
 import modele.metier.Rencontre;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
+import modele.test.SuperTest;
 
 /**
  * Classe de test pour le modèle TournoiCloture
  * @see ModeleTournoiCloture
  */
-public class TestModeleTournoiCloture extends TestModele {
+public class TestModeleTournoiCloture extends SuperTest {
 	
 	private ModeleTournoiCloture modele;
 	private ModeleTournoiOuverture modeleTournoiOuverture;

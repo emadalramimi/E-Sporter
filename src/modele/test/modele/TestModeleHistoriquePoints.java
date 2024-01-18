@@ -12,12 +12,13 @@ import modele.ModeleHistoriquePoints;
 import modele.DAO.DAOEquipe;
 import modele.DAO.DAOEquipeImpl;
 import modele.metier.Equipe;
+import modele.test.SuperTest;
 
 /**
  * Classe de test pour le modèle HistoriquePoints
  * @see ModeleHistoriquePoints
  */
-public class TestModeleHistoriquePoints extends TestModele {
+public class TestModeleHistoriquePoints extends SuperTest {
 	
 	private ModeleHistoriquePoints modele;
 	

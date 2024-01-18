@@ -23,13 +23,14 @@ import modele.metier.Arbitre;
 import modele.metier.StatistiquesEquipe;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
+import modele.test.SuperTest;
 import controleur.ControleurTournois;
 
 /**
  * Classe de test pour le modèle Tournoi
  * @see ModeleTournoi
  */
-public class TestModeleTournoi extends TestModele {
+public class TestModeleTournoi extends SuperTest {
 	
 	private ModeleTournoi modele;
 	private DAOTournoi daoTournoi;

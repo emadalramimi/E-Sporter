@@ -20,12 +20,13 @@ import modele.metier.Joueur;
 import modele.metier.Pays;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
+import modele.test.SuperTest;
 
 /**
  * Classe de test du modele Equipe
  * @see ModeleEquipe
  */
-public class TestModeleEquipe extends TestModele {
+public class TestModeleEquipe extends SuperTest {
 	
 	private ModeleEquipe modele;
 	private DAOEquipe daoEquipe;

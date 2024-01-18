@@ -15,6 +15,10 @@ import modele.metier.Joueur;
 import modele.metier.Pays;
 import modele.metier.StatistiquesEquipe;
 
+/**
+ * Classe de tests de la classe StatistiquesEquipe.
+ * @see modele.metier.StatistiquesEquipe
+ */
 public class TestSatistiquesEquipe {
 
 	private StatistiquesEquipe statEquipe;

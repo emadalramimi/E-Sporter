@@ -30,6 +30,10 @@ import modele.metier.Pays;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 
+/**
+ * Classe de tests de la classe DAOEquipe.
+ * @see modele.DAO.DAOEquipe
+ */
 public class TestDAOEquipe {
 
 	private DAOEquipe daoEquipe;
@@ -45,13 +49,29 @@ public class TestDAOEquipe {
 		this.daoTournoi = new DAOTournoiImpl();
 		this.modeleTournoiOuverture = new ModeleTournoiOuverture();
 
-		this.listJoueurs = new ArrayList<>(Arrays.asList(new Joueur(1, "Joueur1", 2), new Joueur(2, "Joueur2", 2),
-				new Joueur(3, "Joueur3", 2), new Joueur(4, "Joueur4", 2), new Joueur(5, "Joueur5", 2)));
+		this.listJoueurs = new ArrayList<>(Arrays.asList(
+			new Joueur(
+				1, 
+				"Joueur1", 
+				2
+			), 
+			new Joueur(
+				2, 
+				"Joueur2", 
+				2
+			),
+			new Joueur(
+				3, "Joueur3", 2), new Joueur(4, "Joueur4", 2), new Joueur(5, "Joueur5", 2)));
 
 		this.equipe = new Equipe(10, "Equipe", Pays.CANADA, 2, 2, "Saison 2023", this.listJoueurs);
 		this.equipeAModif = new Equipe(10, "EquipeModif", Pays.FRANCE, 3, 3, "Saison 2024", this.listJoueurs);
 	}
 
+	/**
+	 * Teste la récupération de toutes les équipes.
+	 * @throws Exception
+	 * @see DAOEquipe#getTout()
+	 */
 	@Test
 	public void testGetTout() throws Exception {
 		assertNotNull(this.daoEquipe.getTout());
@@ -63,6 +83,11 @@ public class TestDAOEquipe {
 		assertEquals(equipeTest, result.get(0));
 	}
 
+	/**
+	 * Teste la récupération d'une équipe par son id.
+	 * @throws Exception
+	 * @see DAOEquipe#getParId(int)
+	 */
 	@Test
 	public void testGetParId() throws Exception {
 		Equipe equipeTest = this.daoEquipe.getParId(1).orElse(null);
@@ -73,12 +98,22 @@ public class TestDAOEquipe {
 		assertEquals(equipeTest, equipe.get());
 	}
 
+	/**
+	 * Teste l'ajout d'une équipe.
+	 * @throws Exception
+	 * @see DAOEquipe#ajouter(Equipe)
+	 */
 	@Test
-	public void testAjouterTrue() throws Exception {
+	public void testAjouter() throws Exception {
 		assertTrue(this.daoEquipe.ajouter(this.equipe));
 		assertEquals(this.equipe.getWorldRanking(), 1000);
 	}
 
+	/**
+	 * Teste l'ajout d'une équipe avec une saison antérieure.
+	 * @throws Exception
+	 * @see DAOEquipe#ajouter(Equipe)
+	 */
 	@Test
 	public void testAjouterSaisonDerniere() throws Exception {
 		Equipe equipeOM = this.daoEquipe.getParId(5).orElse(null);
@@ -88,17 +123,32 @@ public class TestDAOEquipe {
 		assertEquals(equipeTest.getWorldRanking(), equipeOM.getClassement());
 	}
 
+	/**
+	 * Teste la modification d'une équipe.
+	 * @throws Exception
+	 * @see DAOEquipe#modifier(Equipe)
+	 */
 	@Test
-	public void testModifierTrue() throws Exception {
+	public void testModifier() throws Exception {
 		this.daoEquipe.ajouter(this.equipe);
 		assertTrue(this.daoEquipe.modifier(this.equipeAModif));
 	}
 	
+	/**
+	 * Teste la modification d'une équipe avec une saison antérieure.
+	 * @throws Exception
+	 * @see DAOEquipe#estEquipeInscriteUnTournoi(Equipe)
+	 */
 	@Test
 	public void testNEstPasEquipeInscriteUnTournoiOuvert() throws Exception {
 		assertFalse(this.daoEquipe.estEquipeInscriteUnTournoi(equipe));
 	}
 	
+	/**
+	 * Teste la modification d'une équipe avec une saison antérieure.
+	 * @throws Exception
+	 * @see DAOEquipe#estEquipeInscriteUnTournoi(Equipe)
+	 */
 	@Test
 	public void testEstEquipeInscriteUnTournoiOuvert() throws Exception {
 		Tournoi tournoiTest = daoTournoi.getParId(1).orElse(null);
@@ -110,6 +160,11 @@ public class TestDAOEquipe {
 		assertTrue(this.daoEquipe.estEquipeInscriteUnTournoi(this.daoEquipe.getTout().get(0)));
 	}
 
+	/**
+	 * Teste la levée d'exception lors de la suppression d'une équipe.
+	 * @throws Exception
+	 * @see DAOEquipe#supprimer(Equipe)
+	 */
 	@Test(expected = InscriptionEquipeTournoiException.class)
 	public void testSupprimerException() throws Exception {
 		Tournoi tournoiTest = daoTournoi.getParId(1).orElse(null);
@@ -126,12 +181,22 @@ public class TestDAOEquipe {
 		this.daoEquipe.supprimer(this.daoEquipe.getParId(1).orElse(null));
 	}
 
+	/**
+	 * Teste la suppression d'une équipe.
+	 * @throws Exception
+	 * @see DAOEquipe#supprimer(Equipe)
+	 */
 	@Test
-	public void testSupprimerTrue() throws Exception {
+	public void testSupprimer() throws Exception {
 		this.daoEquipe.ajouter(this.equipe);
 		assertTrue(this.daoEquipe.supprimer(this.equipe));
 	}
 
+	/**
+	 * Teste la récupération des équipes d'un tournoi.
+	 * @throws Exception
+	 * @see DAOEquipe#getEquipesTournoi(int)
+	 */
 	@Test
 	public void testGetEquipesTournoi() throws Exception {
 		List<Equipe> equipes = new ArrayList<>(Arrays.asList(this.daoEquipe.getParId(1).get(),
@@ -140,6 +205,11 @@ public class TestDAOEquipe {
 		assertEquals(equipes, this.daoEquipe.getEquipesTournoi(1));
 	}
 
+	/**
+	 * Teste la récupération des équipes d'un tournoi.
+	 * @throws Exception
+	 * @see DAOEquipe#estEquipeInscriteUnTournoi(int)
+	 */
 	@Test
 	public void testEstEquipeInscriteUnTournoi() throws Exception {
 		this.daoEquipe.desinscrireEquipe(this.daoEquipe.getParId(1).orElse(null),

@@ -22,6 +22,10 @@ import modele.metier.Equipe;
 import modele.metier.Joueur;
 import modele.metier.Pays;
 
+/**
+ * Classe de tests de la classe DAOEquipe.
+ * @see modele.DAO.DAOEquipe
+ */
 public class TestDAOJoueur {
 
 	private DAOJoueur daoJoueur;
@@ -40,6 +44,11 @@ public class TestDAOJoueur {
 		this.equipe = new Equipe("Equipe", Pays.CANADA, this.joueurs);
 	}
 
+	/**
+	 * Teste la récupération de tous les joueurs.
+	 * @throws Exception
+	 * @see modele.DAO.DAOJoueur#getTout()
+	 */
 	@Test
 	public void testGetTout() throws Exception {
 		assertNotNull(this.daoJoueur.getTout());
@@ -58,6 +67,11 @@ public class TestDAOJoueur {
 		}
 	}
 
+	/**
+	 * Teste la récupération d'un joueur par son id.
+	 * @throws Exception
+	 * @see modele.DAO.DAOJoueur#getParId(int)
+	 */
 	@Test
 	public void testGetParId() throws Exception {
 		this.daoJoueur.ajouter(this.joueur);
@@ -66,27 +80,52 @@ public class TestDAOJoueur {
 		assertEquals(this.joueur, retrievedJoueur.get());
 	}
 
+	/**
+	 * Teste l'ajout d'un joueur.
+	 * @throws Exception
+	 * @see modele.DAO.DAOJoueur#ajouter(modele.metier.Joueur)
+	 */
 	@Test
 	public void testAjouterTrue() throws Exception {
 		assertTrue(this.daoJoueur.ajouter(this.joueur));
 	}
 
+	/**
+	 * Teste la modification d'un joueur.
+	 * @throws Exception
+	 * @see modele.DAO.DAOJoueur#modifier(modele.metier.Joueur)
+	 */
 	@Test
 	public void testModifierTrue() throws Exception {
 		this.daoJoueur.ajouter(this.joueur);
 		assertTrue(this.daoJoueur.modifier(new Joueur(50, "joueurModif", 1)));
 	}
 
+	/**
+	 * Teste la suppression des joueurs d'une équipe.
+	 * @throws Exception
+	 * @see modele.DAO.DAOJoueur#supprimerJoueursEquipe(modele.metier.Joueur)
+	 */
 	@Test
 	public void testSupprimerJoueursParEquipe() throws Exception {
 		assertTrue(this.daoJoueur.supprimerJoueursEquipe(this.equipe.getIdEquipe()));
 	}
 	
+	/**
+	 * Teste la levée d'exception lors de la suppression d'un joueur.
+	 * @throws Exception
+	 * @see modele.DAO.DAOJoueur#supprimer(modele.metier.Joueur)
+	 */
 	@Test (expected = UnsupportedOperationException.class)
 	public void testSupprimer() throws Exception {
 		daoJoueur.supprimer(joueur);
 	}
 
+	/**
+	 * Teste la récupération de la liste des joueurs d'une équipe.
+	 * @throws Exception
+	 * @see modele.DAO.DAOJoueur#getListeJoueursParId(int)
+	 */
 	@Test
 	public void testGetListeJoueursParId() throws Exception {
 		DAOEquipe daoEquipe = new DAOEquipeImpl();

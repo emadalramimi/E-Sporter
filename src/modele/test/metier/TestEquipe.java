@@ -13,6 +13,10 @@ import modele.metier.Equipe;
 import modele.metier.Joueur;
 import modele.metier.Pays;
 
+/**
+ * Classe de tests de la classe Equipe.
+ * @see modele.metier.Equipe
+ */
 public class TestEquipe {
 	
 	private Equipe equipeSansJoueurs;

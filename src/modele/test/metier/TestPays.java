@@ -7,6 +7,10 @@ import org.junit.Test;
 
 import modele.metier.Pays;
 
+/**
+ * Classe de tests de la classe Pays.
+ * @see modele.metier.Pays
+ */
 public class TestPays {
 
 	Pays pays;

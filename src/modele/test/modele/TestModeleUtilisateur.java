@@ -17,12 +17,13 @@ import modele.DAO.DAOTournoiImpl;
 import modele.exception.IdentifiantOuMdpIncorrectsException;
 import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
+import modele.test.SuperTest;
 
 /**
  * Classe de test pour la classe modèle ModeleUtilisateur
  * @see ModeleUtilisateur
  */
-public class TestModeleUtilisateur extends TestModele {
+public class TestModeleUtilisateur extends SuperTest {
 
 	private ModeleUtilisateur modeleUtilisateur;
 

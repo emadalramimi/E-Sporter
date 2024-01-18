@@ -7,12 +7,13 @@ import org.junit.Test;
 import modele.ModelePalmares;
 import modele.DAO.DAOPalmares;
 import modele.DAO.DAOPalmaresImpl;
+import modele.test.SuperTest;
 
 /**
  * Classe de test pour le modèle Palmares
  * @see ModelePalmares
  */
-public class TestModelePalmares extends TestModele {
+public class TestModelePalmares extends SuperTest {
 
 	private ModelePalmares modele;
 	

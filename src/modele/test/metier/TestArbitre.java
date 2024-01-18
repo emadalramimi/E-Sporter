@@ -7,6 +7,10 @@ import org.junit.Test;
 
 import modele.metier.Arbitre;
 
+/**
+ * Classe de tests de la classe Arbitre.
+ * @see modele.metier.Arbitre
+ */
 public class TestArbitre {
 
 	private Arbitre arbitre;

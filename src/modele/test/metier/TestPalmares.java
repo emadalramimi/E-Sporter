@@ -11,6 +11,10 @@ import modele.metier.Equipe;
 import modele.metier.Palmares;
 import modele.metier.Pays;
 
+/**
+ * Classe de tests de la classe Palmares.
+ * @see modele.metier.Palmares
+ */
 public class TestPalmares {
 
 	private Equipe equipe;

@@ -19,6 +19,10 @@ import modele.metier.Tournoi;
 import modele.metier.Tournoi.Notoriete;
 import modele.metier.Utilisateur.Role;
 
+/**
+ * Classe de tests de la classe Tournoi.
+ * @see modele.metier.Tournoi
+ */
 public class TestTournoi {
 
 	private Tournoi tournoi1;
