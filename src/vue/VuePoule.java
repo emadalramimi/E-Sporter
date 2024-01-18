@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.util.List;
 import java.util.Vector;
 
 import vue.theme.JFrameTheme;
@@ -17,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import controleur.ControleurPoule;
+import modele.metier.Arbitre;
 import modele.metier.Equipe;
 import modele.metier.Poule;
 import modele.metier.Rencontre;
@@ -46,6 +48,7 @@ public class VuePoule extends JFrameTheme {
 	private boolean[][] isActif;
 	
 	private VueTournois vueTournois;
+	private VueJoueursArbitres vueArbitres;
 	
 	/**
      * Constructeur de l'IHM pour la saisie d'un poule
@@ -104,18 +107,23 @@ public class VuePoule extends JFrameTheme {
 		gbc_lblTournoi.gridy = 1;
 		panelTitre.add(lblTournoi, gbc_lblTournoi);
 
+		// Panel du bouton de clôture de la poule
+		JPanel panelBtnCloturerPoule = new JPanel();
+		panelBtnCloturerPoule.setBackground(CharteGraphique.FOND);
+		panelBtnCloturerPoule.setLayout(new FlowLayout());
+		panelHeader.add(panelBtnCloturerPoule, BorderLayout.EAST);
+
+		// Bouton de liste des arbitres
+		JButtonTheme btnListeArbitres = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Arbitres");
+		btnListeArbitres.addActionListener(controleur);
+		btnListeArbitres.setFont(CharteGraphique.getPolice(17, false));
+		panelBtnCloturerPoule.add(btnListeArbitres);
+
 		// Bouton de clôture de la poule
 		JButtonTheme btnCloturerPoule = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Clôturer la poule");
 		btnCloturerPoule.addActionListener(controleur);
 		btnCloturerPoule.setFont(CharteGraphique.getPolice(17, false));
-
-		// Panel du bouton de clôture de la poule
-		JPanel panelBtnCloturerPoule = new JPanel();
-		panelBtnCloturerPoule.setBackground(CharteGraphique.FOND);
-		panelBtnCloturerPoule.setLayout(new BorderLayout());
-		panelBtnCloturerPoule.add(btnCloturerPoule, BorderLayout.NORTH);
-
-		panelHeader.add(panelBtnCloturerPoule, BorderLayout.EAST);
+		panelBtnCloturerPoule.add(btnCloturerPoule);
 
 		// Panel du tableau
 		JPanel panelTableau = new JPanel();
@@ -317,6 +325,22 @@ public class VuePoule extends JFrameTheme {
 	public void afficherVueEtatResultatsTournoi(Tournoi tournoi) {
 		this.vueTournois.afficherVueEtatResultatsTournoi(tournoi);
     }
+
+	/**
+	 * Ouvre la fenêtre avec le détail des joueurs de l'équipe
+	 * @param joueurs : liste des joueurs de l'équipe
+	 */
+	public void afficherVueArbitres(List<Arbitre> arbitres) {
+		if (this.vueArbitres == null || !this.vueArbitres.isVisible()) {
+        	this.vueArbitres = new VueJoueursArbitres(arbitres);
+			this.ajouterFenetreEnfant(this.vueArbitres);
+			this.vueArbitres.setLocationRelativeTo(this);
+			this.vueArbitres.setVisible(true);
+        } else {
+        	this.vueArbitres.toFront();
+        }
+		
+	}
 
 	/**
 	 * Retourne la vue tournois fenêtre parente

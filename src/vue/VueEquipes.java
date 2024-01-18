@@ -44,7 +44,7 @@ public class VueEquipes extends SuperVueListe<Equipe> {
 
 	private ControleurEquipes controleur;
 	private VueSaisieEquipe vueSaisieEquipe;
-	private VueJoueurs vueJoueurs;
+	private VueJoueursArbitres vueJoueurs;
 	private VueBase vueBase;
 
 	public VueEquipes(VueBase vueBase) {
@@ -133,7 +133,7 @@ public class VueEquipes extends SuperVueListe<Equipe> {
 		if(this.vueJoueurs != null) {
 			this.vueJoueurs.fermerFenetre();
 		}
-		this.vueJoueurs = new VueJoueurs(joueurs, this);
+		this.vueJoueurs = new VueJoueursArbitres(joueurs, this);
 		this.vueBase.ajouterFenetreEnfant(this.vueJoueurs);
 		this.vueJoueurs.setLocationRelativeTo(this);
 		this.vueJoueurs.setVisible(true);

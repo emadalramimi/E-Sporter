@@ -141,6 +141,10 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
                     ex.printStackTrace();
                 }
                 break;
+            case "Arbitres":
+                // Affiche la liste des arbitres
+                this.vue.afficherVueArbitres(this.tournoi.getArbitres());
+                break;
             case "État des résultats":
                 // Affiche la vue d'état des résultats du tournoi
                 this.vue.afficherVueEtatResultatsTournoi(this.tournoi);
