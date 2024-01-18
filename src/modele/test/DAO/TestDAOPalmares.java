@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import modele.ModeleTournoiCloture;
 import modele.DAO.DAOEquipe;
 import modele.DAO.DAOEquipeImpl;
 import modele.DAO.DAOPalmares;
@@ -20,6 +22,12 @@ import modele.metier.Palmares;
  */
 public class TestDAOPalmares {
 	
+	@Before
+	public void setUp() throws Exception {
+		ModeleTournoiCloture modele = new ModeleTournoiCloture();
+		modele.majClassements();
+	}
+
 	/**
 	 * Teste la récupération du classement des équipes.
 	 * @throws Exception

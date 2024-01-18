@@ -218,28 +218,53 @@ public class TestDAOEquipe {
 		assertTrue(this.daoEquipe.estEquipeInscriteUnTournoi(this.daoEquipe.getParId(1).orElse(null)));
 	}
 
+	/**
+	 * Teste la levée d'exception lors de l'inscription d'une équipe déjà inscrite.
+	 * @throws Exception
+	 * @see DAOEquipe#inscrireEquipe(int)
+	 */
 	@Test(expected = InscriptionEquipeTournoiException.class)
 	public void testInscrireDejaInscrite() throws Exception {
 		this.daoEquipe.inscrireEquipe(this.daoEquipe.getParId(1).orElse(null), this.daoTournoi.getParId(1).orElse(null));
 		this.daoEquipe.inscrireEquipe(this.daoEquipe.getParId(1).orElse(null), this.daoTournoi.getParId(1).orElse(null));
 	}
 
+	/**
+	 * Teste la levée d'exception lors de l'inscription d'une équipe d'une saison antérieure.
+	 * @throws Exception
+	 * @see DAOEquipe#inscrireEquipe(int)
+	 */
 	@Test(expected = SaisonException.class)
 	public void testInscrireSaisonAnterieure() throws Exception {
 		this.daoEquipe.inscrireEquipe(this.daoEquipe.getParId(5).orElse(null), this.daoTournoi.getParId(1).orElse(null));
 	}
 
+	/**
+	 * Teste l'inscription d'une équipe.
+	 * @throws Exception
+	 * @see DAOEquipe#inscrireEquipe(int)
+	 */
 	@Test
 	public void testInscrire() throws Exception {
 		this.daoEquipe.ajouter(this.equipe);
 		this.daoEquipe.inscrireEquipe(this.equipe, this.daoTournoi.getParId(1).orElse(null));
 	}
 
+	/**
+	 * Teste la levée d'exception lors de la désinscription d'une équipe non inscrite.
+	 * @throws Exception
+	 * @see DAOEquipe#desinscrireEquipe(int)
+	 */
 	@Test(expected = InscriptionEquipeTournoiException.class)
 	public void testDesinscrireNonInscrite() throws Exception {
 		this.daoEquipe.desinscrireEquipe(this.equipe, this.daoTournoi.getParId(1).orElse(null));
 	}
 
+	/**
+	 * Teste la désinscription d'une équipe.
+	 * @throws Exception
+	 * @see DAOEquipe#desinscrireEquipe(int)
+	 */
 	@Test
 	public void testDesinscrire() throws Exception {
 		this.daoEquipe.ajouter(this.equipe);
@@ -247,6 +272,11 @@ public class TestDAOEquipe {
 		this.daoEquipe.desinscrireEquipe(this.equipe, this.daoTournoi.getParId(1).orElse(null));
 	}
 
+	/**
+	 * Teste la récupération des équipes de la saison.
+	 * @throws Exception
+	 * @see DAOEquipe#getEquipesSaison(int)
+	 */
 	@Test
 	public void testGetEquipesSaison() throws Exception {
 		assertNotNull(this.daoEquipe.getEquipesSaison());
@@ -256,6 +286,11 @@ public class TestDAOEquipe {
 		}
 	}
 
+	/**
+	 * Teste la récupération des équipes dans un tableau.
+	 * @throws Exception
+	 * @see DAOEquipe#getTableauEquipes()
+	 */
 	@Test
 	public void testGetTableauEquipes() throws Exception {
 		List<Equipe> equipes = this.daoEquipe.getTout();
@@ -272,6 +307,11 @@ public class TestDAOEquipe {
 		}
 	}
 
+	/**
+	 * Teste le filtrage des équipes.
+	 * @throws Exception
+	 * @see DAOEquipe#getParFiltrage()
+	 */
 	@Test
 	public void testGetParFiltrage() throws Exception {
 		Equipe equipeATester = this.daoEquipe.getParId(1).orElse(null);
@@ -287,6 +327,11 @@ public class TestDAOEquipe {
 		}
 	}
 
+	/**
+	 * Teste le filtrage des équipes.
+	 * @throws Exception
+	 * @see DAOEquipe#getParFiltrage()
+	 */
 	@Test
 	public void testGetParFiltrageNull() throws Exception {
 		Equipe equipeATester = this.daoEquipe.getParId(1).orElse(null);
