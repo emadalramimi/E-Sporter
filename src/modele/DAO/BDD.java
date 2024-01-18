@@ -64,25 +64,29 @@ public class BDD {
 	 */
 	public static void main(String[] args) {
 		try {
-			Statement st = BDD.getConnexion().createStatement();
-			
-			System.out.println("Connexion OK");
-			
-			// Construit la BDD
-			BDD bdd = new BDD();
-			bdd.construireTables(st);
-			bdd.insererDonnees(st);
-			
-			try {
-				BDD.getConnexion().commit();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
-			System.out.println("Création BDD OK");
+			BDD.creerBDD();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void creerBDD() throws SQLException {
+		Statement st = BDD.getConnexion().createStatement();
+			
+		System.out.println("Connexion OK");
+
+		// Construit la BDD
+		BDD bdd = new BDD();
+		bdd.construireTables(st);
+		bdd.insererDonnees(st);
+		
+		try {
+			BDD.getConnexion().commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("Création BDD OK");
 	}
 	
 	/**

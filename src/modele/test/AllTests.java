@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 
 import org.junit.runners.Suite;
 
+import modele.DAO.BDD;
 import modele.test.DAO.TestDAOAdministrateur;
 import modele.test.DAO.TestDAOArbitre;
 import modele.test.DAO.TestDAOEquipe;
@@ -75,9 +76,12 @@ public class AllTests {
 
     /**
      * Méthode principale pour lancer tous les tests
+     * La base de données est remise à zéro avant de lancer les tests
      * @param args Arguments
+     * @throws Exception si une erreur se produit pendant la création de la BDD
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        BDD.creerBDD();
         JUnitCore.runClasses(AllTests.class);
     }
 
