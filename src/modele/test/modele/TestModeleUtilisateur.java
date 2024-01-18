@@ -1,4 +1,4 @@
-package modele.test;
+package modele.test.modele;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -90,6 +90,10 @@ public class TestModeleUtilisateur {
 		assertEquals(ModeleUtilisateur.getCompteCourant(), null);
 	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void testValiderUtilisateurArbitreCloture() throws IllegalArgumentException {
+		this.modeleUtilisateur.connecter("Pcl2023", "$Pcl2023");
+	}
 	@After
 	public void tearsDown() {
 		if (ModeleUtilisateur.getCompteCourant() != null)

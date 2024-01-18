@@ -1,6 +1,7 @@
-package modele.test;
+package modele.test.modele;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
@@ -19,5 +20,6 @@ public class TestModeleRencontre {
 		DAOTournoi daoTournoi = new DAOTournoiImpl();
 		DAORencontre daoRencontre = new DAORencontreImpl();
 		assertEquals(modele.getRencontreInMemory(daoTournoi.getParId(1).get(), 1), daoRencontre.getParId(1).get());
+		assertNotEquals(modele.getRencontreInMemory(daoTournoi.getParId(1).get(), 100), daoRencontre.getParId(1).get());
 	}
 }

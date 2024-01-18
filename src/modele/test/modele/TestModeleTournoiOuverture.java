@@ -1,4 +1,4 @@
-package modele.test;
+package modele.test.modele;
 
 import java.util.ArrayList;
 import java.util.Arrays;

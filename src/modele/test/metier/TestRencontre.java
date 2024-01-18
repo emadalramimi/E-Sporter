@@ -1,4 +1,4 @@
-package modele.test;
+package modele.test.metier;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;

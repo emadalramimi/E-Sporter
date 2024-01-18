@@ -1,4 +1,4 @@
-package modele.test;
+package modele.test.metier;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,7 +16,7 @@ public class TestPalmares {
 	private Equipe equipe;
 
 	@Before
-	public void setUp() throws IllegalArgumentException {
+	public void setUp() {
 		this.equipe = new Equipe("Equipe", Pays.CANADA, new ArrayList<>());
 	}
 
