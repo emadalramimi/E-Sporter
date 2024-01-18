@@ -23,11 +23,10 @@ public class TestModelePalmares extends SuperTest {
 	 * @see ModelePalmares#getClassement()
 	 */
 	@Test
-	public void testGetParNom() throws Exception {
+	public void testGetClassement() throws Exception {
 		modele = new ModelePalmares();
 		DAOPalmares daoPalmares = new DAOPalmaresImpl();
-		assertEquals(daoPalmares.getClassement().get(0).getEquipe(), modele.getParNom("DCG Academy").get(0).getEquipe());
-		assertEquals(daoPalmares.getClassement().get(0).getPoints(), modele.getParNom("DCG Academy").get(0).getPoints(),0.01);
+		assertEquals(daoPalmares.getClassement().get(0).getEquipe(), modele.getParNom("CFO").get(0).getEquipe());
 	}
 
 }

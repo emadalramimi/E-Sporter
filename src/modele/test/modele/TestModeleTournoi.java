@@ -68,7 +68,7 @@ public class TestModeleTournoi extends SuperTest {
 	 * @see ModeleTournoi#getParNom(String)
 	 */
 	@Test
-	public void testParNom() throws Exception {
+	public void testGetParNom() throws Exception {
 		assertEquals(modele.getParNom("PCL 2023").get(0), daoTournoi.getParId(1).get());
 	}
 	
