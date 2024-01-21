@@ -3,10 +3,12 @@ package modele;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.awt.Color;
 import java.awt.print.PrinterException;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.JTable;
+import javax.swing.UIManager;
 
 import modele.metier.Equipe;
 import modele.metier.Tournoi;
@@ -65,6 +67,9 @@ public class ModeleImpression {
 
         // Création du format pour le pied de page
         MessageFormat footerFormat = new MessageFormat("Au " + currentDateTime);
+
+        // Pour éviter un bug d'affichage de la modal d'impression
+        UIManager.put("Panel.background", Color.WHITE);
 
         table.print(JTable.PrintMode.NORMAL, headerFormat, footerFormat);
     }

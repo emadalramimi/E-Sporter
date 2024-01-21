@@ -35,6 +35,7 @@ public class SuperVueListe<T> extends JFrameTheme implements RecherchableVue<T> 
 	private JPanel panelRecherche;
     private JTextFieldTheme txtRecherche;
     private JButtonTheme btnRecherche;
+	private JLabelTheme lblTitre;
 
 	/**
 	 * Construit une vue générique pour l'affichage d'une page avec un titre, un bouton et un panel (contenant un tableau par exemple)
@@ -84,11 +85,11 @@ public class SuperVueListe<T> extends JFrameTheme implements RecherchableVue<T> 
 		panelTitre.setLayout(new GridLayout(1, 0, 0, 0));
 		
 		// lblTitre, le label contenant le titre
-		JLabelTheme lblTitre = new JLabelTheme(titre, 30, true);
-		lblTitre.setHorizontalAlignment(SwingConstants.LEFT);
-		lblTitre.setFont(CharteGraphique.getPolice(30, true));
-		lblTitre.setForeground(CharteGraphique.TEXTE);
-		panelTitre.add(lblTitre);
+		this.lblTitre = new JLabelTheme(titre, 30, true);
+		this.lblTitre.setHorizontalAlignment(SwingConstants.LEFT);
+		this.lblTitre.setFont(CharteGraphique.getPolice(30, true));
+		this.lblTitre.setForeground(CharteGraphique.TEXTE);
+		panelTitre.add(this.lblTitre);
 		
 		// panelBouton, le panel contenant le bouton à côté du titre
 		if(boutonTitre != null) {
@@ -149,6 +150,15 @@ public class SuperVueListe<T> extends JFrameTheme implements RecherchableVue<T> 
     public EventListener getControleur() {
         return this.controleur;
     }
+
+	/**
+	 * Modifie le titre de la page
+	 * @param titre le nouveau titre de la page
+	 */
+	public void setTitre(String titre) {
+		this.lblTitre.setText(titre);
+
+	}
 
     /**
 	 * Vérifie si le bouton est le bouton de recherche

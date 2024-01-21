@@ -445,6 +445,18 @@ public class VueSaisieTournoi extends JFrameTheme {
 			this.txtIdentifiantArbitres.setText(tournoi.getIdentifiant());
 			this.modelDateDebut.setValue(new Date(tournoi.getDateTimeDebut() * 1000));
 			this.modelDateFin.setValue(new Date(tournoi.getDateTimeFin() * 1000));
+			
+			Calendar calendarDebut = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
+			calendarDebut.setTimeInMillis(tournoi.getDateTimeDebut() * 1000L);
+
+			Calendar calendarFin = Calendar.getInstance(TimeZone.getTimeZone("Europe/Paris"));
+			calendarFin.setTimeInMillis(tournoi.getDateTimeFin() * 1000L);
+
+			this.spinnerHeuresDebut.setValue(calendarDebut.get(Calendar.HOUR_OF_DAY));
+			this.spinnerMinutesDebut.setValue(calendarDebut.get(Calendar.MINUTE));
+			this.spinnerHeuresFin.setValue(calendarFin.get(Calendar.HOUR_OF_DAY));
+			this.spinnerMinutesFin.setValue(calendarFin.get(Calendar.MINUTE));
+
 			this.cboxNotoriete.setSelectedItem(tournoi.getNotoriete().getLibelle());
 			System.out.println(tournoi.getArbitres());
 			for (Arbitre arbitre : tournoi.getArbitres()) {

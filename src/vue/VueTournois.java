@@ -198,7 +198,7 @@ public class VueTournois extends SuperVueListe<Tournoi> {
 		// Une seule fenêtre de saisie à la fois, si déjà ouverte elle est mise au premier plan
         if (this.vueEtatResultatsTournoi == null || !this.vueEtatResultatsTournoi.isVisible()) {
         	this.vueEtatResultatsTournoi = new VueEtatResultatsTournoi(tournoi);
-        	this.ajouterFenetreEnfant(this.vueEtatResultatsTournoi);
+        	this.vueBase.ajouterFenetreEnfant(this.vueEtatResultatsTournoi);
         	this.vueEtatResultatsTournoi.setLocationRelativeTo(this);
         	this.vueEtatResultatsTournoi.setVisible(true);
         } else {

@@ -84,8 +84,9 @@ public class ControleurRecherche<T> extends KeyAdapter {
 			this.vue.remplirTableau(this.modele.getParNom(requeteRecherche));
 		} catch (Exception ex) {
             JFrameTheme vueFrame = (JFrameTheme) this.vue;
+			ex.printStackTrace();
 			vueFrame.afficherPopupErreur("Une erreur est survenue");
-			throw new RuntimeException("Erreur dans la recherche");
+			throw new RuntimeException("Erreur dans la recherche", ex);
 		}
 	}
 

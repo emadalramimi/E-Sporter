@@ -269,24 +269,24 @@ public class VueBase extends JFrameTheme {
 		
 		// Ouvrir l'onglet en fonction du menu
 		switch(menu) {
-		case TOURNOIS:
-			VueTournois vueTournois = new VueTournois();//METTRE THIS ICI URGENT TODO
-			vueTournois.afficherVueTournois(this.contenu, this);
-			break;
-		case EQUIPES:
-			VueEquipes vueEquipe = new VueEquipes(this);
-			vueEquipe.afficherVueEquipe(this.contenu);
-			break;
-		case HISTORIQUE:
-			VueHistoriquePoints vueHistoriquePoints = new VueHistoriquePoints();
-			vueHistoriquePoints.afficherVueHistoriquePoints(this.contenu, this);
-			break;
-		case PALMARES:
-			VuePalmares vuePalmares = new VuePalmares();
-			vuePalmares.afficherVuePalmares(this.contenu, this);
-			break;
-		default:
-			break;
+			case TOURNOIS:
+				VueTournois vueTournois = new VueTournois();//METTRE THIS ICI URGENT TODO
+				vueTournois.afficherVueTournois(this.contenu, this);
+				break;
+			case EQUIPES:
+				VueEquipes vueEquipe = new VueEquipes(this);
+				vueEquipe.afficherVueEquipe(this.contenu);
+				break;
+			case HISTORIQUE:
+				VueHistoriquePoints vueHistoriquePoints = new VueHistoriquePoints();
+				vueHistoriquePoints.afficherVueHistoriquePoints(this.contenu, this);
+				break;
+			case PALMARES:
+				VuePalmares vuePalmares = new VuePalmares();
+				vuePalmares.afficherVuePalmares(this.contenu, this);
+				break;
+			default:
+				break;
 		}
 		
 		// Mise à jour de l'affichage

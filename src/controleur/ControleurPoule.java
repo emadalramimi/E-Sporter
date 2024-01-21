@@ -9,6 +9,7 @@ import javax.swing.JButton;
 
 import modele.ModeleRencontre;
 import modele.ModeleTournoiCloture;
+import modele.ModeleUtilisateur;
 import modele.DAO.DAOEquipe;
 import modele.DAO.DAOEquipeImpl;
 import modele.DAO.DAORencontre;
@@ -21,6 +22,7 @@ import modele.exception.TournoiInexistantException;
 import modele.metier.Equipe;
 import modele.metier.Rencontre;
 import modele.metier.Tournoi;
+import vue.VueConnexion;
 import vue.VuePoule;
 import vue.theme.JTableTheme;
 
@@ -37,6 +39,7 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
     private DAOEquipe daoEquipe;
     private ModeleTournoiCloture modeleTournoiCloture;
     private ModeleRencontre modeleRencontre;
+    private ModeleUtilisateur modeleUtilisateur;
 
     /**
      * Constructeur du controleur de VuePoule
@@ -51,6 +54,7 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
         this.daoEquipe = new DAOEquipeImpl();
         this.modeleTournoiCloture = new ModeleTournoiCloture();
         this.modeleRencontre = new ModeleRencontre();
+        this.modeleUtilisateur = new ModeleUtilisateur();
     }
 
     /**
@@ -129,8 +133,13 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
                     if(!this.tournoi.getPouleActuelle().getEstFinale()) {
                         this.vue.afficherPopupMessage("La poule a été clôturée.");
                     } else {
-                        this.vue.afficherPopupMessage("Le tournoi a été clôturé.");
+                        this.vue.afficherPopupMessage("Le tournoi a été clôturé. Vous allez être déconnecté.");
                         this.vue.getVueTournois().remplirTableau(this.daoTournoi.getTout());
+
+                        this.modeleUtilisateur.deconnecter();
+                        VueConnexion vueConnexion = new VueConnexion();
+                        vueConnexion.afficher();
+                        this.vue.getVueTournois().getVueBase().fermerFenetre();
                     }
 
                     this.vue.fermerFenetre();

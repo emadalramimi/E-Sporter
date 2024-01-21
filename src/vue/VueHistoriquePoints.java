@@ -38,6 +38,7 @@ public class VueHistoriquePoints extends SuperVueListe<Equipe> {
 	private ControleurHistoriquePoints controleur;
 	private JTable tableEquipes;
 	private JTable tableHistoriquePoints;
+	private JButtonTheme btnImprimer;
 	private DefaultTableModel modelTableEquipes;
 	private DefaultTableModel modelTableHistoriquePoints;
 
@@ -49,8 +50,9 @@ public class VueHistoriquePoints extends SuperVueListe<Equipe> {
 	
 	public void afficherVueHistoriquePoints(JPanel contentPane, VueBase vueBase) {
 		// btnImprimer, un bouton pour permettre l'ajout d'une équipe
-		JButtonTheme btnImprimer = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Imprimer l'historique sélectionné");
-		btnImprimer.addActionListener(this.controleur);
+		this.btnImprimer = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Imprimer cet historique");
+		this.btnImprimer.setEnabled(false);
+		this.btnImprimer.addActionListener(this.controleur);
 
 		JPanel panelCorps = super.getPanelCorps();
 		
@@ -59,21 +61,24 @@ public class VueHistoriquePoints extends SuperVueListe<Equipe> {
 		
 		// Panel de recherche
 		panelTableauFiltres.add(super.getPanelRecherche());
-
 		panelCorps.add(panelTableauFiltres, BorderLayout.NORTH);
 		
+		// Panel des tableaux côte à côte
 		JPanel panelTableaux = new JPanel();
 		panelTableaux.setBackground(CharteGraphique.FOND);
-		panelTableaux.setLayout(new GridLayout(1, 2, 20, 0));
+		GridLayout gridLayout = new GridLayout(1, 2);
+		gridLayout.setHgap(20);
+		gridLayout.setVgap(20);
+		panelTableaux.setLayout(gridLayout);
 
+		// Tableau d'équipes
 		JScrollPane scrollPaneTableEquipes = new JScrollPaneTheme();
 		GridBagConstraints gbc_scrollPaneTableEquipes = new GridBagConstraints();
 		gbc_scrollPaneTableEquipes.fill = GridBagConstraints.BOTH;
 		gbc_scrollPaneTableEquipes.gridx = 0;
-		gbc_scrollPaneTableEquipes.gridy = 2;
+		gbc_scrollPaneTableEquipes.gridy = 0;
 		panelTableaux.add(scrollPaneTableEquipes, gbc_scrollPaneTableEquipes);
 
-		// Tableau d'équipes
 		this.tableEquipes = new JTableTheme(
 			new String[] {"ID", "Pays", "Nom"},
 			null
@@ -89,19 +94,19 @@ public class VueHistoriquePoints extends SuperVueListe<Equipe> {
 	    paysColumn.setCellRenderer(new ImageTableCellRenderer());
 
 		// Tableau des historiques de points
-		JScrollPane scrollPaneHistoriquePoints2 = new JScrollPaneTheme();
-		GridBagConstraints gbc_scrollPaneHistoriquePoints2 = new GridBagConstraints();
-		gbc_scrollPaneHistoriquePoints2.fill = GridBagConstraints.BOTH;
-		gbc_scrollPaneHistoriquePoints2.gridx = 1;
-		gbc_scrollPaneHistoriquePoints2.gridy = 2;
-		panelTableaux.add(scrollPaneHistoriquePoints2, gbc_scrollPaneHistoriquePoints2);
+		JScrollPane scrollPaneHistoriquePoints = new JScrollPaneTheme();
+		GridBagConstraints gbc_scrollPaneHistoriquePoints = new GridBagConstraints();
+		gbc_scrollPaneHistoriquePoints.fill = GridBagConstraints.BOTH;
+		gbc_scrollPaneHistoriquePoints.gridx = 1;
+		gbc_scrollPaneHistoriquePoints.gridy = 0;
+		panelTableaux.add(scrollPaneHistoriquePoints, gbc_scrollPaneHistoriquePoints);
 
 		this.tableHistoriquePoints = new JTableTheme(
 			new String[] {"Tournoi", "Points"},
 			null
 		);
 		this.modelTableHistoriquePoints = (DefaultTableModel) this.tableHistoriquePoints.getModel();
-		scrollPaneHistoriquePoints2.setViewportView(this.tableHistoriquePoints);
+		scrollPaneHistoriquePoints.setViewportView(this.tableHistoriquePoints);
 
 		panelCorps.add(panelTableaux, BorderLayout.CENTER);
 		
@@ -159,6 +164,16 @@ public class VueHistoriquePoints extends SuperVueListe<Equipe> {
 	}
 
 	/**
+	 * Vide le tableau d'historique points
+	 */
+	@Override
+	public void resetFiltres() {
+		this.setTitre("Historique des points");
+		this.modelTableHistoriquePoints.setRowCount(0);
+		this.tableHistoriquePoints.setModel(this.modelTableHistoriquePoints);
+	}
+
+	/**
 	 * Retourne le tableau d'équipes
 	 * @return le tableau d'équipes
 	 */
@@ -166,6 +181,18 @@ public class VueHistoriquePoints extends SuperVueListe<Equipe> {
 		return this.tableEquipes;
 	}
 
+	/**
+	 * Active le bouton d'impression
+	 */
+	public void activerBoutonImprimer() {
+		this.btnImprimer.setEnabled(true);
+	}
+
+	/**
+	 * Retourne le tableau d'historique points à imprimer
+	 * @return le tableau d'historique points à imprimer
+	 * @throws IllegalArgumentException Si aucune donnée à imprimer
+	 */
 	public JTableThemeImpression getTableImpression() throws IllegalArgumentException {
 		if(this.modelTableHistoriquePoints.getRowCount() == 0) {
 			throw new IllegalArgumentException("Aucune donnée à imprimer");

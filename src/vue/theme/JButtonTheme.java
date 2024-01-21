@@ -57,12 +57,25 @@ public class JButtonTheme extends JButton {
 		
 		// Modification de la couleur de fond selon le type
 		switch(type) {
-		case PRIMAIRE:
+			case PRIMAIRE:
+				this.setBackground(CharteGraphique.PRIMAIRE);
+				break;
+			case SECONDAIRE:
+				this.setBackground(CharteGraphique.FOND_SECONDAIRE);
+				break;
+		}
+	}
+
+	/**
+	 * Modifie la couleur de fond du bouton si le bouton est activé ou non
+	 */
+	@Override
+	public void setEnabled(boolean b) {
+		super.setEnabled(b);
+		if(b) {
 			this.setBackground(CharteGraphique.PRIMAIRE);
-			break;
-		case SECONDAIRE:
+		} else {
 			this.setBackground(CharteGraphique.FOND_SECONDAIRE);
-			break;
 		}
 	}
 	

@@ -20,6 +20,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JLabel;
 import java.awt.Insets;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Vector;
 import java.util.stream.Collectors;
@@ -155,7 +156,7 @@ public class VuePalmares extends SuperVueListe<Palmares> {
 
 		this.remplirTableau(podium);
 
-		super.afficherVue(contentPane, "Palmarès", btnImprimer, panelCorps);
+		super.afficherVue(contentPane, "Palmarès saison " + LocalDate.now().getYear(), btnImprimer, panelCorps);
 	}
 
 	/**

@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 
 import modele.ModeleUtilisateur;
+import modele.exception.IdentifiantOuMdpIncorrectsException;
 import vue.VueBase;
 import vue.VueConnexion;
 
@@ -98,7 +99,7 @@ public class ControleurConnexion extends KeyAdapter implements ActionListener {
 
 				VueBase vueBase = new VueBase();
 				vueBase.afficher();
-			} catch (IllegalArgumentException | IllegalStateException ex) {
+			} catch (IllegalArgumentException | IllegalStateException | IdentifiantOuMdpIncorrectsException ex) {
 				vue.afficherPopupErreur(ex.getMessage());
 			} catch (Exception err) {
 				// Si une autre erreur SQL est survenue (deux instances ouvertes par exemple)

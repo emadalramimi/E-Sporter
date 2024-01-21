@@ -46,7 +46,8 @@ public class ControleurHistoriquePoints extends ControleurRecherche<Equipe> impl
     @Override
     public void valueChanged(ListSelectionEvent e) {
         JTable tableEquipes = this.vue.getTableEquipes();
-        if(e.getSource() == tableEquipes.getSelectionModel() && !e.getValueIsAdjusting()) {
+        if(e.getSource() == tableEquipes.getSelectionModel() && !e.getValueIsAdjusting() && tableEquipes.getSelectedRow() != -1) {
+            // Récupération de l'équipe
             int idEquipe = (int) tableEquipes.getValueAt(tableEquipes.getSelectedRow(), 0);
             try {
                 this.equipeSelectionnee = this.daoEquipe.getParId(idEquipe).orElse(null);
@@ -54,6 +55,12 @@ public class ControleurHistoriquePoints extends ControleurRecherche<Equipe> impl
                 this.vue.afficherPopupErreur("Une erreur est survenue lors de la récupération de l'équipe sélectionnée");
                 throw new RuntimeException(err);
             }
+
+            // Activation du bouton d'impression et mise à jour du titre
+            this.vue.activerBoutonImprimer();
+            this.vue.setTitre("Historique des points : " + this.equipeSelectionnee.getNom());
+
+            // Remplissage du tableau des historiques de points
             try {
                 this.vue.remplirTableauHistoriquePoints(this.daoHistoriquePoints.getParEquipe(idEquipe));
             } catch(Exception err) {
@@ -71,15 +78,19 @@ public class ControleurHistoriquePoints extends ControleurRecherche<Equipe> impl
     public void actionPerformed(ActionEvent e) {
 		super.traitementClicBoutonRecherche(e);
 
+        // Si il s'agit du bouton "Imprimer cet historique"
         if(e.getSource() instanceof JButton) {
             JButton bouton = (JButton) e.getSource();
-            if(bouton.getText() == "Imprimer l'historique sélectionné") {
+            if(bouton.getText() == "Imprimer cet historique") {
+                // Récupération du tableau pour impression
                 JTableThemeImpression table = null;
                 try {
                     table = this.vue.getTableImpression();
                 } catch(IllegalArgumentException err) {
                     this.vue.afficherPopupErreur(err.getMessage());
                 }
+                
+                // Impression du tableau s'il existe
                 if(table != null) {
                     try {
                         this.modeleImpression.imprimerHistoriquePoints(table, this.equipeSelectionnee);
