@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"controleur"},{"l":"modele"},{"l":"modele.DAO"},{"l":"modele.exception"},{"l":"modele.metier"},{"l":"vue"},{"l":"vue.theme"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"controleur"},{"l":"modele"},{"l":"modele.DAO"},{"l":"modele.exception"},{"l":"modele.metier"},{"l":"modele.test"},{"l":"modele.test.DAO"},{"l":"modele.test.metier"},{"l":"modele.test.modele"},{"l":"vue"},{"l":"vue.theme"}];updateSearchResults();

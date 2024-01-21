@@ -236,7 +236,6 @@ public class TestDAOTournoi extends SuperTest {
 	
 	/**
 	 * Teste la récupération du tournoi d'une rencontre vide
-	 * @throws Exception
 	 * @see modele.DAO.DAOTournoi#getTournoiRencontre(String)
 	 */
 	@Test

@@ -4,5 +4,9 @@ modele
 modele.DAO
 modele.exception
 modele.metier
+modele.test
+modele.test.DAO
+modele.test.metier
+modele.test.modele
 vue
 vue.theme

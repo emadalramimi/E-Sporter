@@ -327,8 +327,8 @@ public class VuePoule extends JFrameTheme {
     }
 
 	/**
-	 * Ouvre la fenêtre avec le détail des joueurs de l'équipe
-	 * @param joueurs : liste des joueurs de l'équipe
+	 * Ouvre la fenêtre avec le détail des arbitres du tournoi
+	 * @param arbitres : liste des arbitres
 	 */
 	public void afficherVueArbitres(List<Arbitre> arbitres) {
 		if (this.vueArbitres == null || !this.vueArbitres.isVisible()) {

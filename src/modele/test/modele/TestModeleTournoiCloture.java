@@ -139,7 +139,6 @@ public class TestModeleTournoiCloture extends SuperTest {
 
 	/**
 	 * Teste la méthode getNombrePointsParClassement
-	 * @throws Exception si une erreur se produit pendant le test
 	 * @see ModeleTournoiCloture#getNombrePointsParClassement(Map, Notoriete)
 	 */
 	@Test
