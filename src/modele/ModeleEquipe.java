@@ -43,7 +43,7 @@ public class ModeleEquipe implements Recherchable<Equipe> {
 		
 		// Récupération des joueurs saisis et mise à jour des joueurs de l'équipe
 		List<Joueur> joueursEquipe = equipe.getJoueurs();
-		for(int i = 0; i < joueursEquipe.size(); i++) {
+		for(int i = 0; i < nomsJoueurs.size(); i++) {
 			joueursEquipe.get(i).setPseudo(nomsJoueurs.get(i));
 		}
 

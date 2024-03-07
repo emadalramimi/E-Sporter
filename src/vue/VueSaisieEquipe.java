@@ -63,7 +63,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		contentPane.setBorder(new EmptyBorder(15,15,15,15));
 		
         // Label titre
-		JLabelTheme titre = new JLabelTheme("Ajouter une équipe", 30, true);
+		JLabelTheme titre = new JLabelTheme(equipe == null ? "Ajouter une équipe" : "Modifier une équipe", 30, true);
         titre.setHorizontalAlignment(SwingConstants.CENTER);
         getContentPane().add(titre, BorderLayout.NORTH);
 		
