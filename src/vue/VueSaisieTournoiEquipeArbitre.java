@@ -120,6 +120,7 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 		
 		// Boutons annuler et ajouter
 		JButtonTheme btnAnnuler = new JButtonTheme(JButtonTheme.Types.SECONDAIRE,"Annuler");
+		btnAnnuler.setActionCommand("ANNULER");
 		btnAnnuler.addActionListener(controleur);
 		GridBagConstraints gbc_buttonAnnuler = new GridBagConstraints();
 		gbc_buttonAnnuler.insets = new Insets(0, 0, 0, 5);
@@ -132,9 +133,11 @@ public class VueSaisieTournoiEquipeArbitre extends JFrameTheme {
 		switch(this.type) {
 		case EQUIPE:
 			btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter l'équipe");
+			btnAjouter.setActionCommand("AJOUTER_EQUIPE");
 			break;
 		case ARBITRE:
 			btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE,"Ajouter l'arbitre");
+			btnAjouter.setActionCommand("AJOUTER_ARBITRE");
 			break;
 		}
 		btnAjouter.addActionListener(controleur);

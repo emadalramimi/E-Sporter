@@ -59,15 +59,15 @@ public class ControleurConnexion extends KeyAdapter implements ActionListener {
 		} else {
 			// Si c'est un bouton
 			JButton b = (JButton) e.getSource();
-			switch(b.getText()) {
-			case "Connexion":
-				// Connexion de l'utilisateur
-				this.connecter();
-				break;
-			case "Quitter":
-				// Fermeture de la fenêtre
-				vue.fermerFenetre();
-				break;
+			switch(b.getActionCommand()) {
+				case "CONNEXION":
+					// Connexion de l'utilisateur
+					this.connecter();
+					break;
+				case "QUITTER":
+					// Fermeture de la fenêtre
+					vue.fermerFenetre();
+					break;
 			}
 		}
 	}

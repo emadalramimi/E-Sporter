@@ -54,7 +54,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 		JButton bouton = (JButton) e.getSource();
 		
 		// Si le bouton est bien le bouton valider ou modifier
-		if(bouton.getText() == "Valider" || bouton.getText() == "Modifier") {
+		if(bouton.getActionCommand().equals("VALIDER") || bouton.getActionCommand().equals("MODIFIER")) {
 			// Récupération du texte des champs
 			String nom = vueSaisieEquipe.getNomEquipe();
 			String pays = vueSaisieEquipe.getPaysEquipe();
@@ -68,7 +68,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 			}
 			
 			// Création de l'équipe au clic de valider
-			if(bouton.getText() == "Valider") {
+			if(bouton.getActionCommand().equals("VALIDER")) {
 				
 				// Créer des instances de Joueur pour chaque pseudo de joueur renseigné
 				List<Joueur> joueurs = this.modeleEquipe.creerJoueurs(nomsJoueurs);
@@ -92,7 +92,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 				}
 			} 
 			// Modification de l'équipe au clic de modifier
-			else if(bouton.getText() == "Modifier") {
+			else if(bouton.getActionCommand().equals("MODIFIER")) {
 				// Récupérer l'équipe à modifier
 				Equipe equipe = this.equipeOptionnel.orElse(null);
 				
@@ -123,7 +123,7 @@ public class ControleurSaisieEquipe implements ActionListener {
 			
 			this.vueEquipes.resetChampRecherche();
 			this.vueSaisieEquipe.fermerFenetre();
-		} else if(bouton.getText() == "Annuler") {
+		} else if(bouton.getActionCommand().equals("ANNULER")) {
 			this.vueSaisieEquipe.fermerFenetre();
 		}
 	}

@@ -167,11 +167,13 @@ public class VueConnexion extends JFrameTheme {
 		
 		// btnQuitter, le bouton quitter
 		this.btnQuitter = new JButtonTheme(Types.SECONDAIRE, "Quitter");
+		this.btnQuitter.setActionCommand("QUITTER");
 		this.btnQuitter.addActionListener(controleur);
 		panelBoutons.add(this.btnQuitter);
 		
 		// btnConnexion, le bouton connexion
 		this.btnConnexion = new JButtonTheme(Types.PRIMAIRE, "Connexion");
+		this.btnConnexion.setActionCommand("CONNEXION");
 		this.btnConnexion.addActionListener(controleur);
 		panelBoutons.add(this.btnConnexion);
 		

@@ -213,6 +213,7 @@ public class VueSaisieEquipe extends JFrameTheme {
 		
 		// Bouton annuler
 		btnAnnuler = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Annuler");
+		btnAnnuler.setActionCommand("ANNULER");
 		btnAnnuler.addActionListener(controleur);
 		panelAnnuler.add(btnAnnuler);
 		
@@ -228,8 +229,10 @@ public class VueSaisieEquipe extends JFrameTheme {
 		// Si aucune équipe est renseignée afficher le bouton valider, sinon afficher le bouton modifier
 		if(equipe == null) {
 			btnValider = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Valider");
+			btnValider.setActionCommand("VALIDER");
 		} else {
 			btnValider = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Modifier");
+			btnValider.setActionCommand("MODIFIER");
 		}
 		btnValider.addActionListener(controleur);
 		btnValider.setIcon(new ImageIcon(VueSaisieEquipe.class.getResource("/images/buttons/valider.png")));

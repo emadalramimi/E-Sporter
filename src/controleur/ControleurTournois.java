@@ -205,7 +205,7 @@ public class ControleurTournois extends ControleurRecherche<Tournoi> implements 
 			JButton bouton = (JButton) e.getSource();
 			
 			// Si il s'agit du bouton ajouter
-			if(bouton.getText() == "Ajouter") {
+			if(bouton.getActionCommand().equals("AJOUTER")) {
 				// Seul un administrateur peut ajouter un tournoi
 				if(ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ADMINISTRATEUR) {
 					this.vue.afficherPopupErreur("Seul un administrateur peut ajouter un tournoi.");

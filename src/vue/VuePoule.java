@@ -115,12 +115,14 @@ public class VuePoule extends JFrameTheme {
 
 		// Bouton de liste des arbitres
 		JButtonTheme btnListeArbitres = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Arbitres");
+		btnListeArbitres.setActionCommand("LISTER_ARBITRES");
 		btnListeArbitres.addActionListener(controleur);
 		btnListeArbitres.setFont(CharteGraphique.getPolice(17, false));
 		panelBtnCloturerPoule.add(btnListeArbitres);
 
 		// Bouton de clôture de la poule
 		JButtonTheme btnCloturerPoule = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Clôturer la poule");
+		btnCloturerPoule.setActionCommand("CLOTURER_POULE");
 		btnCloturerPoule.addActionListener(controleur);
 		btnCloturerPoule.setFont(CharteGraphique.getPolice(17, false));
 		panelBtnCloturerPoule.add(btnCloturerPoule);
@@ -257,10 +259,12 @@ public class VuePoule extends JFrameTheme {
 
 		// Création des boutons
 		JButtonTheme btnFermer = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Fermer");
+		btnFermer.setActionCommand("FERMER");
 		btnFermer.addActionListener(controleur);
 		btnFermer.setFont(CharteGraphique.getPolice(17, false));
 
 		JButtonTheme btnEtatsResultats = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "État des résultats");
+		btnEtatsResultats.setActionCommand("ETATS_RESULTATS");
 		btnEtatsResultats.addActionListener(controleur);
 		btnEtatsResultats.setFont(CharteGraphique.getPolice(17, false));
 

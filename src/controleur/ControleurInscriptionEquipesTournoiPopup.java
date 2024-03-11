@@ -46,8 +46,8 @@ public class ControleurInscriptionEquipesTournoiPopup implements ActionListener 
 		JButton bouton = (JButton) e.getSource();
 		
 		// Traitement différent en fonction du bouton
-		switch(bouton.getText()) {
-			case "Ajouter l'équipe":
+		switch(bouton.getActionCommand()) {
+			case "AJOUTER_EQUIPE":
 				// On récupère l'équipe saisie			
 				Equipe equipe = this.vueSaisieTournoiEquipeArbitre.getEquipe();
 
@@ -75,7 +75,7 @@ public class ControleurInscriptionEquipesTournoiPopup implements ActionListener 
 					err.printStackTrace();
 				}
 				break;
-		case "Annuler":
+		case "ANNULER":
 			this.vueSaisieTournoiEquipeArbitre.fermerFenetre();
 			break;
 		}

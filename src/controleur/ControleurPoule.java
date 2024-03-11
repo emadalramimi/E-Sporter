@@ -125,8 +125,8 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JButton bouton = (JButton) e.getSource();
 
-        switch(bouton.getText()) {
-            case "Clôturer la poule":
+        switch(bouton.getActionCommand()) {
+            case "CLOTURER_POULE":
                 try {
                     this.modeleTournoiCloture.cloturerPoule(this.tournoi);
                     
@@ -150,15 +150,15 @@ public class ControleurPoule extends MouseAdapter implements ActionListener {
                     ex.printStackTrace();
                 }
                 break;
-            case "Arbitres":
+            case "LISTER_ARBITRES":
                 // Affiche la liste des arbitres
                 this.vue.afficherVueArbitres(this.tournoi.getArbitres());
                 break;
-            case "État des résultats":
+            case "ETATS_RESULTATS":
                 // Affiche la vue d'état des résultats du tournoi
                 this.vue.afficherVueEtatResultatsTournoi(this.tournoi);
                 break;
-            case "Fermer":
+            case "FERMER":
                 this.vue.fermerFenetre();
                 break;
         }

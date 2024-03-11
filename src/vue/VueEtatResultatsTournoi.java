@@ -116,10 +116,12 @@ public class VueEtatResultatsTournoi extends JFrameTheme {
 
 		// Création des boutons
 		JButtonTheme btnFermer = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Fermer");
+		btnFermer.setActionCommand("FERMER");
 		btnFermer.addActionListener(controleur);
 		btnFermer.setFont(CharteGraphique.getPolice(17, false));
 
 		JButtonTheme btnImprimer = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Imprimer");
+		btnImprimer.setActionCommand("IMPRIMER");
 		btnImprimer.addActionListener(controleur);
 		btnImprimer.setFont(CharteGraphique.getPolice(17, false));
 

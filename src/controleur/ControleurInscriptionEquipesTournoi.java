@@ -63,8 +63,8 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 		int nbEquipes = this.vueInscriptionEquipesTournoi.getEquipes().size();
 
 		// Traitement différent en fonction du bouton
-		switch (bouton.getText()) {
-			case "Inscrire une équipe":
+		switch (bouton.getActionCommand()) {
+			case "INSCRIRE_EQUIPE":
 				// On récupère les équipes éligibles (non inscrites au tournoi)
 				Equipe[] equipes;
 				try {
@@ -92,7 +92,7 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 					err.printStackTrace();
 				}
 				break;
-			case "Ouvrir le tournoi":
+			case "OUVRIR_TOURNOI":
 				// On ouvre le tournoi
 				try {
 					this.modeleTournoiOuverture.ouvrirTournoi(this.tournoi);
@@ -110,7 +110,7 @@ public class ControleurInscriptionEquipesTournoi implements ActionListener, List
 					ex.printStackTrace();
 				}
 				break;
-			case "Fermer":
+			case "FERMER":
 				this.vueInscriptionEquipesTournoi.fermerFenetre();
 				break;
 

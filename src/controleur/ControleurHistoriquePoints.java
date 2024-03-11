@@ -81,7 +81,7 @@ public class ControleurHistoriquePoints extends ControleurRecherche<Equipe> impl
         // Si il s'agit du bouton "Imprimer cet historique"
         if(e.getSource() instanceof JButton) {
             JButton bouton = (JButton) e.getSource();
-            if(bouton.getText() == "Imprimer cet historique") {
+            if(bouton.getActionCommand().equals("IMPRIMER_HISTORIQUE_POINTS")) {
                 // Récupération du tableau pour impression
                 JTableThemeImpression table = null;
                 try {

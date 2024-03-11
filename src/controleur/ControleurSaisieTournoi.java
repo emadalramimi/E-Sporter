@@ -64,8 +64,8 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 		JButton bouton = (JButton) e.getSource();
 		
 		// Traitement différent en fonction du bouton
-		switch(bouton.getText()) {
-			case "Ajouter un arbitre":
+		switch(bouton.getActionCommand()) {
+			case "AJOUTER_ARBITRE":
 				// On récupère les arbitres éligibles (non assignés au tournoi)
 				Arbitre[] arbitres = this.getArbitresEligibles();
 				if (arbitres.length == 0) {
@@ -76,12 +76,12 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 				// On affiche la vue de saisie d'un arbitre
 				this.vueSaisieTournoi.afficherVueSaisieTournoiArbitre(arbitres);
 				break;
-			case "Annuler":
+			case "ANNULER":
 				this.vueSaisieTournoi.fermerFenetre();
 				break;
 		}
 		
-		if(bouton.getText() == "Valider" || bouton.getText() == "Modifier") {
+		if(bouton.getActionCommand().equals("VALIDER") || bouton.getActionCommand().equals("MODIFIER")) {
 			// Vérification des champs
 			if (!this.vueSaisieTournoi.tousChampsRemplis()) {
 				this.vueSaisieTournoi.afficherPopupErreur("Veuillez remplir tous les champs.");
@@ -125,7 +125,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 			}
 			
 			// Création du tournoi au clic de valider
-			if(bouton.getText() == "Valider") {
+			if(bouton.getActionCommand().equals("VALIDER")) {
 				// Vérification de l'unicité de l'identifiant
 				this.verifierUniciteIdentifiant(identifiant);
 
@@ -145,7 +145,7 @@ public class ControleurSaisieTournoi implements ActionListener, ListSelectionLis
 				this.vueTournois.getVueBase().changerOnglet(Menus.TOURNOIS);
 			} 
 			// Modification du tournoi au clic de modifier
-			else if (bouton.getText() == "Modifier") {
+			else if (bouton.getActionCommand().equals("MODIFIER")) {
 				// Récupérer le tournoi à modifier
 				Tournoi tournoi = this.tournoiOptionnel.orElse(null);
 

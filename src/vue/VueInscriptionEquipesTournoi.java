@@ -94,6 +94,7 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 		
 		// Bouton inscrire une équipe
 		this.btnInscrireEquipe = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Inscrire une équipe");
+		this.btnInscrireEquipe.setActionCommand("INSCRIRE_EQUIPE");
 		this.btnInscrireEquipe.addActionListener(controleur);
 		this.btnInscrireEquipe.setFont(CharteGraphique.getPolice(17, false));
 
@@ -140,11 +141,13 @@ public class VueInscriptionEquipesTournoi extends JFrameTheme {
 
 		// Création des boutons
 		JButtonTheme btnFermer = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Fermer");
+		btnFermer.setActionCommand("FERMER");
 		btnFermer.setFont(CharteGraphique.getPolice(17, false));
 		btnFermer.addActionListener(controleur);
 
 		// Bouton ouvrir le tournoi
 		JButtonTheme btnOuvrirTournoi = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ouvrir le tournoi");
+		btnOuvrirTournoi.setActionCommand("OUVRIR_TOURNOI");
 		btnOuvrirTournoi.setFont(CharteGraphique.getPolice(17, false));
 		btnOuvrirTournoi.addActionListener(controleur);
 

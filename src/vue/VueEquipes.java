@@ -57,6 +57,7 @@ public class VueEquipes extends SuperVueListe<Equipe> {
 	public void afficherVueEquipe(JPanel contentPane) {
 		// btnAjouter, un bouton pour permettre l'ajout d'une équipe
 		btnAjouter = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Ajouter");
+		btnAjouter.setActionCommand("AJOUTER");
 		btnAjouter.setIcon(new ImageIcon(VueEquipes.class.getResource("/images/buttons/ajouter.png")));
 		btnAjouter.addActionListener(controleur);
 

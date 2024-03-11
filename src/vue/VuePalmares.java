@@ -62,6 +62,7 @@ public class VuePalmares extends SuperVueListe<Palmares> {
 
 		// btnImprimer, un bouton pour permettre l'ajout d'une équipe
 		JButtonTheme btnImprimer = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Imprimer");
+		btnImprimer.setActionCommand("IMPRIMER_PALMARES");
 		btnImprimer.addActionListener(this.controleur);
 		
 		JPanel panelCorps = super.getPanelCorps();

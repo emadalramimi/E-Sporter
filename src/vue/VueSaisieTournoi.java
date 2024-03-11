@@ -381,6 +381,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 
 		// Bouton ajouter arbitre
 		btnAjouterArbitre = new JButtonTheme(JButtonTheme.Types.PRIMAIRE,"Ajouter un arbitre");
+		btnAjouterArbitre.setActionCommand("AJOUTER_ARBITRE");
 		btnAjouterArbitre.setIcon(new ImageIcon(VueSaisieTournoi.class.getResource("/images/buttons/ajouter.png")));
 		btnAjouterArbitre.addActionListener(controleur);
 		btnAjouterArbitre.setBorder(new EmptyBorder(8,8,8,8));
@@ -418,6 +419,7 @@ public class VueSaisieTournoi extends JFrameTheme {
 
 		// Bouton annuler
 		JButtonTheme btnAnnuler = new JButtonTheme(JButtonTheme.Types.SECONDAIRE, "Annuler");
+		btnAnnuler.setActionCommand("ANNULER");
 		btnAnnuler.setMargin(new Insets(5, 10, 5, 10)); 
 		btnAnnuler.setBorder(new EmptyBorder(10, 10, 10, 10));
 		btnAnnuler.addActionListener(controleur);
@@ -429,8 +431,10 @@ public class VueSaisieTournoi extends JFrameTheme {
 		// Si aucun tournoi n'est renseigné, on affiche un bouton "Valider"
 		if (tournoi == null) {
 			btnValider = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Valider");
+			btnValider.setActionCommand("VALIDER");
 		} else {
 			btnValider = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Modifier");
+			btnValider.setActionCommand("MODIFIER");
 		}
 		btnValider.addActionListener(controleur);
 		btnValider.setIcon(new ImageIcon(VueSaisieTournoi.class.getResource("/images/buttons/valider.png")));

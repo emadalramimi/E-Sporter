@@ -41,8 +41,8 @@ public class ControleurSaisieTournoiArbitre implements ActionListener {
 		JButton bouton = (JButton) e.getSource();
 		
 		// Traitement différent en fonction du bouton
-		switch(bouton.getText()) {
-			case "Ajouter l'arbitre":
+		switch(bouton.getActionCommand()) {
+			case "AJOUTER_ARBITRE":
 				// On récupère l'arbitre saisi et on l'ajoute au tournoi
 				this.vueSaisieTournoi.ajouterArbitre(this.vueSaisieTournoiEquipeArbitre.getArbitre());
 				
@@ -57,7 +57,7 @@ public class ControleurSaisieTournoiArbitre implements ActionListener {
 					this.vueSaisieTournoi.afficherPopupErreur("Impossible de récupérer les arbitres");
 					ex.printStackTrace();
 				}
-			case "Annuler":
+			case "ANNULER":
 				this.vueSaisieTournoiEquipeArbitre.fermerFenetre();
 				break;
 		}

@@ -50,6 +50,7 @@ public class SuperVueListe<T> extends JFrameTheme implements RecherchableVue<T> 
 		this.panelRecherche.add(this.txtRecherche);
 		
         this.btnRecherche = new JButtonTheme(Types.PRIMAIRE, new ImageIcon(VueTournois.class.getResource("/images/actions/rechercher.png")));
+		this.btnRecherche.setActionCommand("RECHERCHER");
 		this.panelRecherche.add(this.btnRecherche);
 	}
 
@@ -163,15 +164,11 @@ public class SuperVueListe<T> extends JFrameTheme implements RecherchableVue<T> 
     /**
 	 * Vérifie si le bouton est le bouton de recherche
 	 * @param bouton : bouton à vérifier
-	 * @return true si bouton est le bouton de recherche, false sinon
+	 * @return true si le bouton est le bouton de recherche, false sinon
 	 */
 	@Override
 	public boolean estBoutonRecherche(JButton bouton) {
-		if(bouton instanceof JButtonTheme && bouton.getIcon() != null) {
-			String iconeRecherche = VueTournois.class.getResource("/images/actions/rechercher.png").toString();
-		    return bouton.getIcon().toString().equals(iconeRecherche);
-		}
-		return false;
+		return bouton.getActionCommand().equals("RECHERCHER");
 	}
 	
 	/**

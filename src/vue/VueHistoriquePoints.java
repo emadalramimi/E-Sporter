@@ -51,6 +51,7 @@ public class VueHistoriquePoints extends SuperVueListe<Equipe> {
 	public void afficherVueHistoriquePoints(JPanel contentPane, VueBase vueBase) {
 		// btnImprimer, un bouton pour permettre l'ajout d'une équipe
 		this.btnImprimer = new JButtonTheme(JButtonTheme.Types.PRIMAIRE, "Imprimer cet historique");
+		this.btnImprimer.setActionCommand("IMPRIMER_HISTORIQUE_POINTS");
 		this.btnImprimer.setEnabled(false);
 		this.btnImprimer.addActionListener(this.controleur);
 

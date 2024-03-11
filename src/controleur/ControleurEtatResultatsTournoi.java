@@ -43,11 +43,11 @@ public class ControleurEtatResultatsTournoi implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JButton bouton = (JButton) e.getSource();
         
-        switch(bouton.getText()) {
-            case "Fermer":
+        switch(bouton.getActionCommand()) {
+            case "FERMER":
                 this.vue.fermerFenetre();
                 break;
-            case "Imprimer":
+            case "IMPRIMER":
                 try {
                     this.modeleImpression.imprimerEtatResultatsTournoi(this.vue.getTableImpression(), this.tournoi);
                 } catch(PrinterException err) {
