@@ -148,7 +148,7 @@ public class ControleurEquipes extends ControleurRecherche<Equipe> implements It
 			JButton bouton = (JButton) e.getSource();
 			
 			// Si il s'agit du bouton ajouter
-			if(bouton.getText().equals("Ajouter")) {
+			if(bouton.getText() == "Ajouter") {
 				// Seul un administrateur peut ajouter une équipe
 				if(ModeleUtilisateur.getCompteCourant().getRole() != Utilisateur.Role.ADMINISTRATEUR) {
 					this.vue.afficherPopupErreur("Seul un administrateur peut ajouter une équipe.");
