@@ -16,8 +16,6 @@ public class Application {
 		// Ouverture de la fenêtre de connexion
 		VueConnexion vue = new VueConnexion();
 		vue.afficher();
-
-		//test
 	}
 
 }
